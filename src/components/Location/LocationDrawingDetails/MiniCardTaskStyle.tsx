@@ -58,7 +58,6 @@ export const HeadStyles: Styles = {
     display: "flex",
     alignItems: "center",
     width: "100%",
-    marginTop: "5px",
     marginLeft: '8px',
 
   },

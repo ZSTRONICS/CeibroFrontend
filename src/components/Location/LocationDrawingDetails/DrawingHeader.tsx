@@ -22,6 +22,7 @@ interface DrawingProps {
   selectedDrawing: any;
   selectedProjectGroups: any;
   headersize: boolean;
+  imageLocation:boolean;
 }
 
 export default function DrawingHeader(props: DrawingProps) {
@@ -33,6 +34,7 @@ export default function DrawingHeader(props: DrawingProps) {
     selectedDrawing,
     selectedProjectGroups,
     headersize,
+    imageLocation,
   } = props;
 
   const renderDrawingSelectOptions = (options: any[], getValueKey: string) => {
@@ -82,7 +84,7 @@ export default function DrawingHeader(props: DrawingProps) {
       sx={{
         backgroundColor: "white",
         width: flexWidth || "100%",
-      }}
+}}
     >
       {content}
     </Box>
@@ -107,11 +109,15 @@ export default function DrawingHeader(props: DrawingProps) {
   const isLgScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const isxlScreen = useMediaQuery(theme.breakpoints.down('xl'));
 
+  const isMdScreenUP = useMediaQuery(theme.breakpoints.up('md'));
+  const isLgScreenUP = useMediaQuery(theme.breakpoints.up('lg'));
+  const isxlScreenUP = useMediaQuery(theme.breakpoints.up('xl'));
+
   return (
     <Grid container sx={{display:'flex',justifyContent:'space-between'}} >
       <Grid
         item
-        sx={{ transition: "all linear 0.30s",width: headersize ? '53.8%' :'41.8%'}}
+        sx={{ transition: "all linear 0.30s",width: headersize ?  (imageLocation? '52%':'53.8%')  :'41.8%'}}
       >
         <Box 
          >
@@ -131,7 +137,7 @@ export default function DrawingHeader(props: DrawingProps) {
                 <ArrowBackSharp />
               </IconButton>
               {renderDivider()}
-              <Typography sx={{ width: "30%",}} variant="body1">
+              <Typography sx={{ width: isxlScreenUP ? "27%" : isLgScreenUP ? '27%' : '29%' }} variant="body1">
                 {selectedProject &&
                   selectedProject.length > 0 &&
                   selectedProject[0].title}
@@ -141,7 +147,7 @@ export default function DrawingHeader(props: DrawingProps) {
                 <Select
                   variant="standard"
                   disableUnderline
-                  sx={{ width: "100%", height: "52px", marginRight: "16px", }}
+                  sx={{ width: "100%", height: "52px",}}
                   value={selectedGroup._id || ""}
                   renderValue={() => selectedGroup.groupName}
                   onChange={(e) => handleChangeCallback(e, "group")}
@@ -150,10 +156,8 @@ export default function DrawingHeader(props: DrawingProps) {
                     <Box
                       sx={{
                         width: "100%",
-                        pr: "5px",
                         display: "flex",
                         justifyContent: "space-between",
-
                       }}
                     >
                       <Heading2
@@ -162,7 +166,6 @@ export default function DrawingHeader(props: DrawingProps) {
                           marginLeft: "10px",
                           display: "flex",
                           alignItems: "center",
-
                         }}
                       >
                         Groups
@@ -171,7 +174,7 @@ export default function DrawingHeader(props: DrawingProps) {
                   </MenuItem>
                   {renderGroupOptions(selectedProjectGroups, "groupName")}
                 </Select>,
-                "50%"
+                "55%"
               )}
             </>
           )}
@@ -180,7 +183,7 @@ export default function DrawingHeader(props: DrawingProps) {
       <Grid
         sx={{
           transition: "all linear 0.30s",
-           width: headersize?'45.3%':'57.2%' ,
+           width: headersize? (imageLocation?'47%':'45.3%'):'57.2%' ,
         }}
       >
         <Box

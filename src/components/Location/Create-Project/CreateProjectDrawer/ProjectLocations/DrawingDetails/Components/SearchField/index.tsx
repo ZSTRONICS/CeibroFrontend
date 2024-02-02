@@ -22,10 +22,11 @@ interface SearchFieldProps {
     | ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     | undefined;
   searchText: string;
+  isSmall:boolean;
 }
 
 const SearchField = (props: SearchFieldProps) => {
-  const { handleSearch, searchText } = props;
+  const { handleSearch, searchText,isSmall } = props;
   return (
     <Box
       sx={{
@@ -35,7 +36,7 @@ const SearchField = (props: SearchFieldProps) => {
       <InputBase
         type="search"
         value={searchText}
-        placeholder="Start typing to search"
+        placeholder= {isSmall ? 'Searching' : "Start typing to search" } 
         sx={{
           pl: 4,
           height: "40px",

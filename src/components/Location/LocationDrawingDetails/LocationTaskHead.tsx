@@ -109,7 +109,6 @@ const LocationTaskHead = ({
               minWidth: "60px",
               maxWidth: "60px",
               transition: "all linear 0.30s",
-
               "@media screen and (max-width: 900px)": {
                 marginLeft: "0px",
               },
@@ -119,7 +118,7 @@ const LocationTaskHead = ({
           />
         </TabList>
         {/* </Box> */}
-        <Box style={HeadStyles.head_filterization}>
+        <Box style={HeadStyles.head_filterization} >
           <TaskFilters isSmallView={isSmallView} />
         </Box>
         <Box

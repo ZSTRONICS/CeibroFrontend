@@ -1,4 +1,5 @@
-import { Box, Button, Grid, Modal, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Grid, Modal, Tab, Tabs, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Heading2 } from "components/CustomTags";
@@ -126,6 +127,9 @@ const LocationImageDetails = () => {
                   developing and don't mix it with something. We want 100% same
                   thing like we have in Fig e have in Fige have in Fige have in
                   Please use Figma for developing and don't mix it with`;
+
+                  const theme = useTheme();
+                  const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'));
   return (
     <>
       <Box
@@ -143,9 +147,10 @@ const LocationImageDetails = () => {
             selectedGroup={projectData.selectedGroup}
             selectedDrawing={projectData.selectedDrawing}
             headersize={true}
+            imageLocation={true}
           />
         )}
-        <Grid container spacing={2} sx={{ padding: "16px 0" }}>
+        <Grid container spacing={2} sx={{ padding: "16px 0",}}>
           <Grid item xs={6.3}>
             <Box
               style={{
@@ -167,12 +172,15 @@ const LocationImageDetails = () => {
                   borderBottom: "1px solid #818181",
                 }}
               >
-                <Box>
+                <Box sx={{}} >
                   <Tabs
                     aria-label="basic tabs"
                     sx={{
                       display: "flex",
                       alignItems: "center",
+                      span: {
+                        display: "none",
+                      },
                     }}
                     value={1}
                   >
@@ -214,8 +222,9 @@ const LocationImageDetails = () => {
                     ))}
                   </Tabs>
                 </Box>
-                <Box style={{ width: "auto" }}>
-                  <SearchField handleSearch={() => {}} searchText={""} />
+                {/* <Box></Box> */}
+                <Box style={{ width: "auto", }}>
+                  <SearchField isSmall={isSmallScreen ? true : false} handleSearch={() => {}} searchText={""} />
                 </Box>
                 <Button
                   style={{
@@ -232,7 +241,7 @@ const LocationImageDetails = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     height: "32px",
-                    // padding: "0px 16px",
+
                     textTransform: "capitalize",
                     width: "109px",
                   }}

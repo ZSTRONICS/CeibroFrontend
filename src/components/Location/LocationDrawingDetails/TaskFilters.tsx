@@ -167,7 +167,8 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
                 flexDirection: "column",
                 alignItems: "center",
                 paddingLeft: "8px",
-                minWidth: "30%",
+                minWidth: '30%',
+                marginRight:'7px',
               }}
             >
               <Typography
@@ -226,15 +227,14 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
             >
               <IconButton
                 sx={{
-                  marginLeft: "20px",
-                  "@media screen and (min-width: 1370px) and (max-width: 1535px)":
-                    {
-                      transform: "translateX(10px)",
-                      marginLeft: "0px",
-                    },
-                  "@media screen and (max-width: 1370px)": {
-                    marginRight: "15px",
-                    marginLeft: "0px",
+                  marginLeft: '20px',
+                  '@media screen and (min-width: 1370px) and (max-width: 1535px)': {
+                    transform: 'translateX(0px)',
+                    marginLeft: '0px',
+                  },
+                  '@media screen and (max-width: 1370px)': {
+                    marginRight: '15px',
+                    marginLeft: '0px',
                   },
                 }}
                 onClick={handleMenuOpen}
@@ -246,29 +246,21 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
         </Grid>
       )}
 
-      {isSmallView && (
-        <Grid container alignItems="center" justifyContent="center">
-          <Grid
-            onClick={handleMenuOpen}
-            sx={{
-              cursor: "pointer",
-              borderBottom: "solid 1px #818181",
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              marginLeft: "-8px",
-            }}
-            item
-          >
-            <FilterAltOutlined
-              color="primary"
-              sx={{ transform: "translateY(7px)" }}
-            />
-            <IconButton onClick={handleMenuOpen}>
-              <ArrowDropDownIcon />
-            </IconButton>
+      {
+        isSmallView && (
+          <Grid container alignItems="center" justifyContent="center">
+            <Grid
+              onClick={handleMenuOpen}
+              sx={{ cursor: 'pointer', borderBottom: 'solid 1px #818181', width: '100%', display: 'flex', justifyContent: 'center', marginLeft: '-8px' }}
+              item
+            >
+              <FilterAltOutlined color="primary" sx={{ transform: 'translateY(7px)'}} />
+              <IconButton
+                onClick={handleMenuOpen}>
+                <ArrowDropDownIcon />
+              </IconButton>
+            </Grid>
           </Grid>
-        </Grid>
       )}
       <Menu
         anchorEl={anchorEl}

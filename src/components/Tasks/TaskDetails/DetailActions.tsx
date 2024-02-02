@@ -372,16 +372,16 @@ const DetailActions: React.FC<IProps> = (props) => {
               <Grid
                 xs={8}
                 md={!DrawDetailCollapse ? 5 : 3.5}
-                lg={!DrawDetailCollapse ? 4.3 : 2.1}
-                xl={!DrawDetailCollapse ? 2.9 : 1.9}
+                lg={!DrawDetailCollapse ? 3 : 2.1}
+                xl={!DrawDetailCollapse ? 1.8 : 1.9}
               >
                 {userSUBState}
               </Grid>
               <Grid
                 xs={8}
                 md={!DrawDetailCollapse ? 5 : 3}
-                lg={!DrawDetailCollapse ? 5.5 : 2.5}
-                xl={!DrawDetailCollapse ? 2.9 : 1.9}
+                lg={!DrawDetailCollapse ? 5 : 2.5}
+                xl={!DrawDetailCollapse ? 2 : 1.9}
               >
                 {TaskUID}
               </Grid>

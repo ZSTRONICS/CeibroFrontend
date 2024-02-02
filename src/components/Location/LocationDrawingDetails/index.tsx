@@ -116,6 +116,7 @@ function LocationDrawingDetails() {
           selectedGroup={projectData.selectedGroup}
           selectedDrawing={projectData.selectedDrawing}
           headersize={headersize}
+          imageLocation={false}
         />
       )}
       <LocatoinDrawingList
