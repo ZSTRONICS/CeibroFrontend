@@ -654,6 +654,7 @@ const taskReducer = (
             state.allTasksAllEvents.allTasks[findTaskIndex].hiddenState = eventData.newTaskData.hiddenState
             state.allTasksAllEvents.allTasks[findTaskIndex].toMeState = eventData.newTaskData.toMeState
             state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
+            state.allTasksAllEvents.allTasks[findTaskIndex].creatorState = eventData.newTaskData.creatorState
           }
           if (eventData.isAssignedToMe) {
             // to-me [new]=> to-me [ongoing]

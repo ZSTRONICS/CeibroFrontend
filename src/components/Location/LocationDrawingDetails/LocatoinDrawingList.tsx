@@ -194,7 +194,7 @@ const LocatoinDrawingList = ({
 
   return (
     <>
-      <Grid container sx={{display:'flex',justifyContent:'space-between'}} >
+      <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
         <Grid
           ref={taskContainerRef}
           item
