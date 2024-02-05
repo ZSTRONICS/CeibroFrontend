@@ -21,6 +21,8 @@ interface Props {
 }
 
 function ProjectCard({ project, groups, projectFloors }: Props) {
+  console.log();
+
   const history = useHistory();
   const dispatch = useDispatch();
   const titleRef: any = useRef(null);
@@ -71,12 +73,14 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
           data,
         };
       });
+
   const [projectcardbg, setProjectcardbg] = useState(false);
-  const changebg = () => {
-    if (!projectcardbg) {
-      setProjectcardbg(true);
+  const [projectcardId, setProjectcardId] = useState<any>(null);
+  const changebg = (id: string) => {
+    if (projectcardId === id) {
+      setProjectcardId(null);
     } else {
-      setProjectcardbg(false);
+      setProjectcardId(id);
     }
   };
 
@@ -101,7 +105,7 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
       history.push(`/location/${panel}`);
       setExpanded(newExpanded ? panel : false);
       if (expanded) {
-        changebg();
+        changebg(panel);
       }
     };
 
@@ -120,7 +124,8 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
             border: "1px solid #818181",
             borderRadius: "8px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            backgroundColor: `${projectcardbg ? "#EBF5FB" : ""}`,
+            backgroundColor: `${projectId === projectcardId ? "#EBF5FB" : ""}`,
+            // const isSelectedProj = projectId === _id
           }}
         >
           <CustomStack sx={{ gap: 1 }}>
@@ -146,6 +151,7 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
               <LabelTag>{fullName}</LabelTag>
             </Box>
           </CustomStack>
+          {/* /////////////// */}
         </CollapseComponent.AccordionSummary>
         <CollapseComponent.AccordionDetails>
           <Box>
@@ -191,6 +197,7 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
                 </CustomStack>
               </Box>
             </CustomStack>
+            {/* ////////////////// */}
             <Box sx={{ pl: 1.8 }}>
               {groupsWithLabel &&
                 groupsWithLabel.map((group, index) => {
