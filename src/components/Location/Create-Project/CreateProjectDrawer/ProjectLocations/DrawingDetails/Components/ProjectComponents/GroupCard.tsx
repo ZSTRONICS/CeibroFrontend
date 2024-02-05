@@ -123,9 +123,6 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
           isCreator,
         } = group;
         const isSelectedGroup = _id === groupId;
-        if (isSelectedGroup) {
-          console.log("isSelectedGroup>>>", isSelectedGroup);
-        }
         return (
           <Box sx={{ py: 0.5 }} key={_id}>
             <Box style={{ width: "100%" }}>

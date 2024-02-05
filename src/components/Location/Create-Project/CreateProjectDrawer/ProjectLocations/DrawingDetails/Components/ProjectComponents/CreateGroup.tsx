@@ -1,6 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
+import { hasOnlySpaces } from "components/Utills/Globals";
 import { PROJECT_CONFIG } from "config";
-import { useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { PROJECT_APIS } from "redux/action";
 interface Props {
@@ -10,7 +11,9 @@ interface Props {
 function CreateGroup({ projectId, closeModal }: Props) {
   const dispatch = useDispatch();
   const [groupName, setGroupName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleCreateGroup = () => {
+    setIsLoading(true);
     if (groupName.length > 0) {
       dispatch(
         PROJECT_APIS.createProjectGroup({
@@ -22,29 +25,44 @@ function CreateGroup({ projectId, closeModal }: Props) {
           },
           success: (res: any) => {
             setGroupName("");
+            setIsLoading(false);
             closeModal();
             dispatch({
               type: PROJECT_CONFIG.PROJECT_GROUP_CREATED,
               payload: res.data.group,
             });
           },
+          onFailAction: (err: any) => {
+            setIsLoading(false);
+          },
         })
       );
     }
   };
 
-  const handleUpdateGroup = () => {
-    dispatch(
-      PROJECT_APIS.updateGroupById({
-        other: {
-          groupId: "657c6cf2fa6501660b70c176",
-        },
-        body: {
-          groupName: "test group 1",
-        },
-      })
-    );
-  };
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (hasOnlySpaces(e.target.value)) {
+        setGroupName("");
+      } else {
+        setGroupName(e.target.value);
+      }
+    },
+    [setGroupName]
+  );
+
+  // const handleUpdateGroup = () => {
+  //   dispatch(
+  //     PROJECT_APIS.updateGroupById({
+  //       other: {
+  //         groupId: "657c6cf2fa6501660b70c176",
+  //       },
+  //       body: {
+  //         groupName: "test group 1",
+  //       },
+  //     })
+  //   );
+  // };
 
   return (
     <>
@@ -69,9 +87,7 @@ function CreateGroup({ projectId, closeModal }: Props) {
             label="Group name"
             placeholder={"Enter group name"}
             value={groupName}
-            onChange={(e: any) => {
-              setGroupName(e.target.value);
-            }}
+            onChange={handleChange}
           />
           <span
             style={{
@@ -95,6 +111,7 @@ function CreateGroup({ projectId, closeModal }: Props) {
             transform: "translateX(100%)",
           }}
           onClick={handleCreateGroup}
+          disabled={isLoading || groupName.length === 0}
         >
           Create
         </Button>

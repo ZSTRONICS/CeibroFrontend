@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import CustomDropDown from "components/Utills/CustomDropDown";
 import { PROJECT_CONFIG } from "config";
+import _ from "lodash";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PROJECT_APIS } from "redux/action";
@@ -19,22 +20,38 @@ function FloorDropDown(props: Props) {
     projectFloors,
     ALL_FLOOR_NAMES
   );
-
   const [getAllFloorOptions, setAllFloorOptions] =
     useState(floorDropdownOptions);
-
-  const handleCreateFloor = (floorNames: string[]) => {
+  const handleCreateFloor = (floorNames: string[]): void => {
     const payload = {
       body: {
         floorName: floorNames,
       },
       other: projectId,
       success: (res: any) => {
-        const updatedFloorDropdown = createFloorDropdownOption(
-          [...projectFloors, ...res.data.floor],
-          ALL_FLOOR_NAMES
+        const allFloorNames = [...projectFloors, ...res.data.floor].map(
+          (floor) => floor.floorName
         );
-        setAllFloorOptions(updatedFloorDropdown);
+        const newFloorOption = getAllFloorOptions
+          .filter((floor) => allFloorNames.includes(floor.value))
+          .map((floor) => ({
+            label: "*",
+            value: floor.value,
+            _id: "",
+            isShown: true,
+            isPermanenetOption: true,
+          }));
+
+        const uniqueOption = _.uniqBy(
+          [...newFloorOption, ...getAllFloorOptions],
+          "value"
+        );
+        const sortedOption = uniqueOption.sort((a, b) => {
+          const aValue = parseInt(a.value, 10);
+          const bValue = parseInt(b.value, 10);
+          return aValue - bValue;
+        });
+        setAllFloorOptions(sortedOption);
         setNewFloors([]);
         dispatch({
           type: PROJECT_CONFIG.PROJECT_FLOOR_CREATED,
@@ -44,7 +61,9 @@ function FloorDropDown(props: Props) {
     };
     dispatch(PROJECT_APIS.createFloor(payload));
   };
-
+  const extractValues = (array: any[], condition: any) => {
+    return array.filter(condition).map((item) => item.value);
+  };
   return (
     <>
       <Box>
@@ -55,17 +74,35 @@ function FloorDropDown(props: Props) {
             allOptions: [...getAllFloorOptions],
             recentOptions: [],
           }}
+          isDropDownOpen={(isOpen: boolean) => {
+            if (!isOpen && newFloors.length > 0) {
+              const floorNames = extractValues(
+                newFloors,
+                (floor: any) => !floor.isPermanenetOption
+              );
+              const uniqueFloorNames = [...new Set(floorNames)];
+              handleCreateFloor(uniqueFloorNames);
+            }
+          }}
           handleCreateAllFloors={() => {
             if (newFloors.length > 0) {
-              const floorNames = newFloors.map((floor) => floor.value);
-              handleCreateFloor(floorNames);
+              const floorNames = extractValues(
+                newFloors,
+                (floor: any) => !floor.isPermanenetOption
+              );
+              const uniqueFloorNames = [...new Set(floorNames)];
+              handleCreateFloor(uniqueFloorNames);
             }
           }}
           handleSelectedMenuList={(selected: any) => {
-            findSelectedFloor(selected);
-            if (!selected.isPermanenetOption) {
+            if (!selected.isPermanenetOption && selected.isShown) {
               setNewFloors((prev: any) => [...prev, selected]);
+            } else if (!selected.isShown) {
+              setNewFloors((prev: any) =>
+                prev.filter((floor: any) => floor.value !== selected.value)
+              );
             }
+            findSelectedFloor(selected);
           }}
           createCallback={() => {}}
           handleChangeValues={(e) => {

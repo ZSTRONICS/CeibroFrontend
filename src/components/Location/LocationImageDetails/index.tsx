@@ -79,7 +79,7 @@ const LocationImageDetails = () => {
     }
   }, []);
 
-  const projectData = useMemo(() => {
+  const projectData: any = useMemo(() => {
     let selectedProject = filterData(allProjects, "_id", projectId);
     let selectedProjectGroups = filterData(allGroups, "projectId", projectId);
     let selectedGroup: any = findData(allGroups, "_id", groupId);
@@ -96,6 +96,8 @@ const LocationImageDetails = () => {
       selectedDrawing,
     };
   }, [groupId, drawingId, allProjects, allGroups]);
+
+  console.log("projectData", projectData);
 
   const handleGroupAndFileChange = (event: any, type: "group" | "drawing") => {
     switch (type) {

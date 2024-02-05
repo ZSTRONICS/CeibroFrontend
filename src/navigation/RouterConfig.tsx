@@ -119,8 +119,6 @@ const RouterConfig = () => {
               />
               {/* <Route path="/*" component={NotFound} /> */}
             </DashboardLayout>
-            {/* <Route path="/comming-soon" component={CommingSoon}></Route>
-            <Redirect from="/" to="/comming-soon" /> */}
           </Switch>
         </Suspense>
       </Router>

@@ -125,7 +125,13 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
         >
           <CustomStack sx={{ gap: 1 }}>
             <Box sx={{ width: "28px" }}>
-              <IconButton onClick={() => handleProjFavUnFav(project)}>
+              <IconButton
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  handleProjFavUnFav(project);
+                }}
+              >
                 {isFavoriteByMe ? <FavIcon /> : <UnFavIcon />}
               </IconButton>
             </Box>

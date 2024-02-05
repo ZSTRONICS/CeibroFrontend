@@ -143,6 +143,13 @@ const taskReducer = (
 
     case TASK_CONFIG.PUSH_NEW_TASK_TO_STORE:
       const taskUpdatedAt = action.payload.updatedAt;
+      const findTaskInd = state.allTasksAllEvents.allTasks.findIndex((task: any) => task._id === action.payload._id);
+      if (findTaskInd === -1) {
+        state.allTasksAllEvents.allTasks.unshift(action.payload);
+        state.allTasksAllEvents.allEvents.push(action.payload);
+        // console.log("TASK_CONFIG.PUSH_NEW_TASK_TO_STORE", state.allTasksAllEvents.allTasks[0]);
+      }
+
       if (taskUpdatedAt) {
         const currentUpdatedAt = new Date(taskUpdatedAt);
         const recentTaskUpdatedDate = new Date(state.RECENT_TASK_UPDATED_TIME_STAMP);

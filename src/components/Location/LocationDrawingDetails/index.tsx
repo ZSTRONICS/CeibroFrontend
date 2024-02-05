@@ -25,6 +25,7 @@ function LocationDrawingDetails() {
   const { projectId, groupId, drawingId } = useParams<RouteParams>();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const isRenderEffect = useRef<boolean>(true);
+  const [allDrawingTaskList, setAllDrawingTaskList] = useState<ITask[]>([]);
   const { allProjects, allGroups } = useSelector(
     (state: RootState) => state.project
   );
@@ -67,17 +68,34 @@ function LocationDrawingDetails() {
       selectedDrawing,
     };
   }, [groupId, drawingId, allProjects, allGroups]);
-  let allDrawingTaskList: ITask[] = [];
-  if (projectData.selectedDrawing) {
-    const selectedDrawingPins = allTasksAllEvents.allPins.filter(
-      (pin: any) => pin.drawingId === projectData.selectedDrawing._id
-    );
-    allDrawingTaskList = filterTasksByCondition(
-      allTasksAllEvents.allTasks,
-      (task: ITask) =>
-        selectedDrawingPins.some((pin: any) => pin.taskData._id === task._id)
-    );
-  }
+
+  useEffect(() => {
+    if (projectData.selectedDrawing) {
+      const selectedDrawingPins = allTasksAllEvents.allPins.filter(
+        (pin: any) => pin.drawingId === projectData.selectedDrawing._id
+      );
+      const drawingTaskList = filterTasksByCondition(
+        allTasksAllEvents.allTasks,
+        (task: ITask) =>
+          selectedDrawingPins.some((pin: any) => pin.taskData._id === task._id)
+      );
+      setAllDrawingTaskList(drawingTaskList);
+      console.log("rendering 111");
+    }
+    console.log("rendering 222");
+  }, [
+    allTasksAllEvents.allTasks.length,
+    drawingId,
+    groupId,
+    RECENT_TASK_UPDATED_TIME_STAMP,
+    projectData.selectedDrawing,
+  ]);
+  console.log(
+    "drawingTaskList",
+    allTasksAllEvents.allTasks.length,
+    allDrawingTaskList.length,
+    RECENT_TASK_UPDATED_TIME_STAMP
+  );
   const handleGroupAndFileChange = (event: any, type: "group" | "drawing") => {
     switch (type) {
       case "drawing":
