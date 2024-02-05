@@ -1,4 +1,3 @@
-import { TextField } from "@mui/material";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -43,6 +42,14 @@ const CustomDatePicker = ({
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={"de"}>
         <DatePicker
           sx={{
+            fieldset: {
+              borderWidth: "0px",
+              borderRadius: "0px",
+              borderBottom: "1px solid #949494",
+            },
+            "& .MuiOutlinedInput-root.Mui-focused": {
+              borderColor: "black",
+            },
             "& .MuiInputBase-root": {
               height: locationimageDetails ? "38px" : "",
               marginTop: locationimageDetails ? "-13px" : "",
@@ -54,8 +61,8 @@ const CustomDatePicker = ({
           }}
           key={name}
           label={label}
-          inputFormat="DD.MM.YYYY"
-          componentsProps={{
+          format="DD.MM.YYYY"
+          slotProps={{
             actionBar: {
               actions: ["clear"],
               onClick: () => {
@@ -67,26 +74,25 @@ const CustomDatePicker = ({
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
           // minDate={new Date()}
-          InputAdornmentProps={{ position: "start" }}
-          PopperProps={{
-            sx: { marginLeft: "-35px !important" },
-            placement: "auto-start",
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="standard"
-              sx={{
-                width: "100%",
-                label: {
-                  color: "#757575",
-                  fontWeight: 600,
-                  fontSize: "16px",
-                },
-              }}
-              onClick={() => setOpen(true)}
-            />
-          )}
+          // PopperProps={{
+          //   sx: { marginLeft: "-35px !important" },
+          //   placement: "auto-start",
+          // }}
+          // renderInput={(params) => (
+          //   <TextField
+          //     {...params}
+          //     variant="standard"
+          //     sx={{
+          //       width: "100%",
+          //       label: {
+          //         color: "#757575",
+          //         fontWeight: 600,
+          //         fontSize: "16px",
+          //       },
+          //     }}
+          //     onClick={() => setOpen(true)}
+          //   />
+          // )}
           onChange={handleDateChange}
           value={value}
         />
