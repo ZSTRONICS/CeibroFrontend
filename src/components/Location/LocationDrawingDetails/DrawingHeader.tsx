@@ -1,4 +1,3 @@
-
 import { ArrowBackSharp } from "@mui/icons-material";
 import {
   Box,
@@ -7,11 +6,12 @@ import {
   IconButton,
   MenuItem,
   Select,
-  Typography
+  Typography,
 } from "@mui/material";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Heading2 } from "components/CustomTags";
+import { useHistory } from "react-router-dom";
 import DrawingGroupCard from "./DrawingGroupCard";
 
 interface DrawingProps {
@@ -22,7 +22,7 @@ interface DrawingProps {
   selectedDrawing: any;
   selectedProjectGroups: any;
   headersize: boolean;
-  imageLocation:boolean;
+  imageLocation: boolean;
 }
 
 export default function DrawingHeader(props: DrawingProps) {
@@ -84,7 +84,7 @@ export default function DrawingHeader(props: DrawingProps) {
       sx={{
         backgroundColor: "white",
         width: flexWidth || "100%",
-}}
+      }}
     >
       {content}
     </Box>
@@ -97,7 +97,13 @@ export default function DrawingHeader(props: DrawingProps) {
       sx={{
         marginTop: "4px",
         marginBottom: "4px",
-        marginLeft: isMdScreen ? '16px' : isLgScreen ? '-5px' : isxlScreen ? '5px' : '16px',
+        marginLeft: isMdScreen
+          ? "16px"
+          : isLgScreen
+          ? "-5px"
+          : isxlScreen
+          ? "5px"
+          : "16px",
         marginRight: "16px",
         color: "#818181",
       }}
@@ -105,22 +111,26 @@ export default function DrawingHeader(props: DrawingProps) {
   );
 
   const theme = useTheme();
-  const isMdScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const isLgScreen = useMediaQuery(theme.breakpoints.down('lg'));
-  const isxlScreen = useMediaQuery(theme.breakpoints.down('xl'));
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isxlScreen = useMediaQuery(theme.breakpoints.down("xl"));
 
-  const isMdScreenUP = useMediaQuery(theme.breakpoints.up('md'));
-  const isLgScreenUP = useMediaQuery(theme.breakpoints.up('lg'));
-  const isxlScreenUP = useMediaQuery(theme.breakpoints.up('xl'));
+  const isMdScreenUP = useMediaQuery(theme.breakpoints.up("md"));
+  const isLgScreenUP = useMediaQuery(theme.breakpoints.up("lg"));
+  const isxlScreenUP = useMediaQuery(theme.breakpoints.up("xl"));
+
+  const history = useHistory();
 
   return (
-    <Grid container sx={{display:'flex',justifyContent:'space-between'}} >
+    <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
       <Grid
         item
-        sx={{ transition: "all linear 0.30s",width: headersize ?  (imageLocation? '52%':'53.8%')  :'41.8%'}}
+        sx={{
+          transition: "all linear 0.30s",
+          width: headersize ? (imageLocation ? "52%" : "53.8%") : "41.8%",
+        }}
       >
-        <Box 
-         >
+        <Box>
           {renderBox(
             <>
               <IconButton
@@ -132,12 +142,18 @@ export default function DrawingHeader(props: DrawingProps) {
                     backgroundColor: "transparent",
                   },
                 }}
-                onClick={handleback}
+                // onClick={handleback}
+                onClick={() => history.goBack()}
               >
                 <ArrowBackSharp />
               </IconButton>
               {renderDivider()}
-              <Typography sx={{ width: isxlScreenUP ? "27%" : isLgScreenUP ? '27%' : '29%' }} variant="body1">
+              <Typography
+                sx={{
+                  width: isxlScreenUP ? "27%" : isLgScreenUP ? "27%" : "29%",
+                }}
+                variant="body1"
+              >
                 {selectedProject &&
                   selectedProject.length > 0 &&
                   selectedProject[0].title}
@@ -147,7 +163,7 @@ export default function DrawingHeader(props: DrawingProps) {
                 <Select
                   variant="standard"
                   disableUnderline
-                  sx={{ width: "100%", height: "52px",}}
+                  sx={{ width: "100%", height: "52px" }}
                   value={selectedGroup._id || ""}
                   renderValue={() => selectedGroup.groupName}
                   onChange={(e) => handleChangeCallback(e, "group")}
@@ -183,14 +199,13 @@ export default function DrawingHeader(props: DrawingProps) {
       <Grid
         sx={{
           transition: "all linear 0.30s",
-           width: headersize? (imageLocation?'47%':'45.3%'):'57.2%' ,
+          width: headersize ? (imageLocation ? "47%" : "45.3%") : "57.2%",
         }}
       >
-        <Box
-          >
+        <Box>
           {renderBox(
             <>
-              <Box sx={{ width: '85%' }} >
+              <Box sx={{ width: "85%" }}>
                 <Select
                   value={selectedDrawing?._id || ""}
                   variant="standard"
@@ -198,13 +213,16 @@ export default function DrawingHeader(props: DrawingProps) {
                   sx={{
                     height: "52px",
                     paddingLeft: "16px",
-                    backgroundColor: 'transparent',
-                    width: '99%',
+                    backgroundColor: "transparent",
+                    width: "99%",
                   }}
                   onChange={(e) => handleChangeCallback(e, "drawing")}
                   renderValue={() => selectedDrawing?.fileName ?? "Not Found"}
                 >
-                  {renderDrawingSelectOptions(selectedGroup.drawings, "fileName")}
+                  {renderDrawingSelectOptions(
+                    selectedGroup.drawings,
+                    "fileName"
+                  )}
                 </Select>
               </Box>
               {renderDivider()}

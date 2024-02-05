@@ -1,7 +1,17 @@
-import { Box, Button, Grid, Modal, Tab, Tabs, Typography, useMediaQuery } from "@mui/material";
-import { useTheme } from '@mui/material/styles';
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { FilterAltOutlined } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Grid,
+  Modal,
+  Tab,
+  Tabs,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { useTheme } from "@mui/material/styles";
 import { Heading2 } from "components/CustomTags";
 import DocumentReader from "components/pdfviewer";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -15,10 +25,17 @@ import DrawingHeader from "../LocationDrawingDetails/DrawingHeader";
 import { filterData, findData } from "../utils";
 import AllImagesSlider from "./AllImagesSlider";
 import ExportList from "./ExportList";
+import FilterPopup from "./FilterPopup";
 import ImageCarousel from "./ImageCarousel";
-import ImageUserDropdown from "./ImageUserDropdown";
 import SortByDropdown from "./SortByDropdown";
 import "./location-image.css";
+//////////
+
+// import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+// import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDateRangeField';
+// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+
+//////////////
 
 interface RouteParams {
   projectId: string;
@@ -128,8 +145,22 @@ const LocationImageDetails = () => {
                   thing like we have in Fig e have in Fige have in Fige have in
                   Please use Figma for developing and don't mix it with`;
 
-                  const theme = useTheme();
-                  const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'));
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isFiltericonShow = useMediaQuery(theme.breakpoints.down(1366));
+
+  const handleChangeValues = () => {};
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handlePopUpClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopUpClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <Box
@@ -150,7 +181,7 @@ const LocationImageDetails = () => {
             imageLocation={true}
           />
         )}
-        <Grid container spacing={2} sx={{ padding: "16px 0",}}>
+        <Grid container spacing={2} sx={{ padding: "16px 0" }}>
           <Grid item xs={6.3}>
             <Box
               style={{
@@ -172,7 +203,7 @@ const LocationImageDetails = () => {
                   borderBottom: "1px solid #818181",
                 }}
               >
-                <Box sx={{}} >
+                <Box sx={{}}>
                   <Tabs
                     aria-label="basic tabs"
                     sx={{
@@ -223,8 +254,12 @@ const LocationImageDetails = () => {
                   </Tabs>
                 </Box>
                 {/* <Box></Box> */}
-                <Box style={{ width: "auto", }}>
-                  <SearchField isSmall={isSmallScreen ? true : false} handleSearch={() => {}} searchText={""} />
+                <Box style={{ width: "auto" }}>
+                  <SearchField
+                    isSmall={isSmallScreen ? true : false}
+                    handleSearch={() => {}}
+                    searchText={""}
+                  />
                 </Box>
                 <Button
                   style={{
@@ -250,76 +285,65 @@ const LocationImageDetails = () => {
                   Start Export
                 </Button>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "80px",
-                  padding: "16px",
-                  borderBottom: "1px solid #818181",
-                  marginBottom: "10px",
-                  "@media(max-width:1600px)": {
-                    gap: "20px",
-                  },
-                }}
-              >
+              {isFiltericonShow ? (
                 <Box
                   sx={{
+                    width: "100%",
                     display: "flex",
-                    gap: "16px",
+                    justifyContent: "flex-end",
                     alignItems: "center",
-                    width: "calc(100% - 47px)",
+                    padding: "0 10px 5px 0",
                   }}
                 >
-                  <ImageUserDropdown
-                    maxWidth={"180px"}
-                    label={"User"}
-                    type="user"
-                  />
-                  <ImageUserDropdown
-                    maxWidth={"180px"}
-                    label={"Tags"}
-                    type="tag"
-                  />
-                  {/* <ImageUserDropdown maxWidth={"238px"} label={"date"} /> */}
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    {/* <DateRangePicker
-                      // slots={{ field: SingleInputDateRangeField }}
-                      name="allowedRange"
-                    /> */}
-
-                    {/* <DateTimePicker
-                      label="Form-To"
-                      value={""}
-                      onChange={() => {}}
-                      renderInput={(params) => (
-                        <TextField
-                          size="small"
-                          {...params}
-                          sx={{
-                            maxWidth: "180px",
-                            width: "100%",
-                          }}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginTop: "15px",
+                      marginRight: "15px",
+                    }}
+                  >
+                    <FilterAltOutlined
+                      sx={{ color: "rgb(0,118,200)" }}
+                      onClick={handlePopUpClick}
+                    />
+                    <Menu
+                      sx={{
+                        marginTop: "10px",
+                      }}
+                      PaperProps={{
+                        style: {
+                          width: "50%",
+                        },
+                      }}
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handlePopUpClose}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                    >
+                      <MenuItem disableRipple>
+                        <FilterPopup
+                          handleChangeValues={handleChangeValues}
+                          ShowPopup={true}
                         />
-                      )}
-                    /> */}
-                  </LocalizationProvider>
+                      </MenuItem>
+                    </Menu>
+                  </Box>
                   <SortByDropdown />
                 </Box>
-                <Button
-                  sx={{
-                    fontSize: "12px",
-                    color: "#0076C8",
-                    fontWeight: "400",
-                    lineHeight: "175%",
-                    letterSpacing: "0.15px",
-                    padding: "0",
-                    textTransform: "unset",
-                  }}
-                >
-                  Clear all
-                </Button>
-              </Box>
+              ) : (
+                <FilterPopup
+                  handleChangeValues={handleChangeValues}
+                  ShowPopup={false}
+                />
+              )}
 
               <Box
                 sx={{

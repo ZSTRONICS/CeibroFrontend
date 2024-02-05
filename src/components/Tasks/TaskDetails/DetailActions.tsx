@@ -370,29 +370,39 @@ const DetailActions: React.FC<IProps> = (props) => {
           {isLocationTaskDetail ? (
             <>
               <Grid
-                xs={8}
-                md={!DrawDetailCollapse ? 5 : 3.5}
-                lg={!DrawDetailCollapse ? 3 : 2.1}
-                xl={!DrawDetailCollapse ? 1.8 : 1.9}
+                sx={{
+                  width: "max-content",
+                  paddingRight: "8px",
+                }}
+                // xs={8}
+                // md={!DrawDetailCollapse ? 5 : 3.7}
+                // lg={!DrawDetailCollapse ? 3 : 2.1}
+                // xl={!DrawDetailCollapse ? 2 : 1.9}
               >
                 {userSUBState}
               </Grid>
               <Grid
-                xs={8}
-                md={!DrawDetailCollapse ? 5 : 3}
-                lg={!DrawDetailCollapse ? 5 : 2.5}
-                xl={!DrawDetailCollapse ? 2 : 1.9}
+                sx={{
+                  minWidth: "90px",
+                  width: "max-content",
+                  paddingRight: "5px",
+                }}
+                // xs={8}
+                // md={!DrawDetailCollapse ? 5 : 3}
+                // lg={!DrawDetailCollapse ? 5 : 2.5}
+                // xl={!DrawDetailCollapse ? 2 : 1.9}
               >
                 {TaskUID}
               </Grid>
               <Grid
-                xs={8}
-                md={!DrawDetailCollapse ? 12 : 12}
-                lg={!DrawDetailCollapse ? 12 : 6}
-                xl={!DrawDetailCollapse ? 5.5 : 7}
+              // xs={8}
+              // md={!DrawDetailCollapse ? 12 : 12}
+              // lg={!DrawDetailCollapse ? 12 : 6}
+              // xl={!DrawDetailCollapse ? 5.5 : 7}
               >
                 <Grid container gap={0.5}>
                   <Grid
+                    sx={{ marginBottom: "-5px" }}
                     md={!DrawDetailCollapse ? 5 : 3.5}
                     lg={!DrawDetailCollapse ? 12 : 12}
                     xl={!DrawDetailCollapse ? 12 : 12}

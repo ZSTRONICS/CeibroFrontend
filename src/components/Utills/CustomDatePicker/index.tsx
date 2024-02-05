@@ -1,4 +1,4 @@
-import TextField from "@mui/material/TextField"; // Import the TextField from MUI
+import { TextField } from "@mui/material";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -8,6 +8,7 @@ import { useState } from "react";
 interface CustomeDatePickerProps {
   name: string;
   label: string;
+  locationimageDetails?: boolean;
   handleChangeValues: (
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
@@ -17,6 +18,7 @@ interface CustomeDatePickerProps {
 const CustomDatePicker = ({
   label,
   name,
+  locationimageDetails,
   handleChangeValues,
 }: CustomeDatePickerProps) => {
   const [value, setValue] = useState<any>(null);
@@ -33,12 +35,23 @@ const CustomDatePicker = ({
     }
   };
   // const locales = ['en-us', 'en-gb', 'zh-cn', 'de'];
+
   return (
     <div
       style={{ display: "flex", flexDirection: "column", marginTop: "16px" }}
     >
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={"de"}>
         <DatePicker
+          sx={{
+            "& .MuiInputBase-root": {
+              height: locationimageDetails ? "38px" : "",
+              marginTop: locationimageDetails ? "-13px" : "",
+              minWidth: locationimageDetails ? "100px" : "",
+            },
+            "& .MuiInputLabel-root": {
+              marginTop: locationimageDetails ? "-20px" : "",
+            },
+          }}
           key={name}
           label={label}
           inputFormat="DD.MM.YYYY"
@@ -65,7 +78,11 @@ const CustomDatePicker = ({
               variant="standard"
               sx={{
                 width: "100%",
-                label: { color: "#757575", fontWeight: 600, fontSize: "16px" },
+                label: {
+                  color: "#757575",
+                  fontWeight: 600,
+                  fontSize: "16px",
+                },
               }}
               onClick={() => setOpen(true)}
             />
