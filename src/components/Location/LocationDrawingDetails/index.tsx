@@ -104,14 +104,21 @@ function LocationDrawingDetails() {
         );
         break;
       case "group":
+        console.log(
+          `/location/project/${projectId}/group/${
+            event.target.value
+          }/drawing/${"tasf"}/task`
+        );
         let selectedGroup: any = findData(
           projectData.selectedProjectGroups,
           "_id",
           event.target.value
         );
         history.push(
-          `/location/project/${projectId}/group/${event.target.value}/drawing/${
-            selectedGroup.drawings[0]?._id ?? ""
+          `/location/project/${projectId}/group/${event.target.value}/drawing${
+            selectedGroup.drawings[0]?._id
+              ? "/" + selectedGroup.drawings[0]?._id
+              : ""
           }/task`
         );
         break;
