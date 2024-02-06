@@ -124,8 +124,7 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
             border: "1px solid #818181",
             borderRadius: "8px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            backgroundColor: `${projectId === projectcardId ? "#EBF5FB" : ""}`,
-            // const isSelectedProj = projectId === _id
+            backgroundColor: `${projectId === _id ? "#EBF5FB" : ""}`,
           }}
         >
           <CustomStack sx={{ gap: 1 }}>
