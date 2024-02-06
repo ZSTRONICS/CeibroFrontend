@@ -67,7 +67,7 @@ function LocationDrawingDetails() {
       selectedGroup,
       selectedDrawing,
     };
-  }, [groupId, drawingId, allProjects, allGroups]);
+  }, [groupId, drawingId, allProjects, [...allGroups]]);
 
   useEffect(() => {
     if (projectData.selectedDrawing) {

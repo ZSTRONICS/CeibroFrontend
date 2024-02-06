@@ -15,6 +15,7 @@ export default function DetailsBody(props: IProps) {
   const { description, media } = props;
   const [mediaWithComment, setMediaWithComment] = useState<IFile[]>([]);
   const [mediaWithoutComment, setMediaWithoutComment] = useState<IFile[]>([]);
+  const [mediaDrawingFiles, setMediaDrawingFiles] = useState<IFile[]>([]);
   const [heightOffset, setHeightOffset] = useState();
   const listRef: any = useRef(null);
   const [isReadMore, setIsReadMore] = useState(false);
@@ -37,11 +38,16 @@ export default function DetailsBody(props: IProps) {
     if (media && media.length > 0) {
       const mediaWithComment = media.filter((file) => file.comment.length > 0);
       const mediaWithoutComment = media.filter(
-        (file) => file.comment.length === 0
+        (file) => file.comment.length === 0 && file.fileTag != "drawing"
       );
+      const mediaDrawingFiles = media.filter(
+        (file) => file.comment.length === 0 && file.fileTag === "drawing"
+      );
+      setMediaDrawingFiles([...mediaDrawingFiles]);
       setMediaWithComment([...mediaWithComment]);
       setMediaWithoutComment([...mediaWithoutComment]);
     }
+    console.log(media, "media");
   }, [media]);
 
   return (
@@ -83,6 +89,18 @@ export default function DetailsBody(props: IProps) {
               count={mediaWithComment.length}
               type="imageWithDesp"
               data={mediaWithComment}
+            />
+            <CustomDivider />
+          </>
+        )}
+        {mediaDrawingFiles.length > 0 && (
+          <>
+            <ReadMoreWrapper
+              title="Drawings"
+              readMore={isReadMore}
+              count={mediaDrawingFiles.length}
+              type="image"
+              data={mediaDrawingFiles}
             />
             <CustomDivider />
           </>
