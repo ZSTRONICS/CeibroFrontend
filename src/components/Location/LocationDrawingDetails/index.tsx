@@ -8,7 +8,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
 import { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import { filterTasksByCondition } from "utills/common";
+import { fetchDrawingTaskList } from "utills/common";
 import { filterData, findData } from "../utils";
 import DrawingHeader from "./DrawingHeader";
 import LocatoinDrawingList from "./LocatoinDrawingList";
@@ -70,19 +70,7 @@ function LocationDrawingDetails() {
   }, [groupId, drawingId, allProjects, [...allGroups]]);
 
   useEffect(() => {
-    if (projectData.selectedDrawing) {
-      const selectedDrawingPins = allTasksAllEvents.allPins.filter(
-        (pin: any) => pin.drawingId === projectData.selectedDrawing._id
-      );
-      const drawingTaskList = filterTasksByCondition(
-        allTasksAllEvents.allTasks,
-        (task: ITask) =>
-          selectedDrawingPins.some((pin: any) => pin.taskData._id === task._id)
-      );
-      setAllDrawingTaskList(drawingTaskList);
-      console.log("rendering 111");
-    }
-    console.log("rendering 222");
+    fetchDrawingTaskList(projectData, allTasksAllEvents, setAllDrawingTaskList);
   }, [
     allTasksAllEvents.allTasks.length,
     drawingId,
@@ -90,12 +78,7 @@ function LocationDrawingDetails() {
     RECENT_TASK_UPDATED_TIME_STAMP,
     projectData.selectedDrawing,
   ]);
-  console.log(
-    "drawingTaskList",
-    allTasksAllEvents.allTasks.length,
-    allDrawingTaskList.length,
-    RECENT_TASK_UPDATED_TIME_STAMP
-  );
+
   const handleGroupAndFileChange = (event: any, type: "group" | "drawing") => {
     switch (type) {
       case "drawing":
