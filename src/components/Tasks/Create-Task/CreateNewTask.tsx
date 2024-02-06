@@ -361,6 +361,7 @@ function CreateNewTask() {
               handleSelectedMenuList={(option: any) => {}}
             />
             <CustomDatePicker
+              NewTask={true}
               name="dueDate"
               label="Due date"
               handleChangeValues={handleChangeValues}

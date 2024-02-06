@@ -369,37 +369,24 @@ const DetailActions: React.FC<IProps> = (props) => {
         >
           {isLocationTaskDetail ? (
             <>
-              <Grid
+              <Box
                 sx={{
                   width: "max-content",
                   paddingRight: "8px",
                 }}
-                // xs={8}
-                // md={!DrawDetailCollapse ? 5 : 3.7}
-                // lg={!DrawDetailCollapse ? 3 : 2.1}
-                // xl={!DrawDetailCollapse ? 2 : 1.9}
               >
                 {userSUBState}
-              </Grid>
-              <Grid
+              </Box>
+              <Box
                 sx={{
                   minWidth: "90px",
                   width: "max-content",
                   paddingRight: "5px",
                 }}
-                // xs={8}
-                // md={!DrawDetailCollapse ? 5 : 3}
-                // lg={!DrawDetailCollapse ? 5 : 2.5}
-                // xl={!DrawDetailCollapse ? 2 : 1.9}
               >
                 {TaskUID}
-              </Grid>
-              <Grid
-              // xs={8}
-              // md={!DrawDetailCollapse ? 12 : 12}
-              // lg={!DrawDetailCollapse ? 12 : 6}
-              // xl={!DrawDetailCollapse ? 5.5 : 7}
-              >
+              </Box>
+              <Grid>
                 <Grid container gap={0.5}>
                   <Grid
                     sx={{ marginBottom: "-5px" }}

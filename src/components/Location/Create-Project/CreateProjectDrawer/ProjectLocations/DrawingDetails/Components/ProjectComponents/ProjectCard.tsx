@@ -52,13 +52,10 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
         if (indexA !== indexB) {
           return indexA - indexB;
         }
-
-        // If labels are not in the first three, sort them alphabetically
         return labelA.localeCompare(labelB);
       })
       .map(([label, data]: [string, Group[]]) => {
         if (label === "otherGroups") {
-          // Customize label for 'otherGroups'
           const creatorName =
             data.length > 0
               ? `${data[0].creator.firstName} ${data[0].creator.surName}`
@@ -150,7 +147,6 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
               <LabelTag>{fullName}</LabelTag>
             </Box>
           </CustomStack>
-          {/* /////////////// */}
         </CollapseComponent.AccordionSummary>
         <CollapseComponent.AccordionDetails>
           <Box>

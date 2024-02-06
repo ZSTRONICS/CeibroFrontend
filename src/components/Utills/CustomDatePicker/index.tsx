@@ -8,6 +8,7 @@ interface CustomeDatePickerProps {
   name: string;
   label: string;
   locationimageDetails?: boolean;
+  NewTask?: boolean;
   handleChangeValues: (
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
@@ -18,6 +19,7 @@ const CustomDatePicker = ({
   label,
   name,
   locationimageDetails,
+  NewTask,
   handleChangeValues,
 }: CustomeDatePickerProps) => {
   const [value, setValue] = useState<any>(null);
@@ -46,18 +48,30 @@ const CustomDatePicker = ({
               borderWidth: "0px",
               borderRadius: "0px",
               borderBottom: "1px solid #949494",
+              // "& .MuiOutlinedInput-root.Mui-focused": {
+              //   border: "none",
+              //   outline: "none",
+              // },
             },
             "& .MuiOutlinedInput-root.Mui-focused": {
-              borderColor: "black",
+              outline: "none",
+              border: "none !important",
+              borderBottom: "1px solid #3f51b5",
             },
             "& .MuiInputBase-root": {
-              height: locationimageDetails ? "38px" : "",
+              height: NewTask ? "42px" : locationimageDetails ? "38px" : "",
               marginTop: locationimageDetails ? "-13px" : "",
               minWidth: locationimageDetails ? "100px" : "",
+              fontFamily: "Inter",
             },
             "& .MuiInputLabel-root": {
+              marginLeft: "-12px",
+              fontWeight: "500 !important ",
+              fontSize: "14px",
+              color: "#605b5c",
               marginTop: locationimageDetails ? "-20px" : "",
             },
+            "& .MuiInput-underline.Mui-disabled:before": {},
           }}
           key={name}
           label={label}
