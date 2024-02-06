@@ -261,7 +261,7 @@ const NavigationReducer = (
         state.allGroups[groupIndex] = action.payload;
       } else {
         state.allGroups = [...state.allGroups, action.payload]
-        console.log("PROJECT_GROUP_UPDATED", action.payload)
+        // console.log("PROJECT_GROUP_UPDATED", action.payload)
       }
       return {
         ...state,

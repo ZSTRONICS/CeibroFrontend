@@ -9,6 +9,7 @@ import { ITask } from "constants/interfaces";
 import { useDynamicDimensions, useOpenCloseModal } from "hooks";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
+import { pdfjs } from "react-pdf";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
@@ -16,6 +17,7 @@ import { RootState } from "redux/reducers";
 import { filterTasksByCondition } from "utills/common";
 import CreateDrawing from "../ProjectComponents/CreateDrawing";
 import DrawingFileCard from "./DrawingFileCard";
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 interface Props {
   windowActualHeight: number;
 }
@@ -72,14 +74,38 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   const handleSortingDrawingFile = () => {
     console.log("handleSortingDrawingFile");
   };
+
+  const checkNumberOfPages = async (file: any) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        const arrayBuffer = event.target.result;
+        pdfjs
+          .getDocument(arrayBuffer)
+          .promise.then((pdf) => {
+            resolve(pdf.numPages);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      };
+      reader.readAsArrayBuffer(file.slice(0, file.size));
+    });
+  };
+
   const handleSelectDocument = () => {
     const input = document.createElement("input");
     input.type = "file";
     input.multiple = false;
     input.accept = "application/pdf";
-    input.onchange = (event) => {
+    input.onchange = async (event) => {
       const file = (event.target as HTMLInputElement).files;
       if (file && !_.isEmpty(file)) {
+        const pageNum: number | any = await checkNumberOfPages(file[0]);
+        if (pageNum > 1) {
+          alert("Select only one page PDF file");
+          return;
+        }
         setDrawingFile(file);
         openModal();
         setSelectedFloor(null);

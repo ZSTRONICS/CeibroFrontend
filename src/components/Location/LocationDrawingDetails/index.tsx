@@ -70,7 +70,13 @@ function LocationDrawingDetails() {
   }, [groupId, drawingId, allProjects, [...allGroups]]);
 
   useEffect(() => {
-    fetchDrawingTaskList(projectData, allTasksAllEvents, setAllDrawingTaskList);
+    if (projectData.selectedDrawing) {
+      fetchDrawingTaskList(
+        projectData,
+        allTasksAllEvents,
+        setAllDrawingTaskList
+      );
+    }
   }, [
     allTasksAllEvents.allTasks.length,
     drawingId,
@@ -87,11 +93,6 @@ function LocationDrawingDetails() {
         );
         break;
       case "group":
-        console.log(
-          `/location/project/${projectId}/group/${
-            event.target.value
-          }/drawing/${"tasf"}/task`
-        );
         let selectedGroup: any = findData(
           projectData.selectedProjectGroups,
           "_id",

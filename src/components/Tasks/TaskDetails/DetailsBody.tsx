@@ -38,7 +38,7 @@ export default function DetailsBody(props: IProps) {
     if (media && media.length > 0) {
       const mediaWithComment = media.filter((file) => file.comment.length > 0);
       const mediaWithoutComment = media.filter(
-        (file) => file.comment.length === 0 && file.fileTag != "drawing"
+        (file) => file.comment.length === 0 && file.fileTag !== "drawing"
       );
       const mediaDrawingFiles = media.filter(
         (file) => file.comment.length === 0 && file.fileTag === "drawing"
@@ -47,7 +47,6 @@ export default function DetailsBody(props: IProps) {
       setMediaWithComment([...mediaWithComment]);
       setMediaWithoutComment([...mediaWithoutComment]);
     }
-    console.log(media, "media");
   }, [media]);
 
   return (
