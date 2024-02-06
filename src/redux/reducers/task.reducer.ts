@@ -147,7 +147,9 @@ const taskReducer = (
       if (findTaskInd === -1) {
         state.allTasksAllEvents.allTasks.unshift(action.payload);
         state.allTasksAllEvents.allEvents.push(action.payload);
-        state.allTasksAllEvents.allPins.push(action.payload.pinData);
+        if (action.payload.pinData) {
+          state.allTasksAllEvents.allPins.push(action.payload.pinData);
+        }
       }
 
       if (taskUpdatedAt) {
