@@ -52,13 +52,10 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
         if (indexA !== indexB) {
           return indexA - indexB;
         }
-
-        // If labels are not in the first three, sort them alphabetically
         return labelA.localeCompare(labelB);
       })
       .map(([label, data]: [string, Group[]]) => {
         if (label === "otherGroups") {
-          // Customize label for 'otherGroups'
           const creatorName =
             data.length > 0
               ? `${data[0].creator.firstName} ${data[0].creator.surName}`
@@ -124,8 +121,7 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
             border: "1px solid #818181",
             borderRadius: "8px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            backgroundColor: `${projectId === projectcardId ? "#EBF5FB" : ""}`,
-            // const isSelectedProj = projectId === _id
+            backgroundColor: `${projectId === _id ? "#EBF5FB" : ""}`,
           }}
         >
           <CustomStack sx={{ gap: 1 }}>
@@ -151,7 +147,6 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
               <LabelTag>{fullName}</LabelTag>
             </Box>
           </CustomStack>
-          {/* /////////////// */}
         </CollapseComponent.AccordionSummary>
         <CollapseComponent.AccordionDetails>
           <Box>
