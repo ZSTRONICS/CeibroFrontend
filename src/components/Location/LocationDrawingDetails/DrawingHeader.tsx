@@ -11,7 +11,6 @@ import {
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Heading2 } from "components/CustomTags";
-import { useHistory } from "react-router-dom";
 import DrawingGroupCard from "./DrawingGroupCard";
 
 interface DrawingProps {
@@ -115,11 +114,8 @@ export default function DrawingHeader(props: DrawingProps) {
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isxlScreen = useMediaQuery(theme.breakpoints.down("xl"));
 
-  const isMdScreenUP = useMediaQuery(theme.breakpoints.up("md"));
   const isLgScreenUP = useMediaQuery(theme.breakpoints.up("lg"));
   const isxlScreenUP = useMediaQuery(theme.breakpoints.up("xl"));
-
-  const history = useHistory();
 
   return (
     <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -142,8 +138,7 @@ export default function DrawingHeader(props: DrawingProps) {
                     backgroundColor: "transparent",
                   },
                 }}
-                // onClick={handleback}
-                onClick={() => history.goBack()}
+                onClick={handleback}
               >
                 <ArrowBackSharp />
               </IconButton>

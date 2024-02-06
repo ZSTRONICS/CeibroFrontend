@@ -147,7 +147,7 @@ const taskReducer = (
       if (findTaskInd === -1) {
         state.allTasksAllEvents.allTasks.unshift(action.payload);
         state.allTasksAllEvents.allEvents.push(action.payload);
-        // console.log("TASK_CONFIG.PUSH_NEW_TASK_TO_STORE", state.allTasksAllEvents.allTasks[0]);
+        state.allTasksAllEvents.allPins.push(action.payload.pinData);
       }
 
       if (taskUpdatedAt) {
