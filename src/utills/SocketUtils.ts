@@ -45,6 +45,12 @@ export const useSocket = () => {
                 });
                 break;
             // PROJECT_CONFIG
+            case PROJECT_CONFIG.PROJECT_CREATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_CREATED,
+                    payload: data,
+                });
+                break;
             case PROJECT_CONFIG.PROJECT_FLOOR_CREATED:
                 dispatch({
                     type: PROJECT_CONFIG.PROJECT_FLOOR_CREATED,

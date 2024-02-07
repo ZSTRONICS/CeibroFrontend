@@ -17,7 +17,8 @@ import { RootState } from "redux/reducers";
 import { filterTasksByCondition } from "utills/common";
 import CreateDrawing from "../ProjectComponents/CreateDrawing";
 import DrawingFileCard from "./DrawingFileCard";
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 interface Props {
   windowActualHeight: number;
 }
