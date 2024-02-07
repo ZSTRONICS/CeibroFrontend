@@ -26,3 +26,16 @@
 .image-carousel .carousel .slide img {
     border-radius: 8px;
 }
+
+.rdrDefinedRangesWrapper {
+    display: none;
+} 
+
+.datepicker {
+    position: absolute;
+    left: 80px;
+    top: 210px;
+    background-color: #fff;
+    z-index: 22;
+    padding-bottom: 20px;
+}

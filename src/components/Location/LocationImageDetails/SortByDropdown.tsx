@@ -12,7 +12,10 @@ const SortByDropdown = () => {
           size="small"
           sx={{ width: "100%", backgroundColor: "#fff !important" }}
         >
-          <InputLabel id="demo-simple-select-standard-label">
+          <InputLabel
+            id="demo-simple-select-standard-label"
+            sx={{ top: "-8px" }}
+          >
             Sort by
           </InputLabel>
           <Select
@@ -20,11 +23,12 @@ const SortByDropdown = () => {
             id="demo-simple-select-standard"
             // value={age}
             // onChange={handleChange}
-            label="Age"
+            label="sortby"
             sx={{
               "& .MuiSelect-select-MuiInputBase-input-MuiInput-input:focus": {
                 backgroundColor: "#fff !important",
               },
+              marginTop: "8px !important",
             }}
           >
             <MenuItem value="">

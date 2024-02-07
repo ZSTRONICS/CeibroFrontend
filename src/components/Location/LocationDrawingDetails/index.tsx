@@ -95,11 +95,12 @@ function LocationDrawingDetails() {
 
   useEffect(() => {
     if (projectData.selectedDrawing) {
-      fetchDrawingTaskList(
-        projectData,
-        allTasksAllEvents,
-        setAllDrawingTaskList
-      );
+      fetchDrawingTaskList &&
+        fetchDrawingTaskList(
+          projectData,
+          allTasksAllEvents,
+          setAllDrawingTaskList
+        );
     }
   }, [
     allTasksAllEvents.allTasks.length,

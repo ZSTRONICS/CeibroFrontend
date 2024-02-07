@@ -1,8 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import CustomDatePicker from "components/Utills/CustomDatePicker";
+import CustomDateRangePicker from "./DateRangePicker";
 import ImageUserDropdown from "./ImageUserDropdown";
 import SortByDropdown from "./SortByDropdown";
 interface IProps {
@@ -38,35 +36,8 @@ const FilterPopup = (props: IProps) => {
           >
             <ImageUserDropdown maxWidth={"180px"} label={"User"} type="user" />
             <ImageUserDropdown maxWidth={"180px"} label={"Tags"} type="tag" />
-            {/* <ImageUserDropdown maxWidth={"238px"} label={"date"} /> */}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              {/* <DateRangePicker
-                      // slots={{ field: SingleInputDateRangeField }}
-                      name="allowedRange"
-                    /> */}
 
-              {/* <DateTimePicker
-                      label="Form-To"
-                      value={""}
-                      onChange={() => {}}
-                      renderInput={(params) => (
-                        <TextField
-                          size="small"
-                          {...params}
-                          sx={{
-                            maxWidth: "180px",
-                            width: "100%",
-                          }}
-                        />
-                      )}
-                    /> */}
-              <CustomDatePicker
-                locationimageDetails={true}
-                name="dueDate"
-                label="Due date"
-                handleChangeValues={handleChangeValues}
-              />
-            </LocalizationProvider>
+            <CustomDateRangePicker />
             <SortByDropdown />
           </Box>
           {!ShowPopup ? (

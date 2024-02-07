@@ -29,14 +29,6 @@ import FilterPopup from "./FilterPopup";
 import ImageCarousel from "./ImageCarousel";
 import SortByDropdown from "./SortByDropdown";
 import "./location-image.css";
-//////////
-
-// import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
-// import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDateRangeField';
-// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-
-//////////////
-
 interface RouteParams {
   projectId: string;
   groupId: string;
