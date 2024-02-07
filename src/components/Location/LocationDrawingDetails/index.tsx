@@ -51,6 +51,30 @@ function LocationDrawingDetails() {
     dispatch(taskActions.resetDrawingFilters());
   }, []);
 
+  useEffect(() => {
+    if (!projectId || projectId == "") {
+      history.replace(`/location/${allProjects[0]._id}`);
+    } else if (!groupId || groupId == "") {
+      let selectedGroup: any = findData(allGroups, "_id", groupId);
+      history.replace(`/location/${projectId}/${selectedGroup._id}`);
+    } else if (!drawingId || drawingId == "") {
+      let selectedGroup: any = findData(allGroups, "_id", groupId);
+      let selectedDrawing: any = findData(
+        selectedGroup.drawings,
+        "_id",
+        drawingId
+      );
+      if (selectedDrawing && selectedDrawing.length > 0) {
+        console.log(selectedDrawing, "selectedDrawing");
+        history.replace(
+          `/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`
+        );
+      } else {
+        history.replace(`/location/${projectId}/${groupId}`);
+      }
+    }
+  }, [projectId, groupId, drawingId]);
+
   const projectData = useMemo(() => {
     let selectedProject = filterData(allProjects, "_id", projectId);
     let selectedProjectGroups = filterData(allGroups, "projectId", projectId);
