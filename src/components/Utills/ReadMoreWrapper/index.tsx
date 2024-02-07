@@ -250,6 +250,7 @@ const ReadMoreWrapper = ({
                       return (
                         <ImageBoxWrapper key={file._id + index}>
                           <ImageBox
+                            TaskDetails={true}
                             src={file.fileUrl}
                             handleClick={() => {
                               handleClick(data, index);
@@ -275,10 +276,16 @@ const ReadMoreWrapper = ({
                   {(data as IFile[]).map((file: IFile, index: any) => {
                     return (
                       <ImageBoxWrapper
-                        sx={{ width: "100%" }}
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "start",
+                          alignItems: "start",
+                        }}
                         key={file._id + index}
                       >
                         <ImageBoxWithDesp
+                          TaskDetails={true}
                           src={file.fileUrl}
                           comment={file.comment}
                           handleClick={() => {
@@ -306,6 +313,7 @@ const ReadMoreWrapper = ({
               )}
               {children ?? ""}
             </Box>
+            {/* //// */}
             <Box sx={{ display: "flex" }}>
               {!isExpanded && isReadMore && localCount && localCount > 0 ? (
                 <Box
@@ -339,7 +347,12 @@ const ReadMoreWrapper = ({
           </Box>
         </Box>
         {isReadMore && allowExpandedView && (
-          <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+            }}
+          >
             <Typography
               sx={{
                 cursor: "pointer",

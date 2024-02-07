@@ -4,8 +4,14 @@ interface IProps {
   src: string;
   handleClick?: () => void;
   type?: string;
+  TaskDetails?: boolean;
 }
-export default function ImageBox({ src, handleClick, type }: IProps) {
+export default function ImageBox({
+  src,
+  handleClick,
+  type,
+  TaskDetails,
+}: IProps) {
   return (
     <Box
       onClick={() => handleClick && handleClick()}
@@ -20,10 +26,10 @@ export default function ImageBox({ src, handleClick, type }: IProps) {
         className="myDIV"
         loading="lazy"
         style={{
-          width: "150px",
-          height: "150px",
+          width: TaskDetails ? "80px" : "150px",
+          height: TaskDetails ? "80px" : "150px",
           borderRadius: "8px",
-          objectFit: "contain",
+          objectFit: TaskDetails ? "cover" : "contain",
         }}
         src={src}
         alt="images"
