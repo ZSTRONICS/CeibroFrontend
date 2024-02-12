@@ -52,34 +52,26 @@ function LocationDrawingDetails() {
   }, []);
 
   useEffect(() => {
-    let newPath = "/location";
     if (!projectId || projectId === "") {
-      newPath += `/${allProjects[0]._id}`;
-      // history.replace(`/location/${allProjects[0]._id}`);
+      history.replace(`/location/${allProjects[0]._id}`);
     } else if (!groupId || groupId === "") {
       let selectedGroup: any = findData(allGroups, "_id", groupId);
-      newPath += `/${selectedGroup._id}`;
-      // history.replace(`/location/${projectId}/${selectedGroup._id}`);
-    } else if (
-      !drawingId ||
-      (drawingId !== "" && selectedGroup && selectedGroup.drawings)
-    ) {
+      history.replace(`/location/${projectId}/${selectedGroup._id}`);
+    } else if (!drawingId || drawingId === "") {
       let selectedGroup: any = findData(allGroups, "_id", groupId);
       let selectedDrawing: any = findData(
         selectedGroup.drawings,
         "_id",
         drawingId
       );
-      if (selectedDrawing) {
-        console.log(selectedDrawing, "selectedDrawing");
-        newPath += `/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`;
-        // history.replace(`/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`);
+      if (selectedDrawing && selectedDrawing.length > 0) {
+        history.replace(
+          `/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`
+        );
       } else {
-        newPath += `/${projectId}`;
-        // history.replace(`/location/${projectId}/${groupId}`);
+        history.replace(`/location/${projectId}/${groupId}`);
       }
     }
-    history.replace(newPath);
   }, [projectId, groupId, drawingId]);
 
   const projectData = useMemo(() => {

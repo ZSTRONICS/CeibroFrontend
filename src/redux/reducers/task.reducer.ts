@@ -389,6 +389,16 @@ const taskReducer = (
           if (findTaskIndex > -1) {
             const findEventFromAllTaskEvent = state.allTasksAllEvents.allEvents.findIndex((event: any) => event._id === eventData._id);
             if (findEventFromAllTaskEvent === -1) {
+              state.allTasksAllEvents.allTasks[findTaskIndex].hiddenBy = eventData.taskData.hiddenBy
+              state.allTasksAllEvents.allTasks[findTaskIndex].seenBy = eventData.taskData.seenBy
+              state.allTasksAllEvents.allTasks[findTaskIndex].hiddenBy = eventData.taskData.hiddenBy
+              state.allTasksAllEvents.allTasks[findTaskIndex].creatorState = eventData.taskData.creatorState
+              state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
+              state.allTasksAllEvents.allTasks[findTaskIndex].userSubState = eventData.newTaskData.userSubState
+              state.allTasksAllEvents.allTasks[findTaskIndex].fromMeState = eventData.newTaskData.fromMeState
+              state.allTasksAllEvents.allTasks[findTaskIndex].hiddenState = eventData.newTaskData.hiddenState
+              state.allTasksAllEvents.allTasks[findTaskIndex].toMeState = eventData.newTaskData.toMeState
+              state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
               state.allTasksAllEvents.allEvents.push(eventData);
               moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskIndex);
             }
