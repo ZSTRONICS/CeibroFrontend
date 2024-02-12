@@ -788,6 +788,12 @@ const taskReducer = (
             state.allTasksAllEvents.allTasks[findTaskFromAllTask].invitedNumbers = forwardedTask.taskData.invitedNumbers;
             state.allTasksAllEvents.allTasks[findTaskFromAllTask].seenBy = forwardedTask.taskData.seenBy;
             state.allTasksAllEvents.allTasks[findTaskFromAllTask].hiddenBy = forwardedTask.taskData.hiddenBy;
+            state.allTasksAllEvents.allTasks[findTaskFromAllTask].creatorState = forwardedTask.newTaskData.creatorState
+            state.allTasksAllEvents.allTasks[findTaskFromAllTask].taskRootState = forwardedTask.newTaskData.taskRootState
+            state.allTasksAllEvents.allTasks[findTaskFromAllTask].userSubState = forwardedTask.newTaskData.userSubState
+            state.allTasksAllEvents.allTasks[findTaskFromAllTask].fromMeState = forwardedTask.newTaskData.fromMeState
+            state.allTasksAllEvents.allTasks[findTaskFromAllTask].hiddenState = forwardedTask.newTaskData.hiddenState
+            state.allTasksAllEvents.allTasks[findTaskFromAllTask].toMeState = forwardedTask.newTaskData.toMeState
             const findEventFromAllTaskEvent = state.allTasksAllEvents.allEvents.findIndex((event: any) => event._id === forwardedTask._id);
             if (findEventFromAllTaskEvent === -1) {
               state.allTasksAllEvents.allEvents.push(forwardedTask);
