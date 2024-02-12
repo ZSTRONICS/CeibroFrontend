@@ -1,7 +1,7 @@
 import { Box, Grid, useMediaQuery } from "@mui/material";
 import TaskDetails from "components/Tasks/TaskDetails";
 // import { DrawingMenu, StickyHeader } from "./Components";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 import { Heading2 } from "components/CustomTags";
 import DocumentReader from "components/pdfviewer";
 import {
@@ -159,7 +159,7 @@ const LocatoinDrawingList = ({
   };
 
   const theme = useTheme();
-  const islgScreenUP = useMediaQuery(theme.breakpoints.up('lg'));  
+  const islgScreenUP = useMediaQuery(theme.breakpoints.up("lg"));
 
   const sideBarStyle = {
     borderRadius: "4px",
@@ -208,7 +208,15 @@ const LocatoinDrawingList = ({
             position: "relative",
             mt: 2,
             px: 1,
-            maxWidth: `${s1 ? ( !islgScreenUP ? "21.9%" : '19.9%' ) : (!islgScreenUP ? "9.9%" : '7.9%')}`,
+            maxWidth: `${
+              s1
+                ? !islgScreenUP
+                  ? "21.9%"
+                  : "19.9%"
+                : !islgScreenUP
+                ? "9.9%"
+                : "7.9%"
+            }`,
             transition: "all 0.30s linear",
             backgroundColor: "white",
             width: "100%",
@@ -287,7 +295,9 @@ const LocatoinDrawingList = ({
           sx={{
             position: "relative",
             width: "100%",
-            maxWidth: `${s2 ? (islgScreenUP ? '45%' : '43%') : (islgScreenUP ? '33%':'31%' )}`,
+            maxWidth: `${
+              s2 ? (islgScreenUP ? "45%" : "43%") : islgScreenUP ? "33%" : "31%"
+            }`,
             height: `${windowActualHeight - 68}px`,
             transition: "all 0.30s linear",
             backgroundColor: "white",
@@ -343,10 +353,12 @@ const LocatoinDrawingList = ({
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             transition: "all 0.30s linear",
-            ...(selectedDrawing.fileUrl ? {} : noTaskSelectedStyle),
+            ...(selectedDrawing && selectedDrawing.fileUrl
+              ? {}
+              : noTaskSelectedStyle),
           }}
         >
-          {selectedDrawing.fileUrl ? (
+          {selectedDrawing && selectedDrawing.fileUrl ? (
             <DocumentReader selectedDrawingUrl={selectedDrawing.fileUrl} />
           ) : (
             <Heading2

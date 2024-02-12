@@ -52,38 +52,48 @@ function LocationDrawingDetails() {
   }, []);
 
   useEffect(() => {
-    if (!projectId || projectId == "") {
-      history.replace(`/location/${allProjects[0]._id}`);
-    } else if (!groupId || groupId == "") {
+    let newPath = "/location";
+    if (!projectId || projectId === "") {
+      newPath += `/${allProjects[0]._id}`;
+      // history.replace(`/location/${allProjects[0]._id}`);
+    } else if (!groupId || groupId === "") {
       let selectedGroup: any = findData(allGroups, "_id", groupId);
-      history.replace(`/location/${projectId}/${selectedGroup._id}`);
-    } else if (!drawingId || drawingId == "") {
+      newPath += `/${selectedGroup._id}`;
+      // history.replace(`/location/${projectId}/${selectedGroup._id}`);
+    } else if (
+      !drawingId ||
+      (drawingId !== "" && selectedGroup && selectedGroup.drawings)
+    ) {
       let selectedGroup: any = findData(allGroups, "_id", groupId);
       let selectedDrawing: any = findData(
         selectedGroup.drawings,
         "_id",
         drawingId
       );
-      if (selectedDrawing && selectedDrawing.length > 0) {
+      if (selectedDrawing) {
         console.log(selectedDrawing, "selectedDrawing");
-        history.replace(
-          `/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`
-        );
+        newPath += `/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`;
+        // history.replace(`/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`);
       } else {
-        history.replace(`/location/${projectId}/${groupId}`);
+        newPath += `/${projectId}`;
+        // history.replace(`/location/${projectId}/${groupId}`);
       }
     }
+    history.replace(newPath);
   }, [projectId, groupId, drawingId]);
 
   const projectData = useMemo(() => {
     let selectedProject = filterData(allProjects, "_id", projectId);
+    if (allGroups.length === 0) {
+      return;
+    }
     let selectedProjectGroups = filterData(allGroups, "projectId", projectId);
+
     let selectedGroup: any = findData(allGroups, "_id", groupId);
-    let selectedDrawing: Drawing | any = findData(
-      selectedGroup.drawings,
-      "_id",
-      drawingId
-    );
+    let selectedDrawing: Drawing | any | null = null;
+    if (selectedGroup && selectedGroup.drawings.length > 0) {
+      selectedDrawing = findData(selectedGroup.drawings, "_id", drawingId);
+    }
 
     return {
       selectedProject,
@@ -91,10 +101,10 @@ function LocationDrawingDetails() {
       selectedGroup,
       selectedDrawing,
     };
-  }, [groupId, drawingId, allProjects, [...allGroups]]);
+  }, [groupId, drawingId, allProjects, [...allGroups].length]);
 
   useEffect(() => {
-    if (projectData.selectedDrawing) {
+    if (projectData && projectData.selectedDrawing) {
       fetchDrawingTaskList &&
         fetchDrawingTaskList(
           projectData,
@@ -107,7 +117,7 @@ function LocationDrawingDetails() {
     drawingId,
     groupId,
     RECENT_TASK_UPDATED_TIME_STAMP,
-    projectData.selectedDrawing,
+    projectData && projectData.selectedDrawing,
   ]);
 
   const handleGroupAndFileChange = (event: any, type: "group" | "drawing") => {
@@ -118,11 +128,13 @@ function LocationDrawingDetails() {
         );
         break;
       case "group":
-        let selectedGroup: any = findData(
-          projectData.selectedProjectGroups,
-          "_id",
-          event.target.value
-        );
+        let selectedGroup: any =
+          projectData &&
+          findData(
+            projectData.selectedProjectGroups,
+            "_id",
+            event.target.value
+          );
         history.push(
           `/location/project/${projectId}/group/${event.target.value}/drawing${
             selectedGroup.drawings[0]?._id
@@ -141,20 +153,22 @@ function LocationDrawingDetails() {
 
   return (
     <Box sx={{ mx: 2 }}>
-      {projectData && (
-        <DrawingHeader
-          handleChangeCallback={handleGroupAndFileChange}
-          handleback={() => history.push(`/location/${projectId}/${groupId}`)}
-          selectedProject={projectData.selectedProject}
-          selectedProjectGroups={projectData.selectedProjectGroups}
-          selectedGroup={projectData.selectedGroup}
-          selectedDrawing={projectData.selectedDrawing}
-          headersize={headersize}
-          imageLocation={false}
-        />
-      )}
+      {projectData &&
+        projectData.selectedGroup &&
+        projectData.selectedDrawing && (
+          <DrawingHeader
+            handleChangeCallback={handleGroupAndFileChange}
+            handleback={() => history.push(`/location/${projectId}/${groupId}`)}
+            selectedProject={projectData.selectedProject}
+            selectedProjectGroups={projectData.selectedProjectGroups}
+            selectedGroup={projectData.selectedGroup}
+            selectedDrawing={projectData.selectedDrawing}
+            headersize={headersize}
+            imageLocation={false}
+          />
+        )}
       <LocatoinDrawingList
-        selectedDrawing={projectData.selectedDrawing}
+        selectedDrawing={projectData && projectData.selectedDrawing}
         allDrawingTaskList={allDrawingTaskList}
         RECENT_TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
         allTasksAllEvents={allTasksAllEvents}
@@ -192,7 +206,7 @@ function LocationDrawingDetails() {
                       fontWeight: "700",
                       color: "#0076c8",
                     }}
-                    to={`/location/${groupId}`}
+                    to={`/location/${projectId}`}
                   >
                     Back
                   </Link>

@@ -527,7 +527,7 @@ const LocationImageDetails = () => {
                 borderRadius: "4px",
               }}
             >
-              {projectData.selectedDrawing ? (
+              {projectData.selectedDrawing.fileUrl ? (
                 <DocumentReader
                   selectedDrawingUrl={projectData.selectedDrawing.fileUrl}
                 />
