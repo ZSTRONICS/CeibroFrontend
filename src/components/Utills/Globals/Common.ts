@@ -267,6 +267,17 @@ export function moveTaskOnTopByIndex(taskArray: any, taskIndex: number): void {
   }
 }
 
+/**
+ * Updates the properties of a task object with the provided properties.
+ *
+ * @param {any} task - The task object to be updated
+ * @param {any} propertiesToUpdate - The properties to be updated on the task object
+ * @return {void} 
+ */
+export function updateTaskProperties(task: any, propertiesToUpdate: any): void {
+  Object.assign(task, propertiesToUpdate);
+}
+
 
 /**
  * @param task taks object

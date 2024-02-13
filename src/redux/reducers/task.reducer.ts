@@ -4,7 +4,8 @@ import {
   countUnseenTasks,
   moveTaskOnTopByIndex,
   unSeenTasks,
-  updateTaskOnCancelEvent
+  updateTaskOnCancelEvent,
+  updateTaskProperties
 } from "components/Utills/Globals";
 import { TASK_CONFIG } from "config";
 import {
@@ -257,21 +258,23 @@ const taskReducer = (
       switch (eventData.eventType) {
         case "cancelTask":
           if (findTaskIndex > -1) {
-            state.allTasksAllEvents.allTasks[findTaskIndex].hiddenBy = eventData.taskData.hiddenBy
-            state.allTasksAllEvents.allTasks[findTaskIndex].seenBy = eventData.taskData.seenBy
-            state.allTasksAllEvents.allTasks[findTaskIndex].hiddenBy = eventData.taskData.hiddenBy
-            state.allTasksAllEvents.allTasks[findTaskIndex].creatorState = eventData.taskData.creatorState
-            state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
-            state.allTasksAllEvents.allTasks[findTaskIndex].userSubState = eventData.newTaskData.userSubState
-            state.allTasksAllEvents.allTasks[findTaskIndex].fromMeState = eventData.newTaskData.fromMeState
-            state.allTasksAllEvents.allTasks[findTaskIndex].hiddenState = eventData.newTaskData.hiddenState
-            state.allTasksAllEvents.allTasks[findTaskIndex].toMeState = eventData.newTaskData.toMeState
-            state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
-            const findEventFromAllTaskEvent = state.allTasksAllEvents.allEvents.findIndex((event: any) => event._id === eventData._id);
-            if (findEventFromAllTaskEvent === -1) {
+            const taskToUpdate = state.allTasksAllEvents.allTasks[findTaskIndex];
+            const { taskData, newTaskData } = eventData;
+            updateTaskProperties(taskToUpdate, {
+              hiddenBy: taskData.hiddenBy,
+              seenBy: taskData.seenBy,
+              creatorState: taskData.creatorState,
+              taskRootState: newTaskData.taskRootState,
+              userSubState: newTaskData.userSubState,
+              fromMeState: newTaskData.fromMeState,
+              hiddenState: newTaskData.hiddenState,
+              toMeState: newTaskData.toMeState,
+            });
+            const isNewEvent = state.allTasksAllEvents.allEvents.every(event => event._id !== eventData._id);
+            if (isNewEvent) {
               state.allTasksAllEvents.allEvents.push(eventData);
-              moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskIndex);
             }
+            moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskIndex);
           }
           if (isCreator) {
             // creator canceled task in unread state
@@ -346,21 +349,24 @@ const taskReducer = (
           break;
         case "unCancelTask":
           if (findTaskIndex > -1) {
-            state.allTasksAllEvents.allTasks[findTaskIndex].hiddenBy = eventData.taskData.hiddenBy
-            state.allTasksAllEvents.allTasks[findTaskIndex].seenBy = eventData.taskData.seenBy
-            state.allTasksAllEvents.allTasks[findTaskIndex].hiddenBy = eventData.taskData.hiddenBy
-            state.allTasksAllEvents.allTasks[findTaskIndex].creatorState = eventData.taskData.creatorState
-            state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
-            state.allTasksAllEvents.allTasks[findTaskIndex].userSubState = eventData.newTaskData.userSubState
-            state.allTasksAllEvents.allTasks[findTaskIndex].fromMeState = eventData.newTaskData.fromMeState
-            state.allTasksAllEvents.allTasks[findTaskIndex].hiddenState = eventData.newTaskData.hiddenState
-            state.allTasksAllEvents.allTasks[findTaskIndex].toMeState = eventData.newTaskData.toMeState
-            state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
+            const taskToUpdate = state.allTasksAllEvents.allTasks[findTaskIndex];
+            const { taskData, newTaskData } = eventData;
+            updateTaskProperties(taskToUpdate, {
+              hiddenBy: taskData.hiddenBy,
+              seenBy: taskData.seenBy,
+              creatorState: taskData.creatorState,
+              taskRootState: newTaskData.taskRootState,
+              userSubState: newTaskData.userSubState,
+              fromMeState: newTaskData.fromMeState,
+              hiddenState: newTaskData.hiddenState,
+              toMeState: newTaskData.toMeState,
+            });
+
             const findEventFromAllTaskEvent = state.allTasksAllEvents.allEvents.findIndex((event: any) => event._id === eventData._id);
             if (findEventFromAllTaskEvent === -1) {
               state.allTasksAllEvents.allEvents.push(eventData);
-              moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskIndex);
             }
+            moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskIndex);
           }
           const taskIndex = state.allTaskHidden.canceled.findIndex(task => task._id === eventData.taskId);
           if (taskIndex > -1) {
@@ -387,21 +393,23 @@ const taskReducer = (
           break;
         case "comment":
           if (findTaskIndex > -1) {
+            const taskToUpdate = state.allTasksAllEvents.allTasks[findTaskIndex];
+            const { taskData, newTaskData } = eventData;
+            updateTaskProperties(taskToUpdate, {
+              hiddenBy: taskData.hiddenBy,
+              seenBy: taskData.seenBy,
+              creatorState: taskData.creatorState,
+              taskRootState: newTaskData.taskRootState,
+              userSubState: newTaskData.userSubState,
+              fromMeState: newTaskData.fromMeState,
+              hiddenState: newTaskData.hiddenState,
+              toMeState: newTaskData.toMeState,
+            })
             const findEventFromAllTaskEvent = state.allTasksAllEvents.allEvents.findIndex((event: any) => event._id === eventData._id);
             if (findEventFromAllTaskEvent === -1) {
-              state.allTasksAllEvents.allTasks[findTaskIndex].hiddenBy = eventData.taskData.hiddenBy
-              state.allTasksAllEvents.allTasks[findTaskIndex].seenBy = eventData.taskData.seenBy
-              state.allTasksAllEvents.allTasks[findTaskIndex].hiddenBy = eventData.taskData.hiddenBy
-              state.allTasksAllEvents.allTasks[findTaskIndex].creatorState = eventData.taskData.creatorState
-              state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
-              state.allTasksAllEvents.allTasks[findTaskIndex].userSubState = eventData.newTaskData.userSubState
-              state.allTasksAllEvents.allTasks[findTaskIndex].fromMeState = eventData.newTaskData.fromMeState
-              state.allTasksAllEvents.allTasks[findTaskIndex].hiddenState = eventData.newTaskData.hiddenState
-              state.allTasksAllEvents.allTasks[findTaskIndex].toMeState = eventData.newTaskData.toMeState
-              state.allTasksAllEvents.allTasks[findTaskIndex].taskRootState = eventData.newTaskData.taskRootState
               state.allTasksAllEvents.allEvents.push(eventData);
-              moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskIndex);
             }
+            moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskIndex);
           }
           if (eventData.taskData.creatorState === "canceled") {
             const taskIndex = state.allTaskHidden.canceled.findIndex(task => task._id === eventData.taskId)
@@ -784,21 +792,26 @@ const taskReducer = (
           const forwardedTask = eventData.task;
           const findTaskFromAllTask = state.allTasksAllEvents.allTasks.findIndex((task: any) => task._id === forwardedTask.taskId);
           if (findTaskFromAllTask > -1) {
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].assignedToState = forwardedTask.taskData.assignedToState;
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].invitedNumbers = forwardedTask.taskData.invitedNumbers;
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].seenBy = forwardedTask.taskData.seenBy;
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].hiddenBy = forwardedTask.taskData.hiddenBy;
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].creatorState = forwardedTask.newTaskData.creatorState
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].taskRootState = forwardedTask.newTaskData.taskRootState
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].userSubState = forwardedTask.newTaskData.userSubState
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].fromMeState = forwardedTask.newTaskData.fromMeState
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].hiddenState = forwardedTask.newTaskData.hiddenState
-            state.allTasksAllEvents.allTasks[findTaskFromAllTask].toMeState = forwardedTask.newTaskData.toMeState
+            const taskToUpdate = state.allTasksAllEvents.allTasks[findTaskFromAllTask];
+            const { taskData, newTaskData } = forwardedTask;
+            updateTaskProperties(taskToUpdate, {
+              seenBy: taskData.seenBy,
+              hiddenBy: taskData.hiddenBy,
+              assignedToState: taskData.assignedToState,
+              invitedNumbers: taskData.invitedNumbers,
+              creatorState: newTaskData.creatorState,
+              taskRootState: newTaskData.taskRootState,
+              userSubState: newTaskData.userSubState,
+              fromMeState: newTaskData.fromMeState,
+              hiddenState: newTaskData.hiddenState,
+              toMeState: newTaskData.toMeState,
+            });
+
             const findEventFromAllTaskEvent = state.allTasksAllEvents.allEvents.findIndex((event: any) => event._id === forwardedTask._id);
             if (findEventFromAllTaskEvent === -1) {
               state.allTasksAllEvents.allEvents.push(forwardedTask);
-              moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskFromAllTask);
             }
+            moveTaskOnTopByIndex(state.allTasksAllEvents.allTasks, findTaskFromAllTask);
           }
           if (forwardedTask.newTaskData.isAssignedToMe) {
             if (forwardedTask.oldTaskData.isHiddenByMe) {
