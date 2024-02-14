@@ -39,3 +39,13 @@
     z-index: 22;
     padding-bottom: 20px;
 }
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    overflow-y: unset !important;
+    overflow-x: unset !important;
+}
+
+@media (max-width:1366px) {
+    .datepicker {
+        top: 70px;
+    }
+}

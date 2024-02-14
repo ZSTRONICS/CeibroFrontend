@@ -69,7 +69,7 @@ function LocationDrawingDetails() {
           `/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`
         );
       } else {
-        history.replace(`/location/${projectId}/${groupId}`);
+        // history.replace(`/location/${projectId}/${groupId}`);
       }
     }
   }, [projectId, groupId, drawingId]);
