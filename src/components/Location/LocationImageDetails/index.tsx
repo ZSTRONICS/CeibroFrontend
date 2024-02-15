@@ -522,24 +522,36 @@ const LocationImageDetails = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={5.7}>
-            <Box
-              style={{
-                backgroundColor: "#fff",
-                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-                borderRadius: "4px",
-              }}
-            >
-              {projectData.selectedDrawing?.fileUrl ? (
+          <Grid
+            item
+            xs={5.7}
+            sx={{
+              ...(!projectData.selectedDrawing?.fileUrl
+                ? {
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }
+                : {}),
+            }}
+          >
+            {projectData.selectedDrawing?.fileUrl ? (
+              <Box
+                style={{
+                  backgroundColor: "#fff",
+                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                  borderRadius: "4px",
+                }}
+              >
                 <DocumentReader
                   selectedDrawingUrl={projectData.selectedDrawing?.fileUrl}
                 />
-              ) : (
-                <Heading2 sx={{ fontWeight: 600 }}>
-                  Drawing file not found!
-                </Heading2>
-              )}
-            </Box>
+              </Box>
+            ) : (
+              <Heading2 sx={{ fontWeight: 600 }}>
+                Drawing file not found!
+              </Heading2>
+            )}
           </Grid>
         </Grid>
       </Box>
