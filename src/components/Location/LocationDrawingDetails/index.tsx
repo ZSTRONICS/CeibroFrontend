@@ -69,7 +69,9 @@ function LocationDrawingDetails() {
           `/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`
         );
       } else {
-        // history.replace(`/location/${projectId}/${groupId}`);
+        history.replace(
+          `/location/project/${projectId}/group/${groupId}/drawing/task`
+        );
       }
     }
   }, [projectId, groupId, drawingId]);
@@ -145,20 +147,18 @@ function LocationDrawingDetails() {
 
   return (
     <Box sx={{ mx: 2 }}>
-      {projectData &&
-        projectData.selectedGroup &&
-        projectData.selectedDrawing && (
-          <DrawingHeader
-            handleChangeCallback={handleGroupAndFileChange}
-            handleback={() => history.push(`/location/${projectId}/${groupId}`)}
-            selectedProject={projectData.selectedProject}
-            selectedProjectGroups={projectData.selectedProjectGroups}
-            selectedGroup={projectData.selectedGroup}
-            selectedDrawing={projectData.selectedDrawing}
-            headersize={headersize}
-            imageLocation={false}
-          />
-        )}
+      {projectData && projectData.selectedGroup && (
+        <DrawingHeader
+          handleChangeCallback={handleGroupAndFileChange}
+          handleback={() => history.push(`/location/${projectId}/${groupId}`)}
+          selectedProject={projectData.selectedProject}
+          selectedProjectGroups={projectData.selectedProjectGroups}
+          selectedGroup={projectData.selectedGroup}
+          selectedDrawing={projectData.selectedDrawing}
+          headersize={headersize}
+          imageLocation={false}
+        />
+      )}
       <LocatoinDrawingList
         selectedDrawing={projectData && projectData.selectedDrawing}
         allDrawingTaskList={allDrawingTaskList}

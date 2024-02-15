@@ -87,8 +87,8 @@ const LocationImageDetails = () => {
       );
       history.replace(
         `/location/project/${projectId}/group/${groupId}/drawing${
-          selectedDrawing[0]?._id ? "/" + selectedDrawing[0]?._id : ""
-        }/task`
+          selectedDrawing?.length > 0 ? "/" + selectedDrawing[0]._id : ""
+        }/image`
       );
     }
   }, [projectId, groupId, drawingId]);
@@ -530,9 +530,9 @@ const LocationImageDetails = () => {
                 borderRadius: "4px",
               }}
             >
-              {projectData.selectedDrawing.fileUrl ? (
+              {projectData.selectedDrawing?.fileUrl ? (
                 <DocumentReader
-                  selectedDrawingUrl={projectData.selectedDrawing.fileUrl}
+                  selectedDrawingUrl={projectData.selectedDrawing?.fileUrl}
                 />
               ) : (
                 <Heading2 sx={{ fontWeight: 600 }}>

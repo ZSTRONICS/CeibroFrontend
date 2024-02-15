@@ -198,37 +198,38 @@ export default function DrawingHeader(props: DrawingProps) {
         }}
       >
         <Box>
-          {renderBox(
-            <>
-              <Box sx={{ width: "85%" }}>
-                <Select
-                  value={selectedDrawing?._id || ""}
-                  variant="standard"
-                  disableUnderline
-                  sx={{
-                    height: "52px",
-                    paddingLeft: "16px",
-                    backgroundColor: "transparent",
-                    width: "99%",
-                  }}
-                  onChange={(e) => handleChangeCallback(e, "drawing")}
-                  renderValue={() => selectedDrawing?.fileName ?? "Not Found"}
+          {selectedDrawing?._id &&
+            renderBox(
+              <>
+                <Box sx={{ width: "85%" }}>
+                  <Select
+                    value={selectedDrawing?._id || ""}
+                    variant="standard"
+                    disableUnderline
+                    sx={{
+                      height: "52px",
+                      paddingLeft: "16px",
+                      backgroundColor: "transparent",
+                      width: "99%",
+                    }}
+                    onChange={(e) => handleChangeCallback(e, "drawing")}
+                    renderValue={() => selectedDrawing?.fileName ?? "Not Found"}
+                  >
+                    {renderDrawingSelectOptions(
+                      selectedGroup.drawings,
+                      "fileName"
+                    )}
+                  </Select>
+                </Box>
+                {renderDivider()}
+                <Typography
+                  variant="body1"
+                  sx={{ paddingRight: "16px", whiteSpace: "nowrap" }}
                 >
-                  {renderDrawingSelectOptions(
-                    selectedGroup.drawings,
-                    "fileName"
-                  )}
-                </Select>
-              </Box>
-              {renderDivider()}
-              <Typography
-                variant="body1"
-                sx={{ paddingRight: "16px", whiteSpace: "nowrap" }}
-              >
-                {`Floor ${selectedDrawing?.floor?.floorName ?? ""}`}
-              </Typography>
-            </>
-          )}
+                  {`Floor ${selectedDrawing?.floor?.floorName ?? ""}`}
+                </Typography>
+              </>
+            )}
         </Box>
       </Grid>
     </Grid>
