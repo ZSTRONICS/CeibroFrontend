@@ -38,6 +38,7 @@ interface RouteParams {
 const LocationImageDetails = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [isStartExport, setIsStartExport] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const { projectId, groupId, drawingId } = useParams<RouteParams>();
   const { allProjects, allGroups } = useSelector(
@@ -84,14 +85,11 @@ const LocationImageDetails = () => {
         "_id",
         drawingId
       );
-      if (selectedDrawing && selectedDrawing.length > 0) {
-        console.log(selectedDrawing, "selectedDrawing");
-        history.replace(
-          `/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/image`
-        );
-      } else {
-        history.replace(`/location/${projectId}/${groupId}`);
-      }
+      history.replace(
+        `/location/project/${projectId}/group/${groupId}/drawing${
+          selectedDrawing[0]?._id ? "/" + selectedDrawing[0]?._id : ""
+        }/task`
+      );
     }
   }, [projectId, groupId, drawingId]);
 
@@ -111,9 +109,7 @@ const LocationImageDetails = () => {
       selectedGroup,
       selectedDrawing,
     };
-  }, [groupId, drawingId, allProjects, allGroups]);
-
-  console.log("projectData", projectData);
+  }, [groupId, drawingId, allProjects, [...allGroups]]);
 
   const handleGroupAndFileChange = (event: any, type: "group" | "drawing") => {
     switch (type) {
@@ -128,11 +124,18 @@ const LocationImageDetails = () => {
           "_id",
           event.target.value
         );
-        history.push(
-          `/location/project/${projectId}/group/${event.target.value}/drawing/${
-            selectedGroup.drawings[0]?._id ?? ""
-          }/image`
-        );
+        if (selectedGroup && selectedGroup.length > 0) {
+          history.push(
+            `/location/project/${projectId}/group/${
+              event.target.value
+            }/drawing/${selectedGroup.drawings[0]?._id ?? ""}/image`
+          );
+        } else {
+          history.push(
+            `/location/project/${projectId}/group/${event.target.value}/drawing/image`
+          );
+        }
+
         break;
 
       default:
@@ -298,9 +301,9 @@ const LocationImageDetails = () => {
                     textTransform: "capitalize",
                     width: "109px",
                   }}
-                  onClick={handleOpen}
+                  onClick={() => setIsStartExport(!isStartExport)}
                 >
-                  Start Export
+                  {!isStartExport ? "Start Export" : "End Export"}
                 </Button>
               </Box>
               {isFiltericonShow ? (
@@ -515,7 +518,7 @@ const LocationImageDetails = () => {
                     }}
                   ></Box>
                 </Box>
-                <AllImagesSlider />
+                <AllImagesSlider isStartExport={isStartExport} />
               </Box>
             </Box>
           </Grid>

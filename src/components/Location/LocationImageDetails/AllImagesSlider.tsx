@@ -2,7 +2,11 @@ import { CheckCircle, Circle } from "@mui/icons-material";
 import { Box, Checkbox } from "@mui/material";
 import React from "react";
 
-const AllImagesSlider = () => {
+interface AllImagesSliderProps {
+  isStartExport: boolean;
+}
+
+const AllImagesSlider = ({ isStartExport }: AllImagesSliderProps) => {
   const allImages = [
     "https://react-responsive-carousel.js.org/assets/6.jpeg",
     "https://react-responsive-carousel.js.org/assets/6.jpeg",
@@ -83,18 +87,20 @@ const AllImagesSlider = () => {
                     },
                   }}
                 >
-                  <Checkbox
-                    checked={true}
-                    onChange={() => {}}
-                    icon={<Circle sx={{ color: "white" }} />}
-                    checkedIcon={<CheckCircle sx={{ color: "white" }} />}
-                    sx={{
-                      padding: 0,
-                      position: "absolute",
-                      right: "10px",
-                      top: "10px",
-                    }}
-                  />
+                  {isStartExport && (
+                    <Checkbox
+                      checked={true}
+                      onChange={() => {}}
+                      icon={<Circle sx={{ color: "white" }} />}
+                      checkedIcon={<CheckCircle sx={{ color: "white" }} />}
+                      sx={{
+                        padding: 0,
+                        position: "absolute",
+                        right: "10px",
+                        top: "10px",
+                      }}
+                    />
+                  )}
                   <img
                     src={image}
                     width="100%"
