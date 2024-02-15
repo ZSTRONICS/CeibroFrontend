@@ -41,6 +41,8 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
     setSearchText(newSearchText);
   };
 
+  console.log(allProjects, "allprojects....");
+
   useEffect(() => {
     allProjects && setFilteredAllProjects(allProjects);
     groups && setFilteredGroups(groups);

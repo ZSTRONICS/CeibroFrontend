@@ -2,7 +2,6 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import { Box, IconButton } from "@mui/material";
 import Tab from "@mui/material/Tab";
-import { useTheme } from '@mui/material/styles';
 import { InputSearch } from "components/GenericComponents";
 import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { useDynamicDimensions } from "hooks";
@@ -39,10 +38,6 @@ const LocationTaskHead = ({
     updateDimensions,
   } = useDynamicDimensions();
 
-  const theme = useTheme();
-  // const isXLScreen = useMediaQuery(theme.breakpoints.down('700px'));
-
-
   useEffect(() => {
     updateDimensions();
     setTaskHeaderHeiht(dimensions.height);
@@ -57,7 +52,6 @@ const LocationTaskHead = ({
     }
     setValue(newValue);
   };
-
 
   return (
     <Box style={HeadStyles.head_container} ref={headerRef}>
@@ -79,8 +73,8 @@ const LocationTaskHead = ({
               flexWrap: "wrap",
               alignItems: "center",
               display: "flex",
-              justifyContent: isSmallView?"center":'flex-start',
-              gap: isSmallView?0.4:1,
+              justifyContent: isSmallView ? "center" : "flex-start",
+              gap: isSmallView ? 0.4 : 1,
             },
             span: {
               display: "none",
@@ -118,7 +112,7 @@ const LocationTaskHead = ({
           />
         </TabList>
         {/* </Box> */}
-        <Box style={HeadStyles.head_filterization} >
+        <Box style={HeadStyles.head_filterization}>
           <TaskFilters isSmallView={isSmallView} />
         </Box>
         <Box
@@ -137,7 +131,7 @@ const LocationTaskHead = ({
           />
           <IconButton
             style={{ color: "#0076C8", padding: "0px" }}
-            onClick={() => { }}
+            onClick={() => {}}
           >
             <SortIcon />
           </IconButton>

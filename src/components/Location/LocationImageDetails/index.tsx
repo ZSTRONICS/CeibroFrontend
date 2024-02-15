@@ -14,12 +14,14 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@mui/material/styles";
 import { Heading2 } from "components/CustomTags";
 import DocumentReader from "components/pdfviewer";
+import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useHistory, useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
+import { HEADER_HEIGHT } from "utills/common";
 import SearchField from "../Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/Components/SearchField";
 import DrawingHeader from "../LocationDrawingDetails/DrawingHeader";
 import { filterData, findData } from "../utils";
@@ -47,9 +49,14 @@ const LocationImageDetails = () => {
   const isRenderEffect = useRef<boolean>(true);
   const tags = ["Pipes", "Paint", "Tag 3", "Tag 4", "Tag 5"];
 
+  const [size, ratio] = useWindowSize();
+  const [windowWidth, windowHeight] = size;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [drawingNotFound, setDrawingNotFound] = useState<boolean | null>(null);
+
+  const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
 
   const style = {
     position: "absolute" as "absolute",
@@ -124,7 +131,9 @@ const LocationImageDetails = () => {
           "_id",
           event.target.value
         );
-        if (selectedGroup && selectedGroup.length > 0) {
+        // if (selectedGroup && selectedGroup.length > 0) {
+        if (selectedGroup.drawings[0]?._id) {
+          setDrawingNotFound(false);
           history.push(
             `/location/project/${projectId}/group/${
               event.target.value
@@ -134,8 +143,10 @@ const LocationImageDetails = () => {
           history.push(
             `/location/project/${projectId}/group/${event.target.value}/drawing/image`
           );
-        }
+          // }
 
+          // setDrawingNotFound(true);
+        }
         break;
 
       default:
@@ -213,18 +224,16 @@ const LocationImageDetails = () => {
             >
               <Box
                 style={{
-                  //   display: "flex",
-                  //   alignItems: "center",
                   width: "100%",
-                  display: "grid",
-                  gridTemplateColumns: "1fr 5.2fr 1fr",
-                  gap: "20px",
+                  display: "flex",
+                  // gridTemplateColumns: "1fr 5.2fr 1fr",
+                  gap: "10px",
                   alignItems: "center",
                   padding: "16px",
-                  borderBottom: "1px solid #818181",
+                  borderBottom: "solid 1px #818181",
                 }}
               >
-                <Box sx={{}}>
+                <Box>
                   <Tabs
                     aria-label="basic tabs"
                     sx={{
@@ -274,8 +283,12 @@ const LocationImageDetails = () => {
                     ))}
                   </Tabs>
                 </Box>
-                {/* <Box></Box> */}
-                <Box style={{ width: "auto" }}>
+                <Box
+                  style={{
+                    width: "100%",
+                    transform: "translateY(-10px) translateX(-5px)",
+                  }}
+                >
                   <SearchField
                     isSmall={isSmallScreen ? true : false}
                     handleSearch={() => {}}
@@ -283,7 +296,7 @@ const LocationImageDetails = () => {
                   />
                 </Box>
                 <Button
-                  style={{
+                  sx={{
                     color: "#fff",
                     textAlign: "center",
                     fontFamily: "Inter",
@@ -297,9 +310,14 @@ const LocationImageDetails = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     height: "32px",
-
                     textTransform: "capitalize",
-                    width: "109px",
+                    width: "160px",
+                    "@media (max-width: 1360px)": {
+                      width: "180px",
+                    },
+                    "@media (max-width: 1160px)": {
+                      width: "225px",
+                    },
                   }}
                   onClick={() => setIsStartExport(!isStartExport)}
                 >
@@ -349,10 +367,11 @@ const LocationImageDetails = () => {
                         horizontal: "right",
                       }}
                     >
-                      <MenuItem disableRipple>
+                      <MenuItem sx={{ padding: "0px" }} disableRipple>
                         <FilterPopup
                           handleChangeValues={handleChangeValues}
                           ShowPopup={true}
+                          handlePopUpClose={handlePopUpClose}
                         />
                       </MenuItem>
                     </Menu>
@@ -368,7 +387,7 @@ const LocationImageDetails = () => {
 
               <Box
                 sx={{
-                  maxHeight: "calc(100vh - 355px)",
+                  maxHeight: "calc(100vh - 327px)",
                   overflowY: "scroll",
                 }}
               >
@@ -522,36 +541,53 @@ const LocationImageDetails = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid
-            item
-            xs={5.7}
-            sx={{
-              ...(!projectData.selectedDrawing?.fileUrl
-                ? {
+          <Grid item xs={5.7}>
+            <Box
+              sx={{
+                ...(!projectData.selectedDrawing?.fileUrl
+                  ? {
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "white",
+                      height: `${windowActualHeight}px`,
+                      // maxHeight: "calc(100vh - 327px)",
+                    }
+                  : {}),
+              }}
+            >
+              {!drawingNotFound ? (
+                projectData.selectedDrawing?.fileUrl ? (
+                  <Box
+                    sx={{
+                      height: `${windowActualHeight}px`,
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <DocumentReader
+                      selectedDrawingUrl={projectData.selectedDrawing?.fileUrl}
+                    />
+                  </Box>
+                ) : (
+                  <Heading2 sx={{ fontWeight: 600 }}>
+                    Drawing file not found!
+                  </Heading2>
+                )
+              ) : (
+                <Box
+                  sx={{
+                    height: `${windowActualHeight}px`,
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                  }
-                : {}),
-            }}
-          >
-            {projectData.selectedDrawing?.fileUrl ? (
-              <Box
-                style={{
-                  backgroundColor: "#fff",
-                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-                  borderRadius: "4px",
-                }}
-              >
-                <DocumentReader
-                  selectedDrawingUrl={projectData.selectedDrawing?.fileUrl}
-                />
-              </Box>
-            ) : (
-              <Heading2 sx={{ fontWeight: 600 }}>
-                Drawing file not found!
-              </Heading2>
-            )}
+                  }}
+                >
+                  <Heading2 sx={{ fontWeight: 600 }}>
+                    Drawing file not found!
+                  </Heading2>
+                </Box>
+              )}
+            </Box>
           </Grid>
         </Grid>
       </Box>
@@ -562,7 +598,7 @@ const LocationImageDetails = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ExportList />
+          <ExportList handleClose={handleClose} />
         </Box>
       </Modal>
     </>

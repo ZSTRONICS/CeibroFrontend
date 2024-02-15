@@ -194,11 +194,12 @@ export default function DrawingHeader(props: DrawingProps) {
       <Grid
         sx={{
           transition: "all linear 0.30s",
+          backgroundColor: "white",
           width: headersize ? (imageLocation ? "47%" : "45.3%") : "57.2%",
         }}
       >
         <Box>
-          {selectedDrawing?._id &&
+          {selectedDrawing?._id ? (
             renderBox(
               <>
                 <Box sx={{ width: "85%" }}>
@@ -229,7 +230,10 @@ export default function DrawingHeader(props: DrawingProps) {
                   {`Floor ${selectedDrawing?.floor?.floorName ?? ""}`}
                 </Typography>
               </>
-            )}
+            )
+          ) : (
+            <Box sx={{ width: "100%", height: "100%" }}></Box>
+          )}
         </Box>
       </Grid>
     </Grid>

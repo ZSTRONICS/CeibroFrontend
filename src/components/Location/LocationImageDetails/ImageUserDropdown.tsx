@@ -10,12 +10,14 @@ interface ImageUserDropdownProps {
   maxWidth: string;
   label: string;
   type: "user" | "tag";
+  ShowPop?: Boolean;
 }
 
 const ImageUserDropdown = ({
   maxWidth,
   label,
   type,
+  ShowPop,
 }: ImageUserDropdownProps) => {
   const [User, setUser] = React.useState([]);
 
@@ -36,9 +38,14 @@ const ImageUserDropdown = ({
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             label={label}
+            value={!ShowPop ? "" : "Select user"}
             onChange={handleChange}
             sx={{
+              color: "black",
               width: "100%",
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: ShowPop ? "none !important" : "",
+              },
             }}
           >
             <SearchWithButton

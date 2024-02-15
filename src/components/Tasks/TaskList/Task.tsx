@@ -59,6 +59,8 @@ const Task = () => {
   );
   const taskCardListRef: any = useRef();
   const task: any = useSelector((state: RootState) => state.task);
+  console.log(task, "all task");
+
   const {
     allTaskToMe,
     allTaskFromMe,

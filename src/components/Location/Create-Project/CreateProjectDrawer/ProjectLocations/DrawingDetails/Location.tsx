@@ -19,6 +19,9 @@ function Location() {
   const { allProjects, allGroups, allFloors } = useSelector(
     (state: RootState) => state.project
   );
+  const alldata = useSelector((state: RootState) => state.project);
+  console.log(alldata, "all data .....");
+
   useEffect(() => {
     if (isRenderEffect.current && allProjects.length === 0) {
       isRenderEffect.current = false;

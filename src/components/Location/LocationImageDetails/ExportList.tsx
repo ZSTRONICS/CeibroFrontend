@@ -2,8 +2,11 @@ import { ArrowBackSharp } from "@mui/icons-material";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import ExportedListDropdown from "./ExportedListDropdown";
 import UserImageCard from "./UserImageCard";
-
-const ExportList = () => {
+interface IProps {
+  handleClose: () => void;
+}
+const ExportList = (props: IProps) => {
+  const { handleClose } = props;
   const temArray = [
     "Talha",
     "Ali",
@@ -48,6 +51,7 @@ const ExportList = () => {
                 sx={{
                   color: "#0076C8",
                 }}
+                onClick={handleClose}
               />
             </Box>
             <Typography

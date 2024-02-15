@@ -6,7 +6,12 @@ import { DateRangePicker } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css";
 
-const CustomDateRangePicker = () => {
+interface DateProps {
+  ImageDetail: Boolean;
+  ShowPop?: Boolean;
+}
+
+const CustomDateRangePicker = ({ ImageDetail, ShowPop }: DateProps) => {
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [selectedRange, setSelectedRange] = useState([
     {
@@ -31,10 +36,17 @@ const CustomDateRangePicker = () => {
     <Box
       sx={{
         maxWidth: "180px",
-        width: "100%",
+        minWidth: "max-content",
       }}
     >
       <TextField
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              border: ShowPop ? "none" : null,
+            },
+          },
+        }}
         label="Select Date Range"
         size="small"
         value={`${selectedRange[0].startDate.toDateString()} - ${selectedRange[0].endDate.toDateString()}`}

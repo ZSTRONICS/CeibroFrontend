@@ -3,10 +3,20 @@ import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 
-const SortByDropdown = () => {
+interface Props {
+  ShowPop?: Boolean;
+}
+
+const SortByDropdown = ({ ShowPop }: Props) => {
   return (
     <>
-      <Box sx={{ maxWidth: "114px", width: "100%" }}>
+      <Box
+        sx={{
+          maxWidth: "114px",
+          width: "100%",
+          transform: ShowPop ? "translateX(-5px)" : null,
+        }}
+      >
         <FormControl
           variant="standard"
           size="small"
