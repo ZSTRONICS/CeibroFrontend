@@ -28,7 +28,6 @@ import {
   projectProfileInterface,
   rolesTemplate,
 } from "constants/interfaces/project.interface";
-import _ from "lodash";
 import {
   requestFail,
   requestPending,
@@ -179,9 +178,9 @@ const NavigationReducer = (
   switch (action.type) {
 
     case PROJECT_CONFIG.PROJECT_CREATED: {
-      const isExistingProject = _.findIndex(state.allProjects, action.payload._id);
+      const isExistingProject = state.allProjects.findIndex((project: Project) => project._id === action.payload._id);
       if (isExistingProject === -1) {
-        state.allProjects = [action.payload, ...state.allProjects];
+        state.allProjects.unshift(action.payload);;
       }
       return {
         ...state,

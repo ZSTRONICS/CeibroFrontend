@@ -1,4 +1,5 @@
 import { Box, Button } from "@mui/material";
+import assets from "assets";
 import { CustomStack, Heading2 } from "components/CustomTags";
 import { InputSearch } from "components/GenericComponents";
 import CustomModal from "components/Modal";
@@ -59,15 +60,17 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
         }}
       >
         <InputSearch value={searchText} onChange={handleSearchTextChange} />
-        <CustomStack sx={{ justifyContent: "space-between" }}>
+        <CustomStack sx={{ justifyContent: "space-between", pr: 1 }}>
           <Heading2 sx={{ py: 2 }}>Projects</Heading2>
           <Button
             disableRipple
+            component="label"
             sx={{ padding: "5px 5px" }}
             onClick={() => openModal()}
-            variant="outlined"
+            variant="contained"
           >
-            Add Project
+            <assets.AddIcon sx={{ color: "white" }} />
+            new
           </Button>
         </CustomStack>
       </Box>

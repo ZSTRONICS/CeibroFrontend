@@ -1,10 +1,11 @@
 import { Box, Button } from "@mui/material";
 import { CustomStack } from "components/CustomTags";
 import DragAndDrop from "components/DropFileInput/DropFileInput";
+import { hasOnlySpaces } from "components/Utills/Globals";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { PROJECT_CONFIG } from "config";
-import { useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { PROJECT_APIS } from "redux/action";
 interface IProps {
@@ -16,6 +17,16 @@ function CreateProject(props: IProps) {
   const [description, setDescription] = useState<string>("");
   const [file, setFile] = useState<string | Blob>("");
   const dispatch = useDispatch();
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (hasOnlySpaces(e.target.value)) {
+        setTitle("");
+      } else {
+        setTitle(e.target.value);
+      }
+    },
+    [setTitle]
+  );
   const handleCreateProject = () => {
     try {
       setIsLoading(true);
@@ -71,7 +82,7 @@ function CreateProject(props: IProps) {
             label="Project name"
             placeholder={"Enter project name"}
             inputValue={title}
-            onChange={(e: any) => setTitle(e.target.value)}
+            onChange={handleChange}
             maxLength={50}
             inputProps={{ style: { background: "white" } }}
           />
