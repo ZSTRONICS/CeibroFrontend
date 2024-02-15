@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,6 +7,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import assets from "assets/assets";
+import React, { useState } from "react";
 
 interface IProps {
   title: string;
@@ -34,7 +34,7 @@ function ImgCard(props: IProps) {
   const cardMargin = props.cardContent ? "unset" : "10px auto";
 
   return (
-    <Card sx={{ maxWidth: 345, margin: cardMargin }}>
+    <Card sx={{ maxWidth: 345, height: 300, margin: cardMargin }}>
       <CardHeader
         avatar={<> </>}
         action={

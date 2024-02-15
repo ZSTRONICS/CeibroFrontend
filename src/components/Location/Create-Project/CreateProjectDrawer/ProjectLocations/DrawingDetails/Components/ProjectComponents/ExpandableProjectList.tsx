@@ -1,8 +1,11 @@
-import { Box } from "@mui/material";
-import { Heading2 } from "components/CustomTags";
+import { Box, Button } from "@mui/material";
+import { CustomStack, Heading2 } from "components/CustomTags";
 import { InputSearch } from "components/GenericComponents";
+import CustomModal from "components/Modal";
 import { dataGroupById } from "components/Utills/Globals";
+import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
+import CreateProject from "./CreateProject";
 import ProjectCard from "./ProjectCard";
 
 interface IProps {
@@ -18,7 +21,7 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
   const [searchText, setSearchText] = useState("");
   const [contHeight, setContHeight] = useState<number>(50);
   const contRef: any = useRef(null);
-
+  const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const handleSearchTextChange = (newSearchText: string) => {
     const filteredGroups = groups.filter((group) =>
       group.groupName.toLowerCase().includes(newSearchText.toLocaleLowerCase())
@@ -56,7 +59,17 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
         }}
       >
         <InputSearch value={searchText} onChange={handleSearchTextChange} />
-        <Heading2 sx={{ py: 2 }}>Projects</Heading2>
+        <CustomStack sx={{ justifyContent: "space-between" }}>
+          <Heading2 sx={{ py: 2 }}>Projects</Heading2>
+          <Button
+            disableRipple
+            sx={{ padding: "5px 5px" }}
+            onClick={() => openModal()}
+            variant="outlined"
+          >
+            Add Project
+          </Button>
+        </CustomStack>
       </Box>
       <Box
         sx={{
@@ -81,6 +94,19 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
             );
           })}
       </Box>
+      {isOpen === true && (
+        <CustomModal
+          maxWidth={"sm"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={true}
+          title="New project"
+          isOpen={isOpen}
+          handleClose={closeModal}
+          children={<CreateProject onClose={closeModal} />}
+        />
+      )}
     </>
   );
 };

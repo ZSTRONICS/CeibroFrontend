@@ -6,7 +6,10 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Theme, styled } from "@mui/material/styles";
+interface CustomProps {
+  theme?: Theme;
+}
 export const Heading = styled(Typography)(
   ({ theme }) => `
     font-family: Inter;
@@ -44,7 +47,7 @@ const SubHeading = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const Heading2 = styled(Typography)(({ theme }) => ({
+const Heading2 = styled(Typography)<CustomProps>(({ theme }) => ({
   color: "#131516",
   fontSize: 14,
   fontWeight: 700,
@@ -52,7 +55,7 @@ const Heading2 = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {},
 }));
 
-const DescriptionTag = styled(Typography)(({ theme }) => ({
+const DescriptionTag = styled(Typography)<CustomProps>(({ theme }) => ({
   fontSize: 15,
   fontWeight: 500,
   lineHeight: "20px",
@@ -247,7 +250,7 @@ const BackToLoginTag = styled(Box)(({ theme }) => ({
     marginTop: 20,
   },
 }));
-const CustomDivider = styled(Divider)(({ theme }) => ({
+const CustomDivider = styled(Divider)<CustomProps>(({ theme }) => ({
   borderColor: "#9e9e9e",
   borderRadius: "4px",
   opacity: "0.9",
@@ -278,6 +281,5 @@ export {
   MenuItemTag,
   Span,
   SubHeading,
-  TaskCardLabel
+  TaskCardLabel,
 };
-

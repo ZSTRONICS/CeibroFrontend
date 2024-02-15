@@ -2,6 +2,7 @@ import {
   Autocomplete,
   CircularProgress,
   FormControl,
+  Input,
   InputLabel,
   OutlinedInput,
   TextField,
@@ -18,6 +19,10 @@ interface IProps {
   type?: string;
   required?: boolean;
   placeholder?: string;
+  inputProps?: any;
+  maxLength?: number;
+  maxRows?: number;
+  multiline?: boolean;
   inputVariant: "standard" | "outlined" | "filled";
   inputValue: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -38,29 +43,46 @@ export const SimpleTextField = (props: IProps) => {
     onChange,
     inputVariant,
     onBlur,
+    inputProps,
+    maxLength,
+    multiline,
+    maxRows,
   } = props;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
   };
   const id = label.replace(/\s+/g, "-");
   return (
-    <FormControl
-      sx={{ width: "100%" }}
-      variant={inputVariant || "outlined"}
-      size="small"
-    >
+    <FormControl sx={{ width: "100%" }} variant={inputVariant} size="small">
       <MUIInputLabel htmlFor={id}>{label}</MUIInputLabel>
-      <OutlinedInput
-        required={required}
-        id={id}
-        name={name}
-        type={type ? type : "text"}
-        label={label}
-        placeholder={placeholder ?? placeholder}
-        value={inputValue}
-        onChange={handleChange}
-        onBlur={onBlur}
-      />
+      {!maxLength ? (
+        <OutlinedInput
+          inputProps={{ inputProps, maxLength: maxLength }}
+          required={required}
+          id={id}
+          name={name}
+          type={type ? type : "text"}
+          label={label}
+          placeholder={placeholder ?? placeholder}
+          value={inputValue}
+          onChange={handleChange}
+          onBlur={onBlur}
+        />
+      ) : (
+        <Input
+          maxRows={maxRows}
+          multiline={multiline}
+          inputProps={{ inputProps, maxLength: maxLength }}
+          required={required}
+          id={id}
+          name={name}
+          type={type ? type : "text"}
+          placeholder={placeholder ?? placeholder}
+          value={inputValue}
+          onChange={handleChange}
+          onBlur={onBlur}
+        />
+      )}
     </FormControl>
   );
 };

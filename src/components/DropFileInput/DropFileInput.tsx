@@ -81,7 +81,7 @@ const DragAndDrop: React.FC<IProps> = ({
   };
 
   return (
-    <div style={{ margin: "0" }}>
+    <div>
       {url === "" ? (
         <label htmlFor="btn-upload">
           <CustomBox

@@ -20,7 +20,8 @@ interface Common {
   onChange: (
     e:
       | React.ChangeEvent<HTMLInputElement>
-      | React.SyntheticEvent<Element, Event>,
+      | React.SyntheticEvent<Element, Event>
+      | any,
     value?: ICountryData | undefined
   ) => void;
   onBlur?: {
@@ -53,6 +54,20 @@ export interface ITextFieldProps extends Common {
   inputVariant: "standard" | "outlined" | "filled";
   inputValue: string;
 }
+export interface ICounterTextFieldProps extends Common {
+  typeName: "counterText-field";
+  subType?: string;
+  required?: boolean;
+  multiline?: boolean;
+  maxRows?: number;
+  label: string;
+  placeholder: string;
+  inputVariant: "standard" | "outlined" | "filled";
+  inputValue: string;
+  maxLength: number;
+  inputProps: any
+}
+
 
 export interface AutocompleteOption {
   label: string;

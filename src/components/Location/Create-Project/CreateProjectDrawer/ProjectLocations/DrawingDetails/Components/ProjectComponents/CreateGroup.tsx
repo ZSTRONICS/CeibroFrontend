@@ -1,5 +1,6 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { hasOnlySpaces } from "components/Utills/Globals";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { PROJECT_CONFIG } from "config";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -70,7 +71,7 @@ function CreateGroup({ projectId, closeModal }: Props) {
         sx={{
           padding: "0 10px 14px",
           width: "100%",
-          height: "350px",
+          height: "300px",
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "column",
@@ -78,28 +79,18 @@ function CreateGroup({ projectId, closeModal }: Props) {
         }}
       >
         <Box>
-          <TextField
-            sx={{ width: "100%" }}
-            inputProps={{ maxLength: 50, style: { background: "white" } }}
-            variant="filled"
+          <CustomMuiTextField
+            inputVariant="standard"
             required={true}
+            typeName="counterText-field"
             name="groupName"
             label="Group name"
             placeholder={"Enter group name"}
-            value={groupName}
+            inputValue={groupName}
             onChange={handleChange}
+            maxLength={50}
+            inputProps={{ style: { background: "white" } }}
           />
-          <span
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              fontSize: "12px",
-              fontWeight: 500,
-              color: "#757575",
-            }}
-          >
-            {`${groupName.length}/50`}
-          </span>
         </Box>
 
         <Button
