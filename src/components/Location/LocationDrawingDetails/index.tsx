@@ -25,7 +25,7 @@ function LocationDrawingDetails() {
   const { projectId, groupId, drawingId } = useParams<RouteParams>();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const isRenderEffect = useRef<boolean>(true);
-  const [allDrawingTaskList, setAllDrawingTaskList] = useState<ITask[]>([]);
+  let allDrawingTaskList: ITask[] = [];
   const { allProjects, allGroups } = useSelector(
     (state: RootState) => state.project
   );
@@ -76,7 +76,7 @@ function LocationDrawingDetails() {
     }
   }, [projectId, groupId, drawingId]);
 
-  const projectData = useMemo(() => {
+  const localProjectData = useMemo(() => {
     let selectedProject = filterData(allProjects, "_id", projectId);
     if (allGroups.length === 0) {
       return;
@@ -95,24 +95,7 @@ function LocationDrawingDetails() {
       selectedGroup,
       selectedDrawing,
     };
-  }, [groupId, drawingId, allProjects, [...allGroups].length]);
-
-  useEffect(() => {
-    if (projectData && projectData.selectedDrawing) {
-      fetchDrawingTaskList &&
-        fetchDrawingTaskList(
-          projectData,
-          allTasksAllEvents,
-          setAllDrawingTaskList
-        );
-    }
-  }, [
-    allTasksAllEvents.allTasks.length,
-    drawingId,
-    groupId,
-    RECENT_TASK_UPDATED_TIME_STAMP,
-    projectData && projectData.selectedDrawing,
-  ]);
+  }, [projectId, groupId, drawingId]);
 
   const handleGroupAndFileChange = (event: any, type: "group" | "drawing") => {
     switch (type) {
@@ -123,9 +106,9 @@ function LocationDrawingDetails() {
         break;
       case "group":
         let selectedGroup: any =
-          projectData &&
+          localProjectData &&
           findData(
-            projectData.selectedProjectGroups,
+            localProjectData.selectedProjectGroups,
             "_id",
             event.target.value
           );
@@ -142,25 +125,33 @@ function LocationDrawingDetails() {
         break;
     }
   };
-
   const [headersize, setHeadersize] = useState<boolean>(true);
-
+  if (
+    localProjectData &&
+    localProjectData.selectedGroup &&
+    localProjectData.selectedDrawing
+  ) {
+    allDrawingTaskList = fetchDrawingTaskList(
+      localProjectData,
+      allTasksAllEvents
+    );
+  }
   return (
     <Box sx={{ mx: 2 }}>
-      {projectData && projectData.selectedGroup && (
+      {localProjectData && localProjectData.selectedGroup && (
         <DrawingHeader
           handleChangeCallback={handleGroupAndFileChange}
           handleback={() => history.push(`/location/${projectId}/${groupId}`)}
-          selectedProject={projectData.selectedProject}
-          selectedProjectGroups={projectData.selectedProjectGroups}
-          selectedGroup={projectData.selectedGroup}
-          selectedDrawing={projectData.selectedDrawing}
+          selectedProject={localProjectData.selectedProject}
+          selectedProjectGroups={localProjectData.selectedProjectGroups}
+          selectedGroup={localProjectData.selectedGroup}
+          selectedDrawing={localProjectData.selectedDrawing}
           headersize={headersize}
           imageLocation={false}
         />
       )}
       <LocatoinDrawingList
-        selectedDrawing={projectData && projectData.selectedDrawing}
+        selectedDrawing={localProjectData && localProjectData.selectedDrawing}
         allDrawingTaskList={allDrawingTaskList}
         RECENT_TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
         allTasksAllEvents={allTasksAllEvents}

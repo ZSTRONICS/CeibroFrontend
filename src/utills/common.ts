@@ -232,14 +232,14 @@ export const createFloorDropdownOption = (
   });
 };
 
-export const fetchDrawingTaskList = (projectData: any, allTasksAllEvents: any, setAllDrawingTaskList: any) => {
+export const fetchDrawingTaskList = (projectData: any, allTasksAllEvents: any) => {
   const selectedDrawingPins = allTasksAllEvents.allPins.filter(
     (pin: any) => pin.drawingId === projectData.selectedDrawing._id
   );
   const drawingTaskList = allTasksAllEvents.allTasks.filter((task: any) =>
     selectedDrawingPins.some((pin: any) => pin.taskData._id === task._id)
   );
-  setAllDrawingTaskList(drawingTaskList);
+  return drawingTaskList;
 };
 
 export const filterTasksByCondition = (tasks: ITask[], condition: (task: ITask) => boolean): ITask[] => {
