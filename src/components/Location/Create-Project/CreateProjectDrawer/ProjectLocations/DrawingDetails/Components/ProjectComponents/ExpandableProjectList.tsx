@@ -3,9 +3,12 @@ import assets from "assets";
 import { CustomStack, Heading2, LabelTag } from "components/CustomTags";
 import { InputSearch } from "components/GenericComponents";
 import CustomModal from "components/Modal";
+import EmptyScreenDescription from "components/Tasks/EmptyScreenDescription";
 import { categorizeProjects, dataGroupById } from "components/Utills/Globals";
+import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { useOpenCloseModal } from "hooks";
 import React, { useEffect, useRef, useState } from "react";
+import { HEADER_HEIGHT } from "utills/common";
 import CreateProject from "./CreateProject";
 import ProjectCard from "./ProjectCard";
 
@@ -16,6 +19,7 @@ interface IProps {
   windowActualHeight: number;
   isProjectsLoading: boolean;
 }
+
 const ExpandableProjectList: React.FC<IProps> = (props) => {
   const {
     allProjects,
@@ -24,12 +28,26 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
     allFloors,
     isProjectsLoading,
   } = props;
-  // const [filteredAllProjects, setFilteredAllProjects] = useState<Project[]>([]);
   const [filteredGroups, setFilteredGroups] = useState<Group[]>([]);
   const [searchText, setSearchText] = useState<string | null>(null);
   const [contHeight, setContHeight] = useState<number>(50);
   const contRef: any = useRef(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
+
+  const emptyScreenContent = [
+    {
+      heading: `Mis on project/projekt?`,
+      description: `Lisage oma ülesannetele projekte, et salvestada ja korraldada ülesandeid ühiste teemade järgi ning kasutada neid tulevikus uuesti ning saate muuta projekti lemmikuks või peidetuks.`,
+    },
+    {
+      heading: `What is the project?`,
+      description: `Add projects to your tasks to save and organize the tasks around common themes and reuse them in the future and you can make a project favorite or hidden.`,
+    },
+  ];
+
+  const [windowHeight, setWindowHeight] = useState<number>(
+    window.innerHeight - HEADER_HEIGHT
+  );
 
   const handleSearchTextChange = (newSearchText: string) => {
     setSearchText(newSearchText);
@@ -70,17 +88,29 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
       }
       return labelA.localeCompare(labelB);
     });
-  console.log(projectsWithLabel, "projectsWithLabel....");
+
   useEffect(() => {
     groups && setFilteredGroups(groups);
   }, [allProjects, groups]);
 
   useEffect(() => {
+    if (isProjectsLoading) {
+      return;
+    }
     if (contRef.current) {
       setContHeight(contRef.current.clientHeight + 25);
     }
   }, [windowActualHeight]);
   const allProjectsLocal = [Object.values(categorizedProject)].flat(3);
+
+  const LoadingSkeleton = (ProjectScreen: any) => (
+    <Box style={{ height: windowHeight }}>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <TaskCardSkeleton ProjectScreen={ProjectScreen} key={index} />
+      ))}
+    </Box>
+  );
+
   return (
     <>
       <Box
@@ -113,9 +143,15 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
           overflow: "auto",
         }}
       >
+        {isProjectsLoading && <LoadingSkeleton />}
         {allProjectsLocal.length === 0 && (
           <Heading2 sx={{ textAlign: "center", fontWeight: 600 }}>
-            No Project Found!
+            <div style={{ height: windowHeight }}>
+              <EmptyScreenDescription
+                showWaterMark={true}
+                content={emptyScreenContent}
+              />
+            </div>
           </Heading2>
         )}
         {projectsWithLabel &&
