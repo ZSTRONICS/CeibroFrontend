@@ -21,8 +21,6 @@ interface Props {
 }
 
 function ProjectCard({ project, groups, projectFloors }: Props) {
-  console.log();
-
   const history = useHistory();
   const dispatch = useDispatch();
   const titleRef: any = useRef(null);

@@ -16,11 +16,9 @@ function Location() {
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(true);
-  const { allProjects, allGroups, allFloors } = useSelector(
+  const { allProjects, allGroups, allFloors, isProjectsLoading } = useSelector(
     (state: RootState) => state.project
   );
-  const alldata = useSelector((state: RootState) => state.project);
-  console.log(alldata, "all data .....");
 
   useEffect(() => {
     if (isRenderEffect.current && allProjects.length === 0) {
@@ -60,6 +58,7 @@ function Location() {
         }}
       >
         <ExpandableProjectList
+          isProjectsLoading={isProjectsLoading}
           windowActualHeight={windowActualHeight}
           allProjects={allProjects}
           groups={allGroups}

@@ -3,7 +3,7 @@ import assets from "assets";
 import { CustomStack, Heading2 } from "components/CustomTags";
 import { InputSearch } from "components/GenericComponents";
 import CustomModal from "components/Modal";
-import { dataGroupById } from "components/Utills/Globals";
+import { categorizeProjects, dataGroupById } from "components/Utills/Globals";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
 import CreateProject from "./CreateProject";
@@ -14,15 +14,24 @@ interface IProps {
   groups: Group[];
   allFloors: Floor[];
   windowActualHeight: number;
+  isProjectsLoading: boolean;
 }
 const ExpandableProjectList: React.FC<IProps> = (props) => {
-  const { allProjects, groups, windowActualHeight, allFloors } = props;
+  const {
+    allProjects,
+    groups,
+    windowActualHeight,
+    allFloors,
+    isProjectsLoading,
+  } = props;
   const [filteredAllProjects, setFilteredAllProjects] = useState<Project[]>([]);
   const [filteredGroups, setFilteredGroups] = useState<Group[]>([]);
   const [searchText, setSearchText] = useState("");
   const [contHeight, setContHeight] = useState<number>(50);
   const contRef: any = useRef(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
+
+  // console.log("isProjectsLoading", isProjectsLoading);
   const handleSearchTextChange = (newSearchText: string) => {
     const filteredGroups = groups.filter((group) =>
       group.groupName.toLowerCase().includes(newSearchText.toLocaleLowerCase())
@@ -41,8 +50,6 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
     setSearchText(newSearchText);
   };
 
-  console.log(allProjects, "allprojects....");
-
   useEffect(() => {
     allProjects && setFilteredAllProjects(allProjects);
     groups && setFilteredGroups(groups);
@@ -53,6 +60,15 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
       setContHeight(contRef.current.clientHeight + 25);
     }
   }, [windowActualHeight]);
+
+  const categorizedProject =
+    allProjects &&
+    categorizeProjects(allProjects, (project: Project) => {
+      if (project.isFavoriteByMe) return "Favorites";
+      if (!project.isFavoriteByMe) return "All Projects";
+      return null; // Return null for 'otherGroups'
+    });
+  // console.log(categorizedProject, "categorizedGroups....");
   return (
     <>
       <Box

@@ -38,6 +38,7 @@ interface ProjectReducerInt {
   allProjects: Project[];
   allGroups: Group[];
   allFloors: Floor[];
+  isProjectsLoading: boolean;
   drawerOpen: boolean;
   menue: number;
   isFloorLoading: boolean;
@@ -94,6 +95,7 @@ interface ProjectReducerInt {
 
 const projectReducer: ProjectReducerInt = {
   allProjects: [],
+  isProjectsLoading: false,
   projectFloors: [],
   selectedDrawingFiles: [],
   selectedGroupName: '',
@@ -331,6 +333,7 @@ const NavigationReducer = (
     case requestPending(PROJECT_CONFIG.GET_ALL_PROJECTS): {
       return {
         ...state,
+        isProjectsLoading: true,
       };
     }
     case requestSuccess(PROJECT_CONFIG.GET_ALL_PROJECTS): {
@@ -359,6 +362,7 @@ const NavigationReducer = (
 
       return {
         ...state,
+        isProjectsLoading: false,
         allProjects: [...state.allProjects],
         allGroups: action.payload.allGroups,
         allFloors: action.payload.allFloors
@@ -367,6 +371,7 @@ const NavigationReducer = (
     case requestFail(PROJECT_CONFIG.GET_ALL_PROJECTS): {
       return {
         ...state,
+        isProjectsLoading: false,
       };
     }
 

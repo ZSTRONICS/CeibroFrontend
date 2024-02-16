@@ -643,6 +643,38 @@ function categorizeGroups(
 
 
 /**
+ * Categorizes the given array of projects based on a condition callback.
+ * The function categorizes the projects based on the result of the callback 
+ * function and returns an object with the categorized projects. 
+ * The callback function determines the category of each project, 
+ * and if the callback function returns null, the project is categorized 
+ * as "otherProjects" by default. The categorized projects are stored in an object where
+ *  the keys represent the categories and the values are arrays of Group objects.
+ * @param {Project[]} project - The array of groups to be categorized.
+ * @param {(project: Project) => string | null} conditionCallback - The callback function 
+ * that takes a project and returns a category string or null.
+ * @returns {Record<string, Project[]>} - An object containing categorized groups.
+ */
+
+function categorizeProjects(
+  projects: Project[],
+  conditionCallback: (project: Project) => string | null
+) {
+  return projects.reduce(
+    (categorized: Record<string, Project[]>, project) => {
+      const category = conditionCallback(project) || "otherProjects";
+      if (!categorized[category]) {
+        categorized[category] = [];
+      }
+      categorized[category].push(project);
+      return categorized;
+    },
+    { Favorites: [], allProjects: [] }
+  );
+}
+
+
+/**
  * Trims the given filename if it is longer than 14 characters, by replacing the middle characters with "...".
  *
  * @param {string} filename - The name of the file to be trimmed.
@@ -682,5 +714,5 @@ const getDropdownOptions = (
 };
 
 
-export { categorizeGroups, countUnseenTasks, countUnseenTasksForTabs, dataGroupById, formatDropdownData, getDropdownOptions, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, trimFileName, updateLocalStorageObject };
+export { categorizeGroups, categorizeProjects, countUnseenTasks, countUnseenTasksForTabs, dataGroupById, formatDropdownData, getDropdownOptions, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, trimFileName, updateLocalStorageObject };
 
