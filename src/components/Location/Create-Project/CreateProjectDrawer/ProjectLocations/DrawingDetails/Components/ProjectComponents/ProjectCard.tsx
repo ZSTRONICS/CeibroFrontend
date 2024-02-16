@@ -69,7 +69,6 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
         };
       });
 
-  const [projectcardbg, setProjectcardbg] = useState(false);
   const [projectcardId, setProjectcardId] = useState<any>(null);
   const changebg = (id: string) => {
     if (projectcardId === id) {
@@ -190,7 +189,6 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
                 </CustomStack>
               </Box>
             </CustomStack>
-            {/* ////////////////// */}
             <Box sx={{ pl: 1.8 }}>
               {groupsWithLabel &&
                 groupsWithLabel.map((group, index) => {

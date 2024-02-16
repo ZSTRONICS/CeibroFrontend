@@ -641,35 +641,33 @@ function categorizeGroups(
   );
 }
 
-
 /**
- * Categorizes the given array of projects based on a condition callback.
- * The function categorizes the projects based on the result of the callback 
- * function and returns an object with the categorized projects. 
- * The callback function determines the category of each project, 
- * and if the callback function returns null, the project is categorized 
- * as "otherProjects" by default. The categorized projects are stored in an object where
- *  the keys represent the categories and the values are arrays of Group objects.
- * @param {Project[]} project - The array of groups to be categorized.
- * @param {(project: Project) => string | null} conditionCallback - The callback function 
- * that takes a project and returns a category string or null.
- * @returns {Record<string, Project[]>} - An object containing categorized groups.
+ * Categorizes the projects based on the given condition callback and search query.
+ *
+ * @param {Project[]} projects - The array of projects to categorize
+ * @param {string | null} searchQuery - The search query to filter the projects
+ * @param {(project: Project) => string | null} conditionCallback - The callback function to determine the project's category
+ * @return {Record<string, Project[]>} An object containing categorized projects
  */
-
 function categorizeProjects(
   projects: Project[],
+  searchQuery: string | null,
   conditionCallback: (project: Project) => string | null
 ) {
   return projects.reduce(
     (categorized: Record<string, Project[]>, project) => {
-      const category = conditionCallback(project) || "otherProjects";
+      // Check if the project matches the search query
+      if (searchQuery && !project.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return categorized; // Skip this project if it doesn't match the search query
+      }
+      const category = conditionCallback(project) || "All Projects";
       if (!categorized[category]) {
         categorized[category] = [];
       }
       categorized[category].push(project);
       return categorized;
     },
-    { Favorites: [], allProjects: [] }
+    { Favorites: [], "Recently Used Projects": [], "All Projects": [] }
   );
 }
 
