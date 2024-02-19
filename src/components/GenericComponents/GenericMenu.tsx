@@ -25,9 +25,8 @@ const GenericMenu: React.FC<MenuProps> = ({
   const open = Boolean(anchorEl);
 
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
     event.stopPropagation();
-    // setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
@@ -86,7 +85,7 @@ const GenericMenu: React.FC<MenuProps> = ({
                 e.preventDefault();
                 e.stopPropagation();
                 option.callBackHandler();
-                // handleMenuClose();
+                handleMenuClose();
               }}
             >
               {option.menuName}

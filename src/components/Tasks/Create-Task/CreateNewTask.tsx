@@ -126,7 +126,7 @@ function CreateNewTask() {
       );
       //todo : add recentProjects
       const getRecentProjectOptions = getDropdownOptions(
-        allProjects,
+        allProjects.filter((project: Project) => project.isRecentlyUsedByMe),
         "title",
         "title",
         "_id"

@@ -6,7 +6,7 @@ import { GenericMenu } from "components/GenericComponents";
 import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { PROJECT_CONFIG } from "config";
 import { useDispatch } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
 
 interface Props {
@@ -21,7 +21,6 @@ interface RouteParams {
 
 function DrawingGroupCard({ group, projectName }: Props) {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { projectId, groupId } = useParams<RouteParams>();
 
   const handleGroupUpdated = (groupId: string, ispublicGroup: boolean) => {
@@ -82,7 +81,6 @@ function DrawingGroupCard({ group, projectName }: Props) {
             },
           }}
         >
-          {/* icon */}
           <Box sx={{ display: "flex", width: "80%" }}>
             <Box
               sx={{
@@ -99,7 +97,6 @@ function DrawingGroupCard({ group, projectName }: Props) {
             >
               {isFavoriteByMe ? <FavIcon /> : <UnFavIcon />}
             </Box>
-            {/* /// */}
             <Box sx={{ width: "82%" }}>
               <Box sx={{ display: "flex" }}>
                 <Heading2
@@ -120,12 +117,7 @@ function DrawingGroupCard({ group, projectName }: Props) {
                   <></>
                 )}
               </Box>
-              {/*  Add this when we will add recently-used and favourite
-                    {isCreator === false ? <LabelTag className="textOverflowRow">
-                      {`From: ${creator.firstName} ${creator.surName}`}
-                    </LabelTag> : <></>} */}
             </Box>
-            {/* //// */}
           </Box>
           <CustomStack
             sx={{

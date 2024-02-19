@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import CustomDropDown from "components/Utills/CustomDropDown";
 import { PROJECT_CONFIG } from "config";
 import _ from "lodash";
@@ -65,58 +64,54 @@ function FloorDropDown(props: Props) {
     return array.filter(condition).map((item) => item.value);
   };
   return (
-    <>
-      <Box>
-        <CustomDropDown
-          name="floor"
-          label={"Floor"}
-          options={{
-            allOptions: [...getAllFloorOptions],
-            recentOptions: [],
-          }}
-          isDropDownOpen={(isOpen: boolean) => {
-            if (!isOpen && newFloors.length > 0) {
-              const floorNames = extractValues(
-                newFloors,
-                (floor: any) => !floor.isPermanenetOption
-              );
-              const uniqueFloorNames = [...new Set(floorNames)];
-              handleCreateFloor(uniqueFloorNames);
-            }
-          }}
-          handleCreateAllFloors={() => {
-            if (newFloors.length > 0) {
-              const floorNames = extractValues(
-                newFloors,
-                (floor: any) => !floor.isPermanenetOption
-              );
-              const uniqueFloorNames = [...new Set(floorNames)];
-              handleCreateFloor(uniqueFloorNames);
-            }
-          }}
-          handleSelectedMenuList={(selected: any) => {
-            if (!selected.isPermanenetOption && selected.isShown) {
-              setNewFloors((prev: any) => [...prev, selected]);
-            } else if (!selected.isShown) {
-              setNewFloors((prev: any) =>
-                prev.filter((floor: any) => floor.value !== selected.value)
-              );
-            }
-            findSelectedFloor(selected);
-          }}
-          createCallback={() => {}}
-          handleChangeValues={(e) => {
-            const newValue = getAllFloorOptions.map((item) => {
-              if (item.value === e && !item.isPermanenetOption) {
-                item.isShown = !item.isShown;
-              }
-              return item;
-            });
-            setAllFloorOptions(newValue);
-          }}
-        />
-      </Box>
-    </>
+    <CustomDropDown
+      name="floor"
+      label={"Floor"}
+      options={{
+        allOptions: [...getAllFloorOptions],
+        recentOptions: [],
+      }}
+      isDropDownOpen={(isOpen: boolean) => {
+        if (!isOpen && newFloors.length > 0) {
+          const floorNames = extractValues(
+            newFloors,
+            (floor: any) => !floor.isPermanenetOption
+          );
+          const uniqueFloorNames = [...new Set(floorNames)];
+          handleCreateFloor(uniqueFloorNames);
+        }
+      }}
+      handleCreateAllFloors={() => {
+        if (newFloors.length > 0) {
+          const floorNames = extractValues(
+            newFloors,
+            (floor: any) => !floor.isPermanenetOption
+          );
+          const uniqueFloorNames = [...new Set(floorNames)];
+          handleCreateFloor(uniqueFloorNames);
+        }
+      }}
+      handleSelectedMenuList={(selected: any) => {
+        if (!selected.isPermanenetOption && selected.isShown) {
+          setNewFloors((prev: any) => [...prev, selected]);
+        } else if (!selected.isShown) {
+          setNewFloors((prev: any) =>
+            prev.filter((floor: any) => floor.value !== selected.value)
+          );
+        }
+        findSelectedFloor(selected);
+      }}
+      createCallback={() => {}}
+      handleChangeValues={(e) => {
+        const newValue = getAllFloorOptions.map((item) => {
+          if (item.value === e && !item.isPermanenetOption) {
+            item.isShown = !item.isShown;
+          }
+          return item;
+        });
+        setAllFloorOptions(newValue);
+      }}
+    />
   );
 }
 

@@ -272,7 +272,7 @@ function CustomDropDown(props: IProps) {
             },
             PaperProps: {
               style: {
-                maxHeight: "calc(100vh - 240px)",
+                // maxHeight: "calc(100vh - 240px)",
               },
             },
           }}
@@ -366,171 +366,181 @@ function CustomDropDown(props: IProps) {
               </>
             )}
           </Box>
-
-          {allFilterData.recent.length > 0 && (
-            <Box sx={{ margin: "10px 10px", marginBottom: "0px" }}>
-              <Typography
-                sx={{
-                  fontFamily: "Inter",
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  color: "#818181",
-                  lineHeight: "16px",
-                }}
-              >
-                Recent used{" "}
-                <span
-                  style={{ textTransform: "lowercase" }}
-                >{`${label}s`}</span>
-              </Typography>
-              {allFilterData.recent.map((item: OptionType, i: any) => {
-                return (
-                  <Box
-                    key={`recent-${item.value + i}`}
-                    sx={{
-                      borderBottom: "1px solid #E0E0E0",
-                      padding: "10px 0",
-                      cursor: "pointer",
-                      color: "#000000",
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      fontFamily: "Inter",
-                    }}
-                    onClick={(e) => handleMenuClick(e, item)}
-                  >
-                    {item.label}
-                  </Box>
-                );
-              })}
-            </Box>
-          )}
-
-          <Box sx={{ margin: "8px 10px", fontFamily: "Inter" }}>
-            {Object.entries(allFilterData.all).map(
-              ([groupLetter, groupOptions], i: any) => [
-                // Wrap the list items in an array<>
-                <React.Fragment key={groupLetter + i}>
-                  {groupLetter !== "*" && (
-                    <Typography
+          <Box
+            sx={{
+              height: "420px",
+              overflowY: "auto",
+            }}
+          >
+            {allFilterData.recent.length > 0 && (
+              <Box sx={{ margin: "10px 10px", marginBottom: "0px" }}>
+                <Typography
+                  sx={{
+                    fontFamily: "Inter",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    color: "#818181",
+                    lineHeight: "16px",
+                  }}
+                >
+                  Recent used{" "}
+                  <span
+                    style={{ textTransform: "lowercase" }}
+                  >{`${label}s`}</span>
+                </Typography>
+                {allFilterData.recent.map((item: OptionType, i: any) => {
+                  return (
+                    <Box
+                      key={`recent-${item.value + i}`}
                       sx={{
-                        paddingTop: "20px",
+                        borderBottom: "1px solid #E0E0E0",
+                        padding: "10px 0",
+                        cursor: "pointer",
                         color: "#000000",
                         fontSize: "14px",
-                        fontWeight: 700,
+                        fontWeight: 600,
                         fontFamily: "Inter",
                       }}
+                      onClick={(e) => handleMenuClick(e, item)}
                     >
-                      {groupLetter}
-                    </Typography>
-                  )}
-                </React.Fragment>,
-                // Use map on the array to render the list items
-                ...groupOptions.map((item, i) => (
-                  <React.Fragment key={item.value + i}>
-                    {(item.isShown === true || showAllFloorItems) && (
-                      <Box
-                        key={`all-${item.value + i}`}
-                        sx={{
-                          borderBottom: "1px solid #E0E0E0",
-                          padding: "8px 0",
-                          cursor: "pointer",
-                          display: "flex",
-                          color: "#000000",
-                          fontFamily: "Inter",
-                          justifyContent: "space-between",
-                        }}
-                        onClick={(e: any) => handleMenuClick(e, item)}
-                      >
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          {label === "Floor" && showAllFloorItems && (
-                            <Checkbox
-                              checked={item.isShown}
-                              disabled={item.isPermanenetOption}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                if (!item.isPermanenetOption) {
-                                  handleChangeValues(item.value, name);
-                                  handleSelectedMenuList(item);
-                                }
-                              }}
-                            />
-                          )}
-
-                          <Typography
-                            sx={{
-                              color: "#0E0E0E",
-                              fontSize: "14px",
-                              fontWeight: 600,
-                              fontFamily: "Inter",
-                            }}
-                          >
-                            {item.value}
-                          </Typography>
-                        </Box>
-                        {((label === "Floor" && !showAllFloorItems) ||
-                          label === "Topic") && (
-                          <IconButton
-                            edge="end"
-                            sx={{
-                              color: "#0075D0",
-                              padding: "0",
-                              mr: 0.5,
-                              "& .MuiSvgIcon-root": {
-                                height: "25px",
-                                width: "25px",
-                              },
-                            }}
-                            onClick={(e) => handleInfoMenuClick(e, item)}
-                          >
-                            <MoreVert />
-                          </IconButton>
-                        )}
-                        <Menu
-                          sx={{
-                            padding: 0,
-                          }}
-                          elevation={3}
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "center",
-                          }}
-                          transformOrigin={{
-                            vertical: "top",
-                            horizontal: "right",
-                          }}
-                          anchorEl={anchorEl}
-                          open={
-                            Boolean(anchorEl) &&
-                            item.value === deleteItem?.value
-                          }
-                          onClose={handleCloseMenu}
-                        >
-                          <MenuItem
-                            sx={{
-                              paddingBottom: 0,
-                              paddingTop: 0,
-                              color: "#0E0E0E",
-                              fontSize: "13px",
-                              fontWeight: 600,
-                              fontFamily: "Inter",
-                            }}
-                            key={i}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handleDeleteClick(item);
-                            }}
-                          >
-                            Delete
-                          </MenuItem>
-                        </Menu>
-                      </Box>
-                    )}
-                  </React.Fragment>
-                )),
-              ]
+                      {item.label}
+                    </Box>
+                  );
+                })}
+              </Box>
             )}
+            <Box
+              sx={{
+                margin: "8px 10px",
+                fontFamily: "Inter",
+              }}
+            >
+              {Object.entries(allFilterData.all).map(
+                ([groupLetter, groupOptions], i: any) => [
+                  // Wrap the list items in an array<>
+                  <React.Fragment key={groupLetter + i}>
+                    {groupLetter !== "*" && (
+                      <Typography
+                        sx={{
+                          paddingTop: "20px",
+                          color: "#000000",
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          fontFamily: "Inter",
+                        }}
+                      >
+                        {groupLetter}
+                      </Typography>
+                    )}
+                  </React.Fragment>,
+                  // Use map on the array to render the list items
+                  ...groupOptions.map((item, i) => (
+                    <React.Fragment key={item.value + i}>
+                      {(item.isShown === true || showAllFloorItems) && (
+                        <Box
+                          key={`all-${item.value + i}`}
+                          sx={{
+                            borderBottom: "1px solid #E0E0E0",
+                            padding: "8px 0",
+                            cursor: "pointer",
+                            display: "flex",
+                            color: "#000000",
+                            fontFamily: "Inter",
+                            justifyContent: "space-between",
+                          }}
+                          onClick={(e: any) => handleMenuClick(e, item)}
+                        >
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            {label === "Floor" && showAllFloorItems && (
+                              <Checkbox
+                                checked={item.isShown}
+                                disabled={item.isPermanenetOption}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  if (!item.isPermanenetOption) {
+                                    handleChangeValues(item.value, name);
+                                    handleSelectedMenuList(item);
+                                  }
+                                }}
+                              />
+                            )}
+
+                            <Typography
+                              sx={{
+                                color: "#0E0E0E",
+                                fontSize: "14px",
+                                fontWeight: 600,
+                                fontFamily: "Inter",
+                              }}
+                            >
+                              {item.value}
+                            </Typography>
+                          </Box>
+                          {((label === "Floor" && !showAllFloorItems) ||
+                            label === "Topic") && (
+                            <IconButton
+                              edge="end"
+                              sx={{
+                                color: "#0075D0",
+                                padding: "0",
+                                mr: 0.5,
+                                "& .MuiSvgIcon-root": {
+                                  height: "25px",
+                                  width: "25px",
+                                },
+                              }}
+                              onClick={(e) => handleInfoMenuClick(e, item)}
+                            >
+                              <MoreVert />
+                            </IconButton>
+                          )}
+                          <Menu
+                            sx={{
+                              padding: 0,
+                            }}
+                            elevation={3}
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "center",
+                            }}
+                            transformOrigin={{
+                              vertical: "top",
+                              horizontal: "right",
+                            }}
+                            anchorEl={anchorEl}
+                            open={
+                              Boolean(anchorEl) &&
+                              item.value === deleteItem?.value
+                            }
+                            onClose={handleCloseMenu}
+                          >
+                            <MenuItem
+                              sx={{
+                                paddingBottom: 0,
+                                paddingTop: 0,
+                                color: "#0E0E0E",
+                                fontSize: "13px",
+                                fontWeight: 600,
+                                fontFamily: "Inter",
+                              }}
+                              key={i}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleDeleteClick(item);
+                              }}
+                            >
+                              Delete
+                            </MenuItem>
+                          </Menu>
+                        </Box>
+                      )}
+                    </React.Fragment>
+                  )),
+                ]
+              )}
+            </Box>
           </Box>
         </Select>
       </FormControl>
