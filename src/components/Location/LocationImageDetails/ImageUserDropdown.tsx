@@ -33,12 +33,12 @@ const ImageUserDropdown = ({
     <>
       <Box sx={{ width: "100%", maxWidth: maxWidth }}>
         <FormControl sx={{ width: "100%" }} size="small">
-          <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+          <InputLabel id="demo-simple-select-label">
+            {type === "user" ? "Select User" : "Select Tag"}
+          </InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            label={label}
-            value={!ShowPop ? "" : "Select user"}
             onChange={handleChange}
             sx={{
               color: "black",
@@ -77,9 +77,6 @@ const ImageUserDropdown = ({
                   />
                 );
               })}
-            {/* <MenuItem value={10}>Select User</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem> */}
           </Select>
         </FormControl>
       </Box>

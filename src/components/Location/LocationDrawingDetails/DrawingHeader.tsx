@@ -113,17 +113,24 @@ export default function DrawingHeader(props: DrawingProps) {
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isxlScreen = useMediaQuery(theme.breakpoints.down("xl"));
+  const isCustomScreen = useMediaQuery(theme.breakpoints.between(1080, 1200));
 
   const isLgScreenUP = useMediaQuery(theme.breakpoints.up("lg"));
   const isxlScreenUP = useMediaQuery(theme.breakpoints.up("xl"));
 
   return (
-    <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
+    <Grid
+      container
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
       <Grid
         item
         sx={{
           transition: "all linear 0.30s",
-          width: headersize ? (imageLocation ? "52%" : "53.8%") : "41.8%",
+          width: headersize ? (imageLocation ? "53.8%" : "53.8%") : "41.8%",
         }}
       >
         <Box>
@@ -144,8 +151,12 @@ export default function DrawingHeader(props: DrawingProps) {
               </IconButton>
               {renderDivider()}
               <Typography
+                className="textOverflowRow"
                 sx={{
                   width: isxlScreenUP ? "27%" : isLgScreenUP ? "27%" : "29%",
+                  overflow: "hidden",
+                  wordWrap: "break-word",
+                  paddingRight: isCustomScreen ? "10px" : "0px",
                 }}
                 variant="body1"
               >
@@ -195,7 +206,7 @@ export default function DrawingHeader(props: DrawingProps) {
         sx={{
           transition: "all linear 0.30s",
           backgroundColor: "white",
-          width: headersize ? (imageLocation ? "47%" : "45.3%") : "57.2%",
+          width: headersize ? (imageLocation ? "45.3%" : "45.3%") : "57.2%",
         }}
       >
         <Box>

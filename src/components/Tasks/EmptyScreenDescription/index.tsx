@@ -38,7 +38,9 @@ function EmptyScreenDescription(props: IProps) {
         {content.map((item, index) => (
           <React.Fragment key={index}>
             <SubHeading>{item.heading}</SubHeading>
-            <DescriptionTag>{item.description}</DescriptionTag>
+            <DescriptionTag sx={{ textAlign: "justify" }}>
+              {item.description}
+            </DescriptionTag>
           </React.Fragment>
         ))}
       </CustomStack>

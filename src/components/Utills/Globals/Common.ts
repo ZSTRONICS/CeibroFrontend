@@ -654,13 +654,14 @@ function categorizeProjects(
   searchQuery: string | null,
   conditionCallback: (project: Project) => string | null
 ) {
+ 
   return projects.reduce(
     (categorized: Record<string, Project[]>, project) => {
       // Check if the project matches the search query
       if (searchQuery && !project.title.toLowerCase().includes(searchQuery.toLowerCase())) {
         return categorized; // Skip this project if it doesn't match the search query
       }
-      const category = conditionCallback(project) || "All Projects";
+      const category = conditionCallback(project) || "All Projects ";
       if (!categorized[category]) {
         categorized[category] = [];
       }

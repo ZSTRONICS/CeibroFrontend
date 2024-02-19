@@ -180,6 +180,7 @@ const LocationImageDetails = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isFiltericonShow = useMediaQuery(theme.breakpoints.down(1366));
+  const isLarge = useMediaQuery(theme.breakpoints.up(1400));
 
   const handleChangeValues = () => {};
 
@@ -214,12 +215,15 @@ const LocationImageDetails = () => {
           />
         )}
         <Grid container spacing={2} sx={{ padding: "16px 0" }}>
-          <Grid item xs={6.3}>
+          <Grid item sx={{ width: isLarge ? "54.2%" : "54.4%" }}>
             <Box
               style={{
                 backgroundColor: "#fff",
                 boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                 borderRadius: "4px",
+                height: `${windowActualHeight - 68}px`,
+                paddingBottom: "10px",
+                overflow: "hidden",
               }}
             >
               <Box
@@ -500,7 +504,7 @@ const LocationImageDetails = () => {
                       color: "#131516",
                     }}
                   >
-                    {showMore ? tempDesp : `${tempDesp.substring(0, 250)}`}
+                    {showMore ? tempDesp : `${tempDesp.substring(0, 250)}...`}
                   </Typography>
                   <Box
                     sx={{
@@ -541,7 +545,7 @@ const LocationImageDetails = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={5.7}>
+          <Grid item sx={{ width: "45.6%" }}>
             <Box
               sx={{
                 ...(!projectData.selectedDrawing?.fileUrl
@@ -560,7 +564,7 @@ const LocationImageDetails = () => {
                 projectData.selectedDrawing?.fileUrl ? (
                   <Box
                     sx={{
-                      height: `${windowActualHeight}px`,
+                      height: `${windowActualHeight - 68}px`,
                       backgroundColor: "white",
                     }}
                   >
