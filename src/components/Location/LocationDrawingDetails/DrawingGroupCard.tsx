@@ -41,6 +41,23 @@ function DrawingGroupCard({ group, projectName }: Props) {
     );
   };
 
+  const handleGroupFavUnFav = (group: Group) => {
+    dispatch(
+      PROJECT_APIS.groupFavUnFav({
+        other: {
+          groupId: group._id,
+          isGroupFav: !group.isFavoriteByMe,
+        },
+        success: (res: any) => {
+          // dispatch({
+          //   type: PROJECT_CONFIG.PROJECT_GROUP_FAV_UNFAV,
+          //   payload: res.data.group,
+          // })
+        },
+      })
+    );
+  };
+
   const {
     _id,
     isFavoriteByMe,
@@ -73,6 +90,11 @@ function DrawingGroupCard({ group, projectName }: Props) {
                 alignItems: "center",
                 display: "flex",
                 justifyContent: "center",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleGroupFavUnFav(group);
               }}
             >
               {isFavoriteByMe ? <FavIcon /> : <UnFavIcon />}
