@@ -212,7 +212,7 @@ const LocatoinDrawingList = ({
               s1
                 ? !islgScreenUP
                   ? "21.9%"
-                  : "19.9%"
+                  : "20.5%"
                 : !islgScreenUP
                 ? "9.9%"
                 : "7.9%"
