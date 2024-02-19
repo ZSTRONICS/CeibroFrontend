@@ -95,7 +95,7 @@ function LocationDrawingDetails() {
       selectedGroup,
       selectedDrawing,
     };
-  }, [projectId, groupId, drawingId]);
+  }, [projectId, groupId, drawingId, [...allGroups]]);
 
   const handleGroupAndFileChange = (event: any, type: "group" | "drawing") => {
     switch (type) {
