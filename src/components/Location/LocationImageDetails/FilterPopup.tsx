@@ -42,12 +42,14 @@ const FilterPopup = (props: IProps) => {
             maxWidth={"180px"}
             label={"user"}
             type="user"
+            LocationImageDetail={true}
           />
           <ImageUserDropdown
             ShowPop={ShowPopup}
             maxWidth={"180px"}
             label={"tags"}
             type="tag"
+            LocationImageDetail={true}
           />
           <CustomDateRangePicker ShowPop={ShowPopup} ImageDetail={true} />
           {ShowPopup ? null : <SortByDropdown ShowPop={ShowPopup} />}

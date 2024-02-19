@@ -375,7 +375,12 @@ const LocationImageDetails = () => {
                         horizontal: "right",
                       }}
                     >
-                      <MenuItem sx={{ padding: "0px" }} disableRipple>
+                      <MenuItem
+                        sx={{
+                          padding: "0px",
+                        }}
+                        disableRipple
+                      >
                         <FilterPopup
                           handleChangeValues={handleChangeValues}
                           ShowPopup={true}
