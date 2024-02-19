@@ -322,6 +322,10 @@ const LocationImageDetails = () => {
                     "@media (max-width: 1160px)": {
                       width: "225px",
                     },
+                    "&:hover": {
+                      backgroundColor: "#0076C8", // Change the background color on hover
+                      // Add additional hover styles as needed
+                    },
                   }}
                   onClick={() => setIsStartExport(!isStartExport)}
                 >
