@@ -180,6 +180,7 @@ const LocationImageDetails = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isFiltericonShow = useMediaQuery(theme.breakpoints.down(1366));
   const isLarge = useMediaQuery(theme.breakpoints.up(1400));
+  const isMeduim = useMediaQuery(theme.breakpoints.down(1400));
 
   const handleChangeValues = () => {};
 
@@ -213,8 +214,14 @@ const LocationImageDetails = () => {
             imageLocation={true}
           />
         )}
-        <Grid container spacing={2} sx={{ padding: "16px 0" }}>
-          <Grid item sx={{ width: isLarge ? "54.2%" : "54.4%" }}>
+        <Grid
+          container
+          sx={{ padding: "16px 0", justifyContent: "space-between" }}
+        >
+          <Grid
+            item
+            sx={{ width: isLarge ? "53.7%" : isMeduim ? "53.8%" : "54.4%" }}
+          >
             <Box
               style={{
                 backgroundColor: "#fff",
@@ -404,7 +411,11 @@ const LocationImageDetails = () => {
                 }}
               >
                 <Box
-                  sx={{ display: "flex", width: "100%", padding: "10px 16px" }}
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    padding: "10px 16px",
+                  }}
                 >
                   <ImageCarousel
                     images={[
@@ -553,7 +564,7 @@ const LocationImageDetails = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item sx={{ width: "45.6%" }}>
+          <Grid item sx={{ width: isMeduim ? "45.2%" : "45.3%" }}>
             <Box
               sx={{
                 ...(!projectData.selectedDrawing?.fileUrl
@@ -574,6 +585,9 @@ const LocationImageDetails = () => {
                     sx={{
                       height: `${windowActualHeight - 68}px`,
                       backgroundColor: "white",
+                      boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "4px",
+                      overflow: "hidden",
                     }}
                   >
                     <DocumentReader

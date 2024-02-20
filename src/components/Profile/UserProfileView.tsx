@@ -11,7 +11,7 @@ function UserProfileView({ userData }: Props) {
   const avatarLetter =
     userData?.firstName &&
     userData.firstName?.[0]?.toUpperCase?.() +
-    (userData.surName?.[0]?.toUpperCase?.() || "");
+      (userData.surName?.[0]?.toUpperCase?.() || "");
 
   return (
     <>
@@ -46,7 +46,11 @@ function UserProfileView({ userData }: Props) {
             <Grid item sx={{ marginTop: "5px" }}>
               <SubLabelTag>Name</SubLabelTag>
               <DocumentNameTag
-                sx={{ wordWrap: "break-word", wordBreak: "break-all", maxWidth: "250px" }}
+                sx={{
+                  wordWrap: "break-word",
+                  wordBreak: "break-all",
+                  maxWidth: "250px",
+                }}
               >
                 {userData?.firstName || "N/A"}
               </DocumentNameTag>
@@ -55,7 +59,11 @@ function UserProfileView({ userData }: Props) {
             <Grid item>
               <SubLabelTag>Surname</SubLabelTag>
               <DocumentNameTag
-                sx={{ wordWrap: "break-word", wordBreak: "break-all", maxWidth: "250px" }}
+                sx={{
+                  wordWrap: "break-word",
+                  wordBreak: "break-all",
+                  maxWidth: "250px",
+                }}
               >
                 {userData?.surName || "N/A"}
               </DocumentNameTag>
@@ -76,7 +84,11 @@ function UserProfileView({ userData }: Props) {
             <Grid item>
               <SubLabelTag>Contact number</SubLabelTag>
               <DocumentNameTag
-                sx={{ wordWrap: "break-word", wordBreak: "break-all", maxWidth: "250px" }}
+                sx={{
+                  wordWrap: "break-word",
+                  wordBreak: "break-all",
+                  maxWidth: "250px",
+                }}
               >
                 {userData?.phoneNumber || "N/A"}
               </DocumentNameTag>

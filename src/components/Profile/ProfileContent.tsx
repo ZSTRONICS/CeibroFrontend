@@ -1,9 +1,5 @@
-import { Grid, Typography } from "@material-ui/core";
-import NameAvatar from "components/Utills/Others/NameAvatar";
-import React from "react";
-import useStyles from "./profileStyles";
-import { Box } from "@mui/material";
 import ProfileViewGlobal from "./ProfileViewGlobal";
+import useStyles from "./profileStyles";
 
 export default function ProfileContent(props: any) {
   const classes = useStyles();
