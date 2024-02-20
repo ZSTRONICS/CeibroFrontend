@@ -110,6 +110,22 @@ const getDrawingById = apiCall({
   path: (payload) => `/project/${payload.other.projectId}/${payload.other.floorId}/${payload.other.drawingId}`,
 });
 
+// UPLOAD_IMAGE_ON_DRAWING
+const uploadImageOnDrawing = apiCall({
+  useV2Route: true,
+  isFormData: true,
+  method: 'post',
+  type: PROJECT_CONFIG.UPLOAD_IMAGE_ON_DRAWING,
+  path: (payload) => `/docs/imageUplaod/${payload.other.drawingId}`,
+});
+
+const getAllDrawingImagesById = apiCall({
+  useV2Route: true,
+  method: 'get',
+  type: PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID,
+  path: (payload) => `/docs/drawingImages/${payload.other.drawingId}`,
+});
+
 const getRecentDrawings = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.GET_RECENT_DRAWINGS,
@@ -511,6 +527,8 @@ function* projectSaga() {
   yield takeLatest(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID, getFloorsByProjectId);
   // drawings
   yield takeLatest(PROJECT_CONFIG.ADD_NEW_DRAWING, addNewDrawing);
+  yield takeLatest(PROJECT_CONFIG.UPLOAD_IMAGE_ON_DRAWING, uploadImageOnDrawing);
+  yield takeLatest(PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID, getAllDrawingImagesById);
   yield takeLatest(PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID, getDrawingById);
   yield takeLatest(PROJECT_CONFIG.GET_RECENT_DRAWINGS, getRecentDrawings);
   // yield takeLatest(PROJECT_CONFIG.ADD_DRAWING_PIN_BY_DRAWING_ID, addDrawingPinByDrawingId);

@@ -315,6 +315,8 @@ export const PROJECT_APIS = {
   addNewDrawing: createAction(PROJECT_CONFIG.ADD_NEW_DRAWING),
   getDrawingById: createAction(PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID),
   getRecentDrawings: createAction(PROJECT_CONFIG.GET_RECENT_DRAWINGS),
+  uploadImageOnDrawing: createAction(PROJECT_CONFIG.UPLOAD_IMAGE_ON_DRAWING),
+  getAllDrawingImagesById: createAction(PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID),
 
   getProjectRolesById: createAction(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID),
   getAllDocuments: createAction(PROJECT_CONFIG.GET_ALL_DOCUMENTS),
