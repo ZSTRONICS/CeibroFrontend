@@ -230,7 +230,12 @@ const LoginForm: React.FC<Props> = (props) => {
               </div>
               <MessageAlert
                 message={alertMessage}
-                severity={showSuccess === true ? "success" : "error"}
+                severity={
+                  showSuccess === true &&
+                  !alertMessage.split(" ").includes("Invalid")
+                    ? "success"
+                    : "error"
+                }
                 showMessage={showAlert}
               />
 

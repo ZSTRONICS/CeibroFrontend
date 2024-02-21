@@ -22,6 +22,6 @@ export const checkValidPhoneNumber = (phoneNumber: string, countryCodeName: Coun
   if (parsedPhoneNumber && parsedPhoneNumber.isValid()) {
     return { isValid: true, msg: "valid" }
   } else {
-    return { isValid: false, msg: "Invlid phone number" }
+    return { isValid: false, msg: "Invalid phone number" }
   }
 }

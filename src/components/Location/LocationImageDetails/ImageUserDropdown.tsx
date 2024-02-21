@@ -43,7 +43,12 @@ const ImageUserDropdown = ({
           <InputLabel
             id="demo-simple-select-label"
             // sx={{ paddingRight: isCustomScreen ? "15px" : null }}
-            sx={{ paddingRight: LocationImageDetail ? "15px" : null }}
+            sx={{
+              paddingRight: LocationImageDetail ? "4px" : null,
+              backgroundColor: "white",
+              paddingLeft: "4px",
+              width: "max-content",
+            }}
           >
             {type === "user" ? "Select User" : "Select Tag"}
           </InputLabel>

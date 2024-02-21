@@ -391,6 +391,7 @@ const NavigationReducer = (
       return {
         ...state,
         loadingAllDrawingImages: true,
+        allDrawingImages:[]
       };
     }
 
@@ -398,7 +399,7 @@ const NavigationReducer = (
       return {
         ...state,
         loadingAllDrawingImages: false,
-        allDrawingImages: action.payload.allDrawingImages
+        allDrawingImages: action.payload.allDrawingImages || action.payload
       }
     }
 

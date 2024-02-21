@@ -246,6 +246,7 @@ const LocationImageDetails = () => {
                   alignItems: "center",
                   padding: "16px",
                   borderBottom: "solid 1px #818181",
+                  maxHeight: "62px",
                 }}
               >
                 <Box>
