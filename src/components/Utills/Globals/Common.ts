@@ -679,11 +679,11 @@ function categorizeProjects(
  * @param {string} filename - The name of the file to be trimmed.
  * @return {string} The trimmed filename.
  */
-function trimFileName(filename: string) {
+function trimFileName( Task:Boolean , filename: string) {
   if (filename.length <= 13) {
     return filename;
   }
-  const start = filename.slice(0, 13);
+  const start = filename.slice(0, Task ? 10 : 13);
   const end = filename.slice(-3);
   const trimmedName = start + "..." + end;
   return trimmedName;

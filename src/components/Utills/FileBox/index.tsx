@@ -86,6 +86,8 @@ const FileBox: React.FC<IProps> = ({
     }
   };
 
+  const Task_Details = true;
+
   return (
     <>
       <Box
@@ -139,7 +141,7 @@ const FileBox: React.FC<IProps> = ({
                       fontSize: "14px",
                     }}
                   >
-                    {trimFileName(f_name)}
+                    {trimFileName(Task_Details, f_name)}
                   </Typography>
                 </Tooltip>
                 {item.size && (

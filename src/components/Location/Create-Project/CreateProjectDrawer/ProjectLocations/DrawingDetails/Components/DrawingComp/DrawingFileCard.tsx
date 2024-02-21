@@ -25,6 +25,8 @@ function DrawingFileCard({ drawing, taskCount }: Props) {
     );
   };
 
+  const Task_Details = true;
+
   return (
     <>
       <Box sx={{ padding: "", width: "100%" }} key={_id}>
@@ -52,7 +54,7 @@ function DrawingFileCard({ drawing, taskCount }: Props) {
                   }}
                   className="textOverflowRow"
                 >
-                  {trimFileName(fileName)}
+                  {trimFileName(Task_Details, fileName)}
                 </Heading2>
               </Tooltip>
               <LabelTag>{`(${taskCount} tasks)`}</LabelTag>

@@ -212,7 +212,7 @@ const LocatoinDrawingList = ({
               s1
                 ? !islgScreenUP
                   ? "21.9%"
-                  : "20.5%"
+                  : "19.8%"
                 : !islgScreenUP
                 ? "9.9%"
                 : "7.9%"
@@ -346,7 +346,7 @@ const LocatoinDrawingList = ({
           sx={{
             position: "relative",
             width: "100%",
-            maxWidth: `${s3 ? "57.2%" : "45.2%"}`,
+            maxWidth: `${s3 ? "57.2%" : "45.3%"}`,
             backgroundColor: "white",
             height: `${windowActualHeight - 68}px`,
             marginTop: "16px",
