@@ -43,9 +43,8 @@ const LocationImageDetails = () => {
   const [isStartExport, setIsStartExport] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const { projectId, groupId, drawingId } = useParams<RouteParams>();
-  const { allProjects, allGroups } = useSelector(
-    (state: RootState) => state.project
-  );
+  const { allProjects, allGroups, allDrawingImages, loadingAllDrawingImages } =
+    useSelector((state: RootState) => state.project);
   const isRenderEffect = useRef<boolean>(true);
   const tags = ["Pipes", "Paint", "Tag 3", "Tag 4", "Tag 5"];
 
@@ -75,6 +74,15 @@ const LocationImageDetails = () => {
     if (isRenderEffect.current) {
       isRenderEffect.current = false;
       allProjects.length === 0 && dispatch(PROJECT_APIS.getAllProjects());
+      if (drawingId && allDrawingImages.length === 0) {
+        dispatch(
+          PROJECT_APIS.getAllDrawingImagesById({
+            other: {
+              drawingId: drawingId,
+            },
+          })
+        );
+      }
     }
   }, []);
 
@@ -142,9 +150,6 @@ const LocationImageDetails = () => {
           history.push(
             `/location/project/${projectId}/group/${event.target.value}/drawing/image`
           );
-          // }
-
-          // setDrawingNotFound(true);
         }
         break;
 

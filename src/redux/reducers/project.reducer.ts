@@ -11,7 +11,7 @@ import {
 import { ActionInterface } from "./appReducer";
 
 import projectReduxConfigs from "config/project.config";
-import { Drawing, Floor } from "constants/interfaces";
+import { Drawing, DrawingImageInterface, Floor } from "constants/interfaces";
 import {
   ProjectGroupInterface,
   ProjectMemberInterface,
@@ -39,6 +39,8 @@ interface ProjectReducerInt {
   allGroups: Group[];
   allFloors: Floor[];
   isProjectsLoading: boolean;
+  allDrawingImages: DrawingImageInterface[];
+  loadingAllDrawingImages: boolean;
   drawerOpen: boolean;
   menue: number;
   isFloorLoading: boolean;
@@ -96,6 +98,8 @@ interface ProjectReducerInt {
 const projectReducer: ProjectReducerInt = {
   allProjects: [],
   isProjectsLoading: false,
+  allDrawingImages: [],
+  loadingAllDrawingImages: false,
   projectFloors: [],
   selectedDrawingFiles: [],
   selectedGroupName: '',
@@ -381,6 +385,30 @@ const NavigationReducer = (
         isfloorCreating: true,
       };
     }
+
+    // DRAWINGS
+    case requestPending(PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID): {
+      return {
+        ...state,
+        loadingAllDrawingImages: true,
+      };
+    }
+
+    case requestSuccess(PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID): {
+      return {
+        ...state,
+        loadingAllDrawingImages: false,
+        allDrawingImages: action.payload.allDrawingImages
+      }
+    }
+
+    case requestFail(PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID): {
+      return {
+        ...state,
+        loadingAllDrawingImages: false,
+      };
+    }
+
     case requestSuccess(PROJECT_CONFIG.CREATE_FLOOR): {
       return {
         ...state,

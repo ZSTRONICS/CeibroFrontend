@@ -59,3 +59,49 @@ export interface DrawingInterface {
 }
 
 export interface UploadedBy extends UserInfo { }
+export interface PinImage {
+    _id: string;
+    fileName: string;
+    fileSize: string;
+    fileType: string;
+    fileTag: string;
+    userFileTags: string[];
+    fileUrl: string;
+    uploadedBy: UserInfo;
+    uploadStatus: string;
+    access: string[];
+    moduleType: string;
+    moduleId: string;
+    floor: string;
+    projectId: string;
+    groupId: string;
+    uploaderlocalFilePath: string | null;
+    uploaderLocalId: string | null;
+    hasComment: boolean;
+    comment: string;
+    version: number;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+export interface DrawingImageInterface {
+    _id: string;
+    pinUID: number;
+    type: string;
+    page_width: number;
+    page_height: number;
+    x_coord: number;
+    y_coord: number;
+    pinPhotoUrl: string;
+    pinImages: PinImage[];
+    isSinglePhoto: boolean;
+    creator: UserInfo;
+    taskData: null;
+    tags: string[];
+    drawingId: string;
+    thumbnailId: string | null;
+    thumbnail: string;
+    createdAt: string;
+    updatedAt: string;
+}

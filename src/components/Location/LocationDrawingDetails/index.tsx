@@ -26,7 +26,7 @@ function LocationDrawingDetails() {
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const isRenderEffect = useRef<boolean>(true);
   let allDrawingTaskList: ITask[] = [];
-  const { allProjects, allGroups } = useSelector(
+  const { allProjects, allGroups, allDrawingImages } = useSelector(
     (state: RootState) => state.project
   );
   let selectedGroup: any = findData(allGroups, "_id", groupId);
@@ -47,6 +47,15 @@ function LocationDrawingDetails() {
       allProjects.length === 0 && dispatch(PROJECT_APIS.getAllProjects());
       allTasksAllEvents.allTasks.length === 0 &&
         dispatch(taskActions.getAllTasksAllEvents());
+      if (drawingId && allDrawingImages.length === 0) {
+        dispatch(
+          PROJECT_APIS.getAllDrawingImagesById({
+            other: {
+              drawingId: drawingId,
+            },
+          })
+        );
+      }
     }
     dispatch(taskActions.resetDrawingFilters());
   }, []);
