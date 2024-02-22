@@ -158,7 +158,10 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
                   >
                     <IconButton
                       sx={{ padding: 0 }}
-                      onClick={() => handleGroupFavUnFav(group)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleGroupFavUnFav(group);
+                      }}
                     >
                       {isFavoriteByMe ? <FavIcon /> : <UnFavIcon />}
                     </IconButton>

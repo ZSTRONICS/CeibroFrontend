@@ -10,6 +10,7 @@ const StyledTypographyBox = ({ text }: IProps) => (
       width: "100%",
       height: "100%",
       marginLeft: "16px",
+      marginTop: "3px",
     }}
   >
     <Typography

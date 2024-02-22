@@ -14,7 +14,7 @@ export const MinicardTypography = styled("p")({
   paddingTop: "0px",
   marginTop: "4px",
   fontWeight: "500",
-  textTransform: 'capitalize',
+  textTransform: "capitalize",
 });
 export const Minicardheading = styled("div")({
   color: "#131516",
@@ -32,7 +32,6 @@ export const Minicardheading = styled("div")({
   backgroundColor: "white",
   fontWeight: "500",
   marginTop: "3px",
-
 });
 
 // minicardhead
@@ -58,8 +57,7 @@ export const HeadStyles: Styles = {
     display: "flex",
     alignItems: "center",
     width: "100%",
-    marginLeft: '8px',
-
+    marginLeft: "8px",
   },
   head_search: {
     display: "flex",
@@ -103,7 +101,7 @@ export const HeadStyles: Styles = {
 export const tabStyles = {
   color: "#818181",
   border: "solid 1px #818181",
-  borderRadius: "7px",
+  borderRadius: "5px",
   fontSize: "11px",
   marginTop: "16px",
   minHeight: "25px",

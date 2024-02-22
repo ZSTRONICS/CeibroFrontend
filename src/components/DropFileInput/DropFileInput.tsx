@@ -125,6 +125,7 @@ const DragAndDrop: React.FC<IProps> = ({
                   <CloudUploadIconForPic />
                 </Box>
                 <input
+                  style={{ border: "solid 1px green" }}
                   id="btn-upload"
                   name="btn-upload"
                   hidden

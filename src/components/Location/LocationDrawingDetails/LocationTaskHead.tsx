@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { HeadStyles, tabStyles } from "./MiniCardTaskStyle";
 import TaskFilters from "./TaskFilters";
-
 interface IProps {
   isSmallView: boolean;
   setTaskHeaderHeiht: (value: number) => void;
@@ -89,9 +88,9 @@ const LocationTaskHead = ({
           <Tab
             sx={{
               ...tabStyles,
-              //  marginRight: '10px',
-              minWidth: "60px",
-              maxWidth: "60px",
+              minWidth: "64px",
+              maxWidth: "6px",
+              transform: "TranslateY(-4px)",
             }}
             label="Task"
             value="1"
@@ -99,10 +98,11 @@ const LocationTaskHead = ({
           <Tab
             sx={{
               ...tabStyles,
-              marginLeft: Taskbtn ? "16px" : "",
-              minWidth: "60px",
-              maxWidth: "60px",
+              marginLeft: Taskbtn ? "5px" : "",
+              minWidth: "64px",
+              maxWidth: "64px",
               transition: "all linear 0.30s",
+              transform: "TranslateY(-4px)",
               "@media screen and (max-width: 900px)": {
                 marginLeft: "0px",
               },

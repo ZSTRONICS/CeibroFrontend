@@ -442,7 +442,7 @@ function CreateNewTask() {
                     }}
                   >
                     <FormControlLabel
-                      sx={{ color: "black" }}
+                      sx={{ color: "black", width: "max-content" }}
                       control={
                         <Checkbox
                           sx={{
@@ -463,7 +463,7 @@ function CreateNewTask() {
                       name="doneImageRequired"
                     />
                     <FormControlLabel
-                      sx={{ color: "black" }}
+                      sx={{ color: "black", width: "max-content" }}
                       control={
                         <Checkbox
                           sx={{

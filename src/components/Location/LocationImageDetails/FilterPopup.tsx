@@ -7,10 +7,11 @@ import SortByDropdown from "./SortByDropdown";
 interface IProps {
   handleChangeValues: any;
   ShowPopup?: boolean;
+  isSmall?: boolean;
   handlePopUpClose?: () => void;
 }
 const FilterPopup = (props: IProps) => {
-  const { handleChangeValues, ShowPopup, handlePopUpClose } = props;
+  const { handleChangeValues, ShowPopup, handlePopUpClose, isSmall } = props;
 
   const AllInputsFilds = (
     <>
@@ -33,7 +34,7 @@ const FilterPopup = (props: IProps) => {
             display: "flex",
             gap: "16px",
             alignItems: "center",
-            width: "calc(100% - 20px)",
+            width: "calc(100% - 0px)",
             borderBottom: ShowPopup ? "solid 1px #818181" : "none",
           }}
         >
@@ -43,6 +44,7 @@ const FilterPopup = (props: IProps) => {
             label={"user"}
             type="user"
             LocationImageDetail={true}
+            isSmall={isSmall}
           />
           <ImageUserDropdown
             ShowPop={ShowPopup}
@@ -50,6 +52,7 @@ const FilterPopup = (props: IProps) => {
             label={"tags"}
             type="tag"
             LocationImageDetail={true}
+            isSmall={isSmall}
           />
           <CustomDateRangePicker ShowPop={ShowPopup} ImageDetail={true} />
           {ShowPopup ? null : <SortByDropdown ShowPop={ShowPopup} />}

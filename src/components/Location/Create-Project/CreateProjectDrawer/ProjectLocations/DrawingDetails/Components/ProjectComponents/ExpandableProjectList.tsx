@@ -128,12 +128,12 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
           <Button
             disableRipple
             component="label"
-            sx={{ padding: "5px 5px" }}
+            sx={{ padding: "5px 8px", textTransform: "unset" }}
             onClick={() => openModal()}
             variant="contained"
           >
-            <assets.AddIcon sx={{ color: "white" }} />
-            new
+            <assets.AddIcon sx={{ color: "white", marginRight: "10px" }} />
+            New
           </Button>
         </CustomStack>
       </Box>

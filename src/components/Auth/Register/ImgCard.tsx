@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
@@ -36,6 +37,11 @@ function ImgCard(props: IProps) {
   return (
     <Card sx={{ maxWidth: 345, height: 300, margin: cardMargin }}>
       <CardHeader
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
         avatar={<> </>}
         action={
           <>
@@ -46,7 +52,16 @@ function ImgCard(props: IProps) {
             )}
           </>
         }
-        title={props.title}
+        title={
+          <Box
+            className="ellipsis"
+            sx={{
+              maxWidth: "270px",
+            }}
+          >
+            {props.title}
+          </Box>
+        }
       />
       {props.showSkeleton === true && imageLoaded === false && (
         <Skeleton
@@ -66,7 +81,6 @@ function ImgCard(props: IProps) {
           <p>Unable to preview</p>
         </object>
       )}
-
       <CardMedia
         onLoad={handleImageLoad}
         component="img"
