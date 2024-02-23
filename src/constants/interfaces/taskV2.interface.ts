@@ -28,6 +28,7 @@ export interface AllTaskFromMeInterface {
 export interface ITask {
   _id: string;
   dueDate: string;
+  title: string;
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
   description: string;

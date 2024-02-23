@@ -16,12 +16,15 @@ interface FooterPropsType {
   handleClose: () => void;
   isCommentUi?: boolean;
   isForwardUi?: boolean;
+  acceptImgOnly?: boolean;
+  FooterPosition?: "fixed" | "reletive" | "absolute" | "sticky";
   showHeader: boolean;
   disabled: boolean;
   isSubmitted: boolean;
 }
 
 const Footer = (props: FooterPropsType) => {
+  const { FooterPosition, acceptImgOnly } = props;
   const handleGetLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -38,7 +41,7 @@ const Footer = (props: FooterPropsType) => {
     const input = document.createElement("input");
     input.type = "file";
     input.multiple = true;
-    input.accept = validTypes.join(", ");
+    input.accept = acceptImgOnly ? "image/*" : validTypes.join(", ");
     input.onchange = (event) => {
       const files = (event.target as HTMLInputElement).files;
       if (files && !_.isEmpty(files)) {
@@ -89,7 +92,9 @@ const Footer = (props: FooterPropsType) => {
     props.handleClose();
   };
 
-  const position: string = props.showHeader ? "absolute" : "fixed";
+  const position: string = props.showHeader
+    ? "absolute"
+    : (FooterPosition && FooterPosition) || "fixed";
   return (
     <Box
       sx={{
@@ -138,6 +143,7 @@ const Footer = (props: FooterPropsType) => {
         <>
           {props.handleGetLocationValue && (
             <CustomButton
+              sx={{ opacity: 0 }}
               disabled
               label={"Location"}
               icon={<FmdGoodOutlinedIcon />}

@@ -654,7 +654,7 @@ function categorizeProjects(
   searchQuery: string | null,
   conditionCallback: (project: Project) => string | null
 ) {
- 
+
   return projects.reduce(
     (categorized: Record<string, Project[]>, project) => {
       // Check if the project matches the search query
@@ -679,7 +679,7 @@ function categorizeProjects(
  * @param {string} filename - The name of the file to be trimmed.
  * @return {string} The trimmed filename.
  */
-function trimFileName( Task:Boolean , filename: string) {
+function trimFileName(Task: Boolean, filename: string) {
   if (filename.length <= 13) {
     return filename;
   }

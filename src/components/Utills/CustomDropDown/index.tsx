@@ -165,9 +165,9 @@ function CustomDropDown(props: IProps) {
     //   value: searchQuery,
     // };
     // setFilterData((prevData) => [...prevData, newItem]);
-    setSelected(searchQuery);
     createCallback && createCallback(label, searchQuery);
     setAllFilterData({ all: filteredData, recent: options.recentOptions });
+    setSelected(searchQuery);
     handleClose();
   };
 
@@ -197,7 +197,7 @@ function CustomDropDown(props: IProps) {
   };
 
   const handleDeleteItem = (option: OptionType) => {
-    if (label === "Topic") {
+    if (label === "Title") {
       dispatch(
         taskActions.deleteTopic({
           other: { topicId: option._id },
@@ -239,7 +239,7 @@ function CustomDropDown(props: IProps) {
         variant="standard"
         sx={{ marginTop: "14px", width: "100%", maxWidth: "100%" }}
       >
-        {label === "Topic" && selected.length === 0 && (
+        {label === "Title" && selected.length === 0 && (
           <RequiredFieldMark>*</RequiredFieldMark>
         )}
         <MUIInputLabel id="controlled-open-select-label">{label}</MUIInputLabel>
@@ -322,7 +322,7 @@ function CustomDropDown(props: IProps) {
                   error={searchQuery.length >= 100}
                   helperText={`${
                     searchQuery.length >= 100
-                      ? "Topic max length is 100 characters"
+                      ? "Title max length is 100 characters"
                       : ""
                   }`}
                 />
@@ -478,7 +478,7 @@ function CustomDropDown(props: IProps) {
                             </Typography>
                           </Box>
                           {((label === "Floor" && !showAllFloorItems) ||
-                            label === "Topic") && (
+                            label === "Title") && (
                             <IconButton
                               edge="end"
                               sx={{

@@ -9,7 +9,6 @@ interface ExpandedHeaderViewProps {
 }
 
 export default function ExpandedHeaderView({
-  topic,
   createdBy,
   project,
   sentTo,

@@ -54,6 +54,7 @@ function TaskDetails(props: IProps) {
     _id,
     doneCommentsRequired,
     doneImageRequired,
+    title,
   } = task;
   const showFullView = localStorage.getItem("showFullView");
   const [isShowFullView, setIsShowFullView] = useState(false);
@@ -157,7 +158,7 @@ function TaskDetails(props: IProps) {
       >
         <DetailsHeader
           assignedToState={assignedToState}
-          topic={topic}
+          title={title}
           creator={creator}
           project={project}
           invitedNumbers={invitedNumbers}

@@ -359,7 +359,10 @@ const LocatoinDrawingList = ({
           }}
         >
           {selectedDrawing && selectedDrawing.fileUrl ? (
-            <DocumentReader selectedDrawingUrl={selectedDrawing.fileUrl} />
+            <DocumentReader
+              setPageDimensions={() => {}}
+              selectedDrawingUrl={selectedDrawing.fileUrl}
+            />
           ) : (
             <Heading2
               sx={{

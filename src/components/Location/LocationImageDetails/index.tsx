@@ -13,7 +13,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@mui/material/styles";
 import { Heading2 } from "components/CustomTags";
+import CustomModal from "components/Modal";
 import DocumentReader from "components/pdfviewer";
+import { useOpenCloseModal } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +32,7 @@ import ExportList from "./ExportList";
 import FilterPopup from "./FilterPopup";
 import ImageCarousel from "./ImageCarousel";
 import SortByDropdown from "./SortByDropdown";
+import UploadImgOnDrawing from "./UploadImgOnDrawing";
 import "./location-image.css";
 interface RouteParams {
   projectId: string;
@@ -40,6 +43,7 @@ interface RouteParams {
 const LocationImageDetails = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isStartExport, setIsStartExport] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const { projectId, groupId, drawingId } = useParams<RouteParams>();
@@ -51,8 +55,16 @@ const LocationImageDetails = () => {
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [pdfPageDimension, setPdfPageDimension] = useState<{
+    width: number;
+    height: number;
+  }>({
+    width: 0,
+    height: 0,
+  });
+
   const [drawingNotFound, setDrawingNotFound] = useState<boolean | null>(null);
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
@@ -87,12 +99,12 @@ const LocationImageDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (!projectId || projectId == "") {
+    if (!projectId || projectId === "") {
       history.replace(`/location/${allProjects[0]._id}`);
-    } else if (!groupId || groupId == "") {
+    } else if (!groupId || groupId === "") {
       let selectedGroup: any = findData(allGroups, "_id", groupId);
       history.replace(`/location/${projectId}/${selectedGroup._id}`);
-    } else if (!drawingId || drawingId == "") {
+    } else if (!drawingId || drawingId === "") {
       let selectedGroup: any = findData(allGroups, "_id", groupId);
       let selectedDrawing: any = findData(
         selectedGroup.drawings,
@@ -321,6 +333,7 @@ const LocationImageDetails = () => {
                     fontWeight: "700",
                     lineHeight: "16px",
                     borderRadius: "4px",
+                    px: "4px",
                     backgroundColor: "#0076C8",
                     display: "flex",
                     alignItems: "center",
@@ -335,13 +348,24 @@ const LocationImageDetails = () => {
                       width: "225px",
                     },
                     "&:hover": {
-                      backgroundColor: "#0076C8", // Change the background color on hover
-                      // Add additional hover styles as needed
+                      backgroundColor: "#0076C8",
                     },
                   }}
                   onClick={() => setIsStartExport(!isStartExport)}
                 >
                   {!isStartExport ? "Start Export" : "End Export"}
+                </Button>
+                <Button
+                  disableRipple
+                  variant="contained"
+                  sx={{
+                    textTransform: "unset",
+                    padding: "4px 3px",
+                    fontWeight: "700",
+                  }}
+                  onClick={openModal}
+                >
+                  + Photo
                 </Button>
               </Box>
               {isFiltericonShow ? (
@@ -598,6 +622,7 @@ const LocationImageDetails = () => {
                   >
                     <DocumentReader
                       selectedDrawingUrl={projectData.selectedDrawing?.fileUrl}
+                      setPageDimensions={setPdfPageDimension}
                     />
                   </Box>
                 ) : (
@@ -633,6 +658,25 @@ const LocationImageDetails = () => {
           <ExportList handleClose={handleClose} />
         </Box>
       </Modal>
+      {isOpen === true && (
+        <CustomModal
+          maxWidth={"sm"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={true}
+          title="Add image on drawing"
+          isOpen={isOpen}
+          handleClose={closeModal}
+          children={
+            <UploadImgOnDrawing
+              pdfPageDimension={pdfPageDimension}
+              closeModal={closeModal}
+              drawingId={drawingId}
+            />
+          }
+        />
+      )}
     </>
   );
 };

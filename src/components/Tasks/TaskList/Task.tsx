@@ -68,12 +68,7 @@ const Task = () => {
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
   const subTaskKey = subtask ?? "allTaskFromMe";
-  const propertiesToSearch = [
-    "taskUID",
-    "topic.topic",
-    "description",
-    "creator",
-  ];
+  const propertiesToSearch = ["taskUID", "title", "description", "creator"];
   const getTaskDataRequired = () => {
     const subtaskPropertyMapping: any = {
       allTaskToMe: ["new", "ongoing", "done"],

@@ -1,5 +1,4 @@
 import {
-  DELETE_PROJECT,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_MEMBERS,
   PROJECT_CONFIG,
@@ -282,12 +281,22 @@ const NavigationReducer = (
       };
     }
 
-    case requestSuccess(DELETE_PROJECT): {
+    case PROJECT_CONFIG.IMAGE_UPLOADED_ON_DRAWING: {
+      const isExistingPinData = state.allDrawingImages.findIndex(drawing => drawing._id === action.payload._id);
+      if (isExistingPinData === -1) {
+        state.allDrawingImages.unshift(action.payload);
+      }
       return {
         ...state,
-        selectedProject: null,
       };
     }
+
+    // case requestSuccess(DELETE_PROJECT): {
+    //   return {
+    //     ...state,
+    //     selectedProject: null,
+    //   };
+    // }
 
     case projectReduxConfigs.OPEN_DRAWER:
       return {
@@ -391,7 +400,7 @@ const NavigationReducer = (
       return {
         ...state,
         loadingAllDrawingImages: true,
-        allDrawingImages:[]
+        allDrawingImages: []
       };
     }
 

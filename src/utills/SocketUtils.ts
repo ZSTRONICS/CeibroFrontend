@@ -82,12 +82,20 @@ export const useSocket = () => {
                     payload: data,
                 });
                 break;
+            case PROJECT_CONFIG.IMAGE_UPLOADED_ON_DRAWING:
+                dispatch({
+                    type: PROJECT_CONFIG.IMAGE_UPLOADED_ON_DRAWING,
+                    payload: data,
+                });
+                break;
             case USER_CONFIG.USER_UPDATED:
                 dispatch({
                     type: USER_CONFIG.USER_UPDATED_IN_STORE,
                     payload: data,
                 });
                 break;
+
+            // TASK_CONFIG
             case TASK_CONFIG.TOPIC_CREATED:
                 dispatch({
                     type: TASK_CONFIG.PUSH_TOPIC_IN_STORE,

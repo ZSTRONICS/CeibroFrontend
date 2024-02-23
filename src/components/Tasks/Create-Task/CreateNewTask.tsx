@@ -37,11 +37,14 @@ import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 
 var initialValues = {
-  dueDate: "",
-  topic: "",
+  title: "",
+  tags: [],
+  confirmer: "",
   project: "",
-  assignedToState: [],
   creator: "",
+  assignedToState: [],
+  viewer: [],
+  dueDate: "",
   description: "",
   hasPendingFilesToUpload: false,
   doneImageRequired: false,
@@ -93,17 +96,16 @@ function CreateNewTask() {
   }, []);
   useEffect(() => {
     if (Topics && !isEmpty(Topics)) {
-      // const topics = [...Topics.allTopics, ...Topics.recentTopics];
       const getAllTopicOptions = getDropdownOptions(
         //todo null receive in array from backend
-        Topics.allTopics.filter((item: any) => item != null),
+        Topics.allTopics.filter(Boolean),
         "topic",
         "topic",
         "_id"
       );
       const getRecentTopicOptions = getDropdownOptions(
         //todo null receive in array from backend
-        Topics.recentTopics.filter((item: any) => item != null),
+        Topics.recentTopics.filter(Boolean),
         "topic",
         "topic",
         "_id"
@@ -113,7 +115,7 @@ function CreateNewTask() {
         recentOptions: getRecentTopicOptions,
       });
     }
-  }, [Topics, Topics.allTopics]);
+  }, [Topics, Topics.allTopics.length]);
 
   useEffect(() => {
     if (allProjects && !isEmpty(allProjects)) {
@@ -137,7 +139,7 @@ function CreateNewTask() {
         recentOptions: getRecentProjectOptions,
       });
     }
-  }, [allProjects]);
+  }, [allProjects.length]);
 
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
@@ -148,7 +150,7 @@ function CreateNewTask() {
 
   const handleCreateCallback = (type: string, label: string) => {
     switch (type) {
-      case "Topic":
+      case "Title":
         dispatch(
           taskActions.createTopic({
             body: {
@@ -192,6 +194,7 @@ function CreateNewTask() {
     name: keyof CreateNewTaskFormType
   ) => {
     if (value === undefined) {
+      console.log("name", name, value);
       setSelectedData((prevSelectedData) => ({
         ...prevSelectedData,
         [name]: initialValues[name],
@@ -237,7 +240,7 @@ function CreateNewTask() {
   const handleDisableSubmit = () => {
     let valid = true;
     valid =
-      selectedData.topic !== "" &&
+      selectedData.title !== "" &&
       (selectedData.assignedToState.length > 0 ||
         (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
         ? false
@@ -247,18 +250,26 @@ function CreateNewTask() {
     }
     return isSubmit || valid;
   };
+  function stringifyFormData(data: any, formData: FormData, key: string) {
+    formData.append(key, JSON.stringify(data));
+  }
+
   const handleCreateTask = () => {
     const formData = new FormData();
     setIsSubmit(true);
     const filesToUpload = [...selectedImages, ...selectedDocuments];
-    formData.append("dueDate", selectedData.dueDate || "");
-    formData.append("topic", selectedData.topic);
+    formData.append("title", selectedData.title);
+    stringifyFormData(selectedData.tags, formData, "tags");
+    formData.append("confirmer", selectedData.confirmer);
     formData.append("project", selectedData.project || "");
     formData.append("creator", user._id);
-    formData.append(
-      "assignedToState",
-      JSON.stringify(JSON.stringify(selectedData.assignedToState))
+    stringifyFormData(
+      selectedData.assignedToState,
+      formData,
+      "assignedToState"
     );
+    formData.append("dueDate", selectedData.dueDate || "");
+    stringifyFormData(selectedData.viewer, formData, "viewer");
     formData.append("description", selectedData.description || "");
     formData.append(
       "doneImageRequired",
@@ -268,10 +279,8 @@ function CreateNewTask() {
       "doneCommentsRequired",
       String(selectedData.doneCommentsRequired)
     );
-    formData.append(
-      "invitedNumbers",
-      JSON.stringify(JSON.stringify(selectedData.invitedNumbers))
-    );
+    stringifyFormData(selectedData.invitedNumbers, formData, "invitedNumbers");
+
     if (selectedImages.length > 0 || selectedDocuments.length > 0) {
       try {
         if (!filesToUpload || filesToUpload.length === 0) {
@@ -338,8 +347,8 @@ function CreateNewTask() {
             }}
           >
             <CustomDropDown
-              name="topic"
-              label={"Topic"}
+              name="title"
+              label={"Title"}
               options={topicOptions}
               createCallback={handleCreateCallback}
               handleChangeValues={handleChangeValues}

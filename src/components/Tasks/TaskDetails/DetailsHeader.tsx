@@ -3,14 +3,14 @@ import { Box } from "@mui/system";
 import assets from "assets";
 import { CustomDivider } from "components/CustomTags";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
-import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
+import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import ExpandedHeaderView from "./ExpandedHeaderView";
 
 interface IProps {
   assignedToState: AssignedUserState[];
-  topic: Topic;
+  title: string;
   creator: UserInfo;
   project: Project;
   invitedNumbers: InvitedNumber[];
@@ -23,7 +23,7 @@ interface InfoBoxProps {
 }
 
 export default function DetailsHeader(props: IProps) {
-  const { assignedToState, project, topic, creator, invitedNumbers } = props;
+  const { assignedToState, project, title, creator, invitedNumbers } = props;
   const [isExpanded, setIsExpanded] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
   const infoBoxRef = useRef();
@@ -206,8 +206,8 @@ export default function DetailsHeader(props: IProps) {
           <Box>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               {renderInfoBox({
-                label: "Topic",
-                value: capitalizeFirstLetter(topic.topic) || "N/A",
+                label: "Title",
+                value: capitalizeFirstLetter(title) || "N/A",
               })}
               {isReadMore && (
                 <IconButton
@@ -252,9 +252,7 @@ export default function DetailsHeader(props: IProps) {
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <DespcriptionBox
                 description={
-                  topic?.topic
-                    ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1)
-                    : "N/A"
+                  title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"
                 }
                 title="Topic"
                 despFontSize="14px"
@@ -274,9 +272,7 @@ export default function DetailsHeader(props: IProps) {
 
             <ExpandedHeaderView
               topic={
-                topic?.topic
-                  ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1)
-                  : "N/A"
+                title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"
               }
               createdBy={data.createdBY.value}
               project={data.project.value}

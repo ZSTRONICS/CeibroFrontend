@@ -43,12 +43,13 @@ const TaskCard = React.memo((props: IProps) => {
     dueDate,
     createdAt,
     description,
-    topic,
+
     creator,
     isCreator,
     userSubState,
     assignedToState,
     seenBy,
+    title,
   } = task;
   const taskCreatedAt = momentLocalDateTime(createdAt).split(" ");
   const formattedDate = convertDateFormat(dueDate);
@@ -110,22 +111,24 @@ const TaskCard = React.memo((props: IProps) => {
         minWidth: 290,
         maxWidth: 320,
         cursor: "pointer",
-        border: `${!isLocationTask && isCanceled
+        border: `${
+          !isLocationTask && isCanceled
             ? `3px solid ${cardBorderColor}`
             : isLocationTask
-              ? "none"
-              : "1px solid #818181"
-          }`,
+            ? "none"
+            : "1px solid #818181"
+        }`,
         borderRadius: !isLocationTask ? "8px" : "",
         borderTopRightRadius: isSelectedTask ? "15px" : "10px",
         borderTopLeftRadius: "5px",
         borderTopStyle: "none",
-        WebkitBoxShadow: `${isSelectedTask === true
+        WebkitBoxShadow: `${
+          isSelectedTask === true
             ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
             : !seenBy.includes(userId)
-              ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
-              : "none"
-          }`,
+            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+            : "none"
+        }`,
         // background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         background: isSelectedTask ? "#EBF5FB" : "",
         "&:hover": {
@@ -150,10 +153,11 @@ const TaskCard = React.memo((props: IProps) => {
             backgroundColor: "white",
             borderTopLeftRadius: "4px",
             ml: "-1px",
-            WebkitBoxShadow: `${isSelectedTask || isMouseOver
+            WebkitBoxShadow: `${
+              isSelectedTask || isMouseOver
                 ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
                 : "none"
-              }`,
+            }`,
           }}
         >
           {taskUID}
@@ -254,9 +258,7 @@ const TaskCard = React.memo((props: IProps) => {
             WebkitLineClamp: 1,
           }}
         >
-          {topic?.topic
-            ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1)
-            : "N/A"}
+          {title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"}
         </SubHeadingTag>
 
         <SubLabelTag
@@ -277,4 +279,3 @@ const TaskCard = React.memo((props: IProps) => {
 });
 
 export { TaskCard };
-

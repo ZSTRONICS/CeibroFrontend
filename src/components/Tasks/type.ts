@@ -17,8 +17,11 @@ export interface AssignedToStateType {
   state: string;
 }
 export interface CreateNewTaskFormType {
+  title: string,
+  tags: string[],
+  confirmer: string,
+  viewer: string[],
   dueDate?: string;
-  topic: string;
   project?: string;
   assignedToState: AssignedToStateType[];
   creator: string;
