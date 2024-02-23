@@ -103,7 +103,14 @@ function CreateProject(props: IProps) {
             inputProps={{ style: { background: "white" } }}
           />
         </Box>
-        <CBox sx={{ height: "240px", maxWidth: "390px", width: "100%", my: 1 }}>
+        <CBox
+          sx={{
+            height: "240px",
+            maxWidth: "390px",
+            width: "100%",
+            my: 1,
+          }}
+        >
           <DragAndDrop
             setFile={setFile}
             deleteFile={() => {

@@ -154,7 +154,13 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ width: "100%", pr: "5px", display: "flex" }}>
+              <Box
+                sx={{
+                  width: "100%",
+                  pr: "5px",
+                  display: "flex",
+                }}
+              >
                 <Heading2
                   sx={{
                     width: "30%",

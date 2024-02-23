@@ -14,6 +14,7 @@ interface ImageUserDropdownProps {
   type: "user" | "tag";
   ShowPop?: Boolean;
   LocationImageDetail?: Boolean;
+  isSmall?: Boolean;
 }
 
 const ImageUserDropdown = ({
@@ -22,6 +23,7 @@ const ImageUserDropdown = ({
   type,
   ShowPop,
   LocationImageDetail,
+  isSmall,
 }: ImageUserDropdownProps) => {
   const theme = useTheme();
   const isCustomScreen = useMediaQuery(theme.breakpoints.between(960, 1200));
@@ -50,7 +52,13 @@ const ImageUserDropdown = ({
               width: "max-content",
             }}
           >
-            {type === "user" ? "Select User" : "Select Tag"}
+            {type === "user"
+              ? !isSmall
+                ? "Select User"
+                : "User"
+              : !isSmall
+              ? "Select Tag"
+              : "Tag"}
           </InputLabel>
           <Select
             labelId="demo-simple-select-label"

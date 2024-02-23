@@ -198,6 +198,7 @@ const LocationImageDetails = () => {
   const isFiltericonShow = useMediaQuery(theme.breakpoints.down(1366));
   const isLarge = useMediaQuery(theme.breakpoints.up(1400));
   const isMeduim = useMediaQuery(theme.breakpoints.down(1400));
+  const isSmall = useMediaQuery(theme.breakpoints.down(1200));
 
   const handleChangeValues = () => {};
 
@@ -421,6 +422,7 @@ const LocationImageDetails = () => {
                           handleChangeValues={handleChangeValues}
                           ShowPopup={true}
                           handlePopUpClose={handlePopUpClose}
+                          isSmall={isSmall}
                         />
                       </MenuItem>
                     </Menu>
