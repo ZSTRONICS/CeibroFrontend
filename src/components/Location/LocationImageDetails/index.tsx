@@ -15,9 +15,11 @@ import { useTheme } from "@mui/material/styles";
 import { Heading2 } from "components/CustomTags";
 import CustomModal from "components/Modal";
 import DocumentReader from "components/pdfviewer";
+import { DrawingImageInterface, PinImage } from "constants/interfaces";
+import { formatDateWithTime } from "helpers/project.helper";
 import { useOpenCloseModal } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useHistory, useParams } from "react-router-dom";
@@ -45,6 +47,12 @@ const LocationImageDetails = () => {
   const dispatch = useDispatch();
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isStartExport, setIsStartExport] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState<UserInfo[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [filterUsers, setFilterUsers] = useState<UserInfo[]>();
+  const [filterTags, setFilterTags] = useState<string[]>();
+  const [pinImages, setPinImages] = useState<PinImage[]>([]);
+  const [selectedPinImage, setSelectedPinImage] = useState<PinImage>();
   const [showMore, setShowMore] = useState(false);
   const { projectId, groupId, drawingId } = useParams<RouteParams>();
   const { allProjects, allGroups, allDrawingImages, loadingAllDrawingImages } =
@@ -68,6 +76,28 @@ const LocationImageDetails = () => {
   const [drawingNotFound, setDrawingNotFound] = useState<boolean | null>(null);
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
+
+  useEffect(() => {
+    const userMap = new Map();
+    const tagMap = new Map();
+
+    allDrawingImages.forEach((item: DrawingImageInterface) => {
+      userMap.set(item.creator._id, item.creator);
+      item.tags.forEach((tag) => tagMap.set(tag, tag));
+    });
+
+    const uniqueUsers: UserInfo[] = Array.from(userMap.values());
+    const uniqueTags = Array.from(tagMap.values());
+    const images = allDrawingImages.flatMap(
+      (drawingImages: DrawingImageInterface) => drawingImages.pinImages
+    );
+    if (images.length > 0) {
+      setPinImages(images);
+      setSelectedPinImage(images[0]);
+    }
+    setFilterUsers(uniqueUsers);
+    setFilterTags(uniqueTags);
+  }, [allDrawingImages]);
 
   const style = {
     position: "absolute" as "absolute",
@@ -200,7 +230,38 @@ const LocationImageDetails = () => {
   const isMeduim = useMediaQuery(theme.breakpoints.down(1400));
   const isSmall = useMediaQuery(theme.breakpoints.down(1200));
 
-  const handleChangeValues = () => {};
+  const handleChangeValues = (
+    typ: "user" | "tag",
+    value: UserInfo | string,
+    checked: boolean
+  ) => {
+    switch (typ) {
+      case "user":
+        const updateSelectedUser = [...selectedUsers];
+        if (checked) {
+          updateSelectedUser.push(value);
+        } else {
+          const foundIndex = updateSelectedUser.findIndex(
+            (user) => user._id == value._id
+          );
+          updateSelectedUser.splice(foundIndex, 1);
+        }
+        setSelectedUsers(updateSelectedUser);
+        break;
+      case "tag":
+        const updateSelectedTags = [...selectedTags];
+        if (checked) {
+          updateSelectedTags.push(value);
+        } else {
+          const foundIndex = updateSelectedTags.findIndex(
+            (tag) => tag == value
+          );
+          updateSelectedTags.splice(foundIndex, 1);
+        }
+        setSelectedTags(updateSelectedTags);
+        break;
+    }
+  };
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -210,6 +271,10 @@ const LocationImageDetails = () => {
 
   const handlePopUpClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCarouselChange = (index: number, item: ReactNode) => {
+    setSelectedPinImage(pinImages[index]);
   };
 
   return (
@@ -423,6 +488,10 @@ const LocationImageDetails = () => {
                           ShowPopup={true}
                           handlePopUpClose={handlePopUpClose}
                           isSmall={isSmall}
+                          selectedUser={selectedUsers}
+                          selectedTags={selectedTags}
+                          tags={filterTags ?? []}
+                          users={filterUsers ?? []}
                         />
                       </MenuItem>
                     </Menu>
@@ -433,6 +502,10 @@ const LocationImageDetails = () => {
                 <FilterPopup
                   handleChangeValues={handleChangeValues}
                   ShowPopup={false}
+                  selectedUser={selectedUsers}
+                  selectedTags={selectedTags}
+                  tags={filterTags ?? []}
+                  users={filterUsers ?? []}
                 />
               )}
 
@@ -442,157 +515,168 @@ const LocationImageDetails = () => {
                   overflowY: "scroll",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    padding: "10px 16px",
-                  }}
-                >
-                  <ImageCarousel
-                    images={[
-                      "https://react-responsive-carousel.js.org/assets/6.jpeg",
-                      "https://react-responsive-carousel.js.org/assets/2.jpeg",
-                      "https://react-responsive-carousel.js.org/assets/3.jpeg",
-                    ]}
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    padding: "0 16px 10px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                    }}
-                  >
-                    <Box
-                      component="span"
-                      sx={{
-                        color: "#605C5C",
-                        fontSize: "10px",
-                        fontWeight: "400",
-                        lineHeight: "16px",
-                      }}
-                    >
-                      <b>From:</b>Jaanus Kütson
-                    </Box>
-                    <Box
-                      component="span"
-                      sx={{
-                        color: "#131516",
-                        fontSize: "10px",
-                        fontWeight: "500",
-                        lineHeight: "16px",
-                      }}
-                    >
-                      Today 12:47
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "24px",
-                      "@media(max-width:1200px)": {
-                        gap: "10px",
-                      },
-                    }}
-                  >
-                    <Typography
-                      component="h6"
-                      sx={{
-                        color: "#605C5C",
-                        fontSize: "12px",
-                        fontWeight: "500",
-                        lineHeight: "16px",
-                      }}
-                    >
-                      Tags:
-                    </Typography>
+                {pinImages && pinImages.length > 0 && (
+                  <>
                     <Box
                       sx={{
                         display: "flex",
-                        alignItems: "center",
-                        gap: "7px",
+                        width: "100%",
+                        padding: "10px 16px",
                       }}
                     >
-                      {tags.map((tag, index) => (
+                      <ImageCarousel
+                        images={pinImages}
+                        handleChange={handleCarouselChange}
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        padding: "0 16px 10px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                        }}
+                      >
                         <Box
-                          key={`tag-${index}`}
                           component="span"
                           sx={{
-                            backgroundColor: "#818181",
-                            borderRadius: "4px",
-                            color: "#fff",
+                            color: "#605C5C",
+                            fontSize: "10px",
+                            fontWeight: "400",
+                            lineHeight: "16px",
+                          }}
+                        >
+                          <b>From:</b>
+                          {`${selectedPinImage?.uploadedBy.firstName} ${selectedPinImage?.uploadedBy.surName}`}
+                        </Box>
+                        <Box
+                          component="span"
+                          sx={{
+                            color: "#131516",
+                            fontSize: "10px",
+                            fontWeight: "500",
+                            lineHeight: "16px",
+                          }}
+                        >
+                          {selectedPinImage &&
+                            formatDateWithTime(selectedPinImage.updatedAt)}
+                        </Box>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "24px",
+                          "@media(max-width:1200px)": {
+                            gap: "10px",
+                          },
+                        }}
+                      >
+                        <Typography
+                          component="h6"
+                          sx={{
+                            color: "#605C5C",
                             fontSize: "12px",
                             fontWeight: "500",
                             lineHeight: "16px",
-                            padding: "0 6px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
                           }}
                         >
-                          {tag}
+                          Tags:
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "7px",
+                          }}
+                        >
+                          {selectedPinImage?.userFileTags?.map((tag, index) => (
+                            <Box
+                              key={`tag-${index}`}
+                              component="span"
+                              sx={{
+                                backgroundColor: "#818181",
+                                borderRadius: "4px",
+                                color: "#fff",
+                                fontSize: "12px",
+                                fontWeight: "500",
+                                lineHeight: "16px",
+                                padding: "0 6px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {tag}
+                            </Box>
+                          ))}
                         </Box>
-                      ))}
+                      </Box>
                     </Box>
-                  </Box>
-                </Box>
-                <Box sx={{ padding: "0 16px" }}>
-                  <Typography
-                    sx={{
-                      fontSize: "13px",
-                      lineHeight: "20px",
-                      color: "#131516",
-                    }}
-                  >
-                    {showMore ? tempDesp : `${tempDesp.substring(0, 250)}...`}
-                  </Typography>
-                  <Box
-                    sx={{
-                      textAlign: "right",
-                      padding: "10px 0",
-                    }}
-                  >
-                    <button
-                      className="btn"
-                      onClick={() => setShowMore(!showMore)}
-                      style={{
-                        color: "#0076C8",
-                        fontSize: "12px",
-                        fontWeight: "400",
-                        lineHeight: "175%",
-                        letterSpacing: "0.15px",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        padding: "none",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {!showMore ? "View more" : "View less"}
-                    </button>
-                  </Box>
-                  <Box
-                    sx={{
-                      borderRadius: "4px",
-                      opacity: "0.9",
-                      backgroundColor: "#F4F4F4",
-                      filter: "blur(2px)",
-                      height: "4px",
-                      width: "100%",
-                    }}
-                  ></Box>
-                </Box>
-                <AllImagesSlider isStartExport={isStartExport} />
+                    <Box sx={{ padding: "0 16px" }}>
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                          lineHeight: "20px",
+                          color: "#131516",
+                        }}
+                      >
+                        {showMore
+                          ? selectedPinImage?.comment
+                          : `${selectedPinImage?.comment.substring(0, 250)}...`}
+                      </Typography>
+                      {selectedPinImage?.comment &&
+                        selectedPinImage.comment.length > 250 && (
+                          <Box
+                            sx={{
+                              textAlign: "right",
+                              padding: "10px 0",
+                            }}
+                          >
+                            <button
+                              className="btn"
+                              onClick={() => setShowMore(!showMore)}
+                              style={{
+                                color: "#0076C8",
+                                fontSize: "12px",
+                                fontWeight: "400",
+                                lineHeight: "175%",
+                                letterSpacing: "0.15px",
+                                backgroundColor: "transparent",
+                                border: "none",
+                                padding: "none",
+                                cursor: "pointer",
+                              }}
+                            >
+                              {!showMore ? "View more" : "View less"}
+                            </button>
+                          </Box>
+                        )}
+                      <Box
+                        sx={{
+                          borderRadius: "4px",
+                          opacity: "0.9",
+                          backgroundColor: "#F4F4F4",
+                          filter: "blur(2px)",
+                          height: "4px",
+                          width: "100%",
+                        }}
+                      ></Box>
+                    </Box>
+                  </>
+                )}
+                <AllImagesSlider
+                  isStartExport={isStartExport}
+                  allImages={pinImages ?? []}
+                />
               </Box>
             </Box>
           </Grid>

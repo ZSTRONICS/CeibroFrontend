@@ -3,8 +3,8 @@ import { CustomStack, SubHeadingTag } from "components/CustomTags";
 import NameAvatar from "components/Utills/Others/NameAvatar";
 
 interface IProps {
-  user: string;
-  handleSelectedList: (contact: string, checked: boolean) => void;
+  user: UserInfo;
+  handleSelectedList: (user: UserInfo, checked: boolean) => void;
   selected: boolean;
   isDisabled?: boolean;
   showImage?: boolean;
@@ -20,10 +20,9 @@ export default function UserImageCard({
   const handleCheckBox = (checked: boolean) => {
     handleSelectedList(user, checked);
   };
-  const displayText = "dummy text";
   return (
     <CustomStack
-      key={user + "image-card"}
+      key={user._id + "image-card"}
       sx={{
         display: "flex",
         alignItems: "center",
@@ -33,7 +32,7 @@ export default function UserImageCard({
         cursor: `${!isDisabled ? "pointer" : "not-allowed"}`,
         pointerEvents: `${isDisabled ? "none" : ""}`,
         opacity: `${isDisabled ? "0.5" : "1"}`,
-        padding: "0 16px",
+        // padding: "0 16px",
       }}
       onClick={(e: any) => handleCheckBox(!selected)}
     >
@@ -52,7 +51,13 @@ export default function UserImageCard({
           },
         }}
       />
-      {showImage && <NameAvatar url={""} firstname={user} surname={user} />}
+      {showImage && (
+        <NameAvatar
+          url={""}
+          firstname={user.firstName}
+          surname={user.surName}
+        />
+      )}
       <div>
         <SubHeadingTag
           sx={{
@@ -61,7 +66,7 @@ export default function UserImageCard({
             lineHeight: "20px",
           }}
         >
-          {`${user} ${user}`}
+          {`${user.firstName} ${user.surName}`}
         </SubHeadingTag>
         {/* <SubLabelTag>{`${displayText}`}</SubLabelTag>
         <SubLabelTag>{`${displayText}`}</SubLabelTag> */}

@@ -2,17 +2,34 @@ import ClearIcon from "@material-ui/icons/Clear";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button } from "@mui/material";
 import CustomDateRangePicker from "./DateRangePicker";
-import ImageUserDropdown from "./ImageUserDropdown";
 import SortByDropdown from "./SortByDropdown";
+import { default as TagListDropdown } from "./TagsDropdown";
+import UserListDropdown from "./UserListDropdown";
 interface IProps {
-  handleChangeValues: any;
+  handleChangeValues: (
+    typ: "user" | "tag",
+    value: UserInfo | string,
+    checked: boolean
+  ) => void;
   ShowPopup?: boolean;
   isSmall?: boolean;
   handlePopUpClose?: () => void;
+  users: UserInfo[];
+  tags: string[];
+  selectedUser: UserInfo[];
+  selectedTags: string[];
 }
 const FilterPopup = (props: IProps) => {
-  const { handleChangeValues, ShowPopup, handlePopUpClose, isSmall } = props;
-
+  const {
+    handleChangeValues,
+    ShowPopup,
+    handlePopUpClose,
+    users,
+    tags,
+    selectedUser,
+    selectedTags,
+    isSmall,
+  } = props;
   const AllInputsFilds = (
     <>
       <Box
@@ -38,22 +55,39 @@ const FilterPopup = (props: IProps) => {
             borderBottom: ShowPopup ? "solid 1px #818181" : "none",
           }}
         >
-          <ImageUserDropdown
+          <UserListDropdown options={users ?? []} />
+          <TagListDropdown options={tags ?? []} />
+          {/* <ImageUserDropdown
             ShowPop={ShowPopup}
             maxWidth={"180px"}
             label={"user"}
             type="user"
+            data={users}
             LocationImageDetail={true}
             isSmall={isSmall}
-          />
-          <ImageUserDropdown
+            handleChangeValues={handleChangeValues}
+            selectedList={selectedUser}
+          /> */}
+          {/* <TagsDropdown
+            ShowPop={ShowPopup}
+            maxWidth={"180px"}
+            label={"tags"}
+            tags={tags}
+            LocationImageDetail={true}
+            handleChangeValues={handleChangeValues}
+            selectedList={selectedTags}
+          /> */}
+          {/* <ImageUserDropdown
             ShowPop={ShowPopup}
             maxWidth={"180px"}
             label={"tags"}
             type="tag"
+            data={tags}
             LocationImageDetail={true}
             isSmall={isSmall}
-          />
+            handleChangeValues={handleChangeValues}
+            selectedList={selectedTags}
+          /> */}
           <CustomDateRangePicker ShowPop={ShowPopup} ImageDetail={true} />
           {ShowPopup ? null : <SortByDropdown ShowPop={ShowPopup} />}
         </Box>

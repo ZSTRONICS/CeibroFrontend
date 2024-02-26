@@ -15,6 +15,13 @@ interface ImageUserDropdownProps {
   ShowPop?: Boolean;
   LocationImageDetail?: Boolean;
   isSmall?: Boolean;
+  data: UserInfo[] | string[];
+  handleChangeValues: (
+    typ: "user" | "tag",
+    value: UserInfo | string,
+    checked: boolean
+  ) => void;
+  selectedList: UserInfo[] | string[];
 }
 
 const ImageUserDropdown = ({
@@ -24,6 +31,9 @@ const ImageUserDropdown = ({
   ShowPop,
   LocationImageDetail,
   isSmall,
+  selectedList,
+  data,
+  handleChangeValues,
 }: ImageUserDropdownProps) => {
   const theme = useTheme();
   const isCustomScreen = useMediaQuery(theme.breakpoints.between(960, 1200));
@@ -36,7 +46,9 @@ const ImageUserDropdown = ({
 
   const handleSearch = (searchText: string) => {};
 
-  const temArray = ["Talha", "Ali", "Ahsan", "Ibrahim"];
+  const handleSelectedList = (user: UserInfo, checked: boolean) => {
+    handleChangeValues(type, user, checked);
+  };
 
   return (
     <>
@@ -64,6 +76,7 @@ const ImageUserDropdown = ({
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             onChange={handleChange}
+            label={"jhsaghjfasghjdfgjasj"}
             sx={{
               color: "black",
               width: "100%",
@@ -78,27 +91,20 @@ const ImageUserDropdown = ({
               handleDone={() => {}}
             />
             {type === "user" &&
-              temArray.map((item, index) => {
+              data &&
+              data.map((item, index) => {
                 return (
-                  <UserImageCard
-                    key={`img-use-card${index}`}
-                    user={item}
-                    handleSelectedList={() => {}}
-                    selected={false}
-                    showImage={true}
-                  />
-                );
-              })}
-            {type === "tag" &&
-              temArray.map((item, index) => {
-                return (
-                  <UserImageCard
-                    key={`img-tag-card${index}`}
-                    user={item}
-                    handleSelectedList={() => {}}
-                    selected={false}
-                    showImage={false}
-                  />
+                  <>
+                    <UserImageCard
+                      key={`img-user-card${index}`}
+                      user={item}
+                      handleSelectedList={handleSelectedList}
+                      selected={selectedList?.some(
+                        (user) => user._id == item._id
+                      )}
+                      showImage={true}
+                    />
+                  </>
                 );
               })}
           </Select>

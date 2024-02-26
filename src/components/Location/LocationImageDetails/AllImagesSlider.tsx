@@ -1,27 +1,32 @@
 import { CheckCircle, Circle } from "@mui/icons-material";
 import { Box, Checkbox } from "@mui/material";
+import { PinImage } from "constants/interfaces";
 import React from "react";
 
 interface AllImagesSliderProps {
   isStartExport: boolean;
+  allImages: PinImage[];
 }
 
-const AllImagesSlider = ({ isStartExport }: AllImagesSliderProps) => {
-  const allImages = [
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  ];
+const AllImagesSlider = ({
+  isStartExport,
+  allImages,
+}: AllImagesSliderProps) => {
+  // const allImages = [
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
+  // ];
 
   const totalWidth = allImages.length * (135 + 10);
 
@@ -102,7 +107,7 @@ const AllImagesSlider = ({ isStartExport }: AllImagesSliderProps) => {
                     />
                   )}
                   <img
-                    src={image}
+                    src={image.fileUrl}
                     width="100%"
                     height="100%"
                     alt={`Image ${index + 1}`}
