@@ -11,7 +11,7 @@ import assets from "assets/assets";
 import React, { useState } from "react";
 
 interface IProps {
-  title: string;
+  title?: string;
   imgSrc: string | ArrayBuffer | null | any;
   cardContent?: React.ReactNode;
   showCancelBtn?: boolean;
@@ -19,6 +19,7 @@ interface IProps {
   showSkeleton?: boolean;
   showPdf?: boolean;
   isBase64String?: boolean;
+  ImageWithComments?: boolean;
 }
 
 function ImgCard(props: IProps) {
@@ -35,34 +36,42 @@ function ImgCard(props: IProps) {
   const cardMargin = props.cardContent ? "unset" : "10px auto";
 
   return (
-    <Card sx={{ maxWidth: 345, height: 300, margin: cardMargin }}>
-      <CardHeader
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        avatar={<> </>}
-        action={
-          <>
-            {props.showCancelBtn && (
-              <IconButton aria-label="settings" onClick={props.removeImg}>
-                <assets.CancelIcon />
-              </IconButton>
-            )}
-          </>
-        }
-        title={
-          <Box
-            className="ellipsis"
-            sx={{
-              maxWidth: "270px",
-            }}
-          >
-            {props.title}
-          </Box>
-        }
-      />
+    <Card
+      sx={{
+        maxWidth: 345,
+        height: 300,
+        margin: cardMargin,
+      }}
+    >
+      {!props.title || "" ? null : (
+        <CardHeader
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          avatar={<> </>}
+          action={
+            <>
+              {props.showCancelBtn && (
+                <IconButton aria-label="settings" onClick={props.removeImg}>
+                  <assets.CancelIcon />
+                </IconButton>
+              )}
+            </>
+          }
+          title={
+            <Box
+              className="ellipsis"
+              sx={{
+                maxWidth: "270px",
+              }}
+            >
+              {props.title}
+            </Box>
+          }
+        />
+      )}
       {props.showSkeleton === true && imageLoaded === false && (
         <Skeleton
           variant="rectangular"

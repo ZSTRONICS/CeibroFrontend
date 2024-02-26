@@ -1,6 +1,7 @@
 import ClearIcon from "@material-ui/icons/Clear";
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Button } from "@mui/material";
+import { Box, Button, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import CustomDateRangePicker from "./DateRangePicker";
 import SortByDropdown from "./SortByDropdown";
 import { default as TagListDropdown } from "./TagsDropdown";
@@ -30,6 +31,10 @@ const FilterPopup = (props: IProps) => {
     selectedTags,
     isSmall,
   } = props;
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down(960));
+
   const AllInputsFilds = (
     <>
       <Box
@@ -49,8 +54,10 @@ const FilterPopup = (props: IProps) => {
         <Box
           sx={{
             display: "flex",
+            flexDirection: isSmallScreen ? "column" : "row",
+            justifyContent: "flex-start",
             gap: "16px",
-            alignItems: "center",
+            alignItems: "flex-start",
             width: "calc(100% - 0px)",
             borderBottom: ShowPopup ? "solid 1px #818181" : "none",
           }}

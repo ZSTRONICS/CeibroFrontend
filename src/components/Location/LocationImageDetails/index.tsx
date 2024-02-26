@@ -462,7 +462,7 @@ const LocationImageDetails = () => {
                       }}
                       PaperProps={{
                         style: {
-                          width: "50%",
+                          width: "52%",
                         },
                       }}
                       anchorEl={anchorEl}

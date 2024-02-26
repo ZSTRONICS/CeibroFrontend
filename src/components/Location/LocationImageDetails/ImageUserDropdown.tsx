@@ -15,13 +15,14 @@ interface ImageUserDropdownProps {
   ShowPop?: Boolean;
   LocationImageDetail?: Boolean;
   isSmall?: Boolean;
-  data: UserInfo[] | string[];
+  data: UserInfo[];
   handleChangeValues: (
     typ: "user" | "tag",
     value: UserInfo | string,
     checked: boolean
   ) => void;
-  selectedList: UserInfo[] | string[];
+  selectedList: UserInfo[];
+  isSmallScreen?: Boolean;
 }
 
 const ImageUserDropdown = ({

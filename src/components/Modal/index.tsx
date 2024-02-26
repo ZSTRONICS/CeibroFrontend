@@ -46,7 +46,6 @@ const CustomModal: React.FC<Props> = ({
   return (
     <>
       <Dialog
-        // sx={{ border: "solid 1px red" }}
         fullWidth={showFullWidth === false ? false : true}
         maxWidth={localWidth.toString()}
         open={isOpen}

@@ -1,37 +1,48 @@
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, Divider, IconButton, Typography } from "@mui/material";
+import ImageCardWithComment from "components/Location/LocationImageDetails/ImageCardWithComment";
 import ImageBox from ".";
 
 interface ImageUploadProps {
   selectedImages: File[];
   onClearFile: (file: any, type: string) => void;
   isComment?: boolean;
+  imgwithcomment?: boolean;
 }
 
 function ImagesToUpload(props: ImageUploadProps) {
-  const { onClearFile, selectedImages, isComment = false } = props;
+  const {
+    onClearFile,
+    selectedImages,
+    isComment = false,
+    imgwithcomment,
+  } = props;
   return (
     <>
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
+          justifyContent: imgwithcomment ? "space-between" : null,
+          flexDirection: imgwithcomment ? "row" : null,
           mt: 1,
           mb: 2,
           gap: 5,
         }}
       >
-        <Typography
-          sx={{
-            fontFamily: "Inter",
-            fontWeight: 600,
-            fontSize: "12px",
-            color: "#605C5C",
-            // pr: 1.2,
-          }}
-        >
-          Images
-        </Typography>
+        {imgwithcomment ? null : (
+          <Typography
+            sx={{
+              fontFamily: "Inter",
+              fontWeight: 600,
+              fontSize: "12px",
+              color: "#605C5C",
+              // pr: 1.2,
+            }}
+          >
+            Images
+          </Typography>
+        )}
         <Box
           sx={{
             display: "flex",
@@ -40,7 +51,7 @@ function ImagesToUpload(props: ImageUploadProps) {
             columnGap: "16px",
             padding: "8px 8px 8px 16px",
             overflow: "auto",
-            borderLeft: "1.9px solid #818181",
+            borderLeft: imgwithcomment ? null : "1.9px solid #818181",
             "&::-webkit-scrollbar": {
               height: "0.4rem",
             },
@@ -61,7 +72,9 @@ function ImagesToUpload(props: ImageUploadProps) {
                   position: "relative",
                 }}
               >
-                {isComment ? (
+                {imgwithcomment ? (
+                  <ImageCardWithComment img={URL.createObjectURL(file)} />
+                ) : isComment ? (
                   <img
                     className="myDIV"
                     loading="lazy"
@@ -83,11 +96,11 @@ function ImagesToUpload(props: ImageUploadProps) {
                   }}
                   sx={{
                     top: "0",
-                    right: "0",
+                    right: imgwithcomment ? "-5px" : "0",
                     backgroundColor: "#0075D0",
                     color: "#fff",
-                    width: "16px",
-                    height: "16px",
+                    width: imgwithcomment ? "20px" : "16px",
+                    height: imgwithcomment ? "20px" : "16px",
                     position: "absolute",
                   }}
                   disableRipple

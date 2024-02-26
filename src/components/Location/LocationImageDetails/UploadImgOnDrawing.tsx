@@ -163,6 +163,7 @@ function UploadImgOnDrawing(props: IProps) {
         />
         {selectedImages.length > 0 && (
           <ImagesToUpload
+            imgwithcomment={true}
             selectedImages={selectedImages}
             onClearFile={(file: any, type: any) => handleClearFile(file, type)}
           />
