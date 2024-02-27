@@ -108,7 +108,15 @@ const AllImagesSlider = ({
                       onChange={(event, checked) =>
                         handleChange(event, checked, image)
                       }
-                      icon={<Circle sx={{ color: "#1976d2" }} />}
+                      icon={
+                        <Circle
+                          sx={{
+                            borderRadius: "50%",
+                            color: "white",
+                            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                          }}
+                        />
+                      }
                       checkedIcon={<CheckCircle sx={{ color: "green" }} />}
                       sx={{
                         padding: 0,

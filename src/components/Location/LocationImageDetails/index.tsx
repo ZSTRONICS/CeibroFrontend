@@ -424,12 +424,12 @@ const LocationImageDetails = () => {
                     justifyContent: "center",
                     height: "32px",
                     textTransform: "capitalize",
-                    width: "160px",
+                    minWidth: "100px",
                     "@media (max-width: 1360px)": {
-                      width: "180px",
+                      minWidth: "100px",
                     },
                     "@media (max-width: 1160px)": {
-                      width: "225px",
+                      minWidth: "100px",
                     },
                     "&:hover": {
                       backgroundColor: "#0076C8",
