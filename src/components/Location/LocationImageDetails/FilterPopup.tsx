@@ -4,7 +4,7 @@ import { Box, Button, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import CustomDateRangePicker from "./DateRangePicker";
 import SortByDropdown from "./SortByDropdown";
-import { default as TagListDropdown } from "./TagsDropdown";
+import TagListDropdown from "./TagsDropdown";
 import UserListDropdown from "./UserListDropdown";
 interface IProps {
   handleChangeValues: (
@@ -41,7 +41,7 @@ const FilterPopup = (props: IProps) => {
         sx={{
           display: "flex",
           alignItems: "center",
-          gap: "80px",
+          // gap: "80px",
           padding: "16px",
           borderBottom: !ShowPopup ? "1px solid #818181" : "none",
           "@media(max-width:1600px)": {
@@ -58,12 +58,12 @@ const FilterPopup = (props: IProps) => {
             justifyContent: "flex-start",
             gap: "16px",
             alignItems: "flex-start",
-            width: "calc(100% - 0px)",
+            width: ShowPopup ? "100%" : "90%",
             borderBottom: ShowPopup ? "solid 1px #818181" : "none",
           }}
         >
-          <UserListDropdown options={users ?? []} />
-          <TagListDropdown options={tags ?? []} />
+          <UserListDropdown isSmall={isSmall} options={users ?? []} />
+          <TagListDropdown isSmall={isSmall} options={tags ?? []} />
           {/* <ImageUserDropdown
             ShowPop={ShowPopup}
             maxWidth={"180px"}
@@ -98,27 +98,35 @@ const FilterPopup = (props: IProps) => {
           <CustomDateRangePicker ShowPop={ShowPopup} ImageDetail={true} />
           {ShowPopup ? null : <SortByDropdown ShowPop={ShowPopup} />}
         </Box>
-        {!ShowPopup ? (
-          <Button
-            sx={{
-              fontSize: "12px",
-              color: "#0076C8",
-              fontWeight: "400",
-              lineHeight: "175%",
-              letterSpacing: "0.15px",
-              padding: "0",
-              textTransform: "unset",
-              backgroundColor: "transparent",
-              border: "none",
-              width: "60px",
-              transform: "translateX(10px)",
-            }}
-          >
-            Clear all
-          </Button>
-        ) : (
-          ""
-        )}
+        <Box
+          sx={{
+            width: "10%",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          {!ShowPopup ? (
+            <Button
+              sx={{
+                fontSize: "12px",
+                color: "#0076C8",
+                fontWeight: "400",
+                lineHeight: "175%",
+                letterSpacing: "0.15px",
+                padding: "0",
+                textTransform: "unset",
+                backgroundColor: "transparent",
+                border: "none",
+                width: "60px",
+                transform: "translateX(10px)",
+              }}
+            >
+              Clear all
+            </Button>
+          ) : (
+            ""
+          )}
+        </Box>
       </Box>
     </>
   );

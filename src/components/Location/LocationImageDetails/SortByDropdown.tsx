@@ -12,8 +12,9 @@ const SortByDropdown = ({ ShowPop }: Props) => {
     <>
       <Box
         sx={{
-          maxWidth: "114px",
-          width: "100%",
+          marginLeft: "-35px",
+          minWidth: "90px",
+          maxWidth: "90px",
           transform: ShowPop ? "translateX(-5px)" : null,
         }}
       >

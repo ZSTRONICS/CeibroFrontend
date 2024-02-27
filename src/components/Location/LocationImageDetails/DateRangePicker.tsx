@@ -35,13 +35,17 @@ const CustomDateRangePicker = ({ ImageDetail, ShowPop }: DateProps) => {
   return (
     <Box
       sx={{
-        // maxWidth: "180px",
-        minWidth: "max-content",
+        minWidth: "240px",
+        maxWidth: "240px",
+        // minWidth: "max-content",
+        // border: "solid 1px red",
+        marginLeft: "35px",
       }}
     >
       <TextField
         sx={{
-          width: "235px",
+          marginLeft: "-35px",
+          width: "245px",
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
               border: ShowPop ? "none" : null,

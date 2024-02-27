@@ -9,11 +9,13 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface TagListDropdownProps {
   options: string[];
+  isSmall?: boolean;
 }
 
-const TagListDropdown = ({ options }: TagListDropdownProps) => {
+const TagListDropdown = ({ options, isSmall }: TagListDropdownProps) => {
   return (
     <Autocomplete
+      sx={{ maxWidth: "190px" }}
       multiple
       id="checkboxes-tags-demo"
       options={options}
@@ -35,7 +37,7 @@ const TagListDropdown = ({ options }: TagListDropdownProps) => {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Select Tags"
+          label={isSmall ? "Tags" : "Select Tags"}
           placeholder="Start typing name"
         />
       )}

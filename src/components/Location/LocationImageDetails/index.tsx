@@ -228,7 +228,7 @@ const LocationImageDetails = () => {
   const isFiltericonShow = useMediaQuery(theme.breakpoints.down(1366));
   const isLarge = useMediaQuery(theme.breakpoints.up(1400));
   const isMeduim = useMediaQuery(theme.breakpoints.down(1400));
-  const isSmall = useMediaQuery(theme.breakpoints.down(1200));
+  const isSmall = useMediaQuery(theme.breakpoints.down(1400));
 
   const handleChangeValues = (
     typ: "user" | "tag",
@@ -237,24 +237,26 @@ const LocationImageDetails = () => {
   ) => {
     switch (typ) {
       case "user":
+        const userValue = value as UserInfo;
         const updateSelectedUser = [...selectedUsers];
         if (checked) {
-          updateSelectedUser.push(value);
+          updateSelectedUser.push(userValue);
         } else {
           const foundIndex = updateSelectedUser.findIndex(
-            (user) => user._id == value._id
+            (user) => user._id === userValue._id
           );
           updateSelectedUser.splice(foundIndex, 1);
         }
         setSelectedUsers(updateSelectedUser);
         break;
       case "tag":
+        const tagValue = value as string;
         const updateSelectedTags = [...selectedTags];
         if (checked) {
-          updateSelectedTags.push(value);
+          updateSelectedTags.push(tagValue);
         } else {
           const foundIndex = updateSelectedTags.findIndex(
-            (tag) => tag == value
+            (tag) => tag === value
           );
           updateSelectedTags.splice(foundIndex, 1);
         }
@@ -453,7 +455,10 @@ const LocationImageDetails = () => {
                     }}
                   >
                     <FilterAltOutlined
-                      sx={{ color: "rgb(0,118,200)" }}
+                      sx={{
+                        color: "rgb(0,118,200)",
+                        marginRight: "25px",
+                      }}
                       onClick={handlePopUpClick}
                     />
                     <Menu
@@ -462,7 +467,7 @@ const LocationImageDetails = () => {
                       }}
                       PaperProps={{
                         style: {
-                          width: "52%",
+                          width: "52.5%",
                         },
                       }}
                       anchorEl={anchorEl}
@@ -480,6 +485,8 @@ const LocationImageDetails = () => {
                       <MenuItem
                         sx={{
                           padding: "0px",
+                          width: "100%",
+                          overflow: "hidden",
                         }}
                         disableRipple
                       >
@@ -506,6 +513,7 @@ const LocationImageDetails = () => {
                   selectedTags={selectedTags}
                   tags={filterTags ?? []}
                   users={filterUsers ?? []}
+                  isSmall={isSmall}
                 />
               )}
 
@@ -525,6 +533,7 @@ const LocationImageDetails = () => {
                       }}
                     >
                       <ImageCarousel
+                        locationimgdetail={true}
                         images={pinImages}
                         handleChange={handleCarouselChange}
                       />

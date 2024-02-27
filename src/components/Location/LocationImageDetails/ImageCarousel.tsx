@@ -5,12 +5,23 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 interface ImageCarouselProps {
   images: PinImage[];
+  locationimgdetail: boolean;
   handleChange?: ((index: number, item: ReactNode) => void) | undefined;
 }
 
-const ImageCarousel = ({ images, handleChange }: ImageCarouselProps) => {
+const ImageCarousel = ({
+  images,
+  handleChange,
+  locationimgdetail,
+}: ImageCarouselProps) => {
   return (
-    <div className="image-carousel">
+    <Box
+      sx={{
+        width: "100%",
+        height: "50vh",
+      }}
+      className="image-carousel"
+    >
       <Carousel
         showArrows={true}
         onChange={handleChange && handleChange}
@@ -19,12 +30,23 @@ const ImageCarousel = ({ images, handleChange }: ImageCarouselProps) => {
         showThumbs={false}
       >
         {images.map((image, index) => (
-          <Box key={`img-${index}`}>
-            <img src={image.fileUrl} />
+          <Box
+            sx={{
+              width: "100%",
+              height: "50vh",
+              background: " #f8f8f8",
+              border: "solid 1px #dcdcdc",
+            }}
+            key={`img-${index}`}
+          >
+            <img
+              style={{ height: "100%", width: "100%", objectFit: "contain" }}
+              src={image.fileUrl}
+            />
           </Box>
         ))}
       </Carousel>
-    </div>
+    </Box>
   );
 };
 
