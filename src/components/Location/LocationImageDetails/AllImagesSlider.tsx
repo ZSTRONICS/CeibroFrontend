@@ -1,7 +1,9 @@
 import { CheckCircle, Circle } from "@mui/icons-material";
 import { Box, Checkbox } from "@mui/material";
 import { PinImage } from "constants/interfaces";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import projectActions from "redux/action/project.action";
 
 interface AllImagesSliderProps {
   isStartExport: boolean;
@@ -12,28 +14,34 @@ const AllImagesSlider = ({
   isStartExport,
   allImages,
 }: AllImagesSliderProps) => {
-  // const allImages = [
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  //   "https://react-responsive-carousel.js.org/assets/6.jpeg",
-  // ];
-
   const totalWidth = allImages.length * (135 + 10);
 
-  const [selectedValue, setSelectedValue] = React.useState("a");
+  const dispatch = useDispatch();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+  const [selectedImages, setSelectedImages] = React.useState<PinImage[]>([]);
+
+  useEffect(() => {
+    if (!isStartExport) {
+      dispatch(projectActions.setExportList(selectedImages));
+    }
+  }, [isStartExport]);
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean,
+    image: PinImage
+  ) => {
+    let values = [...selectedImages];
+    if (checked) {
+      values.push(image);
+      setSelectedImages(values);
+    } else {
+      const foundIndex = values.findIndex(
+        (value: PinImage) => value._id == image._id
+      );
+      values.splice(foundIndex, 1);
+      setSelectedImages(values);
+    }
   };
 
   return (
@@ -94,10 +102,14 @@ const AllImagesSlider = ({
                 >
                   {isStartExport && (
                     <Checkbox
-                      checked={true}
-                      onChange={() => {}}
-                      icon={<Circle sx={{ color: "white" }} />}
-                      checkedIcon={<CheckCircle sx={{ color: "white" }} />}
+                      checked={selectedImages.some(
+                        (item) => item._id == image._id
+                      )}
+                      onChange={(event, checked) =>
+                        handleChange(event, checked, image)
+                      }
+                      icon={<Circle sx={{ color: "#1976d2" }} />}
+                      checkedIcon={<CheckCircle sx={{ color: "green" }} />}
                       sx={{
                         padding: 0,
                         position: "absolute",
@@ -112,18 +124,6 @@ const AllImagesSlider = ({
                     height="100%"
                     alt={`Image ${index + 1}`}
                   />
-                  {/* <Radio
-                    checked={selectedValue === "a"}
-                    onChange={handleChange}
-                    value="a"
-                    name="radio-buttons"
-                    inputProps={{ "aria-label": "A" }}
-                    sx={{
-                      position:"absolute",
-                      right:"0",
-                      top:"0",
-                    }}
-                  /> */}
                 </Box>
               ))}
             </Box>

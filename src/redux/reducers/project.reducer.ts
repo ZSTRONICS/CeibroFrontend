@@ -5,12 +5,17 @@ import {
   SELECTED_FILE_TYPE,
   SELECTED_FILE_URL,
   SET_PROJECT_OVERVIEW,
-  SET_SELECTED_PROJECT
+  SET_SELECTED_PROJECT,
 } from "config";
 import { ActionInterface } from "./appReducer";
 
-import projectReduxConfigs from "config/project.config";
-import { Drawing, DrawingImageInterface, Floor } from "constants/interfaces";
+import projectReduxConfigs, { Set_EXPORT_LIST } from "config/project.config";
+import {
+  Drawing,
+  DrawingImageInterface,
+  Floor,
+  PinImage,
+} from "constants/interfaces";
 import {
   ProjectGroupInterface,
   ProjectMemberInterface,
@@ -34,6 +39,7 @@ import {
 } from "../../utills/status";
 
 interface ProjectReducerInt {
+  exportList: PinImage[];
   allProjects: Project[];
   allGroups: Group[];
   allFloors: Floor[];
@@ -95,14 +101,15 @@ interface ProjectReducerInt {
 }
 
 const projectReducer: ProjectReducerInt = {
+  exportList: [],
   allProjects: [],
   isProjectsLoading: false,
   allDrawingImages: [],
   loadingAllDrawingImages: false,
   projectFloors: [],
   selectedDrawingFiles: [],
-  selectedGroupName: '',
-  selectedProjectName: '',
+  selectedGroupName: "",
+  selectedProjectName: "",
   allGroups: [],
   allFloors: [],
   isOpenProjectDocumentModal: false,
@@ -181,11 +188,16 @@ const NavigationReducer = (
   action: ActionInterface
 ): ProjectReducerInt => {
   switch (action.type) {
+    case Set_EXPORT_LIST:
+      state.exportList = action.payload;
+      return { ...state }
 
     case PROJECT_CONFIG.PROJECT_CREATED: {
-      const isExistingProject = state.allProjects.findIndex((project: Project) => project._id === action.payload._id);
+      const isExistingProject = state.allProjects.findIndex(
+        (project: Project) => project._id === action.payload._id
+      );
       if (isExistingProject === -1) {
-        state.allProjects.unshift(action.payload);;
+        state.allProjects.unshift(action.payload);
       }
       return {
         ...state,
@@ -193,40 +205,59 @@ const NavigationReducer = (
     }
 
     case PROJECT_CONFIG.GROUP_DRAWING_FILE_UPLOADED:
-      const findGroupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload.groupId))
+      const findGroupIndex = state.allGroups.findIndex(
+        (group: any) => String(group._id) === String(action.payload.groupId)
+      );
 
       if (findGroupIndex > -1) {
-        const drawingIndex = state.allGroups[findGroupIndex].drawings.findIndex((drawing: any) => String(drawing._id) === String(action.payload.drawings[0]._id))
+        const drawingIndex = state.allGroups[findGroupIndex].drawings.findIndex(
+          (drawing: any) =>
+            String(drawing._id) === String(action.payload.drawings[0]._id)
+        );
         if (drawingIndex === -1) {
-          state.allGroups[findGroupIndex].drawings = [...action.payload.drawings, ...state.allGroups[findGroupIndex].drawings]
-          state.selectedDrawingFiles = [...action.payload.drawings, ...state.selectedDrawingFiles]
+          state.allGroups[findGroupIndex].drawings = [
+            ...action.payload.drawings,
+            ...state.allGroups[findGroupIndex].drawings,
+          ];
+          state.selectedDrawingFiles = [
+            ...action.payload.drawings,
+            ...state.selectedDrawingFiles,
+          ];
         }
       }
       return {
         ...state,
-      }
+      };
     case PROJECT_CONFIG.PROJECT_GROUP_REMOVED:
     case PROJECT_CONFIG.PROJECT_GROUP_DELETED:
-      const groupId = action.payload.removedGroupId ? action.payload.removedGroupId : action.payload
-      const deletedGroupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(groupId))
+      const groupId = action.payload.removedGroupId
+        ? action.payload.removedGroupId
+        : action.payload;
+      const deletedGroupIndex = state.allGroups.findIndex(
+        (group: any) => String(group._id) === String(groupId)
+      );
       if (deletedGroupIndex > -1) {
-        state.allGroups.splice(deletedGroupIndex, 1)
+        state.allGroups.splice(deletedGroupIndex, 1);
       }
       return {
         ...state,
-      }
+      };
 
     case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
-      const isExistingGroup = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
-      if (isExistingGroup === - 1) {
-        state.allGroups = [...state.allGroups, action.payload]
+      const isExistingGroup = state.allGroups.findIndex(
+        (group: any) => String(group._id) === String(action.payload._id)
+      );
+      if (isExistingGroup === -1) {
+        state.allGroups = [...state.allGroups, action.payload];
       }
       return {
         ...state,
-      }
+      };
 
     case PROJECT_CONFIG.PROJECT_UPDATED:
-      const projectIndex = state.allProjects.findIndex((project: any) => String(project._id) === String(action.payload._id))
+      const projectIndex = state.allProjects.findIndex(
+        (project: any) => String(project._id) === String(action.payload._id)
+      );
       if (projectIndex > -1) {
         state.allProjects[projectIndex] = action.payload;
       }
@@ -235,11 +266,13 @@ const NavigationReducer = (
       };
 
     case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
-      const groupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
+      const groupIndex = state.allGroups.findIndex(
+        (group: any) => String(group._id) === String(action.payload._id)
+      );
       if (groupIndex > -1) {
         state.allGroups[groupIndex] = action.payload;
       } else {
-        state.allGroups.unshift(action.payload)
+        state.allGroups.unshift(action.payload);
       }
       return {
         ...state,
@@ -248,28 +281,32 @@ const NavigationReducer = (
     case PROJECT_CONFIG.PROJECT_FLOOR_CREATED: {
       if (action.payload.length > 0) {
         action.payload.forEach((commingFloor: any) => {
-          const matchingFloorIndex = state.projectFloors.findIndex((floor: any) => String(floor._id) === String(commingFloor._id));
+          const matchingFloorIndex = state.projectFloors.findIndex(
+            (floor: any) => String(floor._id) === String(commingFloor._id)
+          );
           if (matchingFloorIndex === -1) {
             state.projectFloors.push(commingFloor);
           }
         });
       } else {
-        const findFloorIndex = state.projectFloors.findIndex((floor: any) => String(floor._id) === String(action.payload._id))
+        const findFloorIndex = state.projectFloors.findIndex(
+          (floor: any) => String(floor._id) === String(action.payload._id)
+        );
         if (findFloorIndex === -1) {
-          state.projectFloors = [...state.projectFloors, action.payload]
+          state.projectFloors = [...state.projectFloors, action.payload];
         }
       }
 
       return {
         ...state,
-      }
+      };
     }
 
     case PROJECT_CONFIG.UPDATE_PROJECT_FLOORS: {
       return {
         ...state,
         projectFloors: [...state.projectFloors, action.payload],
-      }
+      };
     }
     case PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES: {
       return {
@@ -277,12 +314,14 @@ const NavigationReducer = (
         selectedDrawingFiles: action.payload.drawings,
         selectedGroupName: action.payload.groupName,
         selectedProjectName: action.payload.projectTitle,
-        projectFloors: action.payload.projectFloors
+        projectFloors: action.payload.projectFloors,
       };
     }
 
     case PROJECT_CONFIG.IMAGE_UPLOADED_ON_DRAWING: {
-      const isExistingPinData = state.allDrawingImages.findIndex(drawing => drawing._id === action.payload._id);
+      const isExistingPinData = state.allDrawingImages.findIndex(
+        (drawing) => drawing._id === action.payload._id
+      );
       if (isExistingPinData === -1) {
         state.allDrawingImages.unshift(action.payload);
       }
@@ -378,7 +417,7 @@ const NavigationReducer = (
         isProjectsLoading: false,
         allProjects: [...state.allProjects],
         allGroups: action.payload.allGroups,
-        allFloors: action.payload.allFloors
+        allFloors: action.payload.allFloors,
       };
     }
     case requestFail(PROJECT_CONFIG.GET_ALL_PROJECTS): {
@@ -400,7 +439,7 @@ const NavigationReducer = (
       return {
         ...state,
         loadingAllDrawingImages: true,
-        allDrawingImages: []
+        allDrawingImages: [],
       };
     }
 
@@ -408,8 +447,8 @@ const NavigationReducer = (
       return {
         ...state,
         loadingAllDrawingImages: false,
-        allDrawingImages: action.payload.allDrawingImages || action.payload
-      }
+        allDrawingImages: action.payload.allDrawingImages || action.payload,
+      };
     }
 
     case requestFail(PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID): {
@@ -815,7 +854,6 @@ const NavigationReducer = (
     //     };
     //   }
     // }
-
 
     // case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED: {
     //   let members = action.payload;

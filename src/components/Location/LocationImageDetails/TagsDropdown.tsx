@@ -1,8 +1,12 @@
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import { Checkbox } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
+import Autocomplete, {
+  AutocompleteChangeDetails,
+  AutocompleteChangeReason,
+} from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import { SyntheticEvent } from "react";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -13,6 +17,22 @@ interface TagListDropdownProps {
 }
 
 const TagListDropdown = ({ options, isSmall }: TagListDropdownProps) => {
+  const handleChange = (
+    event: SyntheticEvent<Element, Event>,
+    value: string[],
+    reason: AutocompleteChangeReason,
+    details?: AutocompleteChangeDetails<string> | undefined
+  ) => {
+    switch (reason) {
+      case "selectOption":
+        console.log(value, "value:::::::::::::");
+        break;
+      case "removeOption":
+        console.log(value, "value^^^^^^^^^^^^^^^");
+        break;
+    }
+  };
+
   return (
     <Autocomplete
       sx={{ maxWidth: "190px" }}
@@ -21,6 +41,7 @@ const TagListDropdown = ({ options, isSmall }: TagListDropdownProps) => {
       options={options}
       size="small"
       disableCloseOnSelect
+      onChange={handleChange}
       getOptionLabel={(option) => option}
       renderOption={(props, option, { selected }) => (
         <li {...props}>

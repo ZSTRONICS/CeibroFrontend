@@ -8,7 +8,7 @@ import {
   ProjectRolesInterface,
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
-import { Drawing } from "constants/interfaces";
+import { Drawing, PinImage } from "constants/interfaces";
 import configs, {
   ADD_REMOVE_FOLDER_USER,
   CLOSE_DOCUMENT_DRAWER,
@@ -54,6 +54,7 @@ import configs, {
   PROJECT_CONFIG,
   SELECTED_FILE_TYPE,
   SELECTED_FILE_URL,
+  Set_EXPORT_LIST,
   SET_GROUP,
   SET_PROJECT_OVERVIEW,
   SET_ROLE,
@@ -78,6 +79,12 @@ import configs, {
 import { createAction } from "./action";
 
 const projectActions = {
+  setExportList: (images: PinImage[]) => {
+    return {
+      type: Set_EXPORT_LIST,
+      payload: images,
+    };
+  },
   openDrawer: () => {
     return {
       type: configs.OPEN_DRAWER,

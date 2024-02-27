@@ -51,6 +51,9 @@ const LocationImageDetails = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [filterUsers, setFilterUsers] = useState<UserInfo[]>();
   const [filterTags, setFilterTags] = useState<string[]>();
+  const [filteredDrawingImages, setFilteredDrawingIMages] = useState<
+    DrawingImageInterface[]
+  >([]);
   const [pinImages, setPinImages] = useState<PinImage[]>([]);
   const [selectedPinImage, setSelectedPinImage] = useState<PinImage>();
   const [showMore, setShowMore] = useState(false);
@@ -98,6 +101,19 @@ const LocationImageDetails = () => {
     setFilterUsers(uniqueUsers);
     setFilterTags(uniqueTags);
   }, [allDrawingImages]);
+
+  useEffect(() => {
+    if (allDrawingImages.length > 0) {
+      allDrawingImages.filter((data: DrawingImageInterface) => {
+        selectedUsers.some((user: UserInfo) => {
+          user._id === data.creator._id;
+        }) ||
+          selectedTags.some((tag: string) => {
+            data.tags.some((item: string) => tag === item);
+          });
+      });
+    }
+  }, [selectedUsers, selectedTags]);
 
   const style = {
     position: "absolute" as "absolute",
