@@ -72,7 +72,7 @@ export function includesIgnoreCase(str: string, searchValue: string): boolean {
 }
 
 //handle remove Item from File array fo image and doc
-export const removeItem = (data: File[], removeFile: File) => {
+export const removeItem = (data: File[] | any, removeFile: File) => {
   const filteredData = data.filter((item: File) => {
     return removeFile.name !== item.name;
   });

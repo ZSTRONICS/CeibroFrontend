@@ -1,44 +1,52 @@
 import { Box } from "@mui/material";
 import ImgCard from "components/Auth/Register/ImgCard";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IProps {
   img?: any;
+  setDescription: (description: string) => void;
+  fileComment: string;
+  selectedImages: ImageWithComment[];
 }
 
-const ImageCardWithComment = ({ img }: IProps) => {
-  const obj = {
-    url: "https://images.pexels.com/photos/20088077/pexels-photo-20088077/free-photo-of-black-and-white-photo-of-birds-on-a-ledge.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-    fileName: "Pexal_Pic_Name",
-    inputtile: "Enter Comments",
-    inputlabel: "Enter Comments",
-    inputvalue: "inputvalue",
-  };
+const ImageCardWithComment = ({
+  img,
+  setDescription,
+  fileComment,
+  selectedImages,
+}: IProps) => {
+  const [value, setValue] = useState(fileComment);
 
-  const [description, setDescription] = useState("");
+  useEffect(() => {
+    setValue(fileComment);
+  }, [selectedImages.length]);
+
+  const handleImgComment = () => {
+    setDescription(value);
+  };
 
   return (
     <Box
       sx={{
-        width: 250,
         marginBottom: "20px",
         backgroundColor: "white",
         borderRadius: "4px",
         boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+        display: "flex",
+        gap: 0.6,
       }}
     >
       <ImgCard
         imgSrc={img}
         title={""}
-        // ImageWithComments={true}
+        ImageWithComments={true}
         showCancelBtn={false}
       />
       <Box
         sx={{
-          width: "82%",
-          marginLeft: "9%",
-          paddingBottom: "15px",
+          width: "100%",
+          paddingBottom: "0px",
         }}
       >
         <CustomMuiTextField
@@ -49,10 +57,14 @@ const ImageCardWithComment = ({ img }: IProps) => {
           name="description"
           label="Enter Descriptoin"
           placeholder={"Description"}
-          inputValue={description}
-          onChange={(e: any) => setDescription(e.target.value)}
+          inputValue={value}
+          onBlur={handleImgComment}
+          onChange={(e: any) => {
+            setValue(e.target.value);
+            handleImgComment();
+          }}
           maxLength={1500}
-          maxRows={3}
+          maxRows={5}
           inputProps={{ style: { background: "white" } }}
         />
       </Box>

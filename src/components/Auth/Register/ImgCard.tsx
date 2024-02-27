@@ -39,7 +39,8 @@ function ImgCard(props: IProps) {
     <Card
       sx={{
         maxWidth: 345,
-        height: 300,
+        width: props.ImageWithComments ? 160 : "100%",
+        height: props.ImageWithComments ? 130 : 300,
         margin: cardMargin,
       }}
     >

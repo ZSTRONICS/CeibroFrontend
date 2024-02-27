@@ -1,13 +1,15 @@
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, Divider, IconButton, Typography } from "@mui/material";
 import ImageCardWithComment from "components/Location/LocationImageDetails/ImageCardWithComment";
+import { fileType } from "components/Tasks/type";
 import ImageBox from ".";
 
 interface ImageUploadProps {
-  selectedImages: File[];
-  onClearFile: (file: any, type: string) => void;
+  selectedImages: File[] | ImageWithComment[] | any;
+  onClearFile: (file: any, type: fileType) => void;
   isComment?: boolean;
   imgwithcomment?: boolean;
+  updateImageWithComment: (image: ImageWithComment) => void;
 }
 
 function ImagesToUpload(props: ImageUploadProps) {
@@ -16,7 +18,10 @@ function ImagesToUpload(props: ImageUploadProps) {
     selectedImages,
     isComment = false,
     imgwithcomment,
+    updateImageWithComment,
   } = props;
+  const updatedImgWidthComment = {};
+
   return (
     <>
       <Box
@@ -51,6 +56,7 @@ function ImagesToUpload(props: ImageUploadProps) {
             columnGap: "16px",
             padding: "8px 8px 8px 16px",
             overflow: "auto",
+            width: "100%",
             borderLeft: imgwithcomment ? null : "1.9px solid #818181",
             "&::-webkit-scrollbar": {
               height: "0.4rem",
@@ -64,16 +70,31 @@ function ImagesToUpload(props: ImageUploadProps) {
             },
           }}
         >
-          {selectedImages.map((file, i) => {
+          {selectedImages.map((file: any, i: any) => {
+            const localFile = file.file ? file.file : file;
             return (
               <Box
                 key={i}
                 sx={{
                   position: "relative",
+                  width: imgwithcomment ? "100%" : "auto",
                 }}
               >
                 {imgwithcomment ? (
-                  <ImageCardWithComment img={URL.createObjectURL(file)} />
+                  <ImageCardWithComment
+                    selectedImages={selectedImages}
+                    setDescription={(comment) => {
+                      file.comment = comment;
+                      if (comment.length > 0) {
+                        Object.assign(updatedImgWidthComment, {
+                          file,
+                        });
+                        updateImageWithComment(file);
+                      }
+                    }}
+                    img={URL.createObjectURL(localFile)}
+                    fileComment={file.comment || ""}
+                  />
                 ) : isComment ? (
                   <img
                     className="myDIV"
@@ -83,7 +104,7 @@ function ImagesToUpload(props: ImageUploadProps) {
                       width: "90px",
                       borderRadius: "8px",
                     }}
-                    src={URL.createObjectURL(file)}
+                    src={URL.createObjectURL(localFile)}
                     alt="images"
                   />
                 ) : (
@@ -92,7 +113,7 @@ function ImagesToUpload(props: ImageUploadProps) {
                 <IconButton
                   aria-label="delete"
                   onClick={() => {
-                    onClearFile(file, "image");
+                    onClearFile(localFile, "image");
                   }}
                   sx={{
                     top: "0",

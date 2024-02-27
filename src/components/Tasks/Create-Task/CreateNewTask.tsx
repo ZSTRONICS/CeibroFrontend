@@ -408,6 +408,7 @@ function CreateNewTask() {
             </Box>
             {selectedImages.length > 0 && (
               <ImagesToUpload
+                updateImageWithComment={() => {}}
                 selectedImages={selectedImages}
                 onClearFile={(file: any, type: any) =>
                   handleClearFile(file, type)

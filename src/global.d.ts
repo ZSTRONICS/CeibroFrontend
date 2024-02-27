@@ -49,3 +49,7 @@ declare interface Group {
   isFavoriteByMe: boolean;
 }
 
+interface ImageWithComment {
+  file: File;
+  comment: string;
+}

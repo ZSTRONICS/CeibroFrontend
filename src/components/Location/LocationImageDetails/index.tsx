@@ -105,11 +105,9 @@ const LocationImageDetails = () => {
   useEffect(() => {
     if (allDrawingImages.length > 0) {
       allDrawingImages.filter((data: DrawingImageInterface) => {
-        selectedUsers.some((user: UserInfo) => {
-          user._id === data.creator._id;
-        }) ||
+        selectedUsers.some((user: UserInfo) => user._id === data.creator._id) ||
           selectedTags.some((tag: string) => {
-            data.tags.some((item: string) => tag === item);
+            return data.tags.some((item: string) => tag === item);
           });
       });
     }
@@ -216,29 +214,6 @@ const LocationImageDetails = () => {
     }
   };
 
-  const tempDesp = `Please use Figma for developing and don't mix it with
-                  something. We want 100% same thing like we have in Fig Please
-                  use Figma for developing and don't mix it with something. We
-                  want 100% same thing like we have in Fig e have in Fige have
-                  in Fige have in Please use Figma for developing and don't mix
-                  it with something. We want 100% same thing like we have in Fig
-                  Please use Figma for developing and don't mix it with
-                  something. We want 100% same thing like we have in Fig e have
-                  in Fige have in Fige have in Please use Figma for developing
-                  and don't mix it with something. We want 100% same thing like
-                  we have in Fig Please use Figma for developing and don't mix
-                  it with something. We want 100% same thing like we have in Fig
-                  e have in Fige have in Fige have in Please use Figma for
-                  developing and don't mix it with something. We want 100% same
-                  thing like we have in Fig Please use Figma for developing and
-                  don't mix it with something. We want 100% same thing like we
-                  have in Fig e have in Fige have in Fige have in Please use
-                  Figma for developing and don't mix it with something. We want
-                  100% same thing like we have in Fig Please use Figma for
-                  developing and don't mix it with something. We want 100% same
-                  thing like we have in Fig e have in Fige have in Fige have in
-                  Please use Figma for developing and don't mix it with`;
-
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isFiltericonShow = useMediaQuery(theme.breakpoints.down(1366));
@@ -248,7 +223,7 @@ const LocationImageDetails = () => {
 
   const handleChangeValues = (
     typ: "user" | "tag",
-    value: UserInfo | string,
+    value: UserInfo | any,
     checked: boolean
   ) => {
     switch (typ) {

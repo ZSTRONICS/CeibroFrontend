@@ -11,17 +11,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { PROJECT_APIS, taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
-import { removeItem } from "utills/common";
 interface IProps {
   pdfPageDimension: { width: number; height: number };
   closeModal: () => void;
   drawingId: string | null;
 }
+
 function UploadImgOnDrawing(props: IProps) {
   const { pdfPageDimension, closeModal, drawingId } = props;
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [descriptionVal, setDescriptionVal] = useState<string>("");
+  const [selectedImages, setSelectedImages] = useState<ImageWithComment[]>([]);
   const [options, setOptions] = useState<OptionType[] | null>(null);
   const [selectedTags, setSelectedTags] = useState<OptionType[]>([]);
   const isRenderEffect = useRef<any>(false);
@@ -43,16 +42,16 @@ function UploadImgOnDrawing(props: IProps) {
       const getAllTopicOptions: OptionType[] | null = getDropdownOptions(
         Topics.allTopics.filter(Boolean),
         "topic",
-        "topic",
         "_id"
       );
       setOptions(getAllTopicOptions);
     }
   }, [Topics, Topics.allTopics.length]);
 
-  const handleAttachImageValue = (files: File[]) => {
+  const handleAttachImageValue = (files: ImageWithComment[]) => {
     const newFiles = files.filter(
-      (file) => !selectedImages.some((item) => item.name === file.name)
+      (file) =>
+        !selectedImages.some((item) => item.file.name === file.file.name)
     );
     if (newFiles.length < files.length) {
       toast.error("Some images are already added in the list");
@@ -62,8 +61,12 @@ function UploadImgOnDrawing(props: IProps) {
 
   const handleClearFile = (file: File, type: fileType) => {
     if (type === "image") {
-      const filterSelectedImages = removeItem(selectedImages, file);
-      setSelectedImages(filterSelectedImages);
+      const filteredData = selectedImages.filter(
+        (commentFile: ImageWithComment) => {
+          return commentFile.file.name !== file.name;
+        }
+      );
+      setSelectedImages(filteredData);
     }
   };
   const handleDisableSubmit = () => {
@@ -72,6 +75,7 @@ function UploadImgOnDrawing(props: IProps) {
       selectedImages.length !== 0 && selectedTags.length !== 0 ? false : true;
     return valid || isSubmit;
   };
+
   const handleUploadImgOnDrawing = () => {
     const formData = new FormData();
     const x_coord = Math.random() * pdfPageDimension.width;
@@ -86,7 +90,6 @@ function UploadImgOnDrawing(props: IProps) {
 
     const metadataString = JSON.stringify(pinData).replace(/"/g, '\\"');
     const finalMetadata = `"${metadataString}"`;
-    console.log("finalMetadata", finalMetadata);
     formData.append("pinData", finalMetadata);
     if (selectedImages.length > 0) {
       try {
@@ -96,7 +99,8 @@ function UploadImgOnDrawing(props: IProps) {
         }
         const metadataObjects: any = [];
         const userSelectedTags = selectedTags.map((tag) => String(tag.label));
-        selectedImages.forEach((file: any) => {
+        selectedImages.forEach((imageWithComment: ImageWithComment) => {
+          const { file, comment } = imageWithComment;
           formData.append("files", file);
           metadataObjects.push(
             JSON.stringify({
@@ -104,7 +108,7 @@ function UploadImgOnDrawing(props: IProps) {
               orignalFileName: file.name,
               tag: "drawingImage",
               userFileTags: userSelectedTags,
-              comment: "",
+              comment: comment,
             })
           );
         });
@@ -164,8 +168,21 @@ function UploadImgOnDrawing(props: IProps) {
         {selectedImages.length > 0 && (
           <ImagesToUpload
             imgwithcomment={true}
+            updateImageWithComment={(updatedImage: ImageWithComment) => {
+              const updatedImagesLocal = selectedImages.map(
+                (img: ImageWithComment) => {
+                  if (img.file.name === updatedImage.file.name) {
+                    return updatedImage;
+                  }
+                  return img;
+                }
+              );
+              setSelectedImages(updatedImagesLocal);
+            }}
             selectedImages={selectedImages}
-            onClearFile={(file: any, type: any) => handleClearFile(file, type)}
+            onClearFile={(file: any, type: fileType) => {
+              handleClearFile(file, type);
+            }}
           />
         )}
       </Box>
@@ -173,6 +190,7 @@ function UploadImgOnDrawing(props: IProps) {
       <Footer
         FooterPosition="sticky"
         handleClose={() => {}}
+        isImgWithComment={true}
         acceptImgOnly={true}
         isSubmitted={isSubmit}
         disabled={handleDisableSubmit()}

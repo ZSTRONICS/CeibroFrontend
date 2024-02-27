@@ -155,6 +155,7 @@ const Comment = ({
       >
         {selectedImages.length > 0 && (
           <ImagesToUpload
+            updateImageWithComment={() => {}}
             isComment={true}
             selectedImages={selectedImages}
             onClearFile={(file: any, type: any) => handleClearFile(file, type)}

@@ -123,7 +123,7 @@ const ExportList = (props: IProps) => {
             overflowY: "auto",
           }}
         >
-          {temArray.map((item) => {
+          {temArray.map((item: any) => {
             return (
               <UserImageCard
                 user={item}

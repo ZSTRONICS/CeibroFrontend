@@ -1,7 +1,8 @@
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { OptionType } from "components/Tasks/type";
-import * as React from "react";
+import { useDispatch } from "react-redux";
+import { taskActions } from "redux/action";
 
 const filter = createFilterOptions<OptionType>();
 interface IProps {
@@ -12,7 +13,23 @@ interface IProps {
 }
 export default function MuiAutocomplete(props: IProps) {
   const { inputLabel, options, onChangeValues, placeholder } = props;
-  const [value, setValue] = React.useState<OptionType | null>(null);
+  const dispatch = useDispatch();
+  const handleCreateTask = (label: string): void => {
+    if (label.length > 0) {
+      dispatch(
+        taskActions.createTopic({
+          body: {
+            topic: label,
+          },
+          success: (res) => {
+            if (res.data.newTopic) {
+              dispatch(taskActions.getAllTopic());
+            }
+          },
+        })
+      );
+    }
+  };
 
   return (
     <Autocomplete
@@ -20,27 +37,27 @@ export default function MuiAutocomplete(props: IProps) {
       multiple
       limitTags={2}
       onChange={(event, newValue) => {
-        onChangeValues(newValue);
-        // if (typeof newValue === "string") {
-        //   setValue({
-        //     label: newValue,
-        //     value: newValue,
-        //   });
-        // }
+        const updatedValue = newValue.map((option: OptionType | any) => {
+          if (String(option.label).startsWith("Add ")) {
+            const newLabel = option.label.substring(4);
+            handleCreateTask(newLabel);
+            return Object.assign(option, {
+              label: newLabel,
+            });
+          }
+          return option;
+        });
+        onChangeValues(updatedValue);
       }}
       filterOptions={(options, params) => {
         const filtered = filter(options, params);
         const { inputValue } = params;
-        const isExisting = options.some(
-          (option) => inputValue === option.label
-        );
-        // if (inputValue !== "" && !isExisting) {
-        //   filtered.push({
-        //     // inputValue,
-        //     label: `Add "${inputValue}"`,
-        //     value: inputValue,
-        //   });
-        // }
+        if (filtered.length === 0 && inputValue !== "") {
+          filtered.push({
+            label: `Add ${inputValue}`,
+            value: inputValue,
+          });
+        }
         return filtered;
       }}
       selectOnFocus
@@ -48,16 +65,6 @@ export default function MuiAutocomplete(props: IProps) {
       handleHomeEndKeys
       id="tags-standard"
       options={options ? options : []}
-      getOptionLabel={(option) => {
-        if (typeof option === "string") {
-          return option;
-        }
-        if (option.label) {
-          return option.label;
-        }
-        return option.label;
-      }}
-      renderOption={(props, option) => <li {...props}>{option.label}</li>}
       sx={{ width: "95%", m: 1 }}
       freeSolo
       renderInput={(params) => (
