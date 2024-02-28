@@ -12,7 +12,7 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface TagListDropdownProps {
-  options: string[];
+  options: any[];
   isSmall?: boolean;
 }
 

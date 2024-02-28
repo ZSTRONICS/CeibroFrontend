@@ -323,7 +323,7 @@ const NavigationReducer = (
         (drawing) => drawing._id === action.payload._id
       );
       if (isExistingPinData === -1) {
-        state.allDrawingImages.unshift(action.payload);
+        state.allDrawingImages = [action.payload, ...state.allDrawingImages];
       }
       return {
         ...state,

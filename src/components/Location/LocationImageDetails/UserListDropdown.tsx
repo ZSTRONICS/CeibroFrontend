@@ -1,15 +1,9 @@
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import Autocomplete, {
   AutocompleteChangeDetails,
   AutocompleteChangeReason,
 } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { SyntheticEvent } from "react";
-import UserImageCard from "./UserImageCard";
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface userListDropdownProps {
   options: UserInfo[];
@@ -37,28 +31,21 @@ const UserListDropdown = ({ options, isSmall }: userListDropdownProps) => {
       sx={{ maxWidth: "190px", minWidth: "10px" }}
       multiple
       id="checkboxes-tags-demo"
-      options={options}
+      options={[]}
       size="small"
       disableCloseOnSelect
       onChange={handleChange}
-      getOptionLabel={(option) => option.firstName}
-      renderOption={(props, option, { selected }) => (
-        <li {...props}>
-          <UserImageCard
-            user={option}
-            selected={selected}
-            handleSelectedList={() => {}}
-            showImage={true}
-          />
-          {/* <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8 }}
-            checked={selected}
-          />
-          {`${option.firstName} ${option.surName}`} */}
-        </li>
-      )}
+      // getOptionLabel={(option) => option.firstName}
+      // renderOption={(props, option, { selected }) => (
+      //   <li {...props}>
+      //     <UserImageCard
+      //       user={option}
+      //       selected={selected}
+      //       handleSelectedList={() => {}}
+      //       showImage={true}
+      //     />
+      //   </li>
+      // )}
       style={{ width: 500 }}
       renderInput={(params) => (
         <TextField
