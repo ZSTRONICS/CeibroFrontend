@@ -6,17 +6,24 @@ import Autocomplete, {
   AutocompleteChangeReason,
 } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { SyntheticEvent } from "react";
+import { Dispatch, SetStateAction, SyntheticEvent } from "react";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface TagListDropdownProps {
-  options: any[];
+  options: string[];
   isSmall?: boolean;
+  selectedTags: string[];
+  setSelectedTags: Dispatch<SetStateAction<string[]>>;
 }
 
-const TagListDropdown = ({ options, isSmall }: TagListDropdownProps) => {
+const TagListDropdown = ({
+  options,
+  isSmall,
+  selectedTags,
+  setSelectedTags,
+}: TagListDropdownProps) => {
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
     value: string[],
@@ -25,10 +32,11 @@ const TagListDropdown = ({ options, isSmall }: TagListDropdownProps) => {
   ) => {
     switch (reason) {
       case "selectOption":
-        console.log(value, "value:::::::::::::");
+        setSelectedTags(value);
         break;
       case "removeOption":
-        console.log(value, "value^^^^^^^^^^^^^^^");
+      case "clear":
+        setSelectedTags(value);
         break;
     }
   };
@@ -38,6 +46,8 @@ const TagListDropdown = ({ options, isSmall }: TagListDropdownProps) => {
       sx={{ maxWidth: "190px" }}
       multiple
       id="checkboxes-tags-demo"
+      limitTags={1}
+      value={selectedTags}
       options={options}
       size="small"
       disableCloseOnSelect

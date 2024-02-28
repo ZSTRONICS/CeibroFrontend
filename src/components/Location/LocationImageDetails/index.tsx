@@ -51,7 +51,7 @@ const LocationImageDetails = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [filterUsers, setFilterUsers] = useState<UserInfo[]>();
   const [filterTags, setFilterTags] = useState<string[]>();
-  const [filteredDrawingImages, setFilteredDrawingIMages] = useState<
+  const [filteredDrawingImages, setFilteredDrawingImages] = useState<
     DrawingImageInterface[]
   >([]);
   const [pinImages, setPinImages] = useState<PinImage[]>([]);
@@ -84,34 +84,51 @@ const LocationImageDetails = () => {
     const userMap = new Map();
     const tagMap = new Map();
 
-    allDrawingImages.forEach((item: DrawingImageInterface) => {
-      userMap.set(item.creator._id, item.creator);
-      item.tags.forEach((tag) => tagMap.set(tag, tag));
-    });
-
-    const uniqueUsers: UserInfo[] = Array.from(userMap.values());
-    const uniqueTags = Array.from(tagMap.values());
-    const images = allDrawingImages.flatMap(
+    const images: PinImage[] = allDrawingImages.flatMap(
       (drawingImages: DrawingImageInterface) => drawingImages.pinImages
     );
     if (images.length > 0) {
       setPinImages(images);
       setSelectedPinImage(images[0]);
+      images.forEach((item: PinImage) => {
+        userMap.set(item.uploadedBy._id, item.uploadedBy);
+        item.userFileTags.forEach((tag) => tagMap.set(tag, tag));
+      });
     }
+    const uniqueUsers: UserInfo[] = Array.from(userMap.values());
+    const uniqueTags = Array.from(tagMap.values());
     setFilterUsers(uniqueUsers);
     setFilterTags(uniqueTags);
   }, [allDrawingImages]);
 
   useEffect(() => {
-    if (allDrawingImages.length > 0) {
-      allDrawingImages.filter((data: DrawingImageInterface) => {
-        selectedUsers.some((user: UserInfo) => user._id === data.creator._id) ||
-          selectedTags.some((tag: string) => {
-            return data.tags.some((item: string) => tag === item);
-          });
-      });
+    if (allDrawingImages.length === 0) {
+      setPinImages([]);
+      return;
     }
-  }, [selectedUsers, selectedTags]);
+
+    const images: PinImage[] = allDrawingImages.flatMap(
+      (drawingImages: DrawingImageInterface) => drawingImages.pinImages
+    );
+
+    let filteredImages = images;
+
+    if (selectedUsers.length > 0) {
+      filteredImages = filteredImages.filter((data: PinImage) =>
+        selectedUsers.some((user: UserInfo) => user._id === data.uploadedBy._id)
+      );
+    }
+
+    if (selectedTags.length > 0) {
+      filteredImages = filteredImages.filter((data: PinImage) =>
+        selectedTags.some((tag: string) =>
+          data.userFileTags.some((item: string) => tag === item)
+        )
+      );
+    }
+
+    setPinImages(filteredImages);
+  }, [selectedUsers.length, selectedTags.length]);
 
   const style = {
     position: "absolute" as "absolute",
@@ -220,41 +237,6 @@ const LocationImageDetails = () => {
   const isLarge = useMediaQuery(theme.breakpoints.up(1400));
   const isMeduim = useMediaQuery(theme.breakpoints.down(1400));
   const isSmall = useMediaQuery(theme.breakpoints.down(1400));
-
-  const handleChangeValues = (
-    typ: "user" | "tag",
-    value: UserInfo | any,
-    checked: boolean
-  ) => {
-    switch (typ) {
-      case "user":
-        const userValue = value as UserInfo;
-        const updateSelectedUser = [...selectedUsers];
-        if (checked) {
-          updateSelectedUser.push(userValue);
-        } else {
-          const foundIndex = updateSelectedUser.findIndex(
-            (user) => user._id === userValue._id
-          );
-          updateSelectedUser.splice(foundIndex, 1);
-        }
-        setSelectedUsers(updateSelectedUser);
-        break;
-      case "tag":
-        const tagValue = value as string;
-        const updateSelectedTags = [...selectedTags];
-        if (checked) {
-          updateSelectedTags.push(tagValue);
-        } else {
-          const foundIndex = updateSelectedTags.findIndex(
-            (tag) => tag === value
-          );
-          updateSelectedTags.splice(foundIndex, 1);
-        }
-        setSelectedTags(updateSelectedTags);
-        break;
-    }
-  };
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -482,12 +464,13 @@ const LocationImageDetails = () => {
                         disableRipple
                       >
                         <FilterPopup
-                          handleChangeValues={handleChangeValues}
                           ShowPopup={true}
                           handlePopUpClose={handlePopUpClose}
                           isSmall={isSmall}
-                          selectedUser={selectedUsers}
+                          selectedUsers={selectedUsers}
                           selectedTags={selectedTags}
+                          setSelectedTags={setSelectedTags}
+                          setSelectedUsers={setSelectedUsers}
                           tags={filterTags ?? []}
                           users={filterUsers ?? []}
                         />
@@ -498,10 +481,11 @@ const LocationImageDetails = () => {
                 </Box>
               ) : (
                 <FilterPopup
-                  handleChangeValues={handleChangeValues}
                   ShowPopup={false}
-                  selectedUser={selectedUsers}
+                  selectedUsers={selectedUsers}
                   selectedTags={selectedTags}
+                  setSelectedTags={setSelectedTags}
+                  setSelectedUsers={setSelectedUsers}
                   tags={filterTags ?? []}
                   users={filterUsers ?? []}
                   isSmall={isSmall}

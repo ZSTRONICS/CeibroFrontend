@@ -1,51 +1,60 @@
 import Autocomplete, {
-  AutocompleteChangeDetails,
   AutocompleteChangeReason,
 } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { SyntheticEvent } from "react";
+import { Dispatch, SetStateAction, SyntheticEvent } from "react";
+import UserImageCard from "./UserImageCard";
 
 interface userListDropdownProps {
   options: UserInfo[];
   isSmall?: boolean;
+  selectedUsers: UserInfo[];
+  setSelectedUsers: Dispatch<SetStateAction<UserInfo[]>>;
 }
 
-const UserListDropdown = ({ options, isSmall }: userListDropdownProps) => {
+const UserListDropdown = ({
+  options,
+  isSmall,
+  selectedUsers,
+  setSelectedUsers,
+}: userListDropdownProps) => {
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
-    value: string[],
-    reason: AutocompleteChangeReason,
-    details?: AutocompleteChangeDetails<string> | undefined
+    value: UserInfo[],
+    reason: AutocompleteChangeReason
   ) => {
     switch (reason) {
       case "selectOption":
-        console.log(value, "value:::::::::::::");
+        setSelectedUsers(value);
         break;
       case "removeOption":
-        console.log(value, "value^^^^^^^^^^^^^^^");
+      case "clear":
+        setSelectedUsers(value);
         break;
     }
   };
   return (
     <Autocomplete
       sx={{ maxWidth: "190px", minWidth: "10px" }}
+      limitTags={1}
       multiple
-      id="checkboxes-tags-demo"
-      options={[]}
+      id="checkboxes-tags"
+      options={options}
+      value={selectedUsers}
       size="small"
       disableCloseOnSelect
       onChange={handleChange}
-      // getOptionLabel={(option) => option.firstName}
-      // renderOption={(props, option, { selected }) => (
-      //   <li {...props}>
-      //     <UserImageCard
-      //       user={option}
-      //       selected={selected}
-      //       handleSelectedList={() => {}}
-      //       showImage={true}
-      //     />
-      //   </li>
-      // )}
+      getOptionLabel={(option: UserInfo) => option.firstName}
+      renderOption={(props, option, { selected }) => (
+        <li {...props}>
+          <UserImageCard
+            user={option}
+            selected={selected}
+            handleSelectedList={() => {}}
+            showImage={true}
+          />
+        </li>
+      )}
       style={{ width: 500 }}
       renderInput={(params) => (
         <TextField
