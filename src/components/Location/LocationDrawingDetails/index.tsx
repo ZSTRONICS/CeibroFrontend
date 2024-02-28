@@ -47,7 +47,7 @@ function LocationDrawingDetails() {
       allProjects.length === 0 && dispatch(PROJECT_APIS.getAllProjects());
       allTasksAllEvents.allTasks.length === 0 &&
         dispatch(taskActions.getAllTasksAllEvents());
-      if (drawingId && allDrawingImages.length === 0) {
+      if (drawingId) {
         dispatch(
           PROJECT_APIS.getAllDrawingImagesById({
             other: {
