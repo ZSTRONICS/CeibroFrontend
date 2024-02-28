@@ -31,6 +31,7 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
   const [filteredGroups, setFilteredGroups] = useState<Group[]>([]);
   const [searchText, setSearchText] = useState<string | null>(null);
   const [contHeight, setContHeight] = useState<number>(50);
+  const containerRef = useRef<HTMLDivElement>(null);
   const contRef: any = useRef(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
 
@@ -51,21 +52,8 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
 
   const handleSearchTextChange = (newSearchText: string) => {
     setSearchText(newSearchText);
-    //  const filteredGroups = groups.filter((group) =>
-    //     group.groupName.toLowerCase().includes(newSearchText.toLocaleLowerCase())
-    //   );
-    //   const filteredProjects = allProjects.filter((project) => {
-    //     let projectIdIsExist = filteredGroups.some(
-    //       (filteredGroup) => filteredGroup.projectId === project._id
-    //     );
-    //     if (projectIdIsExist) return true;
-    //     return project.title
-    //       .toLowerCase()
-    //       .includes(newSearchText.toLocaleLowerCase());
-    //   });
-    //   setFilteredAllProjects(filteredProjects);
-    //   setFilteredGroups(filteredGroups);
   };
+
   const categorizedProject =
     allProjects &&
     categorizeProjects(allProjects, searchText, (project: Project) => {
@@ -138,6 +126,7 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
         </CustomStack>
       </Box>
       <Box
+        ref={containerRef}
         sx={{
           height: `${windowActualHeight - contHeight}px`,
           overflow: "auto",

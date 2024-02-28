@@ -1,6 +1,7 @@
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { OptionType } from "components/Tasks/type";
+import { hasOnlySpaces } from "components/Utills/Globals";
 import { useDispatch } from "react-redux";
 import { taskActions } from "redux/action";
 
@@ -14,7 +15,10 @@ interface IProps {
 export default function MuiAutocomplete(props: IProps) {
   const { inputLabel, options, onChangeValues, placeholder } = props;
   const dispatch = useDispatch();
-  const handleCreateTask = (label: string): void => {
+  const handleCreateTitle = (label: string): void => {
+    if (hasOnlySpaces(label)) {
+      return;
+    }
     if (label.length > 0) {
       dispatch(
         taskActions.createTopic({
@@ -40,7 +44,7 @@ export default function MuiAutocomplete(props: IProps) {
         const updatedValue = newValue.map((option: OptionType | any) => {
           if (String(option.label).startsWith("Add ")) {
             const newLabel = option.label.substring(4);
-            handleCreateTask(newLabel);
+            handleCreateTitle(newLabel);
             return Object.assign(option, {
               label: newLabel,
             });
@@ -52,7 +56,11 @@ export default function MuiAutocomplete(props: IProps) {
       filterOptions={(options, params) => {
         const filtered = filter(options, params);
         const { inputValue } = params;
-        if (filtered.length === 0 && inputValue !== "") {
+        if (
+          filtered.length === 0 &&
+          inputValue !== "" &&
+          !hasOnlySpaces(inputValue)
+        ) {
           filtered.push({
             label: `Add ${inputValue}`,
             value: inputValue,
