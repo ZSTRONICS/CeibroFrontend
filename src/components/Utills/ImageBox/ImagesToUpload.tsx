@@ -54,7 +54,7 @@ function ImagesToUpload(props: ImageUploadProps) {
             flexWrap: "wrap",
             gap: "12px",
             columnGap: "16px",
-            padding: "8px 8px 8px 16px",
+            padding: imgwithcomment ? "7px 16px 2px 6px" : "8px 8px 8px 16px",
             overflow: "auto",
             width: "100%",
             borderLeft: imgwithcomment ? null : "1.9px solid #818181",

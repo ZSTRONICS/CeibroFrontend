@@ -48,7 +48,7 @@ const AllImagesSlider = ({
     <>
       <Box
         sx={{
-          padding: "10px 16px",
+          padding: "0px 16px",
         }}
       >
         <Box
@@ -57,8 +57,7 @@ const AllImagesSlider = ({
             color: "#605C5C",
             fontSize: "12px",
             fontWeight: "500",
-            lineHeight: "16px",
-            marginBottom: "10px",
+            marginBottom: "5px",
             display: "inline-block",
           }}
         >
@@ -68,13 +67,14 @@ const AllImagesSlider = ({
           sx={{
             background: "#EBF5FB",
             borderRadius: "8px",
-            padding: "16px",
+            padding: "14px",
+            marginBottom: "10px",
           }}
         >
           <Box
             sx={{
               overflowX: "auto",
-              paddingBottom: "14px",
+              paddingBottom: "10px",
             }}
           >
             <Box
@@ -89,8 +89,8 @@ const AllImagesSlider = ({
                 <Box
                   key={index}
                   sx={{
-                    width: "135px",
-                    height: "119px",
+                    width: "120px",
+                    height: "110px",
                     borderRadius: "6px",
                     overflow: "hidden",
                     position: "relative",

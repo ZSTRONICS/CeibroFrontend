@@ -40,11 +40,9 @@ const FilterPopup = (props: IProps) => {
         sx={{
           display: "flex",
           alignItems: "center",
-          // gap: "80px",
-          padding: "16px",
+          padding: "10px 10px 10px 15px",
           borderBottom: !ShowPopup ? "1px solid #818181" : "none",
           "@media(max-width:1600px)": {
-            gap: "20px",
             width: "100%",
           },
         }}
@@ -86,17 +84,12 @@ const FilterPopup = (props: IProps) => {
           {!ShowPopup ? (
             <Button
               sx={{
-                fontSize: "12px",
+                fontSize: "14px",
                 color: "#0076C8",
-                fontWeight: "400",
-                lineHeight: "175%",
-                letterSpacing: "0.15px",
                 padding: "0",
                 textTransform: "unset",
-                backgroundColor: "transparent",
                 border: "none",
-                width: "60px",
-                transform: "translateX(10px)",
+                outline: "none",
               }}
             >
               Clear all

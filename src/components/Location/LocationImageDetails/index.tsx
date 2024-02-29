@@ -62,8 +62,6 @@ const LocationImageDetails = () => {
   const { allProjects, allGroups, allDrawingImages, loadingAllDrawingImages } =
     useSelector((state: RootState) => state.project);
   const isRenderEffect = useRef<boolean>(true);
-  const tags = ["Pipes", "Paint", "Tag 3", "Tag 4", "Tag 5"];
-
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const [open, setOpen] = useState(false);
@@ -237,8 +235,10 @@ const LocationImageDetails = () => {
   const isFiltericonShow = useMediaQuery(theme.breakpoints.down(1366));
   const isLarge = useMediaQuery(theme.breakpoints.up(1400));
   const isMeduim = useMediaQuery(theme.breakpoints.down(1400));
-  const isSmall = useMediaQuery(theme.breakpoints.down(1400));
-
+  const isSmall = useMediaQuery(theme.breakpoints.down(1100));
+  const commentshowonlarge = useMediaQuery(
+    theme.breakpoints.between(1100, 1620)
+  );
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handlePopUpClick = (event: any) => {
@@ -275,11 +275,16 @@ const LocationImageDetails = () => {
         )}
         <Grid
           container
-          sx={{ padding: "16px 0", justifyContent: "space-between" }}
+          sx={{
+            padding: "16px 0",
+            justifyContent: "space-between",
+          }}
         >
           <Grid
             item
-            sx={{ width: isLarge ? "53.7%" : isMeduim ? "53.8%" : "54.4%" }}
+            sx={{
+              width: isLarge ? "53.7%" : isMeduim ? "53.8%" : "54.4%",
+            }}
           >
             <Box
               style={{
@@ -295,12 +300,11 @@ const LocationImageDetails = () => {
                 style={{
                   width: "100%",
                   display: "flex",
-                  // gridTemplateColumns: "1fr 5.2fr 1fr",
                   gap: "10px",
                   alignItems: "center",
                   padding: "16px",
                   borderBottom: "solid 1px #818181",
-                  maxHeight: "62px",
+                  maxHeight: "55px",
                 }}
               >
                 <Box>
@@ -366,29 +370,14 @@ const LocationImageDetails = () => {
                   />
                 </Box>
                 <Button
+                  disableRipple
+                  variant="contained"
                   sx={{
-                    color: "#fff",
-                    textAlign: "center",
-                    fontFamily: "Inter",
-                    fontSize: "14px",
-                    fontStyle: "normal",
                     fontWeight: "700",
-                    lineHeight: "16px",
                     borderRadius: "4px",
-                    px: "4px",
-                    backgroundColor: "#0076C8",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "32px",
+                    padding: "4px",
                     textTransform: "capitalize",
                     minWidth: "100px",
-                    "@media (max-width: 1360px)": {
-                      minWidth: "100px",
-                    },
-                    "@media (max-width: 1160px)": {
-                      minWidth: "100px",
-                    },
                     "&:hover": {
                       backgroundColor: "#0076C8",
                     },
@@ -467,7 +456,7 @@ const LocationImageDetails = () => {
                         <FilterPopup
                           ShowPopup={true}
                           handlePopUpClose={handlePopUpClose}
-                          isSmall={isSmall}
+                          isSmall={isMeduim}
                           selectedUsers={selectedUsers}
                           selectedTags={selectedTags}
                           setSelectedTags={setSelectedTags}
@@ -489,30 +478,37 @@ const LocationImageDetails = () => {
                   setSelectedUsers={setSelectedUsers}
                   tags={filterTags ?? []}
                   users={filterUsers ?? []}
-                  isSmall={isSmall}
+                  isSmall={isMeduim}
                 />
               )}
               {!loadingAllDrawingImages ? (
                 !filteredDrawingImages ? (
                   <Box
                     sx={{
-                      maxHeight: "calc(100vh - 327px)",
+                      height: `${windowActualHeight - 195}px`,
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                     }}
                   >
-                    No Data Found
+                    <Typography variant="h6">No Data Found !</Typography>
                   </Box>
                 ) : (
                   <Box
                     sx={{
-                      maxHeight: "calc(100vh - 327px)",
-                      overflowY: "scroll",
+                      height: `${windowActualHeight - 190}px`,
+                      overflowY: "auto",
+                      position: "relative",
+                      overflowX: "hidden",
                     }}
                   >
                     {pinImages && pinImages.length > 0 && (
-                      <>
+                      <Box
+                        sx={{
+                          height: "70%",
+                          overflow: "auto",
+                        }}
+                      >
                         <Box
                           sx={{
                             display: "flex",
@@ -628,7 +624,11 @@ const LocationImageDetails = () => {
                             </Box>
                           </Box>
                         </Box>
-                        <Box sx={{ padding: "0 16px" }}>
+                        <Box
+                          sx={{
+                            padding: "0 16px",
+                          }}
+                        >
                           <Typography
                             sx={{
                               fontSize: "13px",
@@ -636,21 +636,32 @@ const LocationImageDetails = () => {
                               color: "#131516",
                             }}
                           >
-                            {showMore
-                              ? selectedPinImage?.comment
-                              : selectedPinImage?.comment !== undefined &&
-                                selectedPinImage?.comment.length > 250
-                              ? `${selectedPinImage?.comment.substring(
-                                  0,
-                                  250
-                                )}...`
-                              : `${selectedPinImage?.comment.substring(
-                                  0,
-                                  250
-                                )}`}
+                            {selectedPinImage?.comment !== undefined &&
+                            selectedPinImage?.comment.length > 0
+                              ? showMore
+                                ? selectedPinImage?.comment
+                                : selectedPinImage?.comment !== undefined &&
+                                  selectedPinImage?.comment.length > 270
+                                ? `${selectedPinImage?.comment.substring(
+                                    0,
+                                    isSmall
+                                      ? 60
+                                      : commentshowonlarge
+                                      ? 150
+                                      : 270
+                                  )}...`
+                                : `${selectedPinImage?.comment.substring(
+                                    0,
+                                    isSmall
+                                      ? 60
+                                      : commentshowonlarge
+                                      ? 150
+                                      : 270
+                                  )}`
+                              : ""}
                           </Typography>
                           {selectedPinImage?.comment &&
-                            selectedPinImage.comment.length > 250 && (
+                            selectedPinImage.comment.length > 270 && (
                               <Box
                                 sx={{
                                   textAlign: "right",
@@ -687,16 +698,20 @@ const LocationImageDetails = () => {
                             }}
                           ></Box>
                         </Box>
-                      </>
+                      </Box>
                     )}
-                    <AllImagesSlider
-                      isStartExport={isStartExport}
-                      allImages={pinImages ?? []}
-                    />
+                    <Box sx={{ height: "30%" }}>
+                      <AllImagesSlider
+                        isStartExport={isStartExport}
+                        allImages={pinImages ?? []}
+                      />
+                    </Box>
                   </Box>
                 )
               ) : (
-                <LocationImageDetailsSkeleton height={windowActualHeight} />
+                <LocationImageDetailsSkeleton
+                  windowActualHeight={windowActualHeight}
+                />
               )}
             </Box>
           </Grid>
@@ -754,6 +769,7 @@ const LocationImageDetails = () => {
           </Grid>
         </Grid>
       </Box>
+
       <Modal
         open={open}
         onClose={handleClose}

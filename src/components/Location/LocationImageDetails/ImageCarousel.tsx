@@ -18,7 +18,7 @@ const ImageCarousel = ({
     <Box
       sx={{
         width: "100%",
-        height: "50vh",
+        height: "max-content",
       }}
       className="image-carousel"
     >
@@ -33,9 +33,9 @@ const ImageCarousel = ({
           <Box
             sx={{
               width: "100%",
-              height: "50vh",
+              height: "31vh",
               background: " #f8f8f8",
-              border: "solid 1px #dcdcdc",
+              borderRadius: "10px",
             }}
             key={`img-${index}`}
           >

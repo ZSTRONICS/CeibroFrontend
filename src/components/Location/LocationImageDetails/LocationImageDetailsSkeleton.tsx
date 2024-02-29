@@ -1,21 +1,37 @@
 import { Box, Skeleton, Typography } from "@mui/material";
 
-const LocationImageDetailsSkeleton = ({ height }: any) => {
+const LocationImageDetailsSkeleton = ({ windowActualHeight }: any) => {
+  const comments = [1, 2, 3];
+  const tags = [1, 2, 3, 4];
+  const generateSkeletons = (data: any[], width: string): any => {
+    return data.map((item: any, index: any) => (
+      <Typography
+        key={index}
+        width={width}
+        sx={{ marginLeft: "1.5%" }}
+        component="div"
+        variant="h5"
+      >
+        <Skeleton />
+      </Typography>
+    ));
+  };
+  const commentsSkeleton = generateSkeletons(comments, "97%");
+  const tagSkeleton = generateSkeletons(tags, "20%");
   return (
     <Box
       sx={{
-        height: "max-content",
-        overflowY: "scroll",
-        // height: `${windowActualHeight - 68}px`,
+        height: `${windowActualHeight - 195}px`,
+        overflowY: "auto",
       }}
     >
       <Skeleton
         variant="rectangular"
         width="97%"
         sx={{
-          marginLeft: "1.5%",
-          marginTop: "15px",
+          margin: "1.5% 1.5% 1.5% 1.5% ",
           borderRadius: "10px",
+          height: "55%",
         }}
       >
         <div style={{ paddingTop: "57%" }} />
@@ -24,7 +40,7 @@ const LocationImageDetailsSkeleton = ({ height }: any) => {
       <Box
         sx={{
           width: "97%",
-          marginLeft: "1.5%",
+          margin: "1.5% 1.5% 1.5% 1.5% ",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -40,66 +56,10 @@ const LocationImageDetailsSkeleton = ({ height }: any) => {
             justifyContent: "flex-end",
           }}
         >
-          <Typography
-            width="20%"
-            sx={{ marginLeft: "1.5%" }}
-            component="div"
-            variant="h5"
-          >
-            <Skeleton />
-          </Typography>
-          <Typography
-            width="20%"
-            sx={{ marginLeft: "1.5%" }}
-            component="div"
-            variant="h5"
-          >
-            <Skeleton />
-          </Typography>
-          <Typography
-            width="20%"
-            sx={{ marginLeft: "1.5%" }}
-            component="div"
-            variant="h5"
-          >
-            <Skeleton />
-          </Typography>
-          <Typography
-            width="20%"
-            sx={{ marginLeft: "1.5%" }}
-            component="div"
-            variant="h5"
-          >
-            <Skeleton />
-          </Typography>
+          {tagSkeleton}
         </Box>
       </Box>
-      <Box>
-        <Typography
-          width="97%"
-          sx={{ marginLeft: "1.5%" }}
-          component="div"
-          variant="h5"
-        >
-          <Skeleton />
-        </Typography>
-        <Typography
-          width="97%"
-          sx={{ marginLeft: "1.5%" }}
-          component="div"
-          variant="h5"
-        >
-          <Skeleton />
-        </Typography>
-        <Typography
-          width="97%"
-          sx={{ marginLeft: "1.5%" }}
-          component="div"
-          variant="h5"
-        >
-          <Skeleton />
-        </Typography>
-      </Box>
+      <Box>{commentsSkeleton}</Box>
       <Skeleton
         variant="rectangular"
         width="97%"
@@ -109,11 +69,8 @@ const LocationImageDetailsSkeleton = ({ height }: any) => {
           marginTop: "15px",
           borderRadius: "10px",
         }}
-      >
-        <div style={{ paddingTop: "57%" }} />
-      </Skeleton>
+      ></Skeleton>
     </Box>
   );
 };
-
 export default LocationImageDetailsSkeleton;
