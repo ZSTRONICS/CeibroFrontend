@@ -33,6 +33,7 @@ import AllImagesSlider from "./AllImagesSlider";
 import ExportList from "./ExportList";
 import FilterPopup from "./FilterPopup";
 import ImageCarousel from "./ImageCarousel";
+import LocationImageDetailsSkeleton from "./LocationImageDetailsSkeleton";
 import SortByDropdown from "./SortByDropdown";
 import UploadImgOnDrawing from "./UploadImgOnDrawing";
 import "./location-image.css";
@@ -459,7 +460,7 @@ const LocationImageDetails = () => {
                         sx={{
                           padding: "0px",
                           width: "100%",
-                          overflow: "hidden",
+                          // overflow: "hidden",
                         }}
                         disableRipple
                       >
@@ -491,177 +492,212 @@ const LocationImageDetails = () => {
                   isSmall={isSmall}
                 />
               )}
-
-              <Box
-                sx={{
-                  maxHeight: "calc(100vh - 327px)",
-                  overflowY: "scroll",
-                }}
-              >
-                {pinImages && pinImages.length > 0 && (
-                  <>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        width: "100%",
-                        padding: "10px 16px",
-                      }}
-                    >
-                      <ImageCarousel
-                        locationimgdetail={true}
-                        images={pinImages}
-                        handleChange={handleCarouselChange}
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        padding: "0 16px 10px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                        }}
-                      >
-                        <Box
-                          component="span"
-                          sx={{
-                            color: "#605C5C",
-                            fontSize: "10px",
-                            fontWeight: "400",
-                            lineHeight: "16px",
-                          }}
-                        >
-                          <b>From:</b>
-                          {`${selectedPinImage?.uploadedBy.firstName} ${selectedPinImage?.uploadedBy.surName}`}
-                        </Box>
-                        <Box
-                          component="span"
-                          sx={{
-                            color: "#131516",
-                            fontSize: "10px",
-                            fontWeight: "500",
-                            lineHeight: "16px",
-                          }}
-                        >
-                          {selectedPinImage &&
-                            formatDateWithTime(selectedPinImage.updatedAt)}
-                        </Box>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "24px",
-                          "@media(max-width:1200px)": {
-                            gap: "10px",
-                          },
-                        }}
-                      >
-                        <Typography
-                          component="h6"
-                          sx={{
-                            color: "#605C5C",
-                            fontSize: "12px",
-                            fontWeight: "500",
-                            lineHeight: "16px",
-                          }}
-                        >
-                          Tags:
-                        </Typography>
+              {!loadingAllDrawingImages ? (
+                !filteredDrawingImages ? (
+                  <Box
+                    sx={{
+                      maxHeight: "calc(100vh - 327px)",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    No Data Found
+                  </Box>
+                ) : (
+                  <Box
+                    sx={{
+                      maxHeight: "calc(100vh - 327px)",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {pinImages && pinImages.length > 0 && (
+                      <>
                         <Box
                           sx={{
                             display: "flex",
-                            alignItems: "center",
-                            gap: "7px",
+                            width: "100%",
+                            padding: "10px 16px",
                           }}
                         >
-                          {selectedPinImage?.userFileTags?.map((tag, index) => (
+                          <ImageCarousel
+                            locationimgdetail={true}
+                            images={pinImages}
+                            handleChange={handleCarouselChange}
+                          />
+                        </Box>
+                        <Box
+                          sx={{
+                            padding: "0 16px 10px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "10px",
+                            }}
+                          >
                             <Box
-                              key={`tag-${index}`}
                               component="span"
                               sx={{
-                                backgroundColor: "#818181",
-                                borderRadius: "4px",
-                                color: "#fff",
+                                color: "#605C5C",
+                                fontSize: "10px",
+                                fontWeight: "400",
+                                lineHeight: "16px",
+                              }}
+                            >
+                              <b>From:</b>
+                              {`${selectedPinImage?.uploadedBy.firstName} ${selectedPinImage?.uploadedBy.surName}`}
+                            </Box>
+                            <Box
+                              component="span"
+                              sx={{
+                                color: "#131516",
+                                fontSize: "10px",
+                                fontWeight: "500",
+                                lineHeight: "16px",
+                              }}
+                            >
+                              {selectedPinImage &&
+                                formatDateWithTime(selectedPinImage.updatedAt)}
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "24px",
+                              width: "max-content",
+                              maxWidth: "40%",
+                              "@media(max-width:1200px)": {
+                                gap: "10px",
+                              },
+                            }}
+                          >
+                            <Typography
+                              component="h6"
+                              sx={{
+                                color: "#605C5C",
                                 fontSize: "12px",
                                 fontWeight: "500",
                                 lineHeight: "16px",
-                                padding: "0 6px",
+                              }}
+                            >
+                              Tags:
+                            </Typography>
+                            <Box
+                              sx={{
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "center",
+                                gap: "7px",
+                                maxWidth: "100%",
+                                overflowX: "auto",
                               }}
                             >
-                              {tag}
+                              {selectedPinImage?.userFileTags?.map(
+                                (tag, index) => (
+                                  <Box
+                                    key={`tag-${index}`}
+                                    component="span"
+                                    sx={{
+                                      backgroundColor: "#818181",
+                                      borderRadius: "4px",
+                                      color: "#fff",
+                                      fontSize: "12px",
+                                      fontWeight: "500",
+                                      lineHeight: "16px",
+                                      padding: "0 6px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      border: "slid 2px yellow",
+                                      width: "max-content",
+                                      whiteSpace: "nowrap",
+                                      marginBottom: "2px",
+                                    }}
+                                  >
+                                    {tag}
+                                  </Box>
+                                )
+                              )}
                             </Box>
-                          ))}
+                          </Box>
                         </Box>
-                      </Box>
-                    </Box>
-                    <Box sx={{ padding: "0 16px" }}>
-                      <Typography
-                        sx={{
-                          fontSize: "13px",
-                          lineHeight: "20px",
-                          color: "#131516",
-                        }}
-                      >
-                        {showMore
-                          ? selectedPinImage?.comment
-                          : `${selectedPinImage?.comment.substring(0, 250)}...`}
-                      </Typography>
-                      {selectedPinImage?.comment &&
-                        selectedPinImage.comment.length > 250 && (
-                          <Box
+                        <Box sx={{ padding: "0 16px" }}>
+                          <Typography
                             sx={{
-                              textAlign: "right",
-                              padding: "10px 0",
+                              fontSize: "13px",
+                              lineHeight: "20px",
+                              color: "#131516",
                             }}
                           >
-                            <button
-                              className="btn"
-                              onClick={() => setShowMore(!showMore)}
-                              style={{
-                                color: "#0076C8",
-                                fontSize: "12px",
-                                fontWeight: "400",
-                                lineHeight: "175%",
-                                letterSpacing: "0.15px",
-                                backgroundColor: "transparent",
-                                border: "none",
-                                padding: "none",
-                                cursor: "pointer",
-                              }}
-                            >
-                              {!showMore ? "View more" : "View less"}
-                            </button>
-                          </Box>
-                        )}
-                      <Box
-                        sx={{
-                          borderRadius: "4px",
-                          opacity: "0.9",
-                          backgroundColor: "#F4F4F4",
-                          filter: "blur(2px)",
-                          height: "4px",
-                          width: "100%",
-                        }}
-                      ></Box>
-                    </Box>
-                  </>
-                )}
-                <AllImagesSlider
-                  isStartExport={isStartExport}
-                  allImages={pinImages ?? []}
-                />
-              </Box>
+                            {showMore
+                              ? selectedPinImage?.comment
+                              : selectedPinImage?.comment !== undefined &&
+                                selectedPinImage?.comment.length > 250
+                              ? `${selectedPinImage?.comment.substring(
+                                  0,
+                                  250
+                                )}...`
+                              : `${selectedPinImage?.comment.substring(
+                                  0,
+                                  250
+                                )}`}
+                          </Typography>
+                          {selectedPinImage?.comment &&
+                            selectedPinImage.comment.length > 250 && (
+                              <Box
+                                sx={{
+                                  textAlign: "right",
+                                  padding: "10px 0",
+                                }}
+                              >
+                                <button
+                                  className="btn"
+                                  onClick={() => setShowMore(!showMore)}
+                                  style={{
+                                    color: "#0076C8",
+                                    fontSize: "12px",
+                                    fontWeight: "400",
+                                    lineHeight: "175%",
+                                    letterSpacing: "0.15px",
+                                    backgroundColor: "transparent",
+                                    border: "none",
+                                    padding: "none",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  {!showMore ? "View more" : "View less"}
+                                </button>
+                              </Box>
+                            )}
+                          <Box
+                            sx={{
+                              borderRadius: "4px",
+                              opacity: "0.9",
+                              backgroundColor: "#F4F4F4",
+                              filter: "blur(2px)",
+                              height: "4px",
+                              width: "100%",
+                            }}
+                          ></Box>
+                        </Box>
+                      </>
+                    )}
+                    <AllImagesSlider
+                      isStartExport={isStartExport}
+                      allImages={pinImages ?? []}
+                    />
+                  </Box>
+                )
+              ) : (
+                <LocationImageDetailsSkeleton height={windowActualHeight} />
+              )}
             </Box>
           </Grid>
           <Grid item sx={{ width: isMeduim ? "45.2%" : "45.3%" }}>

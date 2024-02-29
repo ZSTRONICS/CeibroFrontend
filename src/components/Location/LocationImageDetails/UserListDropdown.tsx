@@ -1,7 +1,7 @@
+import { TextField } from "@mui/material";
 import Autocomplete, {
   AutocompleteChangeReason,
 } from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import { Dispatch, SetStateAction, SyntheticEvent } from "react";
 import UserImageCard from "./UserImageCard";
 
@@ -35,7 +35,12 @@ const UserListDropdown = ({
   };
   return (
     <Autocomplete
-      sx={{ maxWidth: "190px", minWidth: "10px" }}
+      sx={{
+        maxWidth: "240px",
+        minWidth: "10px",
+        zIndex: "50",
+        position: "relative",
+      }}
       limitTags={1}
       multiple
       id="checkboxes-tags"
@@ -58,7 +63,11 @@ const UserListDropdown = ({
       style={{ width: 500 }}
       renderInput={(params) => (
         <TextField
-          // sx={{ width: "100px" }}
+          sx={{
+            position: "absolute",
+            zIndex: "500",
+            backgroundColor: "white",
+          }}
           {...params}
           label={isSmall ? "User" : "Select User"}
           placeholder="Start typing name"

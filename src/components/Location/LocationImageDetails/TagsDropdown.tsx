@@ -43,7 +43,7 @@ const TagListDropdown = ({
 
   return (
     <Autocomplete
-      sx={{ maxWidth: "190px" }}
+      sx={{ maxWidth: "240px", position: "relative" }}
       multiple
       id="checkboxes-tags-demo"
       limitTags={1}
@@ -67,6 +67,11 @@ const TagListDropdown = ({
       style={{ width: 500 }}
       renderInput={(params) => (
         <TextField
+          sx={{
+            position: "absolute",
+            zIndex: "500",
+            backgroundColor: "white",
+          }}
           {...params}
           label={isSmall ? "Tags" : "Select Tags"}
           placeholder="Start typing name"

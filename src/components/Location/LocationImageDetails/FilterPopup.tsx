@@ -57,7 +57,7 @@ const FilterPopup = (props: IProps) => {
             justifyContent: "flex-start",
             gap: "16px",
             alignItems: "flex-start",
-            width: ShowPopup ? "100%" : "90%",
+            width: ShowPopup ? "95%" : "90%",
             borderBottom: ShowPopup ? "solid 1px #818181" : "none",
           }}
         >
