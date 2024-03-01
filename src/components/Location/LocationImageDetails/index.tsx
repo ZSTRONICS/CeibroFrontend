@@ -30,6 +30,7 @@ import SearchField from "../Create-Project/CreateProjectDrawer/ProjectLocations/
 import DrawingHeader from "../LocationDrawingDetails/DrawingHeader";
 import { filterData, findData } from "../utils";
 import AllImagesSlider from "./AllImagesSlider";
+import { SelectedDateType } from "./DateRangePicker";
 import ExportList from "./ExportList";
 import FilterPopup from "./FilterPopup";
 import ImageCarousel from "./ImageCarousel";
@@ -49,6 +50,11 @@ const LocationImageDetails = () => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isStartExport, setIsStartExport] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<UserInfo[]>([]);
+  const [selectedRange, setSelectedRange] = useState<SelectedDateType>({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [filterUsers, setFilterUsers] = useState<UserInfo[]>();
   const [filterTags, setFilterTags] = useState<string[]>();
@@ -125,9 +131,20 @@ const LocationImageDetails = () => {
         )
       );
     }
-
+    if (selectedRange?.startDate && selectedRange.endDate) {
+      filteredImages = filteredImages.filter(
+        (data: PinImage) =>
+          new Date(data.createdAt) >= selectedRange.startDate &&
+          new Date(data.createdAt) <= selectedRange.endDate
+      );
+    }
     setPinImages(filteredImages);
-  }, [selectedUsers.length, selectedTags.length]);
+  }, [
+    selectedUsers.length,
+    selectedTags.length,
+    selectedRange.startDate,
+    selectedRange.endDate,
+  ]);
 
   const style = {
     position: "absolute" as "absolute",
@@ -461,6 +478,7 @@ const LocationImageDetails = () => {
                           selectedTags={selectedTags}
                           setSelectedTags={setSelectedTags}
                           setSelectedUsers={setSelectedUsers}
+                          setSelectedRange={setSelectedRange}
                           tags={filterTags ?? []}
                           users={filterUsers ?? []}
                         />
@@ -476,6 +494,7 @@ const LocationImageDetails = () => {
                   selectedTags={selectedTags}
                   setSelectedTags={setSelectedTags}
                   setSelectedUsers={setSelectedUsers}
+                  setSelectedRange={setSelectedRange}
                   tags={filterTags ?? []}
                   users={filterUsers ?? []}
                   isSmall={isMeduim}

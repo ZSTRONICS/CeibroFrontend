@@ -1,7 +1,7 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import { Box, TextField } from "@mui/material";
 import { enUS } from "date-fns/locale";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { DateRangePicker } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css";
@@ -9,11 +9,23 @@ import "react-date-range/dist/theme/default.css";
 interface DateProps {
   ImageDetail: Boolean;
   ShowPop?: Boolean;
+  setSelectedRange: Dispatch<SetStateAction<SelectedDateType>>;
+}
+export interface SelectedDateType {
+  startDate: Date;
+  endDate: Date;
+  key: "selection";
 }
 
-const CustomDateRangePicker = ({ ImageDetail, ShowPop }: DateProps) => {
+const CustomDateRangePicker = ({
+  ImageDetail,
+  ShowPop,
+  setSelectedRange,
+}: DateProps) => {
   const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [selectedRange, setSelectedRange] = useState([
+  const [localSelectedRange, setLocalSelectedRange] = useState<
+    SelectedDateType[]
+  >([
     {
       startDate: new Date(),
       endDate: new Date(),
@@ -26,12 +38,25 @@ const CustomDateRangePicker = ({ ImageDetail, ShowPop }: DateProps) => {
   };
 
   const handleDateSelect = (item: any) => {
-    setSelectedRange([item.selection]);
+    setLocalSelectedRange([item.selection]);
   };
 
   const handleDatePickerClose = () => {
+    setLocalSelectedRange([
+      {
+        startDate: new Date(),
+        endDate: new Date(),
+        key: "selection",
+      },
+    ]);
     setDatePickerVisible(false);
   };
+
+  const handleApplyRangePicker = () => {
+    setSelectedRange(localSelectedRange[0]);
+    setDatePickerVisible(false);
+  };
+
   return (
     <Box
       sx={{
@@ -54,7 +79,7 @@ const CustomDateRangePicker = ({ ImageDetail, ShowPop }: DateProps) => {
         }}
         label="Select Date Range"
         size="small"
-        value={`${selectedRange[0].startDate.toDateString()} - ${selectedRange[0].endDate.toDateString()}`}
+        value={`${localSelectedRange[0].startDate.toDateString()} - ${localSelectedRange[0].endDate.toDateString()}`}
         onClick={handleInputChange}
         // readOnly
         // fullWidth
@@ -81,10 +106,10 @@ const CustomDateRangePicker = ({ ImageDetail, ShowPop }: DateProps) => {
           </Box>
           <DateRangePicker
             onChange={handleDateSelect}
-            moveRangeOnFirstSelection={true}
+            // moveRangeOnFirstSelection={true}
             months={2}
             locale={enUS}
-            ranges={selectedRange}
+            ranges={localSelectedRange}
             direction="horizontal"
           />
           <Box
@@ -99,7 +124,7 @@ const CustomDateRangePicker = ({ ImageDetail, ShowPop }: DateProps) => {
               fontWeight: "500",
               cursor: "pointer",
             }}
-            onClick={handleDatePickerClose}
+            onClick={handleApplyRangePicker}
           >
             Apply
           </Box>

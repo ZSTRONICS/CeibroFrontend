@@ -3,7 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Dispatch, SetStateAction } from "react";
-import CustomDateRangePicker from "./DateRangePicker";
+import CustomDateRangePicker, { SelectedDateType } from "./DateRangePicker";
 import SortByDropdown from "./SortByDropdown";
 import TagListDropdown from "./TagsDropdown";
 import UserListDropdown from "./UserListDropdown";
@@ -17,6 +17,7 @@ interface IProps {
   selectedTags: string[];
   setSelectedUsers: Dispatch<SetStateAction<UserInfo[]>>;
   setSelectedTags: Dispatch<SetStateAction<string[]>>;
+  setSelectedRange: Dispatch<SetStateAction<SelectedDateType>>;
 }
 const FilterPopup = (props: IProps) => {
   const {
@@ -29,6 +30,7 @@ const FilterPopup = (props: IProps) => {
     setSelectedTags,
     setSelectedUsers,
     isSmall,
+    setSelectedRange,
   } = props;
 
   const theme = useTheme();
@@ -71,7 +73,11 @@ const FilterPopup = (props: IProps) => {
             selectedTags={selectedTags}
             setSelectedTags={setSelectedTags}
           />
-          <CustomDateRangePicker ShowPop={ShowPopup} ImageDetail={true} />
+          <CustomDateRangePicker
+            ShowPop={ShowPopup}
+            ImageDetail={true}
+            setSelectedRange={setSelectedRange}
+          />
           {ShowPopup ? null : <SortByDropdown ShowPop={ShowPopup} />}
         </Box>
         <Box
