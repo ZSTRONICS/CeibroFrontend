@@ -35,7 +35,6 @@ import ExportList from "./ExportList";
 import FilterPopup from "./FilterPopup";
 import ImageCarousel from "./ImageCarousel";
 import LocationImageDetailsSkeleton from "./LocationImageDetailsSkeleton";
-import SortByDropdown from "./SortByDropdown";
 import UploadImgOnDrawing from "./UploadImgOnDrawing";
 import "./location-image.css";
 interface RouteParams {
@@ -45,14 +44,17 @@ interface RouteParams {
 }
 
 const LocationImageDetails = () => {
+  const today = new Date();
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 7);
   const history = useHistory();
   const dispatch = useDispatch();
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isStartExport, setIsStartExport] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<UserInfo[]>([]);
   const [selectedRange, setSelectedRange] = useState<SelectedDateType>({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: startDate,
+    endDate: today,
     key: "selection",
   });
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -93,9 +95,14 @@ const LocationImageDetails = () => {
       (drawingImages: DrawingImageInterface) => drawingImages.pinImages
     );
     if (images.length > 0) {
-      setPinImages(images);
-      setSelectedPinImage(images[0]);
-      images.forEach((item: PinImage) => {
+      const filteredImages = images.filter(
+        (data: PinImage) =>
+          new Date(data.createdAt) >= selectedRange.startDate &&
+          new Date(data.createdAt) <= selectedRange.endDate
+      );
+      setPinImages(filteredImages);
+      setSelectedPinImage(filteredImages[0]);
+      filteredImages.forEach((item: PinImage) => {
         userMap.set(item.uploadedBy._id, item.uploadedBy);
         item.userFileTags.forEach((tag) => tagMap.set(tag, tag));
       });
@@ -268,6 +275,20 @@ const LocationImageDetails = () => {
 
   const handleCarouselChange = (index: number, item: ReactNode) => {
     setSelectedPinImage(pinImages[index]);
+  };
+
+  const handleClearAllFilters = () => {
+    const images: PinImage[] = allDrawingImages.flatMap(
+      (drawingImages: DrawingImageInterface) => drawingImages.pinImages
+    );
+    setPinImages(images);
+    setSelectedUsers([]);
+    setSelectedTags([]);
+    setSelectedRange({
+      startDate: startDate,
+      endDate: today,
+      key: "selection",
+    });
   };
 
   return (
@@ -479,13 +500,15 @@ const LocationImageDetails = () => {
                           setSelectedTags={setSelectedTags}
                           setSelectedUsers={setSelectedUsers}
                           setSelectedRange={setSelectedRange}
+                          selectedRange={selectedRange}
+                          handleClearAllFilters={handleClearAllFilters}
                           tags={filterTags ?? []}
                           users={filterUsers ?? []}
                         />
                       </MenuItem>
                     </Menu>
                   </Box>
-                  <SortByDropdown />
+                  {/* <SortByDropdown /> */}
                 </Box>
               ) : (
                 <FilterPopup
@@ -495,6 +518,8 @@ const LocationImageDetails = () => {
                   setSelectedTags={setSelectedTags}
                   setSelectedUsers={setSelectedUsers}
                   setSelectedRange={setSelectedRange}
+                  handleClearAllFilters={handleClearAllFilters}
+                  selectedRange={selectedRange}
                   tags={filterTags ?? []}
                   users={filterUsers ?? []}
                   isSmall={isMeduim}

@@ -28,7 +28,7 @@
 }
 
 .rdrDefinedRangesWrapper {
-    display: none;
+    /* display: none; */
 } 
 
 .datepicker {

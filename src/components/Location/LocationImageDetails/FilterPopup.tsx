@@ -4,7 +4,6 @@ import { Box, Button, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Dispatch, SetStateAction } from "react";
 import CustomDateRangePicker, { SelectedDateType } from "./DateRangePicker";
-import SortByDropdown from "./SortByDropdown";
 import TagListDropdown from "./TagsDropdown";
 import UserListDropdown from "./UserListDropdown";
 interface IProps {
@@ -18,6 +17,8 @@ interface IProps {
   setSelectedUsers: Dispatch<SetStateAction<UserInfo[]>>;
   setSelectedTags: Dispatch<SetStateAction<string[]>>;
   setSelectedRange: Dispatch<SetStateAction<SelectedDateType>>;
+  selectedRange: SelectedDateType;
+  handleClearAllFilters: () => void;
 }
 const FilterPopup = (props: IProps) => {
   const {
@@ -31,6 +32,8 @@ const FilterPopup = (props: IProps) => {
     setSelectedUsers,
     isSmall,
     setSelectedRange,
+    selectedRange,
+    handleClearAllFilters,
   } = props;
 
   const theme = useTheme();
@@ -49,7 +52,7 @@ const FilterPopup = (props: IProps) => {
           },
         }}
       >
-        {ShowPopup ? <ClearIcon onClick={handlePopUpClose} /> : null}
+        {ShowPopup ? <ClearIcon onClick={handleClearAllFilters} /> : null}
         <Box
           sx={{
             display: "flex",
@@ -77,8 +80,9 @@ const FilterPopup = (props: IProps) => {
             ShowPop={ShowPopup}
             ImageDetail={true}
             setSelectedRange={setSelectedRange}
+            selectedRange={selectedRange}
           />
-          {ShowPopup ? null : <SortByDropdown ShowPop={ShowPopup} />}
+          {/* {ShowPopup ? null : <SortByDropdown ShowPop={ShowPopup} />} */}
         </Box>
         <Box
           sx={{
@@ -97,6 +101,7 @@ const FilterPopup = (props: IProps) => {
                 border: "none",
                 outline: "none",
               }}
+              onClick={handleClearAllFilters}
             >
               Clear all
             </Button>

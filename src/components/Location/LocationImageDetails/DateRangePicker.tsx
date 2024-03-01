@@ -1,7 +1,7 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import { Box, TextField } from "@mui/material";
 import { enUS } from "date-fns/locale";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { DateRangePicker } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css";
@@ -9,6 +9,7 @@ import "react-date-range/dist/theme/default.css";
 interface DateProps {
   ImageDetail: Boolean;
   ShowPop?: Boolean;
+  selectedRange: SelectedDateType;
   setSelectedRange: Dispatch<SetStateAction<SelectedDateType>>;
 }
 export interface SelectedDateType {
@@ -20,18 +21,26 @@ export interface SelectedDateType {
 const CustomDateRangePicker = ({
   ImageDetail,
   ShowPop,
+  selectedRange,
   setSelectedRange,
 }: DateProps) => {
+  const today = new Date();
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 7);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [localSelectedRange, setLocalSelectedRange] = useState<
     SelectedDateType[]
   >([
     {
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: startDate,
+      endDate: today,
       key: "selection",
     },
   ]);
+
+  useEffect(() => {
+    setLocalSelectedRange([selectedRange]);
+  }, [selectedRange]);
 
   const handleInputChange = () => {
     setDatePickerVisible(true);
