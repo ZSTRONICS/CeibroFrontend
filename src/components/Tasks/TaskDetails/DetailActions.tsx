@@ -316,17 +316,23 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   return (
     <>
-      <Grid
-        container
-        justifyContent="end"
-        alignItems="flex-start"
-        rowGap={2}
-        sx={{ display: "flex", justifyContent: "end" }}
-      >
+      <Grid container justifyContent="space-between" rowGap={1.25}>
+        <Grid item>
+          <Box
+            sx={{
+              width: "max-content",
+              paddingRight: "8px",
+            }}
+          >
+            {userSUBState}
+          </Box>
+          <SubHeading sx={{ color: "black", fontSize: 16, pt: 1 }}>
+            {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
+          </SubHeading>
+        </Grid>
         <Grid
           item
           container
-          md={12}
           xs={12}
           gap={1.4}
           justifyContent={justifyContent}
@@ -350,101 +356,6 @@ const DetailActions: React.FC<IProps> = (props) => {
             <>{HeaderBtns}</>
           )}
         </Grid>
-      </Grid>
-      <Grid
-        container
-        my={1.5}
-        justifyContent={"space-between"}
-        alignItems={`${isLocationTaskDetail ? "center" : "flex-start"}`}
-        rowGap={2}
-      >
-        <Grid item>
-          <SubHeading sx={{ color: "black", fontSize: 16 }}>
-            {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
-          </SubHeading>
-        </Grid>
-        {/* <Grid
-          item
-          container
-          xs={12}
-          md={isLocationTaskDetail ? (DrawDetailCollapse ? 12 : 12) : 10}
-          lg={isLocationTaskDetail ? (!DrawDetailCollapse ? 9 : 10) : 10}
-          xl={isLocationTaskDetail ? (!DrawDetailCollapse ? 12 : 10) : 10}
-          gap={isLocationTaskDetail ? 0.3 : 1.7}
-          alignItems="center"
-        >
-          {isLocationTaskDetail ? (
-            <>
-              <Box
-                sx={{
-                  width: "max-content",
-                  paddingRight: "8px",
-                }}
-              >
-                {userSUBState}
-              </Box>
-              <Box
-                sx={{
-                  minWidth: "90px",
-                  width: "max-content",
-                  paddingRight: "5px",
-                }}
-              >
-                {TaskUID}
-              </Box>
-              <Grid>
-                <Grid container gap={0.5}>
-                  <Grid
-                    sx={{ marginBottom: "-5px" }}
-                    md={!DrawDetailCollapse ? 5 : 3.5}
-                    lg={!DrawDetailCollapse ? 12 : 12}
-                    xl={!DrawDetailCollapse ? 12 : 12}
-                  >
-                    <SubLabelTag sx={{ color: "#131516" }}>
-                      {createdOn}
-                    </SubLabelTag>
-                  </Grid>
-                  <Grid
-                    md={!DrawDetailCollapse ? 6.7 : 7}
-                    lg={!DrawDetailCollapse ? 12 : 12}
-                    xl={!DrawDetailCollapse ? 12 : 12}
-                  >
-                    {dueDate && (
-                      <SubLabelTag sx={{ color: "#131516" }}>
-                        Due date: {dueDate}
-                      </SubLabelTag>
-                    )}
-                  </Grid>
-                </Grid>
-              </Grid>
-            </>
-          ) : (
-            <>
-              {userSUBState}
-              {TaskUID}
-              <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
-              {dueDate && (
-                <SubLabelTag sx={{ color: "#131516" }}>
-                  Due date: {dueDate}
-                </SubLabelTag>
-              )}
-            </>
-          )}
-        </Grid> */}
-        {/* <Box sx={{ display: "flex", justifyContent: "end" }}>
-          <Typography
-            sx={{
-              cursor: "pointer",
-              fontFamily: "Inter",
-              fontSize: "12px",
-              fontWeight: "400",
-              color: "#0076C8",
-            }}
-            onClick={() => handleFullView()}
-          >
-            {isExpanded ? "View less" : "View more"}
-          </Typography>
-        </Box> */}
       </Grid>
       <DragableDrawer
         title={getTitle()}
