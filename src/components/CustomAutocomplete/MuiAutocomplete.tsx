@@ -40,6 +40,12 @@ export default function MuiAutocomplete(props: IProps) {
       size="small"
       multiple
       limitTags={2}
+      onKeyDown={(event: any) => {
+        if (event.key === "Enter") {
+          event.defaultMuiPrevented = true;
+          return;
+        }
+      }}
       onChange={(event, newValue) => {
         const updatedValue = newValue.map((option: OptionType | any) => {
           if (String(option.label).startsWith("Add ")) {
@@ -73,7 +79,7 @@ export default function MuiAutocomplete(props: IProps) {
       handleHomeEndKeys
       id="tags-standard"
       options={options ? options : []}
-      sx={{ width: "95%", m: 1 }}
+      sx={{ width: "97%", m: 0.45 }}
       freeSolo
       renderInput={(params) => (
         <TextField

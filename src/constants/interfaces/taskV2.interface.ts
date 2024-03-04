@@ -32,6 +32,8 @@ export interface ITask {
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
   description: string;
+  confirmer: any,
+  viewer: UserInfo[];
   project: Project;
   topic: Topic;
   creator: UserInfo;
@@ -112,12 +114,15 @@ export interface AssignedUserState extends UserInfo {
   userId: string;
   phoneNumber: string;
   state: string;
+  profilePic: string;
+
 }
 
 export interface InvitedNumber {
   phoneNumber: string;
   firstName: string;
   surName: string;
+  profilePic: string;
 }
 
 export interface Topic {

@@ -1,37 +1,58 @@
-import { IconButton, Typography } from "@mui/material";
+import { Avatar, Grid, IconButton, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import assets from "assets";
 import { CustomDivider } from "components/CustomTags";
-import DespcriptionBox from "components/Utills/DespcriptionBox";
+import { momentdeDateFormat } from "components/Utills/Globals";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
-import { useEffect, useRef, useState } from "react";
+import { useDynamicDimensions } from "hooks";
+import { startTransition, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import ExpandedHeaderView from "./ExpandedHeaderView";
+import { formatUserName, getWidthWithMarginAndPadding } from "utills/common";
 
 interface IProps {
   assignedToState: AssignedUserState[];
   title: string;
   creator: UserInfo;
   project: Project;
+  taskUID: string;
+  createdDate: string;
+  dueDate: string | null;
+  confirmer: UserInfo;
+  viewer: UserInfo[];
   invitedNumbers: InvitedNumber[];
 }
 
 interface InfoBoxProps {
   label: string;
-  value: string;
+  value: string | null;
   width?: number;
+  userPic?: string;
 }
 
 export default function DetailsHeader(props: IProps) {
-  const { assignedToState, project, title, creator, invitedNumbers } = props;
+  const {
+    assignedToState,
+    project,
+    title,
+    createdDate,
+    creator,
+    taskUID,
+    invitedNumbers,
+    dueDate,
+    confirmer,
+    viewer,
+  } = props;
   const [isExpanded, setIsExpanded] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
-  const infoBoxRef = useRef();
   const ellipsisContainerRef = useRef<HTMLSpanElement | null>(null);
   const parms = useParams<{ filterkey: string }>();
-
-  const capitalizeFirstLetter = (str: string | undefined): string =>
-    str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+  const [count, setCount] = useState<number>(0);
+  const { containerRef, dimensions } = useDynamicDimensions();
+  const { containerRef: avatarContRef, dimensions: avatarContDimension } =
+    useDynamicDimensions();
+  const { containerRef: userAvatarRef, dimensions: userAvatarDimension } =
+    useDynamicDimensions();
+  const infoBoxRef = useRef<HTMLDivElement>(null);
 
   const getTextWidth = (text: string, font: string) => {
     var canvas = document.createElement("canvas");
@@ -43,100 +64,107 @@ export default function DetailsHeader(props: IProps) {
     }
   };
 
-  const formatUserName = (user: AssignedUserState | InvitedNumber) => {
-    const { firstName, surName, phoneNumber } = user;
-    if (firstName && surName) {
-      return `${firstName} ${surName}`;
-    } else if (firstName) {
-      return firstName;
-    } else if (surName) {
-      return surName;
-    } else {
-      return phoneNumber;
-    }
-  };
-
+  const localCreatedDate = momentdeDateFormat(createdDate);
   const data = {
-    createdBY: {
+    TaskID: {
+      label: "Task ID",
+      value: taskUID,
+    },
+    Project: {
+      label: "Project",
+      value: project ? project.title : null,
+    },
+    CreatedDate: {
+      label: "Created Date",
+      value: localCreatedDate,
+    },
+    DueDate: {
+      label: "Due Date",
+      value: dueDate ? dueDate : null,
+    },
+    Createdby: {
       label: "Created by",
-      value: `${creator.firstName} ${creator.surName}`,
+      value: [creator],
     },
     sentTo: {
       label: "Sent to",
-      value:
-        assignedToState.length > 0
-          ? assignedToState.map(formatUserName).join(", ")
-          : "N/A",
+      value: assignedToState.length > 0 ? assignedToState : null,
     },
     project: { label: "Project", value: project && project.title },
     Invitees: {
       label: "Invitees",
-      value:
-        invitedNumbers.length > 0
-          ? invitedNumbers.map(formatUserName).join(", ")
-          : "",
+      value: invitedNumbers.length > 0 ? invitedNumbers : null,
+    },
+    Confirmer: {
+      label: "Confirmer",
+      value: confirmer ? [confirmer] : null,
+    },
+    Viewer: {
+      label: "Viewer",
+      value: viewer.length > 0 ? viewer : null,
     },
   };
 
-  const windowWidth = window.innerWidth;
-  let gap =
-    windowWidth >= 786 && windowWidth < 1200
-      ? 0.8
-      : windowWidth >= 1200 && windowWidth < 1360
-      ? 0.8
-      : windowWidth >= 1460
-      ? 1.4
-      : 1.5;
+  // const windowWidth = window.innerWidth;
+  // let gap =
+  //   windowWidth >= 786 && windowWidth < 1200
+  //     ? 0.8
+  //     : windowWidth >= 1200 && windowWidth < 1360
+  //     ? 0.8
+  //     : windowWidth >= 1460
+  //     ? 1.4
+  //     : 1.5;
 
-  const [rowGap, setRowGap] = useState<number>(gap);
+  // const [rowGap, setRowGap] = useState<number>(gap);
+  // const handleResize = () => {
+  //   const windowWidth = window.innerWidth;
+  //   let flag = false;
+  //   const ellipsisContainer = ellipsisContainerRef.current;
+  //   if (ellipsisContainer) {
+  //     let text: string = ellipsisContainer.textContent!;
+  //     let font = window.getComputedStyle(ellipsisContainer).font;
+  //     let textWidth = getTextWidth(text, font)!;
+  //     if (textWidth >= ellipsisContainer.clientWidth) {
+  //       flag = true;
+  //     }
+  //   }
+  //   setIsReadMore(flag);
+  //   !flag && setIsExpanded(false);
+
+  //   let gap =
+  //     windowWidth >= 786 && windowWidth < 1200
+  //       ? 1
+  //       : windowWidth >= 1200 && windowWidth < 1360
+  //       ? 1
+  //       : windowWidth >= 1460
+  //       ? 0.8
+  //       : 0.5;
+  //   setRowGap(gap);
+  //   return gap;
+  // };
   const handleResize = () => {
-    const windowWidth = window.innerWidth;
-    let flag = false;
-    const ellipsisContainer = ellipsisContainerRef.current;
-    if (ellipsisContainer) {
-      let text: string = ellipsisContainer.textContent!;
-      let font = window.getComputedStyle(ellipsisContainer).font;
-      let textWidth = getTextWidth(text, font)!;
-      if (textWidth >= ellipsisContainer.clientWidth) {
-        flag = true;
+    if (avatarContRef.current) {
+      const localWidth = getWidthWithMarginAndPadding(avatarContRef);
+      if (localWidth > 140) {
+        const itemCount = Math.floor(localWidth / 145);
+        setCount(itemCount);
       }
     }
-    setIsReadMore(flag);
-    !flag && setIsExpanded(false);
-
-    let gap =
-      windowWidth >= 786 && windowWidth < 1200
-        ? 1
-        : windowWidth >= 1200 && windowWidth < 1360
-        ? 1
-        : windowWidth >= 1460
-        ? 0.8
-        : 0.5;
-    setRowGap(gap);
-    return gap;
   };
-
   useEffect(() => {
-    if (parms.filterkey === "unread" || parms.filterkey === "new") {
-      setIsExpanded(true);
-    }
     handleResize();
     window.addEventListener("resize", handleResize);
-  }, []);
+  }, [isExpanded]);
 
-  const renderInfoBox = ({
-    label,
-    value,
-    width,
-  }: InfoBoxProps): JSX.Element => (
+  const renderInfoBox = ({ label, value }: InfoBoxProps): JSX.Element => (
     <>
       {value && (
         <Box
-          ref={infoBoxRef}
           sx={{
             display: "flex",
-            minWidth: width ? `${width}px` : "auto",
-            paddingRight: "64px",
+            minWidth: "auto",
+            flexDirection: "column",
+            gap: 0.6,
           }}
         >
           {renderLabel(label)}
@@ -147,158 +175,333 @@ export default function DetailsHeader(props: IProps) {
   );
 
   const renderLabel = (label: string): JSX.Element => (
-    <Box
+    <Typography
       sx={{
-        marginRight: "8px",
-        minWidth: "max-content",
-        // minWidth: label === "Sent to" || label === "Invitees" ? "50px" : "73px",
-        height: "20px",
-        gap: 1,
-        display: "flex",
-        alignItems: "center",
+        fontFamily: "Inter",
+        fontWeight: 500,
+        fontSize: "12px",
+        lineHeight: "16px",
+        color: "#605c5c",
+        width: "100%",
       }}
     >
-      <Typography
-        sx={{
-          fontFamily: "Inter",
-          fontWeight: 500,
-          fontSize: "12px",
-          lineHeight: "16px",
-          color: "#605c5c",
-        }}
-      >
-        {label}
-      </Typography>
-    </Box>
+      {label}
+    </Typography>
   );
 
-  const renderValue = (value: string, label: string): JSX.Element => {
-    const fontWeight = label === "Topic" ? 600 : 500;
+  const renderValue = (value: string | null, label: string): JSX.Element => {
     return (
       <>
-        {value && value.length > 0 && (
-          <Box sx={{ maxWidth: "95%", display: "flex", alignItems: "center" }}>
+        {label === "Project" ? (
+          <Tooltip title={value}>
             <Typography
-              ref={ellipsisContainerRef}
-              style={{
-                fontWeight: fontWeight ?? 500,
+              sx={{
+                fontWeight: 600,
                 fontSize: "12px",
                 color: "#000",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: "1",
-                WebkitBoxOrient: "vertical",
+                maxWidth: `${dimensions.width - 10}px`,
+                width: "100%",
               }}
+              className="ellipsis"
             >
               {value}
             </Typography>
+          </Tooltip>
+        ) : (
+          value &&
+          value.length > 0 && (
+            <Typography
+              ref={ellipsisContainerRef}
+              style={{
+                fontWeight: 600,
+                fontSize: "12px",
+                color: "#000",
+                width: "auto",
+                maxWidth: isExpanded
+                  ? `${userAvatarDimension.width - 10}px`
+                  : "unset",
+              }}
+              className="ellipsis"
+            >
+              {value}
+            </Typography>
+          )
+        )}
+      </>
+    );
+  };
+
+  const renderAvatar = (user: AssignedUserState | InvitedNumber | UserInfo) => {
+    const avatarLetter =
+      user?.firstName &&
+      user.firstName?.[0]?.toUpperCase?.() +
+        (user.surName?.[0]?.toUpperCase?.() || "");
+    return (
+      <>
+        {user?.profilePic ? (
+          <Avatar
+            alt="avater"
+            src={user?.profilePic}
+            variant="circular"
+            sx={{ width: "24px", height: "24px" }}
+          />
+        ) : (
+          <>
+            {avatarLetter && (
+              <Avatar variant="circular" sx={{ width: "24px", height: "24px" }}>
+                {avatarLetter}
+              </Avatar>
+            )}
+          </>
+        )}
+      </>
+    );
+  };
+
+  const renderUserWithAvatar = ({
+    label,
+    users,
+  }: {
+    label: string;
+    users: AssignedUserState[] | InvitedNumber[] | UserInfo[] | null;
+  }) => {
+    let localCount: number | null = 0;
+    const isSentTo = label === "Sent to" || label === "Invitees";
+    localCount =
+      label === "Sent to"
+        ? users && users?.length - count
+        : users && users?.length - 1;
+    return (
+      <>
+        {users && (
+          <Box
+            ref={label === "Sent to" ? avatarContRef : null}
+            sx={{
+              display: "flex",
+              width: "100%",
+              flexDirection: "column",
+              pt: "9px",
+              position: "relative",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "Inter",
+                fontWeight: 500,
+                fontSize: "12px",
+                color: "#605c5c",
+              }}
+            >
+              {label}
+            </Typography>
+            <Box
+              ref={infoBoxRef}
+              sx={{
+                display: "flex",
+                gap: 1.25,
+                alignItems: "center",
+                flexWrap: "wrap",
+                height: isExpanded ? "36px" : "auto",
+                overflow: isExpanded ? "hidden" : "unset",
+              }}
+            >
+              {users.map((user, i) => {
+                return (
+                  <Box
+                    ref={userAvatarRef}
+                    key={i}
+                    sx={{
+                      display: "flex",
+                      gap: 0.6,
+                      alignItems: "center",
+                      flexWrap: "nowrap",
+                      pt: 1,
+                      width: isExpanded ? "135px" : "auto",
+                    }}
+                  >
+                    {renderAvatar(user)}
+                    {renderValue(formatUserName(user), "")}
+                  </Box>
+                );
+              })}
+            </Box>{" "}
+            {isSentTo && isExpanded && localCount && localCount > 0 && (
+              <Box
+                sx={{
+                  fontFamily: "Inter",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  color: "#0076C8",
+                  pt: "4px",
+                  position: "absolute",
+                  right: "1%",
+                  top: "50%",
+                }}
+              >
+                +{localCount}
+              </Box>
+            )}
           </Box>
         )}
       </>
     );
   };
 
+  const handleFullView = () => {
+    let showFullViewData;
+    const data = localStorage.getItem("showFullView");
+    if (data) {
+      showFullViewData = JSON.parse(data);
+    }
+    localStorage.setItem(
+      "showFullView",
+      JSON.stringify({ ...showFullViewData, [taskUID]: !isExpanded })
+    );
+    startTransition(() => {
+      setIsExpanded(!isExpanded);
+    });
+  };
+
   return (
-    <Box sx={{ padding: "0px 0px 0px 0px" }}>
+    <Box>
       <Box>
-        {!isExpanded && (
-          <Box>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              {renderInfoBox({
-                label: "Title",
-                value: capitalizeFirstLetter(title) || "N/A",
-              })}
-              {isReadMore && (
+        <Grid container sx={{ gap: 0.8 }} justifyContent="space-between">
+          <Grid container justifyContent={"space-between"}>
+            <Grid item> {renderLabel("Main Information")}</Grid>
+            <Grid item>
+              <Box sx={{ display: "flex", justifyContent: "end" }}>
                 <IconButton
-                  onClick={() => setIsExpanded(!isExpanded)}
+                  onClick={handleFullView}
                   sx={{ height: "24px", width: "24px" }}
                 >
                   {isExpanded ? (
-                    <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
-                  ) : (
                     <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
+                  ) : (
+                    <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
                   )}
                 </IconButton>
-              )}
-            </Box>
-            <Box sx={{ display: "flex" }}>
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid item sx={{ width: "20%" }}>
+            {renderInfoBox({
+              label: data.TaskID.label,
+              value: data.TaskID.value,
+            })}
+          </Grid>
+          {data.Project.value && (
+            <Grid item sx={{ width: "20%" }} ref={containerRef}>
               {renderInfoBox({
-                label: data.createdBY.label,
-                value: data.createdBY.value,
-                width: 300,
+                label: data.Project.label,
+                value: data.Project.value,
               })}
-              {renderInfoBox({
-                label: data.sentTo.label,
-                value: data.sentTo.value,
+            </Grid>
+          )}
+          <Grid item sx={{ width: "20%" }}>
+            {renderInfoBox({
+              label: data.CreatedDate.label,
+              value: data.CreatedDate.value,
+            })}
+          </Grid>
+          <Grid item sx={{ width: "20%" }}>
+            {renderInfoBox({
+              label: data.DueDate.label,
+              value: data.DueDate.value,
+            })}
+          </Grid>
+        </Grid>
+        {/* users */}
+        <Grid container sx={{ gap: 1.25 }}>
+          <Grid item sx={{ width: "26%" }}>
+            {renderUserWithAvatar({
+              label: data.Createdby.label,
+              users: data.Createdby.value,
+            })}
+          </Grid>
+          {data.Confirmer.value && (
+            <Grid item sx={{ width: "26%" }}>
+              {renderUserWithAvatar({
+                label: data.Confirmer.label,
+                users: data.Confirmer.value,
               })}
-            </Box>
-            <Box sx={{ display: "flex" }}>
-              {renderInfoBox({
-                label: data.project.label,
-                value: data.project.value,
-                width: 300,
-              })}
-              {renderInfoBox({
+            </Grid>
+          )}
+          {isExpanded && data.Invitees.value && (
+            <Grid item sx={{ width: "26%" }}>
+              {renderUserWithAvatar({
                 label: data.Invitees.label,
-                value: data.Invitees.value,
+                users: data.Invitees.value,
               })}
-            </Box>
-          </Box>
-        )}
+            </Grid>
+          )}
+        </Grid>
 
-        {isExpanded && (
-          <>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <DespcriptionBox
-                description={
-                  title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"
-                }
-                title="Topic"
-                despFontSize="14px"
-                despFontWeight={600}
-              />
-              <IconButton
-                onClick={() => setIsExpanded(!isExpanded)}
-                sx={{ height: "24px", width: "24px" }}
-              >
-                {isExpanded ? (
-                  <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
-                ) : (
-                  <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
-                )}
-              </IconButton>
-            </Box>
-
-            <ExpandedHeaderView
-              topic={
-                title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"
-              }
-              createdBy={data.createdBY.value}
-              project={data.project.value}
-              sentTo={data.sentTo.value}
-              Invitees={data.Invitees.value}
-            />
-          </>
-        )}
-        {isReadMore && (
-          <Box sx={{ display: "flex", justifyContent: "end" }}>
-            <Typography
-              sx={{
-                cursor: "pointer",
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: "400",
-                color: "#0076C8",
-              }}
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? "View less" : "View more"}
-            </Typography>
-          </Box>
-        )}
-        <CustomDivider sx={{ my: 1.4 }} />
+        {renderUserWithAvatar({
+          label: data.sentTo.label,
+          users: data.sentTo.value,
+        })}
+        {renderUserWithAvatar({
+          label: data.Viewer.label,
+          users: data.Viewer.value,
+        })}
+        {!isExpanded &&
+          renderUserWithAvatar({
+            label: data.Invitees.label,
+            users: data.Invitees.value,
+          })}
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Typography
+            sx={{
+              cursor: "pointer",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: "400",
+              color: "#0076C8",
+            }}
+            onClick={handleFullView}
+          >
+            {isExpanded ? "View more" : "View less"}
+          </Typography>
+        </Box>
       </Box>
+
+      {/* {isExpanded && (
+        <>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Box>{renderLabel("Main Information")}</Box>
+            <IconButton
+              onClick={() => setIsExpanded(!isExpanded)}
+              sx={{ height: "24px", width: "24px" }}
+            >
+              {isExpanded ? (
+                <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
+              ) : (
+                <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
+              )}
+            </IconButton>
+          </Box>
+
+          <Box>Collapsed view</Box>
+        </>
+      )} */}
+      {isReadMore && (
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Typography
+            sx={{
+              cursor: "pointer",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: "400",
+              color: "#0076C8",
+            }}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? "View less" : "View more"}
+          </Typography>
+        </Box>
+      )}
+      <CustomDivider sx={{ my: 1.4 }} />
     </Box>
   );
 }

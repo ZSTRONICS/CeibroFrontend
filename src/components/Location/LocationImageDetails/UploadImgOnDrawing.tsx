@@ -1,4 +1,4 @@
-import { Backdrop, Box, CircularProgress, Divider, Theme } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Theme } from "@mui/material";
 import MuiAutocomplete from "components/CustomAutocomplete/MuiAutocomplete";
 import { CustomStack } from "components/CustomTags";
 import Footer from "components/Tasks/Create-Task/Footer";
@@ -19,15 +19,16 @@ interface IProps {
 
 function UploadImgOnDrawing(props: IProps) {
   const { pdfPageDimension, closeModal, drawingId } = props;
+  const isRenderEffect = useRef<any>(false);
+  const dispatch = useDispatch();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<ImageWithComment[]>([]);
   const [options, setOptions] = useState<OptionType[] | null>(null);
   const [selectedTags, setSelectedTags] = useState<OptionType[]>([]);
-  const isRenderEffect = useRef<any>(false);
-  const dispatch = useDispatch();
   const { user } = useSelector((store: RootState) => store.auth);
   const Topics = useSelector((state: RootState) => state.task.Topics);
   const userId = user && String(user._id);
+
   useEffect(() => {
     if (!isRenderEffect.current && Topics.allTopics.length === 0) {
       dispatch(taskActions.getAllTopic());
@@ -123,6 +124,8 @@ function UploadImgOnDrawing(props: IProps) {
               body: formData,
               success: (res) => {
                 if (res) {
+                  setSelectedImages([]);
+                  setSelectedTags([]);
                   closeModal();
                 }
               },
@@ -155,15 +158,6 @@ function UploadImgOnDrawing(props: IProps) {
           inputLabel="Select Tags"
           options={options}
           onChangeValues={setSelectedTags}
-        />
-        <Divider
-          sx={{
-            borderColor: "#9e9e9e",
-            borderRadius: "4px",
-            opacity: "0",
-            background: "#F4F4F4",
-            filter: "blur(2px)",
-          }}
         />
         {selectedImages.length > 0 && (
           <ImagesToUpload

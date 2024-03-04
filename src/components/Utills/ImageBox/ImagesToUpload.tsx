@@ -133,16 +133,18 @@ function ImagesToUpload(props: ImageUploadProps) {
           })}
         </Box>
       </Box>
-      <Divider
-        sx={{
-          my: 1.25,
-          borderColor: "#9e9e9e",
-          borderRadius: "4px",
-          opacity: "0.9",
-          background: "#F4F4F4",
-          filter: "blur(2px)",
-        }}
-      />
+      {!imgwithcomment && (
+        <Divider
+          sx={{
+            my: 1.25,
+            borderColor: "#9e9e9e",
+            borderRadius: "4px",
+            opacity: "0.9",
+            background: "#F4F4F4",
+            filter: "blur(2px)",
+          }}
+        />
+      )}
     </>
   );
 }

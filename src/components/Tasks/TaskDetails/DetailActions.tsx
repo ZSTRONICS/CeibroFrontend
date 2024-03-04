@@ -1,9 +1,9 @@
-import { Box, Chip, Grid, Typography } from "@mui/material";
+import { Box, Chip, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import DragableDrawer from "Drawer/DragableDrawer";
 import { LoadingButton } from "components/Button";
-import { SubLabelTag } from "components/CustomTags";
+import { SubHeading } from "components/CustomTags";
 import { ForwardIcon, ReplyIcon } from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
@@ -28,6 +28,7 @@ interface IProps {
   userSubState: string;
   dueDate: string | null;
   taskUid: string;
+  title: string;
   createdOn: Date | any;
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
@@ -55,9 +56,8 @@ const DetailActions: React.FC<IProps> = (props) => {
   const {
     userSubState,
     taskUid,
-    dueDate,
-    createdOn,
     taskId,
+    title,
     doneImageRequired,
     doneCommentsRequired,
     assignedToState,
@@ -164,6 +164,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     xs: "flex-start",
     md: "flex-end",
   };
+
   const handleFullView = () => {
     let showFullViewData;
     const data = localStorage.getItem("showFullView");
@@ -178,6 +179,7 @@ const DetailActions: React.FC<IProps> = (props) => {
       setIsExpanded(!isExpanded);
     });
   };
+
   const getTitle = () => titles[taskAction] || "";
 
   const calculateWidth = () => {
@@ -286,6 +288,7 @@ const DetailActions: React.FC<IProps> = (props) => {
       }}
     />
   );
+
   const TaskUID = (
     <Chip
       label={taskUid}
@@ -307,7 +310,6 @@ const DetailActions: React.FC<IProps> = (props) => {
             : !isXlscreendown && isLocationTaskDetail && !DrawDetailCollapse
             ? "-4.5px"
             : "",
-        // !isLgscreendown && isLocationTaskDetail && !DrawDetailCollapse ? '-20px' : '',
       }}
     />
   );
@@ -316,7 +318,6 @@ const DetailActions: React.FC<IProps> = (props) => {
     <>
       <Grid
         container
-        mb={1.5}
         justifyContent="end"
         alignItems="flex-start"
         rowGap={2}
@@ -357,7 +358,12 @@ const DetailActions: React.FC<IProps> = (props) => {
         alignItems={`${isLocationTaskDetail ? "center" : "flex-start"}`}
         rowGap={2}
       >
-        <Grid
+        <Grid item>
+          <SubHeading sx={{ color: "black", fontSize: 16 }}>
+            {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
+          </SubHeading>
+        </Grid>
+        {/* <Grid
           item
           container
           xs={12}
@@ -424,8 +430,8 @@ const DetailActions: React.FC<IProps> = (props) => {
               )}
             </>
           )}
-        </Grid>
-        <Box sx={{ display: "flex", justifyContent: "end" }}>
+        </Grid> */}
+        {/* <Box sx={{ display: "flex", justifyContent: "end" }}>
           <Typography
             sx={{
               cursor: "pointer",
@@ -438,20 +444,8 @@ const DetailActions: React.FC<IProps> = (props) => {
           >
             {isExpanded ? "View less" : "View more"}
           </Typography>
-        </Box>
+        </Box> */}
       </Grid>
-      {/* {isOpen === true && (
-        <CustomModal
-          maxWidth={"sm"}
-          showFullWidth={true}
-          showDivider={true}
-          showCloseBtn={true}
-          title={getTitle()}
-          isOpen={false}
-          handleClose={closeModal}
-          children={getModalContent()}
-        />
-      )} */}
       <DragableDrawer
         title={getTitle()}
         children={getModalContent()}

@@ -304,6 +304,7 @@ function CreateNewTask() {
         console.error("Error occurred while uploading files:", error);
       }
     }
+
     dispatch(
       taskActions.createTask({
         other: {

@@ -1,7 +1,8 @@
 // const windowsMap = new Map();
 
-import { ITask } from "constants/interfaces";
+import { AssignedUserState, ITask, InvitedNumber } from "constants/interfaces";
 import _ from "lodash";
+import { MutableRefObject } from "react";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
 
 export const openFormInNewWindow = (path: string, windowTitle: string) => {
@@ -244,4 +245,35 @@ export const fetchDrawingTaskList = (projectData: any, allTasksAllEvents: any) =
 
 export const filterTasksByCondition = (tasks: ITask[], condition: (task: ITask) => boolean): ITask[] => {
   return tasks.filter(condition);
+};
+
+
+export const formatUserName = (user: AssignedUserState | InvitedNumber | any) => {
+  const { firstName, surName, phoneNumber } = user;
+  if (firstName && surName) {
+    return `${firstName} ${surName}`;
+  } else if (firstName) {
+    return firstName;
+  } else if (surName) {
+    return surName;
+  } else {
+    return phoneNumber;
+  }
+};
+
+
+/**
+ * Calculate the width of the HTMLDivElement including margin and padding.
+ *
+ * @param {MutableRefObject<HTMLDivElement | null>} compRef - reference to the HTMLDivElement
+ * @return {number} the width of the HTMLDivElement including margin and padding, or 0 if the reference is null
+ */
+export const getWidthWithMarginAndPadding = (
+  compRef: MutableRefObject<HTMLDivElement | null>
+) => {
+  if (compRef.current) {
+    const width = compRef.current.clientWidth;
+    return width;
+  }
+  return 0;
 };

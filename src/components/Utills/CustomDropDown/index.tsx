@@ -97,7 +97,11 @@ function CustomDropDown(props: IProps) {
         (item) => item.label === selected
       );
       if (updatedSelected) {
-        handleChangeValues(updatedSelected._id, name);
+        if (label === "Title") {
+          handleChangeValues(updatedSelected.label, name);
+        } else {
+          handleChangeValues(updatedSelected._id, name);
+        }
         handleSelectedMenuList(updatedSelected);
       }
     }
@@ -105,10 +109,6 @@ function CustomDropDown(props: IProps) {
     setSortedOptions(allGroupedData);
   }, [options.allOptions.length, options.recentOptions.length, selected]);
 
-  // const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-  //   setSelected(event.target.value);
-  //   handleClose();
-  // };
   const handleMenuClick = (e: any, item: OptionType) => {
     e.stopPropagation();
     e.preventDefault();

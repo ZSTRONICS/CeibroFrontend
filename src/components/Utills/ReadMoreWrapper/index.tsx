@@ -13,6 +13,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { getWidthWithMarginAndPadding } from "utills/common";
 import FileBox from "../FileBox";
 import ImageBox from "../ImageBox";
 import ImageBoxWithDesp from "../ImageBoxWithDesp";
@@ -79,16 +80,6 @@ const ReadMoreWrapper = ({
         setIsExpanded(true);
       }
     }
-  };
-
-  const getWidthWithMarginAndPadding = (
-    compRef: MutableRefObject<HTMLDivElement | null>
-  ) => {
-    if (compRef.current) {
-      const width = compRef.current.clientWidth;
-      return width;
-    }
-    return 0;
   };
 
   useEffect(() => {
@@ -159,44 +150,28 @@ const ReadMoreWrapper = ({
 
   return (
     <>
-      <Box
-        key={`key${useId()}` + 1}
-        sx={{
-          width: "100%",
-          padding: "8px 0px 8px 0px",
-          gap: 1,
-        }}
-      >
+      <Box key={`key${useId()}` + 1} sx={{ width: "100%" }}>
         <Box
           sx={{
             width: "100%",
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
+            gap: "14px",
           }}
         >
-          <Box
+          <Typography
             sx={{
-              width: "90px",
-              gap: 1,
-              display: "flex",
-              alignItems: "center",
+              fontFamily: "Inter",
+              fontWeight: 600,
+              fontSize: "12px",
+              color: "#605c5c",
+              lineHeight: "16px",
+              width: "100%",
+              overflowWrap: "anywhere",
             }}
           >
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontWeight: 600,
-                fontSize: "12px",
-                lineHeight: "16px",
-                color: "#605c5c",
-                width: "100%",
-                overflowWrap: "anywhere",
-                paddingRight: "8px",
-              }}
-            >
-              {title}
-            </Typography>
-          </Box>
+            {title}
+          </Typography>
           <Box
             sx={{
               width: "100%",
@@ -208,13 +183,8 @@ const ReadMoreWrapper = ({
             <Box
               sx={{
                 width: "100%",
-                px: "16px",
-                gap: "16px",
-                borderLeft: "1.9px solid #818181",
+                px: "4px",
                 maxWidth: "95%",
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center",
               }}
             >
               {type === "text" && (
@@ -243,6 +213,7 @@ const ReadMoreWrapper = ({
                     width: "100%",
                     display: "flex",
                     flexWrap: "wrap",
+                    gap: "10px",
                   }}
                 >
                   {data &&

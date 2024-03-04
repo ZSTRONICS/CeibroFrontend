@@ -55,12 +55,14 @@ function TaskDetails(props: IProps) {
     doneCommentsRequired,
     doneImageRequired,
     title,
+    confirmer,
+    viewer,
   } = task;
   const showFullView = localStorage.getItem("showFullView");
   const [isShowFullView, setIsShowFullView] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
-
+  const dueDateLocal = convertDateFormat(dueDate);
   useEffect(() => {
     let getShowValue = showFullView && JSON.parse(showFullView);
     const isTaskFind = getShowValue && taskUID in getShowValue;
@@ -137,7 +139,8 @@ function TaskDetails(props: IProps) {
         doneCommentsRequired={doneCommentsRequired}
         taskId={_id}
         userSubState={props.userSubStateLocal}
-        dueDate={convertDateFormat(dueDate)}
+        dueDate={dueDateLocal}
+        title={title}
         taskUid={taskUID}
         createdOn={momentLocalDateTime(createdAt)}
         assignedToState={assignedToState}
@@ -162,6 +165,11 @@ function TaskDetails(props: IProps) {
           creator={creator}
           project={project}
           invitedNumbers={invitedNumbers}
+          taskUID={taskUID}
+          confirmer={confirmer}
+          viewer={viewer}
+          dueDate={dueDateLocal}
+          createdDate={createdAt}
         />
         {isShowFullView && (
           <>

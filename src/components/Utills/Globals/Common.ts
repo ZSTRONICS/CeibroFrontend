@@ -313,7 +313,7 @@ export const deDateFormat = (dateStr: Date | string) => {
  * @return dd-mm-yyyy
  * @param dateString date string is required
  * **/
-export const convertDateFormat = (dateString: string) => {
+export const convertDateFormat: any = (dateString: string) => {
   if (dateString === "") {
     return null;
   }
