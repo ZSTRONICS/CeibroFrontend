@@ -441,10 +441,11 @@ export default function DetailsHeader(props: IProps) {
           label: data.sentTo.label,
           users: data.sentTo.value,
         })}
-        {renderUserWithAvatar({
-          label: data.Viewer.label,
-          users: data.Viewer.value,
-        })}
+        {!isExpanded &&
+          renderUserWithAvatar({
+            label: data.Viewer.label,
+            users: data.Viewer.value,
+          })}
         {!isExpanded &&
           renderUserWithAvatar({
             label: data.Invitees.label,

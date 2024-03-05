@@ -43,15 +43,13 @@ const CustomDatePicker = ({
     >
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={"de"}>
         <DatePicker
+          disablePast
           sx={{
             fieldset: {
               borderWidth: "0px",
               borderRadius: "0px",
               borderBottom: "1px solid #949494",
-              // "& .MuiOutlinedInput-root.Mui-focused": {
-              //   border: "none",
-              //   outline: "none",
-              // },
+              marginLeft: "12px",
             },
             "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
               {
@@ -59,16 +57,11 @@ const CustomDatePicker = ({
                 borderBottom: "2px solid #0076c8",
                 outline: "none",
               },
-            // "& .MuiOutlinedInput-root.Mui-focused": {
-            //   outline: "none",
-            //   border: "none !important",
-            //   borderBottom: "1px solid #3f51b5",
-            // },
             "& .MuiInputBase-root": {
               height: NewTask ? "42px" : locationimageDetails ? "38px" : "",
               marginTop: locationimageDetails ? "-13px" : "",
               minWidth: locationimageDetails ? "100px" : "",
-              // marginLeft: "-12px",
+              marginLeft: "-12px",
               fontFamily: "Inter",
             },
             "& .MuiInputLabel-root": {
@@ -97,26 +90,6 @@ const CustomDatePicker = ({
           open={open}
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
-          // minDate={new Date()}
-          // PopperProps={{
-          //   sx: { marginLeft: "-35px !important" },
-          //   placement: "auto-start",
-          // }}
-          // renderInput={(params) => (
-          //   <TextField
-          //     {...params}
-          //     variant="standard"
-          //     sx={{
-          //       width: "100%",
-          //       label: {
-          //         color: "#757575",
-          //         fontWeight: 600,
-          //         fontSize: "16px",
-          //       },
-          //     }}
-          //     onClick={() => setOpen(true)}
-          //   />
-          // )}
           onChange={handleDateChange}
           value={value}
         />

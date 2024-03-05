@@ -175,12 +175,14 @@ function AddedDetails(props: IProps) {
                         (file: IFile) => file.comment.length > 0
                       ).length > 0 && (
                         <>
+                          {/* //// */}
                           <ReadMoreWrapper
                             title="Images with comments"
                             type="imageWithDesp"
                             count={mediaWithComment.length}
                             data={mediaWithComment}
                           />
+                          {/* ////// */}
                           <CustomDivider />
                         </>
                       )}

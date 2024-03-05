@@ -1,10 +1,10 @@
+import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import { Box, Chip, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import DragableDrawer from "Drawer/DragableDrawer";
 import { LoadingButton } from "components/Button";
-import { SubHeading } from "components/CustomTags";
-import { ForwardIcon, ReplyIcon } from "components/material-ui/icons";
+import { ReplyIcon } from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
@@ -125,6 +125,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   const theme = useTheme();
   const isTabletdown = useMediaQuery(theme.breakpoints.down(1400));
   const isMinitabdown = useMediaQuery(theme.breakpoints.down(1200));
+  const isMiniScreen = useMediaQuery(theme.breakpoints.down(1100));
   const isXlscreendown = useMediaQuery(theme.breakpoints.down("xl"));
 
   const chipColor: string =
@@ -197,56 +198,116 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const HeaderBtns = (
-    <>
-      <LoadingButton
-        startIcon={<ReplyIcon />}
-        onClick={() => handleClick("comment")}
-        variant="outlined"
-        sx={{
-          width: isLocationTaskDetail && isMinitabdown ? "100%" : "max-content",
-          borderRadius: "4px",
-          fontWeight: "700",
-          border: "1px solid #0076C8",
-          padding: "0px 16px",
-          marginBottom: isTabletdown ? "10px" : "",
-          alignSelf: "flex-end",
-          span: {
-            mr: "4px",
-          },
-        }}
-      >
-        Reply
-      </LoadingButton>
+    <Box
+      sx={{
+        // border: "solid 1px red",
+        maxWidth: "100%",
+        width: "max-content",
+        display: "flex",
+        justifyContent: "end",
+        alignItems: "center",
+      }}
+    >
       {!["done", "canceled", "new"].includes(userSubState) && (
         <>
-          <LoadingButton
-            startIcon={<ForwardIcon />}
-            onClick={() => handleClick("forward")}
-            variant="outlined"
-            disabled={false}
+          {/* //// */}
+          <Box
             sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#F4F4F4",
+              marginRight: "10px",
+              padding: "2px 2px",
               borderRadius: "4px",
-              fontWeight: "700",
-              border: "1px solid #0076C8",
-              padding: "0px 12px",
-              marginBottom: isTabletdown ? "10px" : "",
-              span: {
-                marginRight: "4px",
-              },
+              // width: "90px",
             }}
           >
-            Forward
-          </LoadingButton>
+            <LoadingButton
+              // startIcon={<ReplyIcon />}
+              onClick={() => handleClick("comment")}
+              variant="outlined"
+              sx={{
+                width:
+                  isLocationTaskDetail && isMinitabdown
+                    ? "100%"
+                    : "max-content",
+                borderRadius: "4px",
+                fontWeight: "700",
+                // padding: "0px 16px",
+                // marginBottom: isTabletdown ? "10px" : "",
+                alignSelf: "flex-end",
+                backgroundColor: "transparent",
+                border: "none",
+                "&:hover": {
+                  // Correct syntax for hover
+                  border: "none",
+                },
+                span: {
+                  mr: "4px",
+                },
+              }}
+            >
+              <ReplyIcon />
+            </LoadingButton>
+            <Box
+              sx={{
+                border: "solid 1px green",
+                height: "20px",
+                width: "0.5px",
+                backgroundColor: "rgb(226,228,229)",
+              }}
+            ></Box>
+            <LoadingButton
+              // startIcon={<ForwardIcon />}
+              onClick={() => handleClick("forward")}
+              variant="outlined"
+              disabled={false}
+              sx={{
+                borderRadius: "4px",
+                fontWeight: "700",
+                backgroundColor: "transparent",
+                border: "none",
+                // marginBottom: isTabletdown ? "10px" : "",
+                "&:hover": {
+                  // Correct syntax for hover
+                  border: "none",
+                },
+                span: {
+                  marginRight: "4px",
+                },
+              }}
+            >
+              <PersonAddOutlinedIcon />
+            </LoadingButton>
+          </Box>
+          {/* //// */}
           <Box sx={{ position: "relative" }}>
+            <LoadingButton
+              // variant="contained"
+              // onClick={handleDoneClick}
+              sx={{
+                width: "95px",
+                borderRadius: "4px",
+                fontWeight: "700",
+                border: "1px solid #F4F4F4",
+                marginRight: "10px",
+                backgroundColor: "#F4F4F4",
+                // width: isTabletdown ? "100%" : "100px",
+              }}
+              disabled={isloading}
+            >
+              Hide
+            </LoadingButton>
             <LoadingButton
               variant="contained"
               onClick={handleDoneClick}
               sx={{
+                width: "95px",
                 borderRadius: "4px",
                 fontWeight: "700",
                 border: "1px solid #0076C8",
-                padding: "0px 16px",
-                width: isTabletdown ? "100%" : "100px",
+                // width: isTabletdown ? "100%" : "100px",
               }}
               disabled={isloading}
             >
@@ -269,8 +330,84 @@ const DetailActions: React.FC<IProps> = (props) => {
           </Box>
         </>
       )}
-    </>
+    </Box>
   );
+
+  // const HeaderBtns = (
+  //   <>
+  //     <LoadingButton
+  //       startIcon={<ReplyIcon />}
+  //       onClick={() => handleClick("comment")}
+  //       variant="outlined"
+  //       sx={{
+  //         width: isLocationTaskDetail && isMinitabdown ? "100%" : "max-content",
+  //         borderRadius: "4px",
+  //         fontWeight: "700",
+  //         border: "1px solid #0076C8",
+  //         padding: "0px 16px",
+  //         marginBottom: isTabletdown ? "10px" : "",
+  //         alignSelf: "flex-end",
+  //         span: {
+  //           mr: "4px",
+  //         },
+  //       }}
+  //     >
+  //       Reply
+  //     </LoadingButton>
+  //     {!["done", "canceled", "new"].includes(userSubState) && (
+  //       <>
+  //         <LoadingButton
+  //           startIcon={<ForwardIcon />}
+  //           onClick={() => handleClick("forward")}
+  //           variant="outlined"
+  //           disabled={false}
+  //           sx={{
+  //             borderRadius: "4px",
+  //             fontWeight: "700",
+  //             border: "1px solid #0076C8",
+  //             padding: "0px 12px",
+  //             marginBottom: isTabletdown ? "10px" : "",
+  //             span: {
+  //               marginRight: "4px",
+  //             },
+  //           }}
+  //         >
+  //           Forward
+  //         </LoadingButton>
+  //         <Box sx={{ position: "relative" }}>
+  //           <LoadingButton
+  //             variant="contained"
+  //             onClick={handleDoneClick}
+  //             sx={{
+  //               borderRadius: "4px",
+  //               fontWeight: "700",
+  //               border: "1px solid #0076C8",
+  //               padding: "0px 16px",
+  //               width: isTabletdown ? "100%" : "100px",
+  //             }}
+  //             disabled={isloading}
+  //           >
+  //             Done
+  //           </LoadingButton>
+  //           {(doneCommentsRequired || doneImageRequired) && (
+  //             <span
+  //               style={{
+  //                 height: "10px",
+  //                 width: "10px",
+  //                 backgroundColor: "red",
+  //                 borderRadius: "50%",
+  //                 display: "inline-block",
+  //                 position: "absolute",
+  //                 top: "13%",
+  //                 right: "6%",
+  //               }}
+  //             ></span>
+  //           )}
+  //         </Box>
+  //       </>
+  //     )}
+  //   </>
+  // );
 
   const userSUBState = (
     <Chip
@@ -315,47 +452,136 @@ const DetailActions: React.FC<IProps> = (props) => {
   );
 
   return (
+    // <>
+    //   <Grid container justifyContent="space-between" rowGap={1.25}>
+    //     <Grid item>
+    //       <Box
+    //         sx={{
+    //           width: "max-content",
+    //           paddingRight: "8px",
+    //         }}
+    //       >
+    //         {userSUBState}
+    //       </Box>
+    //       <SubHeading sx={{ color: "black", fontSize: 16, pt: 1 }}>
+    //         {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
+    //       </SubHeading>
+    //     </Grid>
+    //     <Grid
+    //       item
+    //       container
+    //       xs={12}
+    //       gap={1.4}
+    //       justifyContent={justifyContent}
+    //       flexWrap="nowrap"
+    //     >
+    //       {isLocationTaskDetail && isMinitabdown ? (
+    //         <>
+    //           <Box
+    //             sx={{
+    //               display: "flex",
+    //               justifyContent: "space-between",
+    //               width: calculateWidth(),
+    //               transition: "all 0.3s linear",
+    //               flexDirection: isTabletdown ? "column" : "row",
+    //             }}
+    //           >
+    //             {HeaderBtns}
+    //           </Box>
+    //         </>
+    //       ) : (
+    //         <>{HeaderBtns}</>
+    //       )}
+    //     </Grid>
+    //   </Grid>
+    //   <DragableDrawer
+    //     title={getTitle()}
+    //     children={getModalContent()}
+    //     openModal={openModal}
+    //     closeModal={closeModal}
+    //     isOpen={isOpen}
+    //   />
+    // </>
+
     <>
-      <Grid container justifyContent="space-between" rowGap={1.25}>
-        <Grid item>
-          <Box
-            sx={{
-              width: "max-content",
-              paddingRight: "8px",
-            }}
-          >
-            {userSUBState}
-          </Box>
-          <SubHeading sx={{ color: "black", fontSize: 16, pt: 1 }}>
-            {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
-          </SubHeading>
-        </Grid>
+      <Grid
+        container
+        justifyContent="space-between"
+        // rowGap={1.25}
+        xs={12}
+      >
         <Grid
           item
           container
+          // xs={ isMiniScreen ? 4 : (!isTabletdown ? 7 : 5)}
+          xl={8}
+          lg={6}
+          md={12}
+          sm={12}
           xs={12}
-          gap={1.4}
-          justifyContent={justifyContent}
-          flexWrap="nowrap"
+          sx={{ width: "100%" }}
         >
-          {isLocationTaskDetail && isMinitabdown ? (
-            <>
+          <Grid container item xs={12}>
+            <Grid container item xs={12}>
               <Box
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: calculateWidth(),
-                  transition: "all 0.3s linear",
-                  flexDirection: isTabletdown ? "column" : "row",
+                  width: "max-content",
+                  paddingRight: "8px",
                 }}
               >
-                {HeaderBtns}
+                {userSUBState}
               </Box>
-            </>
-          ) : (
-            <>{HeaderBtns}</>
-          )}
+            </Grid>
+          </Grid>
+
+          <Grid item sx={{ marginTop: "10px", fontWeight: "600" }}>
+            {/* Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente
+            recusandae totam autem quaerat illo */}
+            {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
+          </Grid>
         </Grid>
+        <Grid
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+          item
+          xl={4}
+          lg={6}
+          md={12}
+          sm={12}
+          xs={12}
+          // xs={!isTabletdown ? 5 : 7}
+        >
+          <>{HeaderBtns}</>
+        </Grid>
+        {/* <Grid
+        item
+        container
+        xs={12}
+        gap={1.4}
+        justifyContent={justifyContent}
+        flexWrap="nowrap"
+      >
+        {isLocationTaskDetail && isMinitabdown ? (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: calculateWidth(),
+                transition: "all 0.3s linear",
+                flexDirection: isTabletdown ? "column" : "row",
+              }}
+            >
+              {HeaderBtns}
+            </Box>
+          </>
+        ) : (
+          <>{HeaderBtns}</>
+        )}
+      </Grid> */}
       </Grid>
       <DragableDrawer
         title={getTitle()}
