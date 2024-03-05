@@ -420,7 +420,12 @@ const LocationImageDetails = () => {
                       backgroundColor: "#0076C8",
                     },
                   }}
-                  onClick={() => setIsStartExport(!isStartExport)}
+                  onClick={() => {
+                    if (isStartExport) {
+                      setOpen(true);
+                    }
+                    setIsStartExport(!isStartExport);
+                  }}
                 >
                   {!isStartExport ? "Start Export" : "End Export"}
                 </Button>

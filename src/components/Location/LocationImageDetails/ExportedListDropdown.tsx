@@ -1,8 +1,10 @@
-import ArchiveIcon from "@mui/icons-material/Archive";
+import {
+  ContentPasteOutlined,
+  IosShareOutlined,
+  ListAltOutlined,
+  PlaylistAddCheckOutlined,
+} from "@mui/icons-material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import EditIcon from "@mui/icons-material/Edit";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Button from "@mui/material/Button";
 import Menu, { MenuProps } from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -77,8 +79,8 @@ const ExportedListDropdown = () => {
           fontSize: "14px",
           fontWeight: "700",
           lineHeight: "16px",
-          textTransform:"none",
-          height:"40px",
+          textTransform: "none",
+          height: "40px",
           background: "#0076C8",
         }}
       >
@@ -94,20 +96,20 @@ const ExportedListDropdown = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose} disableRipple>
-          <EditIcon />
-          Edit
+          <ContentPasteOutlined />
+          Task
         </MenuItem>
         <MenuItem onClick={handleClose} disableRipple>
-          <FileCopyIcon />
-          Duplicate
+          <ListAltOutlined />
+          Action list
         </MenuItem>
         <MenuItem onClick={handleClose} disableRipple>
-          <ArchiveIcon />
-          Archive
+          <PlaylistAddCheckOutlined />
+          Covered work act
         </MenuItem>
         <MenuItem onClick={handleClose} disableRipple>
-          <MoreHorizIcon />
-          More
+          <IosShareOutlined />
+          Export files+pdf location
         </MenuItem>
       </StyledMenu>
     </div>
