@@ -197,6 +197,8 @@ const DetailActions: React.FC<IProps> = (props) => {
     }
   };
 
+  const [hide, setHide] = useState(true);
+
   const HeaderBtns = (
     <Box
       sx={{
@@ -292,7 +294,8 @@ const DetailActions: React.FC<IProps> = (props) => {
                 fontWeight: "700",
                 border: "1px solid #F4F4F4",
                 marginRight: "10px",
-                backgroundColor: "#F4F4F4",
+                backgroundColor: hide ? "#E85555" : "#F4F4F4",
+                color: hide ? "white" : null,
                 // width: isTabletdown ? "100%" : "100px",
               }}
               disabled={isloading}
