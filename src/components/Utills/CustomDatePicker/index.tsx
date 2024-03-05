@@ -53,15 +53,22 @@ const CustomDatePicker = ({
               //   outline: "none",
               // },
             },
-            "& .MuiOutlinedInput-root.Mui-focused": {
-              outline: "none",
-              border: "none !important",
-              borderBottom: "1px solid #3f51b5",
-            },
+            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+              {
+                border: "none",
+                borderBottom: "2px solid #0076c8",
+                outline: "none",
+              },
+            // "& .MuiOutlinedInput-root.Mui-focused": {
+            //   outline: "none",
+            //   border: "none !important",
+            //   borderBottom: "1px solid #3f51b5",
+            // },
             "& .MuiInputBase-root": {
               height: NewTask ? "42px" : locationimageDetails ? "38px" : "",
               marginTop: locationimageDetails ? "-13px" : "",
               minWidth: locationimageDetails ? "100px" : "",
+              // marginLeft: "-12px",
               fontFamily: "Inter",
             },
             "& .MuiInputLabel-root": {
@@ -70,6 +77,9 @@ const CustomDatePicker = ({
               fontSize: "14px",
               color: "#605b5c",
               marginTop: locationimageDetails ? "-20px" : "",
+            },
+            "& .MuiInputBase-input-MuiOutlinedInput-input": {
+              padding: "0px",
             },
             "& .MuiInput-underline.Mui-disabled:before": {},
           }}
