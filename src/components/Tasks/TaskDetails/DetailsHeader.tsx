@@ -82,6 +82,7 @@ export default function DetailsHeader(props: IProps) {
       label: "Due Date",
       value: dueDate ? dueDate : null,
     },
+
     Createdby: {
       label: "Created by",
       value: [creator],
@@ -90,7 +91,6 @@ export default function DetailsHeader(props: IProps) {
       label: "Sent to",
       value: assignedToState.length > 0 ? assignedToState : null,
     },
-    project: { label: "Project", value: project && project.title },
     Invitees: {
       label: "Invitees",
       value: invitedNumbers.length > 0 ? invitedNumbers : null,

@@ -7,7 +7,6 @@ import {
   IS_IMAGE,
   MEDIA_EXT,
   convertDateFormat,
-  momentLocalDateTime,
 } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
@@ -16,8 +15,6 @@ import { DynamicDimensions } from "hooks/useDynamicDimensions";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import AddedDetails from "./AddedDetails";
-import DetailActions from "./DetailActions";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
 
@@ -132,30 +129,12 @@ function TaskDetails(props: IProps) {
         px: 2,
       }}
     >
-      <DetailActions
-        isLocationTaskDetail={isLocationTaskDetail}
-        taskDetailContDimension={taskDetailContDimension}
-        doneImageRequired={doneImageRequired}
-        doneCommentsRequired={doneCommentsRequired}
-        taskId={_id}
-        userSubState={props.userSubStateLocal}
-        dueDate={dueDateLocal}
-        title={title}
-        taskUid={taskUID}
-        createdOn={momentLocalDateTime(createdAt)}
-        assignedToState={assignedToState}
-        invitedNumbers={invitedNumbers}
-        isExpanded={isShowFullView}
-        setIsExpanded={setIsShowFullView}
-        DrawDetailCollapse={DrawDetailCollapse}
-      />
-      <CustomDivider sx={{ my: 1.3 }} />
       <Box
         ref={containerRef}
         pr={1.25}
         mr={-1}
         sx={{
-          maxHeight: `calc(100vh - ${heightOffset}px)`,
+          // maxHeight: `calc(100vh - ${heightOffset}px)`,
           overflow: "auto",
         }}
       >
@@ -187,7 +166,7 @@ function TaskDetails(props: IProps) {
             />
           </>
         )}
-        {events && <AddedDetails events={events} hasFile={media.length > 0} />}
+        {/* {events && <AddedDetails events={events} hasFile={media.length > 0} />} */}
       </Box>
 
       {uniqueImageFiles.length > 0 && (

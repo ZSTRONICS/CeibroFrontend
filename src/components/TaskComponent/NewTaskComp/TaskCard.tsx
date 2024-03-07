@@ -6,7 +6,6 @@ import {
   SubLabelTag,
   TaskCardLabel,
 } from "components/CustomTags";
-import GenericMenu from "components/GenericComponents/GenericMenu";
 import {
   convertDateFormat,
   momentLocalDateTime,
@@ -193,7 +192,7 @@ const TaskCard = React.memo((props: IProps) => {
             }}
           >{`Due date N/A`}</Span>
         )}
-        <Box sx={{ position: "absolute", top: "3%", right: 0 }}>
+        {/* <Box sx={{ position: "absolute", top: "3%", right: 0 }}>
           <GenericMenu
             options={menuOption}
             key={_id}
@@ -201,7 +200,7 @@ const TaskCard = React.memo((props: IProps) => {
             isTaskSelected={!isSelectedTask}
             paddingTop={0}
           />
-        </Box>
+        </Box> */}
       </CustomStack>
 
       <CardContent

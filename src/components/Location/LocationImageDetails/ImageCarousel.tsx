@@ -40,6 +40,7 @@ const ImageCarousel = ({
             key={`img-${index}`}
           >
             <img
+              alt=""
               style={{ height: "100%", width: "100%", objectFit: "contain" }}
               src={image.fileUrl}
             />

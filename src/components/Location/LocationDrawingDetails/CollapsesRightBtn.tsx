@@ -13,7 +13,6 @@ const CollapsesRightBtn: React.FC<CollapsesBtnProps> = ({
   return (
     <button
       style={{
-        // padding: '16px 4px 16px 4px',
         height: "35px",
         width: "35px",
         border: "none",

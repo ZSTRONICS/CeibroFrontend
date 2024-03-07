@@ -236,13 +236,10 @@ const DetailActions: React.FC<IProps> = (props) => {
                     : "max-content",
                 borderRadius: "4px",
                 fontWeight: "700",
-                // padding: "0px 16px",
-                // marginBottom: isTabletdown ? "10px" : "",
                 alignSelf: "flex-end",
                 backgroundColor: "transparent",
                 border: "none",
                 "&:hover": {
-                  // Correct syntax for hover
                   border: "none",
                 },
                 span: {
@@ -261,7 +258,6 @@ const DetailActions: React.FC<IProps> = (props) => {
               }}
             ></Box>
             <LoadingButton
-              // startIcon={<ForwardIcon />}
               onClick={() => handleClick("forward")}
               variant="outlined"
               disabled={false}
@@ -270,9 +266,7 @@ const DetailActions: React.FC<IProps> = (props) => {
                 fontWeight: "700",
                 backgroundColor: "transparent",
                 border: "none",
-                // marginBottom: isTabletdown ? "10px" : "",
                 "&:hover": {
-                  // Correct syntax for hover
                   border: "none",
                 },
                 span: {

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   AddStatusTag,
   CustomStack,
@@ -72,7 +72,7 @@ function AddedDetails(props: IProps) {
 
   return (
     <>
-      <Box sx={{ mb: 1 }} id="task-added-detail">
+      {/* <Box sx={{ mb: 1 }} id="task-added-detail">
         <Typography
           sx={{
             fontFamily: "Inter",
@@ -84,7 +84,7 @@ function AddedDetails(props: IProps) {
         >
           Added Details
         </Typography>
-      </Box>
+      </Box> */}
       <Box ref={listRef} className="custom-scrollbar">
         {events?.length > 0 ? (
           events.map((event: TaskEvent, index: number) => {
@@ -411,8 +411,8 @@ function AddedDetails(props: IProps) {
             }
           })
         ) : (
-          <AddStatusTag sx={{ color: "black" }}>
-            No task details added
+          <AddStatusTag sx={{ color: "black", textAlign: "center", mt: 2 }}>
+            No comment has been done in this task yet!
           </AddStatusTag>
         )}
       </Box>

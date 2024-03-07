@@ -29,6 +29,7 @@ export default function Nav({ openNav, onCloseNav, height }: Props) {
     "/location-details",
     "/connections",
     "/profile",
+    "/tasks",
   ]);
   const isDesktop = useResponsive("up", "md", "");
   useEffect(() => {

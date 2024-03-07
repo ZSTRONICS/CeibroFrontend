@@ -48,7 +48,6 @@ export default function DetailsBody(props: IProps) {
       setMediaWithoutComment([...mediaWithoutComment]);
     }
   }, [media]);
-
   return (
     <>
       <Box
