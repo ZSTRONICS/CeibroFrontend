@@ -1,6 +1,10 @@
 import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
 import { FILTER_DATA_BY_EXT, MEDIA_EXT } from "components/Utills/Globals";
 import { ITask } from "constants/interfaces";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { taskActions } from "redux/action";
+import { RootState } from "redux/reducers";
 import TaskDetails from ".";
 import AddedDetails from "./AddedDetails";
 import FilesTab from "./FilesTab";
@@ -10,10 +14,28 @@ interface IProps {
   RECENT_TASK_UPDATED_TIME_STAMP: string;
 }
 function TabsViewTaskDetail(props: IProps) {
+  const dispatch = useDispatch();
+  const isRenderEffect = useRef<boolean>(false);
   const { isCommentView, selectedTask, RECENT_TASK_UPDATED_TIME_STAMP } = props;
   const { events, files } = selectedTask;
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
-  const allFiles = [...files];
+  useEffect(() => {
+    if (!isRenderEffect.current) {
+      if (selectedTask && selectedTask._id) {
+        dispatch(
+          taskActions.getAllTaskFiles({ other: { taskId: selectedTask._id } })
+        );
+      }
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
+  }, [selectedTask._id]);
+  const { loadingAllTaskFiles, allTaskFiles } = useSelector(
+    (state: RootState) => state.task
+  );
+
+  console.log("allTaskFiles", allTaskFiles);
   const commentsAndFilesTabs = [
     {
       label: "Comments",
@@ -21,11 +43,7 @@ function TabsViewTaskDetail(props: IProps) {
     },
     {
       label: "Files",
-      content: (
-        <>
-          <FilesTab />
-        </>
-      ),
+      content: <FilesTab allTaskFiles={allTaskFiles} />,
     },
   ];
 

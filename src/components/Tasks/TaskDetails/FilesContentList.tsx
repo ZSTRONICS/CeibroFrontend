@@ -1,80 +1,114 @@
+import { Avatar } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
-import { CustomStack, LabelTag } from "components/CustomTags";
+import { CustomStack, Heading2, LabelTag } from "components/CustomTags";
 import { GenericMenu } from "components/GenericComponents";
 import { getFileIconThumbnail } from "components/Utills/FileBox";
+import { MEDIA_EXT, momentdeDateFormat } from "components/Utills/Globals";
+import { TaskFile } from "constants/interfaces";
 import React from "react";
 
-function FilesContentList() {
+interface IFilesContentList {
+  allFiles: TaskFile[];
+}
+function FilesContentList(props: IFilesContentList) {
+  const { allFiles } = props;
   return (
     <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
-      {[1, 2, 3, 4].map((item) => (
-        <>
-          <ListItem
-            alignItems="flex-start"
-            sx={{
-              borderBottom: "1px solid #E2E4E5",
-              "& .MuiListItemSecondaryAction-root": {
-                right: "0",
-              },
-            }}
-            secondaryAction={
-              <CustomStack>
-                <LabelTag>Today at 12:23:34 PM</LabelTag>
-                <GenericMenu
-                  isProjectGroup={true}
-                  options={[
-                    {
-                      menuName: "Go to file location",
-                      callBackHandler: () => {},
+      {allFiles.length > 0 ? (
+        allFiles.map((file, index) => {
+          const fileCreatedAt = momentdeDateFormat(file.createdAt);
+          const fullName = `${file.initiator.firstName || ""} ${
+            file.initiator.surName || ""
+          }`;
+          const isImgType = MEDIA_EXT.includes(file.fileType);
+          return (
+            <>
+              <ListItem
+                key={index}
+                alignItems="flex-start"
+                sx={{
+                  borderBottom: "1px solid #E2E4E5",
+                  "& .MuiListItemSecondaryAction-root": {
+                    right: "0",
+                  },
+                }}
+                secondaryAction={
+                  <CustomStack>
+                    <LabelTag>{fileCreatedAt}</LabelTag>
+                    <GenericMenu
+                      isProjectGroup={true}
+                      options={[
+                        {
+                          menuName: "Go to file location",
+                          callBackHandler: () => {},
+                        },
+                        {
+                          menuName: "Share",
+                          callBackHandler: () => {},
+                        },
+                        {
+                          menuName: "Download",
+                          callBackHandler: () => {},
+                        },
+                      ]}
+                      key={1}
+                      paddingTop={0}
+                      disableMenu={false}
+                    />
+                  </CustomStack>
+                }
+                disablePadding
+              >
+                <ListItemAvatar>
+                  {isImgType && file.fileUrl ? (
+                    <Avatar
+                      sx={{ width: "40px", height: "40px" }}
+                      alt={file.fileName}
+                      variant="rounded"
+                      srcSet={file.fileUrl}
+                    />
+                  ) : (
+                    getFileIconThumbnail(file.fileType, 35, 40)
+                  )}
+                </ListItemAvatar>
+                <ListItemText
+                  sx={{
+                    "& span.MuiTypography-body1": {
+                      fontSize: "14px",
+                      fontWeight: 500,
                     },
-                    {
-                      menuName: "Share",
-                      callBackHandler: () => {},
-                    },
-                    {
-                      menuName: "Download",
-                      callBackHandler: () => {},
-                    },
-                  ]}
-                  key={1}
-                  paddingTop={0}
-                  disableMenu={false}
+                  }}
+                  primary={file.fileName}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{
+                          display: "inline",
+                          fontSize: "12px",
+                          fontWeight: "500",
+                        }}
+                        component="span"
+                        variant="body2"
+                        color="#605C5C"
+                      >
+                        {fullName}
+                      </Typography>
+                    </React.Fragment>
+                  }
                 />
-              </CustomStack>
-            }
-            disablePadding
-          >
-            <ListItemAvatar>
-              {/* fileType */}
-              {getFileIconThumbnail(".pdf", 35, 40)}
-              {/* <Avatar
-                variant="rounded"
-                alt="RS"
-                src="/static/images/avatar/1.jpg"
-              /> */}
-            </ListItemAvatar>
-            <ListItemText
-              primary="Brunch this weekend?"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    uploaded by
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        </>
-      ))}
+              </ListItem>
+            </>
+          );
+        })
+      ) : (
+        <Heading2 sx={{ textAlign: "center", fontWeight: 500 }}>
+          No files attached
+        </Heading2>
+      )}
     </List>
   );
 }

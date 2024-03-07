@@ -52,6 +52,13 @@ function Task() {
       isRenderEffect.current = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (windowWidth < 1199) {
+      setCommentDiv(false);
+    }
+  }, [windowWidth, windowHeight]);
+
   const gridStyle = {
     borderRadius: "4px",
     background: "#FFF",
@@ -83,7 +90,7 @@ function Task() {
       </Box>
     );
   };
-  const selectedTask = allTaskFromMe && allTaskFromMe["ongoing"][33];
+  const selectedTask = allTaskFromMe && allTaskFromMe["ongoing"][5];
 
   return (
     <Grid
@@ -150,7 +157,6 @@ function Task() {
           justifyContent={"space-between"}
           sx={{
             width: "100%",
-            border: "1px solid red",
             height: `${
               windowActualHeight - detailHeaderRefDimension.height - 20
             }px`,
@@ -195,7 +201,6 @@ function Task() {
             sx={{
               maxWidth: `${commentDiv ? "51%" : ".5%"}`,
               width: "100%",
-              border: "1px solid",
               transition: "all 0.30s linear",
               display: { lg: "block", sm: "none" },
             }}

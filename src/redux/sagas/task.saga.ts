@@ -29,6 +29,12 @@ const getAllTasksAllEvents = apiCall({
   method: "get",
   path: (payload) => `task/syncTask/2023-10-17T16:13:41.345Z`
 })
+const getAllTaskFiles = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.GET_ALL_TASK_FILES,
+  method: "get",
+  path: (payload) => `docs/taskFiles/${payload.other.taskId}`
+})
 
 const syncTaskEventsByTaskId = apiCall({
   useV2Route: true,
@@ -118,6 +124,7 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
   yield takeLatest(TASK_CONFIG.SYNC_ALL_TASKS, syncAllTasks)
   yield takeLatest(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS, getAllTasksAllEvents)
+  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_FILES, getAllTaskFiles)
   yield takeLatest(TASK_CONFIG.SYNC_TASK_EVENTS_BY_TASK_ID, syncTaskEventsByTaskId)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
   yield takeLatest(TASK_CONFIG.FORWARD_TASK, forwardTask)

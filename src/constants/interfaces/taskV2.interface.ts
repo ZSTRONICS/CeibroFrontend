@@ -181,3 +181,19 @@ export interface CommentData {
   message: string;
   files: IFile[];
 }
+
+export interface TaskFile {
+  taskId: string;
+  commentId: string;
+  fileId: string;
+  initiator: UserInfo;
+  createdAt: string;
+  comment: string;
+  fileName: string;
+  fileUrl: string;
+  fileType: string;
+  fileSize: string;
+  fileTag: string;
+  isCommentFile: boolean;
+  isTaskFile: boolean;
+}

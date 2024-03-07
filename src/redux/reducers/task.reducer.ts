@@ -15,6 +15,7 @@ import {
   AllTasksAllEvents,
   ITask,
   ITaskFilterInterace,
+  TaskFile,
 } from "constants/interfaces";
 import { TopicInterface } from "constants/interfaces/topic.interface";
 import { selectedTaskFilterType } from "redux/type";
@@ -23,6 +24,8 @@ import { ActionInterface } from "./appReducer";
 export interface TaskReducerInt {
   RECENT_TASK_UPDATED_TIME_STAMP: string;
   allTaskToMe: AllTaskToMeInterface;
+  allTaskFiles: TaskFile[];
+  loadingAllTaskFiles: boolean;
   allTaskFromMe: AllTaskFromMeInterface;
   allTaskHidden: AllTaskHiddenInterface;
   loadingAllTasks: boolean;
@@ -58,6 +61,8 @@ const taskFilers: ITaskFilterInterace = {
 
 const intialStatue: TaskReducerInt = {
   taskDragContHeight: 0,
+  allTaskFiles: [],
+  loadingAllTaskFiles: false,
   unSeenTasks: unSeenTasks,
   RECENT_TASK_UPDATED_TIME_STAMP: "2020-10-13T12:00:00Z", // default time stamp for syncing all data
   selectedTaskFilter: "allTaskFromMe",
@@ -899,6 +904,25 @@ const taskReducer = (
     // API Request Start
 
 
+    case requestPending(TASK_CONFIG.GET_ALL_TASK_FILES): {
+      return {
+        ...state,
+        loadingAllTaskFiles: true
+      }
+    }
+    case requestSuccess(TASK_CONFIG.GET_ALL_TASK_FILES): {
+      return {
+        ...state,
+        loadingAllTaskFiles: false,
+        allTaskFiles: action.payload.allTaskFiles
+      }
+    }
+    case requestFail(TASK_CONFIG.GET_ALL_TASK_FILES): {
+      return {
+        ...state,
+        loadingAllTaskFiles: false,
+      }
+    }
     case requestPending(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS): {
       return {
         ...state,

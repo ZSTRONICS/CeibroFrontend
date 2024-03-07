@@ -22,6 +22,7 @@ const taskActions = {
     };
   },
   getAllTasksAllEvents: createAction(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS),
+  getAllTaskFiles: createAction(TASK_CONFIG.GET_ALL_TASK_FILES),
   syncTaskEventsByTaskId: createAction(TASK_CONFIG.SYNC_TASK_EVENTS_BY_TASK_ID),
   syncAllTasks: createAction(TASK_CONFIG.SYNC_ALL_TASKS),
   createTask: createAction(TASK_CONFIG.CREATE_TASK),
