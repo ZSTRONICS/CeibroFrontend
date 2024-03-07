@@ -163,12 +163,12 @@ function LocationTaskCard(props: IProps) {
         task={localTask}
         selectedTaskId={selectedTaskId}
         handleClick={handleTaskClick}
-        menuOption={filteredMenuOptions(taskRootState, localTask.userSubState)}
-        disableMenu={
-          localTask.userSubState === "canceled" && !localTask.isCreator
-            ? true
-            : false
-        }
+        // menuOption={filteredMenuOptions(taskRootState, localTask.userSubState)}
+        // disableMenu={
+        //   localTask.userSubState === "canceled" && !localTask.isCreator
+        //     ? true
+        //     : false
+        // }
       />
     </Box>
   );

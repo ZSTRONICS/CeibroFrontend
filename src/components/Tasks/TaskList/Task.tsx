@@ -1,5 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import { CustomDivider } from "components/CustomTags";
+import { TaskCard } from "components/TaskComponent";
 import { momentLocalDateTime } from "components/Utills/Globals";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
 import { useDynamicDimensions } from "hooks";
@@ -100,7 +101,21 @@ function Task() {
           py: 1.5,
         }}
       >
-        tasks
+        <TaskCard
+          userId={""}
+          key={selectedTask._id}
+          isLocationTask={true}
+          isTaskFromMe={"me"}
+          task={selectedTask}
+          selectedTaskId={selectedTask._id}
+          handleClick={() => {}}
+          // menuOption={filteredMenuOptions(taskRootState, localTask.userSubState)}
+          // disableMenu={
+          //   localTask.userSubState === "canceled" && !localTask.isCreator
+          //     ? true
+          //     : false
+          // }
+        />
       </Grid>
       <Grid
         item
@@ -161,7 +176,7 @@ function Task() {
                 taskDetailContDimension={taskDetailContDimension}
                 DrawDetailCollapse={false}
                 task={selectedTask}
-                userSubStateLocal={"ongoing"}
+                userSubStateLocal={selectedTask.userSubState}
                 TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
               />
             ) : (

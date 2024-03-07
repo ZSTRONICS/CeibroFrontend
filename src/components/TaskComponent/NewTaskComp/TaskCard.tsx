@@ -18,8 +18,8 @@ interface IProps {
   userId: string;
   selectedTaskId: string | undefined;
   handleClick: (task: ITask) => void;
-  menuOption: MenuOption[];
-  disableMenu: boolean;
+  // menuOption: MenuOption[];
+  // disableMenu: boolean;
   isTaskFromMe: string;
   isLocationTask?: boolean;
 }
@@ -29,8 +29,6 @@ const TaskCard = React.memo((props: IProps) => {
     task,
     handleClick,
     selectedTaskId,
-    menuOption,
-    disableMenu,
     isTaskFromMe,
     userId,
     isLocationTask,
