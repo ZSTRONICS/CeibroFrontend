@@ -35,7 +35,6 @@ function TabsViewTaskDetail(props: IProps) {
     (state: RootState) => state.task
   );
 
-  console.log("allTaskFiles", allTaskFiles);
   const commentsAndFilesTabs = [
     {
       label: "Comments",

@@ -17,7 +17,15 @@ interface IFilesContentList {
 function FilesContentList(props: IFilesContentList) {
   const { allFiles } = props;
   return (
-    <List sx={{ width: "100%", maxWidth: "100%", bgcolor: "background.paper" }}>
+    <List
+      sx={{
+        width: "100%",
+        maxWidth: "100%",
+        maxHeight: "600px", //calc dynamic height
+        overflow: "auto",
+        bgcolor: "background.paper",
+      }}
+    >
       {allFiles.length > 0 ? (
         allFiles.map((file, index) => {
           const fileCreatedAt = momentdeDateFormat(file.createdAt);
@@ -80,6 +88,11 @@ function FilesContentList(props: IFilesContentList) {
                     "& span.MuiTypography-body1": {
                       fontSize: "14px",
                       fontWeight: 500,
+                      maxWidth: "74%",
+                      width: "100%",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
                     },
                   }}
                   primary={file.fileName}
