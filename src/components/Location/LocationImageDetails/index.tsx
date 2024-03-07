@@ -531,7 +531,7 @@ const LocationImageDetails = () => {
                 />
               )}
               {!loadingAllDrawingImages ? (
-                !filteredDrawingImages ? (
+                !allDrawingImages || allDrawingImages?.length <= 0 ? (
                   <Box
                     sx={{
                       height: `${windowActualHeight - 195}px`,

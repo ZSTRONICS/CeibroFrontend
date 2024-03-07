@@ -1,11 +1,14 @@
-import { Box, Card, CardContent, Tooltip } from "@mui/material";
+import AssignmentTurnedInOutlinedIcon from "@material-ui/icons/AssignmentTurnedInOutlined";
 import {
-  CustomStack,
-  Span,
-  SubHeadingTag,
-  SubLabelTag,
-  TaskCardLabel,
-} from "components/CustomTags";
+  Avatar,
+  Box,
+  Card,
+  CardMedia,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { Span } from "components/CustomTags";
+import { getFileIconThumbnail } from "components/Utills/FileBox";
 import {
   convertDateFormat,
   momentLocalDateTime,
@@ -33,14 +36,17 @@ const TaskCard = React.memo((props: IProps) => {
     userId,
     isLocationTask,
   } = props;
+
+  console.log(task, "this is task ....");
+
   const {
+    files,
     taskUID,
     project,
     _id,
     dueDate,
     createdAt,
     description,
-
     creator,
     isCreator,
     userSubState,
@@ -100,178 +106,217 @@ const TaskCard = React.memo((props: IProps) => {
   };
 
   return (
-    <Card
-      onMouseOver={() => setIsMouseOver(true)}
-      onMouseOut={() => setIsMouseOver(false)}
-      sx={{
-        width: "100%",
-        minWidth: 290,
-        maxWidth: 320,
-        cursor: "pointer",
-        border: `${
-          !isLocationTask && isCanceled
-            ? `3px solid ${cardBorderColor}`
-            : isLocationTask
-            ? "none"
-            : "1px solid #818181"
-        }`,
-        borderRadius: !isLocationTask ? "8px" : "",
-        borderTopRightRadius: isSelectedTask ? "15px" : "10px",
-        borderTopLeftRadius: "5px",
-        borderTopStyle: "none",
-        WebkitBoxShadow: `${
-          isSelectedTask === true
-            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
-            : !seenBy.includes(userId)
-            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
-            : "none"
-        }`,
-        // background: !seenBy.includes(userId) ? "#EBF5FB" : "",
-        background: isSelectedTask ? "#EBF5FB" : "",
-        "&:hover": {
-          WebkitBoxShadow: !seenBy.includes(userId)
-            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
-            : "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset",
-          borderTopRightRadius: isLocationTask ? "" : "15px",
-        },
-      }}
-      key={_id}
-      id={_id}
-      onClick={() => handleClick(task)}
-    >
-      <CustomStack sx={{ pt: 0.1, gap: 1, position: "relative" }}>
-        <Span
-          sx={{
-            color: "0d0d0d",
-            fontWeight: 600,
-            border: "1px solid #818181",
-            borderRadius: "4px",
-            padding: "2px 6px",
-            backgroundColor: "white",
-            borderTopLeftRadius: "4px",
-            ml: "-1px",
-            WebkitBoxShadow: `${
-              isSelectedTask || isMouseOver
-                ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
-                : "none"
-            }`,
-          }}
-        >
-          {taskUID}
-        </Span>
-        <Span
-          sx={{
-            color: "0d0d0d",
-            fontWeight: 600,
-          }}
-        >
-          {`${taskCreatedAt[0]}`}
-        </Span>
-        <Span
-          sx={{
-            color: "0d0d0d",
-            fontWeight: 600,
-          }}
-        >
-          {`${taskCreatedAt[1]}`}
-        </Span>
-        {dueDate && dueDate !== "" ? (
-          <Span
-            sx={{
-              color: "0d0d0d",
-              fontWeight: 600,
-            }}
-          >{`Due date ${formattedDate}`}</Span>
-        ) : (
-          <Span
-            sx={{
-              color: "0d0d0d",
-              fontWeight: 600,
-            }}
-          >{`Due date N/A`}</Span>
-        )}
-        {/* <Box sx={{ position: "absolute", top: "3%", right: 0 }}>
-          <GenericMenu
-            options={menuOption}
-            key={_id}
-            disableMenu={disableMenu}
-            isTaskSelected={!isSelectedTask}
-            paddingTop={0}
-          />
-        </Box> */}
-      </CustomStack>
-
-      <CardContent
+    <>
+      <Card
         sx={{
-          pl: 1.5,
-          pt: 0,
-          px: 1.2,
-          "&:last-child": { pb: 0 },
+          ":hover": {
+            boxShadow: "inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+          },
+          width: "96%",
+          marginTop: "15px",
+          marginLeft: "2%",
+          borderRadius: "15px",
+          boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+          paddingTop: "8px",
+          paddingBottom: "8px",
+          background: isSelectedTask ? "#EBF5FB" : "",
+          cursor: "pointer",
         }}
+        key={_id}
+        id={_id}
+        onMouseOver={() => setIsMouseOver(true)}
+        onMouseOut={() => setIsMouseOver(false)}
+        onClick={() => handleClick(task)}
       >
-        <CustomStack justifyContent="space-between" pt={0.2}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
-            <TaskCardLabel>
-              {cardLabel}:&nbsp;{""}
-              <span
-                className="textOverflowDescription"
-                style={{
-                  fontWeight: "600",
-                  fontSize: "11px",
-                  WebkitLineClamp: 1,
-                  maxWidth: "100px",
+        <Box
+          sx={{
+            width: "96%",
+            marginLeft: "2%",
+            height: "20%",
+          }}
+        >
+          <Span
+            sx={{
+              border: "solid 1px #E2E4E5",
+              fontWeight: "700",
+              padding: "3px",
+              borderRadius: "4px",
+              fontSize: "12px",
+            }}
+          >
+            {taskUID}
+          </Span>
+          <Span
+            sx={{
+              fontSize: "12px",
+              color: "#605C5C",
+              marginLeft: "10px",
+            }}
+          >
+            Kloostri 14
+          </Span>
+          <Span
+            sx={{
+              fontSize: "12px",
+              marginTop: "5px",
+              float: "right",
+            }}
+          >
+            {dueDate && dueDate !== "" ? (
+              <Span
+                sx={{
+                  color: "#605C5C",
                 }}
-              >
-                {displayName}
-              </span>
-            </TaskCardLabel>
-            {cardLabel !== "From" && assignToNames()}
-          </Box>
-
-          {!isLocationTask && project?.title && (
-            <TaskCardLabel
-              className="textOverflowDescription"
-              style={{ paddingLeft: "2px", whiteSpace: "nowrap" }}
+              >{`Due date ${formattedDate}`}</Span>
+            ) : (
+              <Span
+                sx={{
+                  color: "0d0d0d",
+                  fontWeight: 600,
+                }}
+              >{`Due date N/A`}</Span>
+            )}
+          </Span>
+        </Box>
+        <Box
+          sx={{
+            width: "96%",
+            height: "80%",
+            marginLeft: "2%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "start",
+          }}
+        >
+          {files.length !== 0 ? (
+            <Box
+              sx={{
+                borderRadius: "5px",
+                position: "relative",
+                marginTop: "5px",
+              }}
             >
-              Project: &nbsp;{""}
-              <span
-                style={{
-                  fontWeight: "600",
-                  fontSize: "11px",
+              {files.length > 0 && files[0].fileTag === "image" ? (
+                <CardMedia
+                  component="img"
+                  sx={{
+                    height: "78px",
+                    borderRadius: "5px",
+                  }}
+                  // image={files[0].fileUrl}
+                  image={
+                    "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8"
+                  }
+                  alt={files[0].fileName}
+                />
+              ) : (
+                getFileIconThumbnail(files[0]?.fileType, 50, 50)
+              )}
+              {files.length === 0 ? (
+                ""
+              ) : (
+                <Span
+                  sx={{
+                    position: "absolute",
+                    top: "72%",
+                    left: "78%",
+                    padding: "2.5px",
+                    color: "white",
+                    backgroundColor: "black",
+                    opacity: "0.6",
+                  }}
+                >
+                  {`+${files.length}`}
+                </Span>
+              )}
+            </Box>
+          ) : (
+            ""
+          )}
+          <Box sx={{ width: "100%" }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: "700", marginLeft: "10px" }}
+            >
+              {title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"}
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              sx={{
+                color: "#605C5C",
+                lineHeight: "20px",
+                marginLeft: "10px",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                wordWrap: "break-word",
+                wordBreak: "break-all",
+              }}
+            >
+              {description && description}
+            </Typography>
+            <Box
+              sx={{
+                borderTop: "solid 1px #605C5C",
+                marginTop: "5px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Span
+                // className="textOverflowDescription"
+                sx={{
+                  marginLeft: "10px",
+                  color: "#605C5C",
+                  width: "max-content",
+                  fontSize: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  marginTop: "5px",
                 }}
               >
-                {trucateText}
-              </span>
-            </TaskCardLabel>
-          )}
-        </CustomStack>
-
-        <SubHeadingTag
-          className="ellipsis"
-          sx={{
-            maxWidth: "300px",
-            color: "black",
-            pb: 0.1,
-            WebkitLineClamp: 1,
-          }}
-        >
-          {title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"}
-        </SubHeadingTag>
-
-        <SubLabelTag
-          className="textOverflowDescription"
-          sx={{
-            pb: 0.5,
-            maxWidth: "350px",
-            WebkitLineClamp: 2,
-            wordWrap: "break-word",
-            wordBreak: "break-all",
-          }}
-        >
-          {description}
-        </SubLabelTag>
-      </CardContent>
-    </Card>
+                <Avatar
+                  alt="avater"
+                  src={creator?.profilePic}
+                  variant="circular"
+                  sx={{ width: "25px", height: "25px", marginRight: "5px" }}
+                />
+                {displayName}
+              </Span>
+              <Span
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "5px",
+                }}
+              >
+                <Span
+                  sx={{
+                    color: "0d0d0d",
+                    fontWeight: 600,
+                    marginRight: "5px",
+                  }}
+                >
+                  {`${taskCreatedAt[0]}`}
+                </Span>
+                <Span
+                  sx={{
+                    color: "0d0d0d",
+                    fontWeight: 600,
+                  }}
+                >
+                  {`${taskCreatedAt[1]}`}
+                </Span>
+                <AssignmentTurnedInOutlinedIcon />{" "}
+              </Span>
+            </Box>
+          </Box>
+        </Box>
+      </Card>
+    </>
   );
 });
 

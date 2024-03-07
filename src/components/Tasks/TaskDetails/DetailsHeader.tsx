@@ -145,8 +145,10 @@ export default function DetailsHeader(props: IProps) {
   const handleResize = () => {
     if (avatarContRef.current) {
       const localWidth = getWidthWithMarginAndPadding(avatarContRef);
+      console.log(localWidth, "localWidth,....");
       if (localWidth > 140) {
         const itemCount = Math.floor(localWidth / 145);
+        console.log(itemCount, "itemCount....");
         setCount(itemCount);
       }
     }
@@ -296,6 +298,7 @@ export default function DetailsHeader(props: IProps) {
             </Typography>
             <Box
               ref={infoBoxRef}
+              className="ellipsis"
               sx={{
                 display: "flex",
                 gap: 1.25,
@@ -303,6 +306,8 @@ export default function DetailsHeader(props: IProps) {
                 flexWrap: "wrap",
                 height: isExpanded ? "36px" : "auto",
                 overflow: isExpanded ? "hidden" : "unset",
+                marginTop: label === "Invitees" ? "6px" : null,
+                width: "97%",
               }}
             >
               {users.map((user, i) => {
@@ -334,7 +339,7 @@ export default function DetailsHeader(props: IProps) {
                   color: "#0076C8",
                   pt: "4px",
                   position: "absolute",
-                  right: "1%",
+                  right: label === "Invitees" ? "12%" : "1%",
                   top: "50%",
                 }}
               >
@@ -413,7 +418,7 @@ export default function DetailsHeader(props: IProps) {
         </Grid>
         {/* users */}
         <Grid container sx={{ gap: 1.25 }}>
-          <Grid item sx={{ width: "26%" }}>
+          <Grid className="ellipsis" item sx={{ width: "26%" }}>
             {renderUserWithAvatar({
               label: data.Createdby.label,
               users: data.Createdby.value,
@@ -428,7 +433,13 @@ export default function DetailsHeader(props: IProps) {
             </Grid>
           )}
           {isExpanded && data.Invitees.value && (
-            <Grid item sx={{ width: "26%" }}>
+            <Grid
+              item
+              sx={{
+                width: "12%",
+                minWidth: "170px",
+              }}
+            >
               {renderUserWithAvatar({
                 label: data.Invitees.label,
                 users: data.Invitees.value,

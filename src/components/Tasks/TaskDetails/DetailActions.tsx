@@ -1,4 +1,3 @@
-import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import { Box, Chip, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -22,6 +21,11 @@ import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 import Comment from "../Comment";
 import ForwardTask from "../Forward-Task";
+
+import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
+import CancelPresentationOutlinedIcon from "@mui/icons-material/CancelPresentationOutlined";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 
 interface IProps {
   taskId: string;
@@ -52,6 +56,7 @@ type TaskAction = "comment" | "forward" | "done";
 
 const DetailActions: React.FC<IProps> = (props) => {
   const { subtask, filterkey } = useParams<any>();
+  const [hide, setHide] = useState(true);
   const [isPending, startTransition] = useTransition();
   const {
     userSubState,
@@ -197,22 +202,40 @@ const DetailActions: React.FC<IProps> = (props) => {
     }
   };
 
-  const [hide, setHide] = useState(true);
+  const DataforCondition = [
+    { status: "pending", subStatus: null },
+    // { status: "review", subStatus: null },
+    // { status: "ongoing", subStatus: "hidden" },
+    // { status: "ongoing", subStatus: "assignee" },
+    // { status: "ongoing", subStatus: "creator" },
+    // { status: "done", subStatus: null },
+    // { status: "cancelled", subStatus: null },
+  ];
 
-  const HeaderBtns = (
-    <Box
-      sx={{
-        // border: "solid 1px red",
-        maxWidth: "100%",
-        width: "max-content",
-        display: "flex",
-        justifyContent: "end",
-        alignItems: "center",
-      }}
-    >
-      {!["done", "canceled", "new"].includes(userSubState) && (
-        <>
-          {/* //// */}
+  const OngoingStatus = (status: any, myCase: any) => {
+    switch (status) {
+      case "assignee":
+        return GroupBtnFunc(ongoing, "assignee");
+      case "creator":
+        return GroupBtnFunc(ongoing, "creator");
+      case "hidden":
+        return GroupBtnFunc(ongoing, "hidden");
+    }
+  };
+
+  const GroupBtnFunc = (Obj: any, myCase: any) => {
+    console.log(myCase);
+    return (
+      <>
+        <Box
+          sx={{
+            maxWidth: "100%",
+            width: "max-content",
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "center",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -222,190 +245,149 @@ const DetailActions: React.FC<IProps> = (props) => {
               marginRight: "10px",
               padding: "2px 2px",
               borderRadius: "4px",
-              // width: "90px",
+              maxHeight: "38px",
+              minHeight: "38px",
             }}
           >
-            <LoadingButton
-              // startIcon={<ReplyIcon />}
-              onClick={() => handleClick("comment")}
-              variant="outlined"
-              sx={{
-                width:
-                  isLocationTaskDetail && isMinitabdown
-                    ? "100%"
-                    : "max-content",
-                borderRadius: "4px",
-                fontWeight: "700",
-                alignSelf: "flex-end",
-                backgroundColor: "transparent",
-                border: "none",
-                "&:hover": {
-                  border: "none",
-                },
-                span: {
-                  mr: "4px",
-                },
-              }}
-            >
-              <ReplyIcon />
-            </LoadingButton>
-            <Box
-              sx={{
-                border: "solid 1px green",
-                height: "20px",
-                width: "0.5px",
-                backgroundColor: "rgb(226,228,229)",
-              }}
-            ></Box>
-            <LoadingButton
-              onClick={() => handleClick("forward")}
-              variant="outlined"
-              disabled={false}
-              sx={{
-                borderRadius: "4px",
-                fontWeight: "700",
-                backgroundColor: "transparent",
-                border: "none",
-                "&:hover": {
-                  border: "none",
-                },
-                span: {
-                  marginRight: "4px",
-                },
-              }}
-            >
-              <PersonAddOutlinedIcon />
-            </LoadingButton>
-          </Box>
-          {/* //// */}
-          <Box sx={{ position: "relative" }}>
-            <LoadingButton
-              // variant="contained"
-              // onClick={handleDoneClick}
-              sx={{
-                width: "95px",
-                borderRadius: "4px",
-                fontWeight: "700",
-                border: "1px solid #F4F4F4",
-                marginRight: "10px",
-                backgroundColor: hide ? "#E85555" : "#F4F4F4",
-                color: hide ? "white" : null,
-                // width: isTabletdown ? "100%" : "100px",
-              }}
-              disabled={isloading}
-            >
-              Hide
-            </LoadingButton>
-            <LoadingButton
-              variant="contained"
-              onClick={handleDoneClick}
-              sx={{
-                width: "95px",
-                borderRadius: "4px",
-                fontWeight: "700",
-                border: "1px solid #0076C8",
-                // width: isTabletdown ? "100%" : "100px",
-              }}
-              disabled={isloading}
-            >
-              Done
-            </LoadingButton>
-            {(doneCommentsRequired || doneImageRequired) && (
-              <span
-                style={{
-                  height: "10px",
-                  width: "10px",
-                  backgroundColor: "red",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  position: "absolute",
-                  top: "13%",
-                  right: "6%",
-                }}
-              ></span>
+            {!["done", "canceled", "new"].includes(userSubState) && (
+              <>
+                {Obj.map((items: any, index: any) => {
+                  const { icon } = items;
+                  return (
+                    <React.Fragment key={index}>
+                      {index !== 0 && (
+                        <Box
+                          sx={{
+                            height: "20px",
+                            width: "1.5px",
+                            backgroundColor: "rgb(226,228,229)",
+                          }}
+                        ></Box>
+                      )}
+                      <LoadingButton
+                        onClick={() => handleClick("comment")}
+                        sx={{ maxWidth: "35px", minWidth: "35px" }}
+                      >
+                        {icon}
+                      </LoadingButton>
+                    </React.Fragment>
+                  );
+                })}
+              </>
             )}
           </Box>
-        </>
-      )}
+
+          <Box sx={{ position: "relative" }}>
+            {myCase === "assignee" ||
+            myCase === "creator" ||
+            myCase === "hidden" ? (
+              <>
+                <LoadingButton
+                  variant="contained"
+                  onClick={handleDoneClick}
+                  sx={{
+                    width: "75px",
+                    borderRadius: "4px",
+                    fontWeight: "700",
+                  }}
+                  disabled={isloading}
+                >
+                  Done
+                </LoadingButton>
+
+                {myCase === "creator" || myCase === "hidden" ? (
+                  <LoadingButton
+                    sx={{
+                      width: "75px",
+                      color: hide ? "white" : null,
+                      marginRight: "10px",
+                      backgroundColor: hide ? "#E85555" : "#F4F4F4",
+                      "&:hover": {
+                        border: "none",
+                        backgroundColor: hide ? "#E85555" : "#F4F4F4",
+                      },
+                    }}
+                    disabled={isloading}
+                  >
+                    {myCase === "hidden" ? "Hide" : "cancel"}
+                  </LoadingButton>
+                ) : (
+                  ""
+                )}
+              </>
+            ) : null}
+          </Box>
+        </Box>
+      </>
+    );
+  };
+
+  //////////////
+
+  const pending = [
+    { title: "arrowleft", icon: <ReplyIcon /> },
+    { title: "check", icon: <AssignmentTurnedInOutlinedIcon /> },
+    { title: "cancel", icon: <CancelPresentationOutlinedIcon /> },
+  ];
+
+  const review = [
+    { title: "arrowleft", icon: <ReplyIcon /> },
+    { title: "check", icon: <AssignmentTurnedInOutlinedIcon /> },
+    { title: "cancel", icon: <CancelPresentationOutlinedIcon /> },
+  ];
+
+  const done = [
+    { title: "arrowleft", icon: <ReplyIcon /> },
+    { title: "personadd", icon: <PersonAddAlt1OutlinedIcon /> },
+    { title: "revert", icon: <HistoryOutlinedIcon /> },
+  ];
+
+  const cancelled = [{ title: "arrowleft", icon: <ReplyIcon /> }];
+
+  const ongoing = [
+    { title: "arrowleft", icon: <ReplyIcon /> },
+    { title: "personadd", icon: <PersonAddAlt1OutlinedIcon /> },
+  ];
+
+  //////////////
+
+  const ShowBtns = DataforCondition?.map((item, index) => {
+    const { status, subStatus } = item;
+
+    switch (status) {
+      case "pending":
+        return GroupBtnFunc(pending, "pending");
+
+      case "review":
+        return GroupBtnFunc(review, "review");
+
+      case "ongoing":
+        return OngoingStatus(subStatus, "ongoing");
+
+      case "done":
+        return GroupBtnFunc(done, "done");
+
+      case "cancelled":
+        return GroupBtnFunc(cancelled, "cancelled");
+
+      default:
+        return null;
+    }
+  });
+
+  const HeaderBtns = (
+    <Box
+      sx={{
+        maxWidth: "100%",
+        width: "max-content",
+        display: "flex",
+        justifyContent: "end",
+        alignItems: "center",
+      }}
+    >
+      {!["done", "canceled", "new"].includes(userSubState) && <>{ShowBtns}</>}
     </Box>
   );
-
-  // const HeaderBtns = (
-  //   <>
-  //     <LoadingButton
-  //       startIcon={<ReplyIcon />}
-  //       onClick={() => handleClick("comment")}
-  //       variant="outlined"
-  //       sx={{
-  //         width: isLocationTaskDetail && isMinitabdown ? "100%" : "max-content",
-  //         borderRadius: "4px",
-  //         fontWeight: "700",
-  //         border: "1px solid #0076C8",
-  //         padding: "0px 16px",
-  //         marginBottom: isTabletdown ? "10px" : "",
-  //         alignSelf: "flex-end",
-  //         span: {
-  //           mr: "4px",
-  //         },
-  //       }}
-  //     >
-  //       Reply
-  //     </LoadingButton>
-  //     {!["done", "canceled", "new"].includes(userSubState) && (
-  //       <>
-  //         <LoadingButton
-  //           startIcon={<ForwardIcon />}
-  //           onClick={() => handleClick("forward")}
-  //           variant="outlined"
-  //           disabled={false}
-  //           sx={{
-  //             borderRadius: "4px",
-  //             fontWeight: "700",
-  //             border: "1px solid #0076C8",
-  //             padding: "0px 12px",
-  //             marginBottom: isTabletdown ? "10px" : "",
-  //             span: {
-  //               marginRight: "4px",
-  //             },
-  //           }}
-  //         >
-  //           Forward
-  //         </LoadingButton>
-  //         <Box sx={{ position: "relative" }}>
-  //           <LoadingButton
-  //             variant="contained"
-  //             onClick={handleDoneClick}
-  //             sx={{
-  //               borderRadius: "4px",
-  //               fontWeight: "700",
-  //               border: "1px solid #0076C8",
-  //               padding: "0px 16px",
-  //               width: isTabletdown ? "100%" : "100px",
-  //             }}
-  //             disabled={isloading}
-  //           >
-  //             Done
-  //           </LoadingButton>
-  //           {(doneCommentsRequired || doneImageRequired) && (
-  //             <span
-  //               style={{
-  //                 height: "10px",
-  //                 width: "10px",
-  //                 backgroundColor: "red",
-  //                 borderRadius: "50%",
-  //                 display: "inline-block",
-  //                 position: "absolute",
-  //                 top: "13%",
-  //                 right: "6%",
-  //               }}
-  //             ></span>
-  //           )}
-  //         </Box>
-  //       </>
-  //     )}
-  //   </>
-  // );
-
   const userSUBState = (
     <Chip
       label={capitalize(userSubState)}
@@ -449,57 +431,6 @@ const DetailActions: React.FC<IProps> = (props) => {
   );
 
   return (
-    // <>
-    //   <Grid container justifyContent="space-between" rowGap={1.25}>
-    //     <Grid item>
-    //       <Box
-    //         sx={{
-    //           width: "max-content",
-    //           paddingRight: "8px",
-    //         }}
-    //       >
-    //         {userSUBState}
-    //       </Box>
-    //       <SubHeading sx={{ color: "black", fontSize: 16, pt: 1 }}>
-    //         {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
-    //       </SubHeading>
-    //     </Grid>
-    //     <Grid
-    //       item
-    //       container
-    //       xs={12}
-    //       gap={1.4}
-    //       justifyContent={justifyContent}
-    //       flexWrap="nowrap"
-    //     >
-    //       {isLocationTaskDetail && isMinitabdown ? (
-    //         <>
-    //           <Box
-    //             sx={{
-    //               display: "flex",
-    //               justifyContent: "space-between",
-    //               width: calculateWidth(),
-    //               transition: "all 0.3s linear",
-    //               flexDirection: isTabletdown ? "column" : "row",
-    //             }}
-    //           >
-    //             {HeaderBtns}
-    //           </Box>
-    //         </>
-    //       ) : (
-    //         <>{HeaderBtns}</>
-    //       )}
-    //     </Grid>
-    //   </Grid>
-    //   <DragableDrawer
-    //     title={getTitle()}
-    //     children={getModalContent()}
-    //     openModal={openModal}
-    //     closeModal={closeModal}
-    //     isOpen={isOpen}
-    //   />
-    // </>
-
     <>
       <Grid
         container
@@ -511,8 +442,8 @@ const DetailActions: React.FC<IProps> = (props) => {
           item
           container
           // xs={ isMiniScreen ? 4 : (!isTabletdown ? 7 : 5)}
-          xl={8}
-          lg={6}
+          xl={isLocationTaskDetail && isLocationTaskDetail ? 12 : 7}
+          lg={isLocationTaskDetail && isLocationTaskDetail ? 12 : 6}
           md={12}
           sm={12}
           xs={12}
@@ -544,8 +475,8 @@ const DetailActions: React.FC<IProps> = (props) => {
             alignItems: "center",
           }}
           item
-          xl={4}
-          lg={6}
+          xl={isLocationTaskDetail && isLocationTaskDetail ? 12 : 5}
+          lg={isLocationTaskDetail && isLocationTaskDetail ? 12 : 6}
           md={12}
           sm={12}
           xs={12}
@@ -553,32 +484,6 @@ const DetailActions: React.FC<IProps> = (props) => {
         >
           <>{HeaderBtns}</>
         </Grid>
-        {/* <Grid
-        item
-        container
-        xs={12}
-        gap={1.4}
-        justifyContent={justifyContent}
-        flexWrap="nowrap"
-      >
-        {isLocationTaskDetail && isMinitabdown ? (
-          <>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: calculateWidth(),
-                transition: "all 0.3s linear",
-                flexDirection: isTabletdown ? "column" : "row",
-              }}
-            >
-              {HeaderBtns}
-            </Box>
-          </>
-        ) : (
-          <>{HeaderBtns}</>
-        )}
-      </Grid> */}
       </Grid>
       <DragableDrawer
         title={getTitle()}

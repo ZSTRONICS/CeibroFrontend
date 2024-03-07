@@ -90,7 +90,28 @@ function Task() {
       </Box>
     );
   };
-  const selectedTask = allTaskFromMe && allTaskFromMe["ongoing"][5];
+  const selectedTask = allTaskFromMe && allTaskFromMe["ongoing"][45];
+
+  const TempArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  // const TempArray = ["1"];
+
+  const TaskCardRender = TempArray.map((items) => {
+    return (
+      <>
+        {selectedTask && (
+          <TaskCard
+            userId={""}
+            key={selectedTask?._id}
+            isLocationTask={true}
+            isTaskFromMe={"me"}
+            task={selectedTask}
+            selectedTaskId={selectedTask?._id}
+            handleClick={() => {}}
+          />
+        )}
+      </>
+    );
+  });
 
   return (
     <Grid
@@ -108,17 +129,17 @@ function Task() {
           py: 1.5,
         }}
       >
-        {selectedTask && (
-          <TaskCard
-            userId={""}
-            key={selectedTask._id}
-            isLocationTask={true}
-            isTaskFromMe={"me"}
-            task={selectedTask}
-            selectedTaskId={selectedTask._id}
-            handleClick={() => {}}
-          />
-        )}
+        <Box
+          sx={{
+            width: "100%",
+            marginLeft: "0%",
+            border: "solid 1px red",
+            height: "100%",
+            overflow: "auto",
+          }}
+        >
+          {TaskCardRender}
+        </Box>
       </Grid>
       <Grid
         item
@@ -141,7 +162,7 @@ function Task() {
               userSubState={"ongoing"}
               dueDate={"12.1.2024"}
               title={selectedTask.title}
-              taskUid={selectedTask.taskUID}
+              taskUid={selectedTask?.taskUID}
               createdOn={momentLocalDateTime(selectedTask.createdAt)}
               assignedToState={selectedTask.assignedToState}
               invitedNumbers={selectedTask.invitedNumbers}

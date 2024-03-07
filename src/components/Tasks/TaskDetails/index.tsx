@@ -55,6 +55,8 @@ function TaskDetails(props: IProps) {
     confirmer,
     viewer,
   } = task;
+  console.log(task, "taskdetail");
+
   const showFullView = localStorage.getItem("showFullView");
   const [isShowFullView, setIsShowFullView] = useState(false);
   const [isPending, startTransition] = useTransition();

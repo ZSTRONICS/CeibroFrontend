@@ -284,7 +284,6 @@ const ReadMoreWrapper = ({
               )}
               {children ?? ""}
             </Box>
-            {/* //// */}
             <Box sx={{ display: "flex" }}>
               {!isExpanded && isReadMore && localCount && localCount > 0 ? (
                 <Box
