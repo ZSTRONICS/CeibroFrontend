@@ -101,21 +101,17 @@ function Task() {
           py: 1.5,
         }}
       >
-        <TaskCard
-          userId={""}
-          key={selectedTask._id}
-          isLocationTask={true}
-          isTaskFromMe={"me"}
-          task={selectedTask}
-          selectedTaskId={selectedTask._id}
-          handleClick={() => {}}
-          // menuOption={filteredMenuOptions(taskRootState, localTask.userSubState)}
-          // disableMenu={
-          //   localTask.userSubState === "canceled" && !localTask.isCreator
-          //     ? true
-          //     : false
-          // }
-        />
+        {selectedTask && (
+          <TaskCard
+            userId={""}
+            key={selectedTask._id}
+            isLocationTask={true}
+            isTaskFromMe={"me"}
+            task={selectedTask}
+            selectedTaskId={selectedTask._id}
+            handleClick={() => {}}
+          />
+        )}
       </Grid>
       <Grid
         item

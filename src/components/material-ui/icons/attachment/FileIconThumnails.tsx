@@ -1,8 +1,15 @@
-const DefaultFileThumbnail = () => {
+interface Props {
+  width?: number;
+  height?: number;
+}
+
+const DefaultFileThumbnail = (props: Props) => {
+  const { width, height } = props;
+
   return (
     <svg
-      width="16"
-      height="20"
+      width={`${width ? width : "16"}`}
+      height={`${height ? height : "20"}`}
       viewBox="0 0 16 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +22,13 @@ const DefaultFileThumbnail = () => {
   );
 };
 
-function PdfIconThumnails() {
+function PdfIconThumnails(props: Props) {
+  const { width, height } = props;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="20"
+      width={`${width ? width : "16"}`}
+      height={`${height ? height : "20"}`}
       viewBox="0 0 16 20"
       fill="none"
     >
@@ -170,12 +178,13 @@ function PdfIconThumnails() {
   );
 }
 
-const TextFileThumbnail = () => {
+const TextFileThumbnail = (props: Props) => {
+  const { width, height } = props;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="20"
+      width={`${width ? width : "16"}`}
+      height={`${height ? height : "20"}`}
       viewBox="0 0 16 20"
       fill="none"
     >
@@ -358,12 +367,13 @@ const TextFileThumbnail = () => {
   );
 };
 
-const ExcelFileThumbnail = () => {
+const ExcelFileThumbnail = (props: Props) => {
+  const { width, height } = props;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="20"
+      width={`${width ? width : "16"}`}
+      height={`${height ? height : "20"}`}
       viewBox="0 0 16 20"
       fill="none"
     >
@@ -546,12 +556,13 @@ const ExcelFileThumbnail = () => {
   );
 };
 
-const DrawingFileThumbnail = () => {
+const DrawingFileThumbnail = (props: Props) => {
+  const { width, height } = props;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="20"
+      width={`${width ? width : "16"}`}
+      height={`${height ? height : "20"}`}
       viewBox="0 0 16 20"
       fill="none"
     >
@@ -579,12 +590,13 @@ const DrawingFileThumbnail = () => {
   );
 };
 
-const ZipFileThumbnail = () => {
+const ZipFileThumbnail = (props: Props) => {
+  const { width, height } = props;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="20"
+      width={`${width ? width : "16"}`}
+      height={`${height ? height : "20"}`}
       viewBox="0 0 16 20"
       fill="none"
     >
@@ -790,12 +802,13 @@ const ZipFileThumbnail = () => {
     </svg>
   );
 };
-const DocFileThumbnail = () => {
+const DocFileThumbnail = (props: Props) => {
+  const { width, height } = props;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="20"
+      width={`${width ? width : "16"}`}
+      height={`${height ? height : "20"}`}
       viewBox="0 0 16 20"
       fill="none"
     >

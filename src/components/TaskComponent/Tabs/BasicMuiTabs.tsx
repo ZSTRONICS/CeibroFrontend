@@ -11,13 +11,35 @@ interface TabData {
 interface BasicTabsProps {
   tabsData: TabData[];
   tabsBgColor: string;
+  isFileTabs?: boolean;
 }
 
-export default function BasicTabs({ tabsData, tabsBgColor }: BasicTabsProps) {
+export default function BasicTabs({
+  tabsData,
+  tabsBgColor,
+  isFileTabs,
+}: BasicTabsProps) {
   const [value, setValue] = React.useState(0);
+  // const location = useLocation();
+  // const history = useHistory();
+  // const searchParams = new URLSearchParams(location.search);
+  // const initialValue = parseInt(searchParams.get('tab') || '0', 10);
+  const filesTabStyle = {
+    backgroundColor: "#F4F4F4",
+    borderRadius: "4px",
+    color: "#818181",
+  };
+  const filesTabSActivetyle = {
+    backgroundColor: "#0076C8",
+    borderRadius: "4px",
+    color: "white",
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    console.log(tabsData[newValue].label);
     setValue(newValue);
+    // searchParams.set('tab', newValue.toString());
+    // history.push({ search: searchParams.toString() });
   };
 
   return (
@@ -28,9 +50,16 @@ export default function BasicTabs({ tabsData, tabsBgColor }: BasicTabsProps) {
         aria-label="basic tabs"
         sx={{
           backgroundColor: tabsBgColor || "transparent",
-          "& .Mui-selected": { color: "black !important" },
+          "& .Mui-selected": {
+            color: `${isFileTabs ? "white !important" : "black !important"}`,
+          },
           "& .MuiTabs-indicator": {
-            backgroundColor: "black",
+            ...(isFileTabs
+              ? filesTabSActivetyle
+              : { backgroundColor: "black" }),
+          },
+          "& .MuiTabs-flexContainer": {
+            gap: 1,
           },
         }}
       >
@@ -38,10 +67,14 @@ export default function BasicTabs({ tabsData, tabsBgColor }: BasicTabsProps) {
           <Tab
             sx={{
               textTransform: "capitalize",
-              color: "#0076C8",
               fontWeight: 500,
               fontFamily: "Inter",
               fontSize: "14px",
+              ...(isFileTabs && value === index
+                ? filesTabSActivetyle
+                : isFileTabs
+                ? filesTabStyle
+                : { color: "#0076C8" }),
             }}
             key={index}
             label={tab.label}

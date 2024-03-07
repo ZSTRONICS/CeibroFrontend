@@ -439,12 +439,6 @@ const Task = () => {
             task={localTask}
             selectedTaskId={selectedTask?._id}
             handleClick={handleSelectedTask}
-            menuOption={subtask && filteredMenuOptions(subtask, selectedTab)}
-            disableMenu={
-              selectedTab === "canceled"
-                ? localTask && localTask.creator._id !== userId
-                : false
-            }
           />
         )}
       </div>

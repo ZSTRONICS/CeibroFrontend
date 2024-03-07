@@ -27,6 +27,50 @@ interface IProps {
   handleClearFile?: (file: File | any, type: fileType) => void;
 }
 
+const getFileIconThumbnail = (
+  fileType: string,
+  width?: number,
+  height?: number
+) => {
+  switch (fileType) {
+    case "application/pdf":
+    case ".pdf":
+      return <PdfIconThumnails width={width} height={height} />;
+    case "text/csv":
+    case ".csv":
+    case ".xlsx":
+    case ".xls":
+    case "application/vnd.ms-excel":
+    case "application/vnd.oasis.opendocument.spreadsheet":
+    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+    case "application/vnd.ms-excel.sheet.macroEnabled.12":
+      return <ExcelFileThumbnail width={width} height={height} />;
+    case "text/plain":
+    case ".txt":
+    case "application/vnd.oasis.opendocument.text":
+      return <TextFileThumbnail width={width} height={height} />;
+    case "application/msword":
+    case ".docx":
+    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      return <DocFileThumbnail width={width} height={height} />;
+    case "application/autocad_dwg":
+    case "image/vnd.dwg":
+    case "application/dwg":
+    case "application/x-dwg":
+    case "application/x-autocad":
+    case "image/x-dwg":
+    case "drawing/dwg":
+    case ".dwg":
+      return <DrawingFileThumbnail width={width} height={height} />;
+    case "application/zip":
+    case "application/x-zip-compressed":
+    case ".zip":
+      return <ZipFileThumbnail width={width} height={height} />;
+    default:
+      <DefaultFileThumbnail width={width} height={height} />;
+  }
+};
+
 const FileBox: React.FC<IProps> = ({
   bb,
   bt,
@@ -42,47 +86,6 @@ const FileBox: React.FC<IProps> = ({
       setFileToView(file);
     } else {
       console.log("unable to open file");
-    }
-  };
-
-  const getFileIconThumbnail = (fileType: string) => {
-    // console.log("fileType", fileType);
-    switch (fileType) {
-      case "application/pdf":
-      case ".pdf":
-        return <PdfIconThumnails />;
-      case "text/csv":
-      case ".csv":
-      case ".xlsx":
-      case ".xls":
-      case "application/vnd.ms-excel":
-      case "application/vnd.oasis.opendocument.spreadsheet":
-      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-      case "application/vnd.ms-excel.sheet.macroEnabled.12":
-        return <ExcelFileThumbnail />;
-      case "text/plain":
-      case ".txt":
-      case "application/vnd.oasis.opendocument.text":
-        return <TextFileThumbnail />;
-      case "application/msword":
-      case ".docx":
-      case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        return <DocFileThumbnail />;
-      case "application/autocad_dwg":
-      case "image/vnd.dwg":
-      case "application/dwg":
-      case "application/x-dwg":
-      case "application/x-autocad":
-      case "image/x-dwg":
-      case "drawing/dwg":
-      case ".dwg":
-        return <DrawingFileThumbnail />;
-      case "application/zip":
-      case "application/x-zip-compressed":
-      case ".zip":
-        return <ZipFileThumbnail />;
-      default:
-        <DefaultFileThumbnail />;
     }
   };
 
@@ -130,8 +133,8 @@ const FileBox: React.FC<IProps> = ({
                 onClick={() => openPDFNewTab(item)}
               >
                 {item.type
-                  ? getFileIconThumbnail(item.type)
-                  : getFileIconThumbnail(item.fileType)}
+                  ? getFileIconThumbnail(item.type, 16, 20)
+                  : getFileIconThumbnail(item.fileType, 16, 20)}
                 <Tooltip title={f_name}>
                   <Typography
                     sx={{
@@ -195,4 +198,6 @@ const FileBox: React.FC<IProps> = ({
     </>
   );
 };
+
+export { getFileIconThumbnail };
 export default FileBox;

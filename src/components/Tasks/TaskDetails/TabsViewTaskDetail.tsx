@@ -3,6 +3,7 @@ import { FILTER_DATA_BY_EXT, MEDIA_EXT } from "components/Utills/Globals";
 import { ITask } from "constants/interfaces";
 import TaskDetails from ".";
 import AddedDetails from "./AddedDetails";
+import FilesTab from "./FilesTab";
 interface IProps {
   isCommentView: boolean;
   selectedTask: ITask;
@@ -12,16 +13,20 @@ function TabsViewTaskDetail(props: IProps) {
   const { isCommentView, selectedTask, RECENT_TASK_UPDATED_TIME_STAMP } = props;
   const { events, files } = selectedTask;
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
+  const allFiles = [...files];
   const commentsAndFilesTabs = [
     {
       label: "Comments",
+      content: <AddedDetails events={events} hasFile={media.length > 0} />,
+    },
+    {
+      label: "Files",
       content: (
         <>
-          <AddedDetails events={events} hasFile={media.length > 0} />
+          <FilesTab />
         </>
       ),
     },
-    { label: "Files", content: "Content of item three" },
   ];
 
   const allTabs = [
