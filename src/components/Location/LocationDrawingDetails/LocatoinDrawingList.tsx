@@ -313,7 +313,6 @@ const LocatoinDrawingList = ({
               <TaskDetails
                 isLocationTaskDetail={true}
                 isSmallView={!s2}
-                taskDetailContDimension={taskDetailContDimension}
                 task={selectedTaskandEvents}
                 userSubStateLocal={userSubStateLocal}
                 DrawDetailCollapse={DrawDetailCollapse}

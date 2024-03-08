@@ -11,7 +11,6 @@ import {
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import { DynamicDimensions } from "hooks/useDynamicDimensions";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -23,24 +22,17 @@ interface IProps {
   TASK_UPDATED_TIME_STAMP: string;
   userSubStateLocal: string;
   handleClick?: (task: ITask) => void;
-  taskDetailContDimension?: DynamicDimensions;
   isLocationTaskDetail?: boolean;
   isSmallView?: boolean;
   DrawDetailCollapse: boolean;
 }
 function TaskDetails(props: IProps) {
-  const {
-    task,
-    taskDetailContDimension,
-    isLocationTaskDetail,
-    DrawDetailCollapse,
-  } = props;
+  const { task, isLocationTaskDetail, DrawDetailCollapse } = props;
   const {
     dueDate,
     taskUID,
     assignedToState,
     // userSubState,
-    topic,
     project,
     creator,
     createdAt,
@@ -55,7 +47,6 @@ function TaskDetails(props: IProps) {
     confirmer,
     viewer,
   } = task;
-  console.log(task, "taskdetail");
 
   const showFullView = localStorage.getItem("showFullView");
   const [isShowFullView, setIsShowFullView] = useState(false);

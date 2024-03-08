@@ -1,7 +1,8 @@
 import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
 import { FILTER_DATA_BY_EXT, MEDIA_EXT } from "components/Utills/Globals";
 import { ITask } from "constants/interfaces";
-import { useEffect, useRef } from "react";
+import { DynamicDimensions } from "hooks/useDynamicDimensions";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
@@ -11,12 +12,19 @@ import FilesTab from "./FilesTab";
 interface IProps {
   isCommentView: boolean;
   selectedTask: ITask;
+  taskDetailContDimension: DynamicDimensions;
   RECENT_TASK_UPDATED_TIME_STAMP: string;
 }
 function TabsViewTaskDetail(props: IProps) {
   const dispatch = useDispatch();
   const isRenderEffect = useRef<boolean>(false);
-  const { isCommentView, selectedTask, RECENT_TASK_UPDATED_TIME_STAMP } = props;
+  const [selectedTab, setSelectedTab] = useState("Details");
+  const {
+    isCommentView,
+    taskDetailContDimension,
+    selectedTask,
+    RECENT_TASK_UPDATED_TIME_STAMP,
+  } = props;
   const { events, files } = selectedTask;
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
   useEffect(() => {
@@ -38,7 +46,15 @@ function TabsViewTaskDetail(props: IProps) {
   const commentsAndFilesTabs = [
     {
       label: "Comments",
-      content: <AddedDetails events={events} hasFile={media.length > 0} />,
+      content: (
+        <AddedDetails
+          selectedTab={selectedTab}
+          isCommentView={isCommentView}
+          contHeight={taskDetailContDimension.height}
+          events={events}
+          hasFile={media.length > 0}
+        />
+      ),
     },
     {
       label: "Files",
@@ -66,6 +82,7 @@ function TabsViewTaskDetail(props: IProps) {
   return (
     <div>
       <BasicTabs
+        setSelectedTab={setSelectedTab}
         tabsBgColor={isCommentView ? "white" : "#F4F4F4"}
         tabsData={isCommentView ? commentsAndFilesTabs : allTabs}
       />

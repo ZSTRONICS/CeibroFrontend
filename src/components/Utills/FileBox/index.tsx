@@ -21,9 +21,10 @@ interface IProps {
   bb?: boolean;
   media?: any;
   title?: string;
-  files?: IFile[] | File[] | string;
+  files: IFile[] | File[] | string | undefined;
   textColor?: string;
   showFullHeight?: boolean;
+  isnoWrap?: boolean;
   handleClearFile?: (file: File | any, type: fileType) => void;
 }
 
@@ -76,6 +77,7 @@ const FileBox: React.FC<IProps> = ({
   bt,
   files,
   title,
+  isnoWrap,
   handleClearFile,
 }) => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
@@ -99,9 +101,11 @@ const FileBox: React.FC<IProps> = ({
           gap: 1.2,
           display: "flex",
           alignItems: "center",
-          flexWrap: "wrap",
+          flexWrap: isnoWrap ? "nowrap" : "wrap",
           color: "#605c5c",
           overflow: "auto",
+          height: isnoWrap ? "100%" : "auto",
+          pl: isnoWrap ? 2 : 0,
         }}
       >
         {files && Array.isArray(files) && files.length > 0 ? (
@@ -138,6 +142,7 @@ const FileBox: React.FC<IProps> = ({
                 <Tooltip title={f_name}>
                   <Typography
                     sx={{
+                      width: "max-content",
                       fontFamily: "Inter",
                       fontWeight: 400,
                       color: "#131516",
@@ -147,18 +152,19 @@ const FileBox: React.FC<IProps> = ({
                     {trimFileName(Task_Details, f_name)}
                   </Typography>
                 </Tooltip>
-                {item.size && (
+                {/* {item.size && (
                   <Typography
                     sx={{
                       fontFamily: "Inter",
                       fontWeight: 600,
                       fontSize: "11px",
                       opacity: 0.54,
+                      width: "100%",
                     }}
                   >
                     {fileSize}
                   </Typography>
-                )}
+                )} */}
                 {handleClearFile && (
                   <IconButton
                     size="small"

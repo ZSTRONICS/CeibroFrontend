@@ -12,12 +12,14 @@ interface BasicTabsProps {
   tabsData: TabData[];
   tabsBgColor: string;
   isFileTabs?: boolean;
+  setSelectedTab?: (label: string) => void;
 }
 
 export default function BasicTabs({
   tabsData,
   tabsBgColor,
   isFileTabs,
+  setSelectedTab,
 }: BasicTabsProps) {
   const [value, setValue] = React.useState(0);
   // const location = useLocation();
@@ -36,7 +38,7 @@ export default function BasicTabs({
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log(tabsData[newValue].label);
+    setSelectedTab && setSelectedTab(tabsData[newValue].label);
     setValue(newValue);
     // searchParams.set('tab', newValue.toString());
     // history.push({ search: searchParams.toString() });

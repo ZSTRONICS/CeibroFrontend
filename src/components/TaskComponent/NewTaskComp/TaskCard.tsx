@@ -37,8 +37,6 @@ const TaskCard = React.memo((props: IProps) => {
     isLocationTask,
   } = props;
 
-  console.log(task, "this is task ....");
-
   const {
     files,
     taskUID,

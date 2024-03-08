@@ -92,7 +92,7 @@ const DetailActions: React.FC<IProps> = (props) => {
             : 200
           : taskDragContHeight,
     });
-    openModal();
+    // openModal();
   };
 
   const handleDoneClick = () => {
@@ -155,7 +155,6 @@ const DetailActions: React.FC<IProps> = (props) => {
         title={getTitle()}
         showHeader={true}
         taskId={taskId}
-        closeModal={closeModal}
       />
     );
   };
@@ -224,7 +223,6 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const GroupBtnFunc = (Obj: any, myCase: any) => {
-    console.log(myCase);
     return (
       <>
         <Box
@@ -265,7 +263,7 @@ const DetailActions: React.FC<IProps> = (props) => {
                         ></Box>
                       )}
                       <LoadingButton
-                        onClick={() => handleClick("comment")}
+                        // onClick={() => handleClick("comment")}
                         sx={{ maxWidth: "35px", minWidth: "35px" }}
                       >
                         {icon}
@@ -436,7 +434,6 @@ const DetailActions: React.FC<IProps> = (props) => {
         container
         justifyContent="space-between"
         // rowGap={1.25}
-        xs={12}
       >
         <Grid
           item

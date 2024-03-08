@@ -1,15 +1,23 @@
-import { Box, Divider, FormControl, Input } from "@mui/material";
-import { CustomDivider, MUIInputLabel } from "components/CustomTags";
-import { IS_IMAGE, hasOnlySpaces } from "components/Utills/Globals";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
+import { Box, Divider, FormControl, Input, Typography } from "@mui/material";
+import { CustomStack } from "components/CustomTags";
+import CustomButton from "components/Utills/CustomButton";
+import FileBox from "components/Utills/FileBox";
+import {
+  IS_IMAGE,
+  hasOnlySpaces,
+  isValidDocumentType,
+  validTypes,
+} from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
-import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
+import { SendIcon } from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
+import _ from "lodash";
 import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { taskActions } from "redux/action";
 import { removeItem } from "utills/common";
-import Footer from "../Create-Task/Footer";
 import { fileType } from "../type";
 
 interface CommentProps {
@@ -18,14 +26,12 @@ interface CommentProps {
   taskId: string;
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
-  closeModal: () => void;
 }
 
 const Comment = ({
   title,
   showHeader,
   taskId,
-  closeModal,
   doneCommentsRequired,
   doneImageRequired,
 }: CommentProps) => {
@@ -95,7 +101,6 @@ const Comment = ({
     }
   };
   const handleCloseModal = () => {
-    closeModal();
     setDescription("");
   };
   const handleSubmit = () => {
@@ -142,60 +147,50 @@ const Comment = ({
     },
     [setDescription]
   );
+
+  const handleSelectDocument = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple = true;
+    input.accept = validTypes.join(", ");
+    input.onchange = (event) => {
+      const files = (event.target as HTMLInputElement).files;
+      if (files && !_.isEmpty(files)) {
+        let attachments = [];
+        attachments = Array.from(files).filter((file) =>
+          file.type.startsWith("image/")
+        );
+        const validFiles = Array.from(files).filter((file) =>
+          isValidDocumentType(file.type)
+        );
+        if (attachments.length > 0) {
+          handleAttachImageValue(attachments);
+        }
+        if (!_.isEmpty(validFiles)) {
+          handleSelectDocumentValue(validFiles);
+        }
+      }
+    };
+    input.click();
+  };
+
   return (
-    <>
-      <Box
-        sx={{
-          width: "100%",
-          pt: "8px",
-          pr: 1.5,
-          height: "100%",
-          overflow: "auto",
-        }}
-      >
-        {selectedImages.length > 0 && (
-          <ImagesToUpload
-            updateImageWithComment={() => {}}
-            isComment={true}
-            selectedImages={selectedImages}
-            onClearFile={(file: any, type: any) => handleClearFile(file, type)}
-          />
-        )}
-        {selectedDocuments.length > 0 && (
-          <>
-            <ReadMoreWrapper
-              count={selectedDocuments.length}
-              title="Files"
-              type="file"
-              data={selectedDocuments}
-              callback={handleClearFile}
-              allowExpandedView={false}
-            />
-            <Divider
-              key="bottom-divider"
-              sx={{
-                my: 1.25,
-                borderColor: "#9e9e9e",
-                borderRadius: "4px",
-                opacity: "0.9",
-                background: "#F4F4F4",
-                filter: "blur(2px)",
-              }}
-            />
-          </>
-        )}
-        <Box
-          ref={commentRef}
-          sx={{
-            padding: "2px 2px",
-            mt: 0.5,
-          }}
-        >
+    <Box sx={{ maxHeight: "350px", overflow: "auto" }}>
+      <CustomStack sx={{ gap: 0.8, alignItems: "baseline" }}>
+        <Box sx={{ width: "90%" }}>
           <FormControl
             variant="standard"
-            sx={{ width: "100%", fontFamily: "Inter" }}
+            sx={{
+              width: "100%",
+              height: "100%",
+              fontFamily: "Inter",
+              background: "#E2E4E5",
+              borderRadius: "22px",
+              padding: "3px 2px 3px 12px",
+              display: "flex",
+              flexDirection: "row",
+            }}
           >
-            <MUIInputLabel htmlFor="comment">Comment</MUIInputLabel>
             <Input
               name="comment"
               id="comment"
@@ -214,9 +209,9 @@ const Comment = ({
                 },
               }}
               onChange={handleDescriptionChange}
+              maxRows={5}
             />
           </FormControl>
-          <CustomDivider key="bottom-divider3" sx={{ mt: "3px", mb: 1 }} />
           <span
             style={{
               display: "flex",
@@ -231,28 +226,76 @@ const Comment = ({
             {`${description.length}/ 1500`}
           </span>
         </Box>
-      </Box>
-      <Footer
-        isCommentUi={true}
-        isSubmitted={isSubmit}
-        disabled={
-          isSubmit ||
-          (title === "Task Done"
-            ? (doneImageRequired && selectedImages.length === 0) ||
-              (doneCommentsRequired && description.length === 0)
-            : selectedImages.length > 0 ||
-              selectedDocuments.length > 0 ||
-              description.length > 0
-            ? false
-            : true)
-        }
-        handleClose={handleCloseModal}
-        showHeader={showHeader}
-        handleSubmitForm={handleSubmit}
-        handleAttachImageValue={handleAttachImageValue}
-        handleSelectDocumentValue={handleSelectDocumentValue}
-      />
-    </>
+        <CustomButton
+          sx={{
+            "&:hover": {
+              border: "0px solid transparent",
+            },
+            span: {
+              marginRight: "0px",
+            },
+          }}
+          icon={<AttachFileOutlinedIcon sx={{ color: "#818181" }} />}
+          onClick={handleSelectDocument}
+        />
+        <CustomButton
+          sx={{
+            "&:hover": {
+              border: "0px solid transparent",
+              backgroundColor: "#0076C8",
+            },
+            padding: "10px 8px",
+            backgroundColor: "#0076C8",
+            span: {
+              marginRight: "0px",
+            },
+          }}
+          icon={<SendIcon />}
+          onClick={handleSubmit}
+        />
+      </CustomStack>
+      {selectedImages.length > 0 && (
+        <ImagesToUpload
+          updateImageWithComment={() => {}}
+          isComment={true}
+          selectedImages={selectedImages}
+          onClearFile={(file: any, type: any) => handleClearFile(file, type)}
+        />
+      )}
+      {selectedDocuments.length > 0 && (
+        <>
+          <Box>
+            <Typography
+              sx={{
+                fontFamily: "Inter",
+                fontWeight: 600,
+                fontSize: "12px",
+                color: "#605C5C",
+              }}
+            >
+              Files
+            </Typography>
+            <FileBox
+              isnoWrap={true}
+              title={title}
+              files={selectedDocuments}
+              handleClearFile={handleClearFile}
+            />
+          </Box>
+          <Divider
+            key="bottom-divider"
+            sx={{
+              my: 1.25,
+              borderColor: "#9e9e9e",
+              borderRadius: "4px",
+              opacity: "0.9",
+              background: "#F4F4F4",
+              filter: "blur(2px)",
+            }}
+          />
+        </>
+      )}
+    </Box>
   );
 };
 

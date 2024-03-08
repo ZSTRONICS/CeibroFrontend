@@ -145,10 +145,8 @@ export default function DetailsHeader(props: IProps) {
   const handleResize = () => {
     if (avatarContRef.current) {
       const localWidth = getWidthWithMarginAndPadding(avatarContRef);
-      console.log(localWidth, "localWidth,....");
       if (localWidth > 140) {
         const itemCount = Math.floor(localWidth / 145);
-        console.log(itemCount, "itemCount....");
         setCount(itemCount);
       }
     }

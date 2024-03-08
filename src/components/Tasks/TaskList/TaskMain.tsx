@@ -581,7 +581,6 @@ const Task = () => {
           (task: ITask) => task.taskUID === selectedTask?.taskUID
         ) ? (
           <TaskDetails
-            taskDetailContDimension={taskDetailContDimension}
             DrawDetailCollapse={false}
             task={selectedTask}
             userSubStateLocal={userSubStateLocal}

@@ -26,10 +26,10 @@ function ImagesToUpload(props: ImageUploadProps) {
     <>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: imgwithcomment ? "space-between" : null,
-          flexDirection: imgwithcomment ? "row" : null,
+          // display: "flex",
+          // alignItems: "center",
+          // justifyContent: imgwithcomment ? "space-between" : null,
+          // flexDirection: imgwithcomment ? "row" : null,
           mt: 1,
           mb: 2,
           gap: 5,
@@ -51,16 +51,16 @@ function ImagesToUpload(props: ImageUploadProps) {
         <Box
           sx={{
             display: "flex",
-            flexWrap: "wrap",
+            flexWrap: imgwithcomment ? "wrap" : "nowrap",
             gap: "12px",
             columnGap: "16px",
             padding: imgwithcomment ? "7px 16px 2px 6px" : "8px 8px 8px 16px",
             overflow: "auto",
             width: "100%",
-            borderLeft: imgwithcomment ? null : "1.9px solid #818181",
-            "&::-webkit-scrollbar": {
-              height: "0.4rem",
-            },
+            // borderLeft: imgwithcomment ? null : "1.9px solid #818181",
+            // "&::-webkit-scrollbar": {
+            //   height: "0.4rem",
+            // },
             "&::-webkit-scrollbar-track": {
               WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
               borderRadius: "0.2rem",

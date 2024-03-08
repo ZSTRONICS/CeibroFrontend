@@ -20,8 +20,6 @@ function Task() {
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(false);
   const [commentDiv, setCommentDiv] = useState<boolean>(false);
-  const { containerRef: taskCont, dimensions: taskContDimension } =
-    useDynamicDimensions();
   const {
     containerRef: taskDetailContRef,
     dimensions: taskDetailContDimension,
@@ -90,7 +88,7 @@ function Task() {
       </Box>
     );
   };
-  const selectedTask = allTaskToMe && allTaskToMe["ongoing"][0];
+  const selectedTask = allTaskToMe && allTaskToMe["ongoing"][1];
 
   return (
     <Grid
@@ -160,7 +158,6 @@ function Task() {
             height: `${
               windowActualHeight - detailHeaderRefDimension.height - 20
             }px`,
-            overflow: "auto",
           }}
         >
           <Grid
@@ -175,7 +172,6 @@ function Task() {
           >
             {commentDiv ? (
               <TaskDetails
-                taskDetailContDimension={taskDetailContDimension}
                 DrawDetailCollapse={false}
                 task={selectedTask}
                 userSubStateLocal={selectedTask.userSubState}
@@ -183,9 +179,9 @@ function Task() {
               />
             ) : (
               <>
-                {" "}
                 {selectedTask && (
                   <TabsViewTaskDetail
+                    taskDetailContDimension={taskDetailContDimension}
                     selectedTask={selectedTask}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
@@ -210,6 +206,7 @@ function Task() {
               <>
                 {selectedTask && (
                   <TabsViewTaskDetail
+                    taskDetailContDimension={taskDetailContDimension}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
                     }
