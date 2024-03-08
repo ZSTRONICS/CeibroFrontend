@@ -1,8 +1,8 @@
 import { Box, Grid } from "@mui/material";
 import { CustomDivider } from "components/CustomTags";
-import { TaskCard } from "components/TaskComponent";
 import { momentLocalDateTime } from "components/Utills/Globals";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
+import { ITask } from "constants/interfaces";
 import { useDynamicDimensions } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
@@ -13,13 +13,14 @@ import { HEADER_HEIGHT } from "utills/common";
 import TaskDetails from "../TaskDetails";
 import DetailActions from "../TaskDetails/DetailActions";
 import TabsViewTaskDetail from "../TaskDetails/TabsViewTaskDetail";
-// import { DrawingMenu, StickyHeader } from "./Components";
+import TaskMainView from "./TaskMain";
 function Task() {
   const [size, ratio] = useWindowSize();
   const dispatch = useDispatch();
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(false);
   const [commentDiv, setCommentDiv] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const {
     containerRef: taskDetailContRef,
     dimensions: taskDetailContDimension,
@@ -91,7 +92,6 @@ function Task() {
       </Box>
     );
   };
-  const selectedTask = allTaskToMe && allTaskToMe["ongoing"][1];
 
   return (
     <Grid
@@ -109,20 +109,10 @@ function Task() {
           py: 1.5,
         }}
       >
-        {loadingAllTasks
-          ? "loading .... "
-          : selectedTask && (
-              <TaskCard
-                taskListFilter={drawingTaskFilters}
-                userId={""}
-                key={selectedTask._id}
-                isLocationTask={true}
-                isTaskFromMe={"me"}
-                task={selectedTask}
-                selectedTaskId={selectedTask._id}
-                handleClick={() => {}}
-              />
-            )}
+        <TaskMainView
+          setSelectedTask={setSelectedTask}
+          selectedTask={selectedTask}
+        />
       </Grid>
       <Grid
         item
@@ -177,12 +167,14 @@ function Task() {
             ref={taskDetailContRef}
           >
             {commentDiv ? (
-              <TaskDetails
-                DrawDetailCollapse={false}
-                task={selectedTask}
-                userSubStateLocal={selectedTask.userSubState}
-                TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
-              />
+              selectedTask && (
+                <TaskDetails
+                  DrawDetailCollapse={false}
+                  task={selectedTask}
+                  userSubStateLocal={selectedTask.userSubState}
+                  TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
+                />
+              )
             ) : (
               <>
                 {selectedTask && (

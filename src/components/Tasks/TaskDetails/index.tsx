@@ -127,7 +127,7 @@ function TaskDetails(props: IProps) {
         pr={1.25}
         mr={-1}
         sx={{
-          // maxHeight: `calc(100vh - ${heightOffset}px)`,
+          maxHeight: `calc(100vh - ${heightOffset}px)`,
           overflow: "auto",
         }}
       >

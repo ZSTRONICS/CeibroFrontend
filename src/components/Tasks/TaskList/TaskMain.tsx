@@ -1,11 +1,12 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
-import { Box, Grid, InputBase } from "@mui/material";
+import { Box, Button, InputBase } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
 import assets from "assets";
+import { CustomStack, Heading2 } from "components/CustomTags";
 import { TaskCard } from "components/TaskComponent";
 import {
   getTaskCardHeight,
@@ -15,38 +16,41 @@ import {
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
-import { useDynamicDimensions } from "hooks";
 import _ from "lodash";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
-import { HEADER_HEIGHT, searchInData, taskConstants } from "utills/common";
+import {
+  HEADER_HEIGHT,
+  openFormInNewWindow,
+  searchInData,
+  taskConstants,
+} from "utills/common";
 import EmptyScreenDescription from "../EmptyScreenDescription";
-import TaskDetails from "../TaskDetails";
-import FilterTabs from "./FilterTabs";
 
 interface RouteParams {
   subtask: selectedTaskFilterType;
   filterkey: string;
   taskuid: string;
 }
-const Task = () => {
+interface IProps {
+  setSelectedTask: (selectedTask: ITask | null) => void;
+  selectedTask: ITask | null;
+}
+const TaskMainView = (props: IProps) => {
+  const { setSelectedTask, selectedTask } = props;
   const location = useLocation();
   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [searchText, setSearchText] = useState<string>("");
-  const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
+
   const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
   const [currentTask, setCurrentTask] = useState<number>(-1);
-  const {
-    containerRef: taskDetailContRef,
-    dimensions: taskDetailContDimension,
-  } = useDynamicDimensions();
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
       heading: "",
@@ -471,140 +475,85 @@ const Task = () => {
     </div>
   );
 
-  const TASK_CARD_GAP_BETWEEN = 14;
+  const TASK_CARD_GAP_BETWEEN = 18;
   return (
-    <Grid container flexWrap={"nowrap"}>
-      <Grid
-        item
-        height={windowHeight}
-        pt={1}
+    <>
+      <Box
         sx={{
-          maxWidth: "22.5rem",
-          width: "100%",
-          paddingLeft: "16px",
-          paddingRight: "10px",
-          borderRadius: "4px",
-          background: "#FFF",
-          boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: { xs: 1.25, md: 2.5 },
-            overflow: "auto",
-            padding: "12px 6px 8px 1px",
-          }}
-        >
-          {task && subtask && (
-            <FilterTabs
-              userId={userId}
-              subTaskKey={subtask}
-              activeTab={filterkey}
-              filterKeys={Object.keys(task[subtask])}
-              handleTabClick={handleTabClick}
-            />
-          )}
-        </Box>
-        <Box
-          sx={{
-            width: "100%",
-            pt: 1.25,
-          }}
-        >
-          <InputBase
-            type="search"
-            value={searchText}
-            placeholder="Start typing to search"
-            sx={{
-              borderWidth: "0px 0px 1px 0px",
-              borderColor: "#818181",
-              borderStyle: "solid",
-              width: "100%",
-              paddingLeft: "38px",
-              background: `url(${assets.searchSvgIcon})no-repeat`,
-              backgroundPosition: "5px center",
-            }}
-            onChange={handleSearch}
-          />
-        </Box>
-        <Box
-          sx={{
-            mt: 3,
-            pb: 1,
-          }}
-        >
-          {loadingAllTasks ? (
-            <LoadingSkeleton />
-          ) : task && filteredTask.length === 0 ? (
-            <EmptyScreen />
-          ) : (
-            <VariableSizeList
-              ref={taskCardListRef}
-              style={{ overflowY: "auto" }}
-              height={windowHeight - 123}
-              itemCount={filteredTask.length}
-              overscanCount={20}
-              layout="vertical"
-              itemSize={(index) =>
-                getTaskCardHeight(filteredTask[index]) + TASK_CARD_GAP_BETWEEN
-              }
-              width={"100%"}
-            >
-              {TaskRow}
-            </VariableSizeList>
-          )}
-        </Box>
-      </Grid>
-
-      <Grid
-        height={windowHeight}
-        id="taskDetailContainer"
-        ref={taskDetailContRef}
-        item
-        sx={{
-          borderRadius: "4px",
-          width: "100%",
-          background: "#FFF",
-          boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-          backgroundColor: "white",
-          ml: 2,
-          mr: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: { xs: 1.25, md: 2.5 },
           overflow: "auto",
+          padding: "12px 6px 8px 1px",
         }}
       >
-        {selectedTask !== null &&
-        filteredTask &&
-        filteredTask.some(
-          (task: ITask) => task.taskUID === selectedTask?.taskUID
-        ) ? (
-          <TaskDetails
-            DrawDetailCollapse={false}
-            task={selectedTask}
-            userSubStateLocal={userSubStateLocal}
-            TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
-          />
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              height: "100%",
-              fontFamily: "Inter",
-              fontSize: "14px",
-              fontWeight: 500,
-              color: "black",
-            }}
+        <CustomStack sx={{ justifyContent: "space-between", width: "100%" }}>
+          <Heading2 sx={{ py: 2 }}>Projects</Heading2>
+          <Button
+            disableRipple
+            component="label"
+            sx={{ padding: "5px 8px", textTransform: "unset" }}
+            onClick={() =>
+              openFormInNewWindow("/create-new-task", "Create New Task")
+            }
+            variant="contained"
           >
-            No Task Selected!
-          </div>
+            <assets.AddIcon sx={{ color: "white", marginRight: "10px" }} />
+            New
+          </Button>
+        </CustomStack>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          pt: 1.25,
+        }}
+      >
+        <InputBase
+          type="search"
+          value={searchText}
+          placeholder="Start typing to search"
+          sx={{
+            borderWidth: "0px 0px 1px 0px",
+            borderColor: "#818181",
+            borderStyle: "solid",
+            width: "100%",
+            paddingLeft: "38px",
+            background: `url(${assets.searchSvgIcon})no-repeat`,
+            backgroundPosition: "5px center",
+          }}
+          onChange={handleSearch}
+        />
+      </Box>
+      <Box
+        sx={{
+          mt: 3,
+          pb: 1,
+        }}
+      >
+        {loadingAllTasks ? (
+          <LoadingSkeleton />
+        ) : task && filteredTask.length === 0 ? (
+          <EmptyScreen />
+        ) : (
+          <VariableSizeList
+            ref={taskCardListRef}
+            style={{ overflowY: "auto" }}
+            height={windowHeight - 150}
+            itemCount={filteredTask.length}
+            overscanCount={20}
+            layout="vertical"
+            itemSize={(index) =>
+              getTaskCardHeight(filteredTask[index]) + TASK_CARD_GAP_BETWEEN
+            }
+            width={"100%"}
+          >
+            {TaskRow}
+          </VariableSizeList>
         )}
-      </Grid>
-    </Grid>
+      </Box>
+    </>
   );
 };
-export default Task;
+export default TaskMainView;

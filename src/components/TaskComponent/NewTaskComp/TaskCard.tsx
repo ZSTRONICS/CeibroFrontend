@@ -15,11 +15,7 @@ import {
   momentLocalDateTime,
 } from "components/Utills/Globals";
 import { OutlineIcon } from "components/material-ui/icons/TaskCardIcon";
-import {
-  AssignedUserState,
-  ITask,
-  ITaskFilterInterace,
-} from "constants/interfaces";
+import { AssignedUserState, ITask } from "constants/interfaces";
 import React, { useState } from "react";
 import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
 
@@ -28,11 +24,8 @@ interface IProps {
   userId: string;
   selectedTaskId: string | undefined;
   handleClick: (task: ITask) => void;
-  // menuOption: MenuOption[];
-  // disableMenu: boolean;
   isTaskFromMe: string;
   isLocationTask?: boolean;
-  taskListFilter: ITaskFilterInterace;
 }
 
 const TaskCard = React.memo((props: IProps) => {
@@ -43,7 +36,6 @@ const TaskCard = React.memo((props: IProps) => {
     isTaskFromMe,
     userId,
     isLocationTask,
-    taskListFilter,
   } = props;
 
   const {
@@ -122,51 +114,49 @@ const TaskCard = React.memo((props: IProps) => {
 
   let emptyDiv = false;
 
-  switch (task.userSubState) {
-    case "new":
-      emptyDiv = !taskListFilter.toMe.new;
-      break;
+  // switch (task.userSubState) {
+  //   case "new":
+  //     emptyDiv = !taskListFilter.toMe.new;
+  //     break;
 
-    case "ongoing":
-      const ongoingFilter =
-        rootState === "to-me"
-          ? taskListFilter.toMe.ongoing
-          : rootState === "from-me"
-          ? taskListFilter.fromMe.ongoing
-          : taskListFilter.hidden.ongoing;
-      emptyDiv = !ongoingFilter;
-      break;
+  //   case "ongoing":
+  //     const ongoingFilter =
+  //       rootState === "to-me"
+  //         ? taskListFilter.toMe.ongoing
+  //         : rootState === "from-me"
+  //         ? taskListFilter.fromMe.ongoing
+  //         : taskListFilter.hidden.ongoing;
+  //     emptyDiv = !ongoingFilter;
+  //     break;
 
-    case "done":
-      const doneFilter =
-        rootState === "to-me"
-          ? taskListFilter.toMe.done
-          : rootState === "from-me"
-          ? taskListFilter.fromMe.done
-          : taskListFilter.hidden.done;
-      emptyDiv = !doneFilter;
-      break;
+  //   case "done":
+  //     const doneFilter =
+  //       rootState === "to-me"
+  //         ? taskListFilter.toMe.done
+  //         : rootState === "from-me"
+  //         ? taskListFilter.fromMe.done
+  //         : taskListFilter.hidden.done;
+  //     emptyDiv = !doneFilter;
+  //     break;
 
-    case "unread":
-      emptyDiv = !taskListFilter.fromMe.unread;
-      break;
+  //   case "unread":
+  //     emptyDiv = !taskListFilter.fromMe.unread;
+  //     break;
 
-    case "canceled":
-      emptyDiv = !taskListFilter.hidden.canceled;
-      break;
+  //   case "canceled":
+  //     emptyDiv = !taskListFilter.hidden.canceled;
+  //     break;
 
-    default:
-      emptyDiv = true;
-      break;
-  }
+  //   default:
+  //     emptyDiv = true;
+  //     break;
+  // }
 
   if (emptyDiv) {
     return <></>;
   }
 
   const imgformat = (format: any) => {
-    console.log(format, "format");
-
     if (
       format === ".jpeg" ||
       format === ".jpg" ||
@@ -187,8 +177,8 @@ const TaskCard = React.memo((props: IProps) => {
             boxShadow: "inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           },
           width: "96%",
-          marginTop: "15px",
-          marginLeft: "2%",
+          marginTop: "2px",
+          marginLeft: "1%",
           borderRadius: "15px",
           boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           paddingTop: "8px",

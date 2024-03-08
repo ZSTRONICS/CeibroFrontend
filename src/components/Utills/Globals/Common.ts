@@ -355,11 +355,21 @@ const momentdeDateFormatWithDay = (value: Date | any) => {
 
 export const getTaskCardHeight = (task: ITask) => {
   try {
-    const SINGLE_LINE_DESCRIPTION_CARD_HEIGHT = 90;
-    const DOUBLE_LINE_DESCRIPTION_CARD_HEIGHT = 110;
-    const NO_DESCRIPTION_CARD_HEIGHT = 72;
+    const SINGLE_LINE_DESCRIPTION_CARD_HEIGHT = 125;
+    const DOUBLE_LINE_DESCRIPTION_CARD_HEIGHT = 120;
+    const taskHasFiles = task.files.length > 0;
+    const taskHasDesc = task.description.length > 0;
+    const TASK_WITH_FILES_AND_NO_DESC = taskHasFiles && task.description.length === 0;
+    const TASK_WITH_FILES_AND_DESC = taskHasDesc && taskHasDesc
+    const NO_DESCRIPTION_CARD_HEIGHT = 105;
     const CHAR_COUNT_DESCRIPTION = 55;
-    const height = task.description.length > 0 ? (task.description.length > CHAR_COUNT_DESCRIPTION ? DOUBLE_LINE_DESCRIPTION_CARD_HEIGHT : SINGLE_LINE_DESCRIPTION_CARD_HEIGHT) : NO_DESCRIPTION_CARD_HEIGHT;
+    let height = 100;
+    if (TASK_WITH_FILES_AND_NO_DESC || TASK_WITH_FILES_AND_DESC) {
+      height = 140
+    }
+    else {
+      height = task.description.length > 0 ? (task.description.length > CHAR_COUNT_DESCRIPTION ? DOUBLE_LINE_DESCRIPTION_CARD_HEIGHT : SINGLE_LINE_DESCRIPTION_CARD_HEIGHT) : NO_DESCRIPTION_CARD_HEIGHT;
+    }
     return height;
   } catch (error) {
     console.log("error calculating task card height => ", error);
