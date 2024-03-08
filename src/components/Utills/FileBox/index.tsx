@@ -1,3 +1,4 @@
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import { fileType } from "components/Tasks/type";
@@ -125,11 +126,13 @@ const FileBox: React.FC<IProps> = ({
               <Box
                 key={key}
                 sx={{
+                  // border: "solid 1px red",
                   display: "flex",
                   alignItems: "center",
-                  width: `${item.size ? "245px" : "160px"}`,
+                  width: `${item.size ? "255px" : "200px"}`,
                   gap: "10px",
                   pl: 0,
+
                   "&:hover": {
                     cursor: "pointer",
                   },
@@ -174,6 +177,14 @@ const FileBox: React.FC<IProps> = ({
                     <ClearIconSvgGray height="20" width="20" />
                   </IconButton>
                 )}
+                <a
+                  onClick={(e) => e.stopPropagation()}
+                  href={item?.fileUrl}
+                  // download
+                  // style={{ textDecoration: "none" }}
+                >
+                  <FileDownloadOutlinedIcon sx={{ color: "#1976D2" }} />
+                </a>
               </Box>
             );
           })

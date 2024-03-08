@@ -29,11 +29,14 @@ function Task() {
     dimensions: detailHeaderRefDimension,
   } = useDynamicDimensions();
   const task: any = useSelector((state: RootState) => state.task);
+  console.log(task, "taks");
+
   const {
     allTaskToMe,
     allTaskFromMe,
     loadingAllTasks,
     RECENT_TASK_UPDATED_TIME_STAMP,
+    drawingTaskFilters,
   } = task;
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   useEffect(() => {
@@ -106,17 +109,20 @@ function Task() {
           py: 1.5,
         }}
       >
-        {selectedTask && (
-          <TaskCard
-            userId={""}
-            key={selectedTask._id}
-            isLocationTask={true}
-            isTaskFromMe={"me"}
-            task={selectedTask}
-            selectedTaskId={selectedTask._id}
-            handleClick={() => {}}
-          />
-        )}
+        {loadingAllTasks
+          ? "loading .... "
+          : selectedTask && (
+              <TaskCard
+                taskListFilter={drawingTaskFilters}
+                userId={""}
+                key={selectedTask._id}
+                isLocationTask={true}
+                isTaskFromMe={"me"}
+                task={selectedTask}
+                selectedTaskId={selectedTask._id}
+                handleClick={() => {}}
+              />
+            )}
       </Grid>
       <Grid
         item
