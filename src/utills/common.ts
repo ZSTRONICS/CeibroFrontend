@@ -1,6 +1,12 @@
 // const windowsMap = new Map();
 
-import { AssignedUserState, ITask, InvitedNumber, TaskRootStateTags, TaskState } from "constants/interfaces";
+import {
+  AssignedUserState,
+  ITask,
+  InvitedNumber,
+  TaskRootStateTags,
+  TaskState,
+} from "constants/interfaces";
 import _ from "lodash";
 import { MutableRefObject } from "react";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
@@ -29,7 +35,7 @@ export const openFormInNewWindow = (path: string, windowTitle: string) => {
       newWindow.document.title = windowTitle;
     });
   } else {
-    alert('The new window was blocked. Please allow pop-ups for this site.');
+    alert("The new window was blocked. Please allow pop-ups for this site.");
   }
 };
 
@@ -63,7 +69,7 @@ export const handleGroupSearch = (
  *
  * @param {string} str - The string to search in.
  * @param {string} searchValue - The value to search for.
- * @return {boolean} Returns true if the string contains the search value, 
+ * @return {boolean} Returns true if the string contains the search value,
  *                    Otherwise, returns false.
  */
 export function includesIgnoreCase(str: string, searchValue: string): boolean {
@@ -161,17 +167,23 @@ export const taskConstants: any = {
 export const MUI_TASK_CARD_COLOR_MAP: Map<string, string> = new Map([
   ["ongoing", "#F1B740"],
   ["new", "#CFECFF"],
-  ["canceled", "#FFE7E7"],
+  ["canceled", "#E85555"],
   ["unread", "#E2E4E5"],
   ["done", "#55BCB3"],
+  // verify and updated color
+  ["in-review", "#CFECFF"],
+  ["to-review", "#CFECFF"],
 ]);
 
-export const ALL_FLOOR_NAMES = Array.from({ length: 29 }, (_, index) => `${index - 3}`).filter(num => num !== "0");
+export const ALL_FLOOR_NAMES = Array.from(
+  { length: 29 },
+  (_, index) => `${index - 3}`
+).filter((num) => num !== "0");
 export const HEADER_HEIGHT = 87;
 
 /**
-   * Searches an array of ITask objects based on the specified properties and searchText.
-   */
+ * Searches an array of ITask objects based on the specified properties and searchText.
+ */
 export function searchInData(
   data: ITask[],
   searchText: string,
@@ -201,21 +213,19 @@ export function searchInData(
 }
 
 export const updateTaskListFilter = (filter: any) => {
-  const isAnyStateFalse = Object.values(filter).some(
-    (TaskFilter: any) =>
-      Object.values(TaskFilter).some((state) => state === false)
+  const isAnyStateFalse = Object.values(filter).some((TaskFilter: any) =>
+    Object.values(TaskFilter).some((state) => state === false)
   );
   return !isAnyStateFalse;
-}
-
+};
 
 /**
-  * Creates a dropdown option for each floor in the project, based on the provided project floors and all floor names.
-  *
-  * @param {Array} projectFloors - An array of objects representing the project floors
-  * @param {Array} allFloorNames - An array of strings representing all floor names
-  * @return {Array} An array of dropdown options for each floor
-  */
+ * Creates a dropdown option for each floor in the project, based on the provided project floors and all floor names.
+ *
+ * @param {Array} projectFloors - An array of objects representing the project floors
+ * @param {Array} allFloorNames - An array of strings representing all floor names
+ * @return {Array} An array of dropdown options for each floor
+ */
 export const createFloorDropdownOption = (
   allFloors: Floor[],
   allFloorNames: string[]
@@ -233,7 +243,10 @@ export const createFloorDropdownOption = (
   });
 };
 
-export const fetchDrawingTaskList = (projectData: any, allTasksAllEvents: any) => {
+export const fetchDrawingTaskList = (
+  projectData: any,
+  allTasksAllEvents: any
+) => {
   const selectedDrawingPins = allTasksAllEvents.allPins.filter(
     (pin: any) => pin.drawingId === projectData.selectedDrawing._id
   );
@@ -243,12 +256,16 @@ export const fetchDrawingTaskList = (projectData: any, allTasksAllEvents: any) =
   return drawingTaskList;
 };
 
-export const filterTasksByCondition = (tasks: ITask[], condition: (task: ITask) => boolean): ITask[] => {
+export const filterTasksByCondition = (
+  tasks: ITask[],
+  condition: (task: ITask) => boolean
+): ITask[] => {
   return tasks.filter(condition);
 };
 
-
-export const formatUserName = (user: AssignedUserState | InvitedNumber | any) => {
+export const formatUserName = (
+  user: AssignedUserState | InvitedNumber | any
+) => {
   const { firstName, surName, phoneNumber } = user;
   if (firstName && surName) {
     return `${firstName} ${surName}`;
@@ -260,7 +277,6 @@ export const formatUserName = (user: AssignedUserState | InvitedNumber | any) =>
     return phoneNumber;
   }
 };
-
 
 /**
  * Calculate the width of the HTMLDivElement including margin and padding.
@@ -277,7 +293,6 @@ export const getWidthWithMarginAndPadding = (
   }
   return 0;
 };
-
 
 /**
  * Filters tasks based on specified criteria.
@@ -301,10 +316,20 @@ export function filterTasks(
   const preFilterTask = (task: ITask) => {
     const isRootStateMatch = task.taskRootState === rootStateTag;
     const isToMeStatusMatch = toMeStatus ? task.toMeState === toMeStatus : true;
-    const isFromMeStatusMatch = fromMeStatus ? task.fromMeState === fromMeStatus : true;
-    const isUserSubStateMatch = userSubState ? task.userSubState === userSubState : true;
+    const isFromMeStatusMatch = fromMeStatus
+      ? task.fromMeState === fromMeStatus
+      : true;
+    const isUserSubStateMatch = userSubState
+      ? task.userSubState === userSubState
+      : true;
     const isHiddenByMeMatch = isHiddenByMe ? task.isHiddenByMe === true : true;
-    return isRootStateMatch && isHiddenByMeMatch && isToMeStatusMatch && isFromMeStatusMatch && isUserSubStateMatch;
+    return (
+      isRootStateMatch &&
+      isHiddenByMeMatch &&
+      isToMeStatusMatch &&
+      isFromMeStatusMatch &&
+      isUserSubStateMatch
+    );
   };
 
   const filteredTasks: ITask[] = [];

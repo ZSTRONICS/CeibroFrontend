@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
-import { Box, Button, InputBase } from "@mui/material";
+import { Box, Button, IconButton, InputBase } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 // mui
@@ -10,6 +10,7 @@ import TagListDropdown from "components/Location/LocationImageDetails/TagsDropdo
 import UserListDropdown from "components/Location/LocationImageDetails/UserListDropdown";
 import { TaskCard } from "components/TaskComponent";
 import { getTaskCardHeight } from "components/Utills/Globals";
+import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { ITask } from "constants/interfaces";
 import { useHistory, useLocation, useParams } from "react-router-dom";
@@ -517,22 +518,31 @@ const TaskMain = (props: IProps) => {
             Clear all
           </Button>
         </CustomStack>
-        <InputBase
-          type="search"
-          value={searchText}
-          placeholder="Start typing to search"
-          sx={{
-            pt: 2,
-            borderWidth: "0px 0px 1px 0px",
-            borderColor: "#818181",
-            borderStyle: "solid",
-            width: "100%",
-            paddingLeft: "38px",
-            background: `url(${assets.searchSvgIcon})no-repeat`,
-            backgroundPosition: "5px 20px",
-          }}
-          onChange={handleSearch}
-        />
+        <Box sx={{ display: "flex" }}>
+          <InputBase
+            type="search"
+            value={searchText}
+            placeholder="Start typing to search "
+            sx={{
+              pt: 2,
+              paddingBottom: "7px",
+              borderWidth: "0px 0px 1px 0px",
+              borderColor: "#818181",
+              borderStyle: "solid",
+              width: "100%",
+              paddingLeft: "38px",
+              background: `url(${assets.searchSvgIcon})no-repeat`,
+              backgroundPosition: "5px 20px",
+            }}
+            onChange={handleSearch}
+          />
+          <IconButton
+            style={{ color: "#0076C8", padding: "0px" }}
+            onClick={() => {}}
+          >
+            <SortIcon />
+          </IconButton>
+        </Box>
       </Box>
 
       <Box

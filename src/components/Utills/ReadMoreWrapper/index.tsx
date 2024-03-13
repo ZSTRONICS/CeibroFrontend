@@ -19,20 +19,23 @@ import ImageBox from "../ImageBox";
 import ImageBoxWithDesp from "../ImageBoxWithDesp";
 
 interface ReadMoreWrapperProps {
+  imgcard?: boolean;
   title: string;
   readMore?: boolean;
   count?: number;
   type: "text" | "image" | "imageWithDesp" | "file" | "Location";
-  data?: string | IFile[] | File[];
+  data?: string | IFile[] | File[] | [];
   children?: JSX.Element | JSX.Element[];
   callback?: (file: File | any, type: fileType) => void;
   allowExpandedView?: boolean;
+  download?: boolean;
 }
 const ImageBoxWrapper = styled(Box)({
   marginRight: "10px",
 });
 
 const ReadMoreWrapper = ({
+  imgcard,
   title,
   readMore = false,
   count,
@@ -41,6 +44,7 @@ const ReadMoreWrapper = ({
   data,
   callback,
   allowExpandedView = true,
+  download,
 }: ReadMoreWrapperProps) => {
   const [isExpanded, setIsExpanded] = useState(readMore);
   const compHeight = {
@@ -214,22 +218,46 @@ const ReadMoreWrapper = ({
                     display: "flex",
                     flexWrap: "wrap",
                     gap: "10px",
+                    border: "solid 1px green",
                   }}
                 >
-                  {data &&
-                    (data as IFile[]).map((file: IFile, index: any) => {
-                      return (
-                        <ImageBoxWrapper key={file._id + index}>
-                          <ImageBox
-                            TaskDetails={true}
-                            src={file.fileUrl}
-                            handleClick={() => {
-                              handleClick(data, index);
-                            }}
-                          />
-                        </ImageBoxWrapper>
-                      );
-                    })}
+                  {
+                    // imgcard
+                    //   ? (data as IFile[]).map((file: IFile, index: any) => {
+                    //       return (
+                    //         <ImageBoxWrapper key={file._id + index}>
+                    //           <CardMedia
+                    //             component="img"
+                    //             sx={{
+                    //               height: "100px",
+                    //               borderRadius: "5px",
+                    //               width: "100px",
+                    //               marginLeft: index === 0 ? null : "15px",
+                    //             }}
+                    //             image={files[0].fileUrl}
+                    //             image={
+                    //               "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8"
+                    //             }
+                    //           />
+                    //         </ImageBoxWrapper>
+                    //       );
+                    //     })
+                    // :
+                    data &&
+                      (data as IFile[]).map((file: IFile, index: any) => {
+                        return (
+                          <ImageBoxWrapper key={file._id + index}>
+                            <ImageBox
+                              TaskDetails={true}
+                              src={file.fileUrl}
+                              handleClick={() => {
+                                handleClick(data, index);
+                              }}
+                            />
+                          </ImageBoxWrapper>
+                        );
+                      })
+                  }
                 </Box>
               )}
               {type === "imageWithDesp" && data && data.length > 0 && (
@@ -279,6 +307,7 @@ const ReadMoreWrapper = ({
                     title={title}
                     files={data}
                     handleClearFile={callback}
+                    download={download}
                   />
                 </Box>
               )}

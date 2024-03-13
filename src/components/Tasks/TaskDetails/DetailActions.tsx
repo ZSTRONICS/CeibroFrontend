@@ -202,9 +202,9 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const DataforCondition = [
-    { status: "pending", subStatus: null },
+    // { status: "pending", subStatus: null },
     // { status: "review", subStatus: null },
-    // { status: "ongoing", subStatus: "hidden" },
+    { status: "ongoing", subStatus: "hidden" },
     // { status: "ongoing", subStatus: "assignee" },
     // { status: "ongoing", subStatus: "creator" },
     // { status: "done", subStatus: null },
@@ -280,19 +280,6 @@ const DetailActions: React.FC<IProps> = (props) => {
             myCase === "creator" ||
             myCase === "hidden" ? (
               <>
-                <LoadingButton
-                  variant="contained"
-                  onClick={handleDoneClick}
-                  sx={{
-                    width: "75px",
-                    borderRadius: "4px",
-                    fontWeight: "700",
-                  }}
-                  disabled={isloading}
-                >
-                  Done
-                </LoadingButton>
-
                 {myCase === "creator" || myCase === "hidden" ? (
                   <LoadingButton
                     sx={{
@@ -312,6 +299,18 @@ const DetailActions: React.FC<IProps> = (props) => {
                 ) : (
                   ""
                 )}
+                <LoadingButton
+                  variant="contained"
+                  onClick={handleDoneClick}
+                  sx={{
+                    width: "75px",
+                    borderRadius: "4px",
+                    fontWeight: "700",
+                  }}
+                  disabled={isloading}
+                >
+                  Done
+                </LoadingButton>
               </>
             ) : null}
           </Box>
@@ -431,6 +430,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   return (
     <>
       <Grid
+        // sx={{ border: "solid 1px red" }}
         container
         justifyContent="space-between"
         // rowGap={1.25}

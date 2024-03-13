@@ -84,7 +84,7 @@ export default function DetailsHeader(props: IProps) {
     },
 
     Createdby: {
-      label: "Created by",
+      label: "Created by  ",
       value: [creator],
     },
     sentTo: {

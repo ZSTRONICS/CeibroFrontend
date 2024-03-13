@@ -6,6 +6,7 @@ import ShareIcon from "./LocationIcons/ShareIcon";
 import FileDownloadIcon from "./TaskIcons/FileDownloadIcon";
 import ForwardIcon from "./TaskIcons/ForwardIcon";
 import ReplyIcon from "./TaskIcons/ReplyIcon";
+import { PinIcon } from "./pin/PinIcon";
 export * from "./ConfigIcons";
 export { AttachmentIcon } from "./attachment/Attachment";
 export * from "./attachment/FileIconThumnails";
@@ -31,6 +32,7 @@ export {
   FavIcon,
   FileDownloadIcon,
   ForwardIcon,
+  PinIcon,
   PrivateIcon,
   PublicIcon,
   ReplyIcon,

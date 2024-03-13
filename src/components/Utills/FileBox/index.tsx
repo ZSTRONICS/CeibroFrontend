@@ -27,6 +27,7 @@ interface IProps {
   showFullHeight?: boolean;
   isnoWrap?: boolean;
   handleClearFile?: (file: File | any, type: fileType) => void;
+  download?: boolean;
 }
 
 const getFileIconThumbnail = (
@@ -80,6 +81,7 @@ const FileBox: React.FC<IProps> = ({
   title,
   isnoWrap,
   handleClearFile,
+  download,
 }) => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [fileToView, setFileToView] = useState<any | null>(null);
@@ -177,14 +179,16 @@ const FileBox: React.FC<IProps> = ({
                     <ClearIconSvgGray height="20" width="20" />
                   </IconButton>
                 )}
-                <a
-                  onClick={(e) => e.stopPropagation()}
-                  href={item?.fileUrl}
-                  // download
-                  // style={{ textDecoration: "none" }}
-                >
-                  <FileDownloadOutlinedIcon sx={{ color: "#1976D2" }} />
-                </a>
+                {download ? (
+                  <a
+                    onClick={(e) => e.stopPropagation()}
+                    href={item?.fileUrl}
+                    // download
+                    // style={{ textDecoration: "none" }}
+                  >
+                    <FileDownloadOutlinedIcon sx={{ color: "#1976D2" }} />
+                  </a>
+                ) : null}
               </Box>
             );
           })

@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, SyntheticEvent } from "react";
 import UserImageCard from "./UserImageCard";
 
 interface userListDropdownProps {
+  TaskMain?: boolean;
   options: UserInfo[];
   isSmall?: boolean;
   selectedUsers: UserInfo[];
@@ -17,6 +18,7 @@ const UserListDropdown = ({
   isSmall,
   selectedUsers,
   setSelectedUsers,
+  TaskMain,
 }: userListDropdownProps) => {
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
@@ -66,7 +68,7 @@ const UserListDropdown = ({
           sx={{
             position: "absolute",
             zIndex: "500",
-            backgroundColor: "white",
+            backgroundColor: !TaskMain ? "white" : "#F4F4F4",
           }}
           {...params}
           label={isSmall ? "Users" : "Select User"}
