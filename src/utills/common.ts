@@ -304,7 +304,6 @@ export function filterTasks(
     const isFromMeStatusMatch = fromMeStatus ? task.fromMeState === fromMeStatus : true;
     const isUserSubStateMatch = userSubState ? task.userSubState === userSubState : true;
     const isHiddenByMeMatch = isHiddenByMe ? task.isHiddenByMe === true : true;
-    console.log(isHiddenByMeMatch, task.isHiddenByMe)
     return isRootStateMatch && isHiddenByMeMatch && isToMeStatusMatch && isFromMeStatusMatch && isUserSubStateMatch;
   };
 
