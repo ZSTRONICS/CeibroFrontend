@@ -1,25 +1,34 @@
-import { Box, Grid } from "@mui/material";
-import { CustomDivider } from "components/CustomTags";
+import { Box, Button, Grid } from "@mui/material";
+import assets from "assets";
+import { CustomDivider, CustomStack, Heading2 } from "components/CustomTags";
+import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
 import { momentLocalDateTime } from "components/Utills/Globals";
+import { ApprovalIcon, TaskIcon } from "components/material-ui/icons";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
-import { ITask } from "constants/interfaces";
+import {
+  AllTasksAllEvents,
+  ITask,
+  TaskRootStateTags,
+} from "constants/interfaces";
 import { useDynamicDimensions } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
-import { HEADER_HEIGHT } from "utills/common";
+import { HEADER_HEIGHT, filterTasks, openFormInNewWindow } from "utills/common";
 import TaskDetails from "../TaskDetails";
 import DetailActions from "../TaskDetails/DetailActions";
 import TabsViewTaskDetail from "../TaskDetails/TabsViewTaskDetail";
-import TaskMainView from "./TaskMain";
+import TaskMain from "./TaskMain";
 function Task() {
   const [size, ratio] = useWindowSize();
   const dispatch = useDispatch();
   const [windowWidth, windowHeight] = size;
-  const isRenderEffect = useRef<boolean>(false);
+  const isRenderEffect = useRef<boolean>(true);
   const [commentDiv, setCommentDiv] = useState<boolean>(false);
+  const [selectedTab, setSelectedTab] = useState<string>("");
+  const [showHiddenTasks, setShowHiddenTasks] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const {
     containerRef: taskDetailContRef,
@@ -29,30 +38,20 @@ function Task() {
     containerRef: detailHeaderRef,
     dimensions: detailHeaderRefDimension,
   } = useDynamicDimensions();
-  const task: any = useSelector((state: RootState) => state.task);
-  console.log(task, "taks");
 
-  const {
-    allTaskToMe,
-    allTaskFromMe,
-    loadingAllTasks,
-    RECENT_TASK_UPDATED_TIME_STAMP,
-    drawingTaskFilters,
-  } = task;
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
+  const {
+    allTasksAllEvents,
+    loadingAllTasksAllEvents,
+    RECENT_TASK_UPDATED_TIME_STAMP,
+  } = useSelector((state: RootState) => state.task);
+  const { allTasks, allEvents }: AllTasksAllEvents = allTasksAllEvents;
   useEffect(() => {
-    if (!isRenderEffect.current) {
-      dispatch(
-        taskActions.syncAllTasks({
-          other: {
-            syncTime: RECENT_TASK_UPDATED_TIME_STAMP,
-          },
-        })
-      );
+    if (isRenderEffect.current) {
+      isRenderEffect.current = false;
+      allTasksAllEvents.allTasks.length === 0 &&
+        dispatch(taskActions.getAllTasksAllEvents());
     }
-    return () => {
-      isRenderEffect.current = true;
-    };
   }, []);
 
   useEffect(() => {
@@ -72,6 +71,118 @@ function Task() {
     setCommentDiv((prev) => !prev);
   };
 
+  const ongoingClosedTasks = [
+    {
+      label: "Ongoing",
+      icon: (
+        <TaskIcon color={selectedTab === "Ongoing" ? "black" : "#0076C8"} />
+      ),
+      content: (
+        <TaskMain
+          allTaskList={filterTasks(
+            allTasks,
+            TaskRootStateTags.Ongoing,
+            null,
+            null
+          )}
+          setSelectedTask={setSelectedTask}
+          selectedTask={selectedTask}
+        />
+      ),
+      count: 7,
+    },
+    {
+      label: "Closed",
+      icon: (
+        <assets.CheckOutlinedIcon
+          sx={{ color: `${selectedTab === "Closed" ? "black" : "#0076C8"}` }}
+        />
+      ),
+      content: (
+        <TaskMain
+          allTaskList={filterTasks(allTasks, TaskRootStateTags.Closed)}
+          setSelectedTask={setSelectedTask}
+          selectedTask={selectedTask}
+        />
+      ),
+      count: 7,
+    },
+  ];
+
+  const rootTaskFilter = [
+    {
+      label: "Ongoing",
+      icon: (
+        <TaskIcon
+          color={`${selectedTab === "Ongoing" ? "black" : "#0076C8"}`}
+        />
+      ),
+      content: (
+        <TaskMain
+          allTaskList={filterTasks(allTasks, TaskRootStateTags.Ongoing)}
+          setSelectedTask={setSelectedTask}
+          selectedTask={selectedTask}
+        />
+      ),
+      count: 7,
+    },
+    {
+      label: "Approval",
+      icon: (
+        <ApprovalIcon
+          color={`${selectedTab === "Approval" ? "black" : "#0076C8"}`}
+        />
+      ),
+      content: (
+        <TaskMain
+          allTaskList={filterTasks(allTasks, TaskRootStateTags.Approval)}
+          setSelectedTask={setSelectedTask}
+          selectedTask={selectedTask}
+        />
+      ),
+      count: 12,
+    },
+    {
+      label: "Closed",
+      icon: (
+        <assets.CheckOutlinedIcon
+          sx={{ color: `${selectedTab === "Closed" ? "black" : "#0076C8"}` }}
+        />
+      ),
+      content: (
+        <TaskMain
+          allTaskList={filterTasks(allTasks, TaskRootStateTags.Closed)}
+          setSelectedTask={setSelectedTask}
+          selectedTask={selectedTask}
+        />
+      ),
+      count: 7,
+    },
+    {
+      label: "Canceled",
+      icon: (
+        <assets.CloseIcon
+          sx={{ color: `${selectedTab === "Canceled" ? "black" : "#0076C8"}` }}
+        />
+      ),
+      content: (
+        <TaskMain
+          allTaskList={filterTasks(allTasks, TaskRootStateTags.Canceled)}
+          setSelectedTask={setSelectedTask}
+          selectedTask={selectedTask}
+        />
+      ),
+      count: 6,
+    },
+  ];
+
+  const filterTaskEvents = allEvents.filter(
+    (event) => event.taskId === selectedTask?._id
+  );
+  const selectedTaskandEvents: ITask | any = {
+    ...selectedTask,
+    events: filterTaskEvents || [],
+  };
   const arrowBtn = () => {
     return (
       <Box
@@ -93,6 +204,58 @@ function Task() {
     );
   };
 
+  const ShowTaskHeader = () => {
+    return (
+      <>
+        {showHiddenTasks ? (
+          <CustomStack sx={{ justifyContent: "space-between", width: "100%" }}>
+            <Heading2 sx={{ py: 2 }}>Hidden Tasks</Heading2>
+            <Button
+              disableRipple
+              component="label"
+              sx={{ padding: "5px 8px", textTransform: "unset" }}
+              onClick={() => setShowHiddenTasks(false)}
+              variant="contained"
+            >
+              Go Back
+            </Button>
+          </CustomStack>
+        ) : (
+          <CustomStack sx={{ justifyContent: "space-between", width: "100%" }}>
+            <Heading2 sx={{ py: 2 }}>Tasks</Heading2>
+            <Box>
+              <Button
+                disableRipple
+                component="label"
+                sx={{
+                  padding: "5px 8px",
+                  textTransform: "unset",
+                  color: "#818181",
+                }}
+                onClick={() => setShowHiddenTasks(true)}
+                variant="text"
+              >
+                Show hidden tasks
+              </Button>
+              <Button
+                disableRipple
+                component="label"
+                sx={{ padding: "5px 8px", textTransform: "unset" }}
+                onClick={() =>
+                  openFormInNewWindow("/create-new-task", "Create New Task")
+                }
+                variant="contained"
+              >
+                <assets.AddIcon sx={{ color: "white", marginRight: "10px" }} />
+                New
+              </Button>
+            </Box>
+          </CustomStack>
+        )}
+      </>
+    );
+  };
+
   return (
     <Grid
       container
@@ -109,9 +272,11 @@ function Task() {
           py: 1.5,
         }}
       >
-        <TaskMainView
-          setSelectedTask={setSelectedTask}
-          selectedTask={selectedTask}
+        {ShowTaskHeader()}
+        <BasicTabs
+          setSelectedTab={setSelectedTab}
+          tabsBgColor="white"
+          tabsData={showHiddenTasks ? ongoingClosedTasks : rootTaskFilter}
         />
       </Grid>
       <Grid
@@ -167,11 +332,12 @@ function Task() {
             ref={taskDetailContRef}
           >
             {commentDiv ? (
-              selectedTask && (
+              selectedTask &&
+              selectedTaskandEvents && (
                 <TaskDetails
                   DrawDetailCollapse={false}
-                  task={selectedTask}
-                  userSubStateLocal={selectedTask.userSubState}
+                  task={selectedTaskandEvents}
+                  userSubStateLocal={selectedTaskandEvents.userSubState}
                   TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
                 />
               )

@@ -13,6 +13,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface TagListDropdownProps {
   options: string[];
+  labelName?: string;
   isSmall?: boolean;
   selectedTags: string[];
   setSelectedTags: Dispatch<SetStateAction<string[]>>;
@@ -21,6 +22,7 @@ interface TagListDropdownProps {
 const TagListDropdown = ({
   options,
   isSmall,
+  labelName,
   selectedTags,
   setSelectedTags,
 }: TagListDropdownProps) => {
@@ -73,7 +75,7 @@ const TagListDropdown = ({
             backgroundColor: "white",
           }}
           {...params}
-          label={isSmall ? "Tags" : "Select Tags"}
+          label={labelName ? labelName : isSmall ? "Tags" : "Select Tags"}
           placeholder="Start typing name"
         />
       )}

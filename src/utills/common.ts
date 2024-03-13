@@ -1,6 +1,6 @@
 // const windowsMap = new Map();
 
-import { AssignedUserState, ITask, InvitedNumber } from "constants/interfaces";
+import { AssignedUserState, ITask, InvitedNumber, TaskRootStateTags, TaskState } from "constants/interfaces";
 import _ from "lodash";
 import { MutableRefObject } from "react";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
@@ -277,3 +277,44 @@ export const getWidthWithMarginAndPadding = (
   }
   return 0;
 };
+
+
+/**
+ * Filters tasks based on specified criteria.
+ *
+ * @param {ITask[]} allTasks - array of all tasks to filter
+ * @param {TaskRootStateTags} rootStateTag - root state tag to filter tasks by
+ * @param {TaskState | null} toMeStatus - status to filter tasks to 'to me'
+ * @param {TaskState | null} fromMeStatus - status to filter tasks from 'from me'
+ * @param {string | null} userSubState - user sub state to filter tasks by
+ * @param {boolean} isHiddenByMe - flag to filter tasks hidden by user
+ * @return {ITask[]} filtered array of tasks
+ */
+export function filterTasks(
+  allTasks: ITask[],
+  rootStateTag: TaskRootStateTags,
+  toMeStatus: TaskState | null = null,
+  fromMeStatus: TaskState | null = null,
+  userSubState: string | null = null,
+  isHiddenByMe: boolean = false
+): ITask[] {
+  const preFilterTask = (task: ITask) => {
+    const isRootStateMatch = task.taskRootState === rootStateTag;
+    const isToMeStatusMatch = toMeStatus ? task.toMeState === toMeStatus : true;
+    const isFromMeStatusMatch = fromMeStatus ? task.fromMeState === fromMeStatus : true;
+    const isUserSubStateMatch = userSubState ? task.userSubState === userSubState : true;
+    const isHiddenByMeMatch = isHiddenByMe ? task.isHiddenByMe === true : true;
+    console.log(isHiddenByMeMatch, task.isHiddenByMe)
+    return isRootStateMatch && isHiddenByMeMatch && isToMeStatusMatch && isFromMeStatusMatch && isUserSubStateMatch;
+  };
+
+  const filteredTasks: ITask[] = [];
+  for (const task of allTasks) {
+    if (preFilterTask(task)) {
+      filteredTasks.push(task);
+    }
+  }
+  // Sort the filtered tasks by updatedAt property
+  // filteredTasks.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+  return filteredTasks;
+}

@@ -37,7 +37,7 @@ const UserListDropdown = ({
     <Autocomplete
       sx={{
         maxWidth: "240px",
-        minWidth: "10px",
+        minWidth: "100px",
         zIndex: "50",
         position: "relative",
       }}
@@ -69,7 +69,7 @@ const UserListDropdown = ({
             backgroundColor: "white",
           }}
           {...params}
-          label={isSmall ? "User" : "Select User"}
+          label={isSmall ? "Users" : "Select User"}
           placeholder="Start typing name"
         />
       )}

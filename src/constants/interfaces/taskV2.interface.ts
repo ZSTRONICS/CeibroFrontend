@@ -197,3 +197,19 @@ export interface TaskFile {
   isCommentFile: boolean;
   isTaskFile: boolean;
 }
+
+export enum TaskRootStateTags {
+  Ongoing = "Ongoing",
+  Approval = "Approval",
+  Closed = "Closed",
+  Canceled = "Canceled",
+}
+
+export enum TaskState {
+  NEW = "new",
+  ONGOING = "ongoing",
+  UNREAD = "unread",
+  DONE = "done",
+  CANCELED = "canceled",
+  HIDDEN = "hidden",
+}

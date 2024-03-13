@@ -27,12 +27,11 @@ interface IProps {
   DrawDetailCollapse: boolean;
 }
 function TaskDetails(props: IProps) {
-  const { task, isLocationTaskDetail, DrawDetailCollapse } = props;
+  const { task } = props;
   const {
     dueDate,
     taskUID,
     assignedToState,
-    // userSubState,
     project,
     creator,
     createdAt,
@@ -73,7 +72,7 @@ function TaskDetails(props: IProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const isImageFile = (file: any) => IS_IMAGE(file.fileName);
   const eventsFiles =
-    events.length > 0
+    events && events.length > 0
       ? events.flatMap((data) =>
           (data?.commentData?.files || []).filter(isImageFile)
         )
@@ -159,7 +158,6 @@ function TaskDetails(props: IProps) {
             />
           </>
         )}
-        {/* {events && <AddedDetails events={events} hasFile={media.length > 0} />} */}
       </Box>
 
       {uniqueImageFiles.length > 0 && (

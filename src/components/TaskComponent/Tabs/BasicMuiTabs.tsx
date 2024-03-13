@@ -1,10 +1,14 @@
+import { Badge } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
+import { AddStatusTag, CustomStack } from "components/CustomTags";
 import * as React from "react";
 
 interface TabData {
   label: string;
+  icon?: any;
+  count?: number;
   content: React.ReactNode;
 }
 
@@ -54,32 +58,54 @@ export default function BasicTabs({
           backgroundColor: tabsBgColor || "transparent",
           "& .Mui-selected": {
             color: `${isFileTabs ? "white !important" : "black !important"}`,
+            borderBottom: "2px solid",
           },
           "& .MuiTabs-indicator": {
-            ...(isFileTabs
-              ? filesTabSActivetyle
-              : { backgroundColor: "black" }),
+            ...(isFileTabs ? filesTabSActivetyle : { display: "none" }),
           },
           "& .MuiTabs-flexContainer": {
             gap: 1,
+            overflow: "auto",
           },
         }}
       >
         {tabsData.map((tab, index) => (
           <Tab
+            key={index + tab.label}
             sx={{
+              gap: 0.5,
               textTransform: "capitalize",
               fontWeight: 500,
               fontFamily: "Inter",
               fontSize: "14px",
+              minHeight: "50px",
               ...(isFileTabs && value === index
                 ? filesTabSActivetyle
                 : isFileTabs
                 ? filesTabStyle
                 : { color: "#0076C8" }),
             }}
-            key={index}
-            label={tab.label}
+            icon={tab.icon || ""}
+            iconPosition="start"
+            label={
+              <CustomStack sx={{ gap: 2 }}>
+                <AddStatusTag sx={{ color: "unset" }}>{tab.label}</AddStatusTag>
+                {tab.count && (
+                  <Badge
+                    color="primary"
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        backgroundColor: `${
+                          value === index ? "black" : "#0076C8"
+                        }`,
+                      },
+                    }}
+                    variant="standard"
+                    badgeContent={tab.count}
+                  />
+                )}
+              </CustomStack>
+            }
           />
         ))}
       </Tabs>

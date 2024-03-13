@@ -66,7 +66,7 @@ const RouterConfig = () => {
             <Route path="/t&c" component={TermsAndConditions} />
             <Route path="/profile-setup" component={Register} />
 
-            <Redirect exact from="/tasks" to="/tasks/allTaskFromMe" />
+            <Redirect exact from="/tasks" to="/tasks/ongoing" />
             <PrivateRoute
               exact
               path="/profile-pic"
@@ -81,7 +81,7 @@ const RouterConfig = () => {
             <DashboardLayout>
               <PrivateRoute
                 exact
-                path="/tasks/:subtask/:filterkey?/:taskuid?"
+                path="/tasks/:subtask/:taskuid?"
                 component={Task}
               />
               <PrivateRoute

@@ -1,3 +1,4 @@
+import ApprovalIcon from "./ApprovalIcon";
 import FromMEIcon from "./FromMEIcon";
 import FromMeLabelIcon from "./FromMeLabelIcon";
 import HiddenIcon from "./HiddenIcon";
@@ -13,6 +14,7 @@ import UnseenFromMe from "./UnseenFromMe";
 import UnseenHidden from "./UnseenHidden";
 import UnseenToMe from "./UnseenToMe";
 export {
+    ApprovalIcon,
     FromMEIcon, FromMeLabelIcon, HiddenIcon, HiddenLabelIcon, LocationIcon, MainLogo, NewTaskIcon, ProjectIcon, TaskIcon, ToMeIcon, ToMeLabelIcon, UnseenFromMe, UnseenHidden, UnseenToMe
 };
 

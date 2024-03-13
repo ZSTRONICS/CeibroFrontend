@@ -42,11 +42,13 @@ import filterIcon from "./images/filterIcon.svg";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import LanguageOutlinedIcon from "@material-ui/icons/LanguageOutlined";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -73,7 +75,6 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import SupervisorAccountOutlinedIcon from "@mui/icons-material/SupervisorAccountOutlined";
 import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
 import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
-
 // cross icon
 import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
@@ -91,6 +92,8 @@ import membersDelete from "./images/membersDelete.png";
 // cross icon
 
 const assets = {
+  ArrowDropDownOutlinedIcon,
+  CheckOutlinedIcon,
   FileIcon,
   CeibroWaterMark,
   DoneAllIcon,
