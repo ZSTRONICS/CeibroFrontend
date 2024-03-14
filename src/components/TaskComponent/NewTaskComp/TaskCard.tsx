@@ -11,6 +11,7 @@ import { useTheme } from "@mui/material/styles";
 import { Span } from "components/CustomTags";
 import { getFileIconThumbnail } from "components/Utills/FileBox";
 import {
+  MEDIA_EXT,
   convertDateFormat,
   momentLocalDateTime,
 } from "components/Utills/Globals";
@@ -108,65 +109,19 @@ const TaskCard = React.memo((props: IProps) => {
   const isXlScreen = useMediaQuery(theme.breakpoints.down("xl"));
   const isDefualScreen = useMediaQuery(theme.breakpoints.between(1200, 1350));
 
-  const currentTaskColor = MUI_TASK_CARD_COLOR_MAP.get(task.userSubState) || "";
+  const currentTaskColor =
+    MUI_TASK_CARD_COLOR_MAP.get(task.userSubState) || "red";
   const rootState =
     task.taskRootState === "canceled" ? "hidden" : task.taskRootState || "";
 
   let emptyDiv = false;
 
-  // switch (task.userSubState) {
-  //   case "new":
-  //     emptyDiv = !taskListFilter.toMe.new;
-  //     break;
-
-  //   case "ongoing":
-  //     const ongoingFilter =
-  //       rootState === "to-me"
-  //         ? taskListFilter.toMe.ongoing
-  //         : rootState === "from-me"
-  //         ? taskListFilter.fromMe.ongoing
-  //         : taskListFilter.hidden.ongoing;
-  //     emptyDiv = !ongoingFilter;
-  //     break;
-
-  //   case "done":
-  //     const doneFilter =
-  //       rootState === "to-me"
-  //         ? taskListFilter.toMe.done
-  //         : rootState === "from-me"
-  //         ? taskListFilter.fromMe.done
-  //         : taskListFilter.hidden.done;
-  //     emptyDiv = !doneFilter;
-  //     break;
-
-  //   case "unread":
-  //     emptyDiv = !taskListFilter.fromMe.unread;
-  //     break;
-
-  //   case "canceled":
-  //     emptyDiv = !taskListFilter.hidden.canceled;
-  //     break;
-
-  //   default:
-  //     emptyDiv = true;
-  //     break;
-  // }
-
   if (emptyDiv) {
     return <></>;
   }
 
-  const imgformat = (format: any) => {
-    if (
-      format === ".jpeg" ||
-      format === ".jpg" ||
-      format === ".gif" ||
-      format === ".png"
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+  const FormagttedDateSplit = (date: any) => {
+    return date.slice(0, -4) + date.slice(-2);
   };
 
   return (
@@ -176,7 +131,7 @@ const TaskCard = React.memo((props: IProps) => {
           ":hover": {
             boxShadow: "inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           },
-          width: "96%",
+          width: "98%",
           marginTop: "2px",
           marginLeft: "1%",
           borderRadius: "15px",
@@ -202,24 +157,30 @@ const TaskCard = React.memo((props: IProps) => {
           <Span
             sx={{
               // border: "solid 1px #E2E4E5",
-              border: `solid 1px ${currentTaskColor}`,
+              border: `2px solid ${currentTaskColor}`,
               fontWeight: "700",
               padding: "3px",
               borderRadius: "4px",
-              fontSize: "14px",
+              fontSize: "12px",
             }}
           >
             {taskUID}
           </Span>
-          <Span
+          <Typography
             sx={{
-              fontSize: "12px",
+              fontSize: "10px",
               color: "#605C5C",
               marginLeft: "10px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              width: isXlScreen ? "25%" : "45%",
+              display: "inline-block",
+              transform: "translateY(4px)",
             }}
           >
             Kloostri 14
-          </Span>
+          </Typography>
           <Span
             sx={{
               marginTop: "5px",
@@ -232,15 +193,18 @@ const TaskCard = React.memo((props: IProps) => {
                   color: "#605C5C",
                   fontSize: "12px",
                 }}
-              >{`Due date ${formattedDate}`}</Span>
+              >{`Due Date: ${FormagttedDateSplit(formattedDate)}`}</Span>
             ) : (
               <Span
                 sx={{
-                  color: "0d0d0d",
+                  color: "#605C5C",
                   fontWeight: 600,
                   fontSize: "12px",
                 }}
-              >{`Due date N/A`}</Span>
+              >
+                {/* {``} */}
+                {`Due date N/A`}
+              </Span>
             )}
           </Span>
         </Box>
@@ -253,26 +217,27 @@ const TaskCard = React.memo((props: IProps) => {
             justifyContent: "center",
             alignItems: "start",
             marginTop: "10px",
-            // border: "solid 1px green",
           }}
         >
           {files.length !== 0 ? (
             <Box
               sx={{
                 borderRadius: "5px",
+                height: "75px",
                 position: "relative",
-                minWidth: imgformat(files[0].fileType)
-                  ? isXlScreen
-                    ? "25%"
-                    : "20%"
-                  : "max-content",
+                width: isXlScreen ? "90px" : "90px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "solid 1px #dbdbdb",
+                overflow: "hidden",
               }}
             >
-              {files.length > 0 && imgformat(files[0].fileType) ? (
+              {files.length > 0 && MEDIA_EXT.includes(files[0].fileType) ? (
                 <CardMedia
                   component="img"
                   sx={{
-                    height: "95px",
+                    height: "75px",
                     borderRadius: "5px",
                     width: "100%",
                   }}
@@ -283,7 +248,7 @@ const TaskCard = React.memo((props: IProps) => {
                   alt={files[0].fileName}
                 />
               ) : (
-                getFileIconThumbnail(files[0]?.fileType, 50, 50)
+                getFileIconThumbnail(files[0]?.fileType, 40, 40)
               )}
               {files.length === 1 ? (
                 ""
@@ -291,12 +256,16 @@ const TaskCard = React.memo((props: IProps) => {
                 <Span
                   sx={{
                     position: "absolute",
-                    top: "72%",
-                    left: "70%",
-                    padding: "2.5px",
+                    top: "68%",
+                    left: "65%",
+                    width: "25px",
+                    height: "24.5px",
                     color: "white",
-                    backgroundColor: "black",
-                    opacity: "0.6",
+                    backgroundColor: "#00000059",
+                    borderRadius: "6px 0px 4px 0px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
                   {`+${files.length - 1}`}
@@ -310,13 +279,8 @@ const TaskCard = React.memo((props: IProps) => {
             sx={{
               minWidth: isXlScreen ? "75%" : "80%",
               width: "100%",
-              maxHeight: "95px",
-              height:
-                files.length === 0
-                  ? "max-content"
-                  : !description
-                  ? "max-content"
-                  : "95px",
+              maxHeight: "100px",
+              height: files.length !== 0 ? "80px" : "max-content",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -330,28 +294,29 @@ const TaskCard = React.memo((props: IProps) => {
                 alignItems: "flex-start",
                 flexDirection: "column",
                 height: "max-content",
-                maxHeight: "75px",
+                maxHeight: "60px",
               }}
             >
               <Typography
-                className="ellipsis"
-                variant="subtitle1"
                 sx={{
                   marginLeft: "10px",
-                  fontWeight: "700",
+                  fontWeight: "500",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
                   width: "95%",
+                  fontSize: "13px",
+                  marginTop: "5px",
+                  color: "black",
                 }}
               >
                 {title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"}
               </Typography>
               <Typography
-                variant="subtitle2"
+                // variant="subtitle2"
                 sx={{
                   color: "#605C5C",
-                  lineHeight: "20px",
+                  lineHeight: "18px",
                   marginLeft: "10px",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
@@ -359,6 +324,8 @@ const TaskCard = React.memo((props: IProps) => {
                   overflow: "hidden",
                   wordWrap: "break-word",
                   wordBreak: "break-all",
+                  fontSize: "12px",
+                  marginTop: "-2px",
                 }}
               >
                 {description && description}
@@ -367,10 +334,11 @@ const TaskCard = React.memo((props: IProps) => {
             <Box
               sx={{
                 borderTop: "solid 1px #605C5C",
-                marginTop: "2px",
+                // marginTop: "5px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
+                // border: "solid 1px red",
               }}
             >
               <Span
@@ -378,25 +346,26 @@ const TaskCard = React.memo((props: IProps) => {
                   marginLeft: "10px",
                   display: "flex",
                   alignItems: "center",
-                  marginTop: "5px",
-                  width: isDefualScreen ? "45%" : "50%",
+                  marginTop: "3px",
+                  width: isDefualScreen ? "45%" : isXlScreen ? "40%" : "60%",
                 }}
               >
                 <Avatar
                   alt="avater"
                   src={creator?.profilePic}
                   variant="circular"
-                  sx={{ width: "25px", height: "25px", marginRight: "5px" }}
+                  sx={{ width: "20px", height: "20px", marginRight: "5px" }}
                 />
                 <Typography
                   sx={{
+                    // width: isXlScreen ? "20%" : "100%",
                     width: "100%",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     color: "#605C5C",
-                    fontSize: "13px",
-                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontWeight: "700",
                   }}
                 >
                   {displayName}

@@ -21,7 +21,9 @@ import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import Comment from "../Comment";
+import CommentCard from "./CommentCard";
 import EventWrap from "./EventWrap";
+import MessageBot from "./MessageBot";
 interface IProps {
   events: TaskEvent[];
   hasFile: boolean;
@@ -70,8 +72,8 @@ function AddedDetails(props: IProps) {
   //     }
   //   }
   // }, [events?.length, hasFile]);
-  const tabContHeight = contHeight - 60 - 50;
 
+  const tabContHeight = contHeight - 60 - 50;
   return (
     <>
       <Box
@@ -412,7 +414,11 @@ function AddedDetails(props: IProps) {
             })
           ) : (
             <AddStatusTag sx={{ color: "black", textAlign: "center", mt: 2 }}>
-              No comment has been done in this task yet!
+              {/* No comment has been done in this task yet! */}
+              <MessageBot />
+              <CommentCard
+              //  docs={docs}
+              />
             </AddStatusTag>
           )}
         </Box>

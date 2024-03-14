@@ -7,11 +7,12 @@ import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { Heading2 } from "components/CustomTags";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import LocationDrawingFiles from "./Components/DrawingComp/LocationDrawingFiles";
 import { ExpandableProjectList } from "./Components/ProjectComponents";
 function Location() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { groupId } = useParams<any>();
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
@@ -25,8 +26,11 @@ function Location() {
       isRenderEffect.current = false;
       dispatch(PROJECT_APIS.getAllProjects());
       dispatch(taskActions.getAllTasksAllEvents());
+    } else {
+      allProjects?.length > 0 &&
+        history.push(`/location/${allProjects[0]._id}`);
     }
-  }, []);
+  }, [allProjects]);
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   const sideBarStyle = {
     borderRadius: "4px",

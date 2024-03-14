@@ -45,7 +45,10 @@ const TagListDropdown = ({
 
   return (
     <Autocomplete
-      sx={{ maxWidth: "240px", position: "relative" }}
+      sx={{
+        maxWidth: "240px",
+        position: "relative",
+      }}
       multiple
       id="checkboxes-tags-demo"
       limitTags={1}
@@ -71,8 +74,8 @@ const TagListDropdown = ({
         <TextField
           sx={{
             position: "absolute",
-            zIndex: "500",
-            backgroundColor: "white",
+            zIndex: "10",
+            backgroundColor: "#F4F4F4",
           }}
           {...params}
           label={labelName ? labelName : isSmall ? "Tags" : "Select Tags"}

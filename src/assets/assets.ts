@@ -65,6 +65,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import MarkUnreadChatAltOutlinedIcon from "@mui/icons-material/MarkUnreadChatAltOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -174,6 +175,7 @@ const assets = {
   KeyboardArrowRightIcon,
   AddIcon,
   ProjectIcon,
+  MoreVertIcon,
 };
 
 export default assets;

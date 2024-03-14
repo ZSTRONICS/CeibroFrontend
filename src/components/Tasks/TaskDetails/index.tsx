@@ -160,6 +160,8 @@ function TaskDetails(props: IProps) {
         )}
       </Box>
 
+      {/* <CommentCard docs={docs} /> */}
+
       {uniqueImageFiles.length > 0 && (
         <ImgsViewerSlider
           imgs={uniqueImageFiles.map((image: any) => image.fileUrl)}
