@@ -17,6 +17,7 @@ interface IProps {
   contHeight: number;
   selectedTab: string;
   parentheight?: number;
+  taskId: string;
 }
 
 function AddedDetails(props: IProps) {
@@ -28,6 +29,7 @@ function AddedDetails(props: IProps) {
     contHeight,
     hasFile,
     parentheight,
+    taskId,
   } = props;
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
@@ -308,7 +310,7 @@ function AddedDetails(props: IProps) {
               doneImageRequired={false}
               title={""}
               showHeader={true}
-              taskId={""}
+              taskId={taskId}
             />
           </Box>
         )}

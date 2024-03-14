@@ -37,6 +37,7 @@ interface IProps {
   handleSelectedMenuList: (option: any) => void;
   isDropDownOpen?: (isopen: boolean) => void;
   handleCreateAllFloors?: () => void;
+  showMultipleOptions?: boolean;
 }
 
 function CustomDropDown(props: IProps) {
@@ -56,12 +57,15 @@ function CustomDropDown(props: IProps) {
     handleSelectedMenuList,
     isDropDownOpen,
     handleCreateAllFloors,
+    showMultipleOptions,
   } = props;
 
   const [allFilterData, setAllFilterData] = React.useState<{
     all: { [key: string]: OptionType[] };
     recent: OptionType[];
   }>({ all: {}, recent: [] });
+
+  console.log("allFilterData", allFilterData);
 
   const [showAllFloorItems, setShowAllFloorItems] = React.useState(false);
   const [addFloorLabel, setAddFloorLabel] = React.useState("Add Floor");
@@ -451,20 +455,25 @@ function CustomDropDown(props: IProps) {
                           onClick={(e: any) => handleMenuClick(e, item)}
                         >
                           <Box sx={{ display: "flex", alignItems: "center" }}>
-                            {label === "Floor" && showAllFloorItems && (
-                              <Checkbox
-                                checked={item.isShown}
-                                disabled={item.isPermanenetOption}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  e.preventDefault();
-                                  if (!item.isPermanenetOption) {
-                                    handleChangeValues(item.value, name);
-                                    handleSelectedMenuList(item);
+                            {(label === "Floor" && showAllFloorItems) ||
+                              (showMultipleOptions && (
+                                <Checkbox
+                                  checked={item.isShown}
+                                  disabled={
+                                    showMultipleOptions
+                                      ? false
+                                      : item.isPermanenetOption
                                   }
-                                }}
-                              />
-                            )}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    if (!item.isPermanenetOption) {
+                                      handleChangeValues(item.value, name);
+                                      handleSelectedMenuList(item);
+                                    }
+                                  }}
+                                />
+                              ))}
 
                             <Typography
                               sx={{

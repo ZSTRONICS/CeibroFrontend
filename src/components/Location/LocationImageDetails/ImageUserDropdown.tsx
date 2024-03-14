@@ -4,7 +4,6 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 import SearchWithButton from "./SearchWithButton";
 import UserImageCard from "./UserImageCard";
 
@@ -38,8 +37,6 @@ const ImageUserDropdown = ({
 }: ImageUserDropdownProps) => {
   const theme = useTheme();
   const isCustomScreen = useMediaQuery(theme.breakpoints.between(960, 1200));
-
-  const [User, setUser] = React.useState([]);
 
   const handleChange = (event: SelectChangeEvent) => {
     // setUser(event.target.value as string);
@@ -101,7 +98,7 @@ const ImageUserDropdown = ({
                       user={item}
                       handleSelectedList={handleSelectedList}
                       selected={selectedList?.some(
-                        (user) => user._id == item._id
+                        (user) => user._id === item._id
                       )}
                       showImage={true}
                     />

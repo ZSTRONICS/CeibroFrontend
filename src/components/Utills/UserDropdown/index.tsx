@@ -30,6 +30,7 @@ import SelectedContactBox from "../SelectedContactBox";
 interface IProps {
   name: keyof CreateNewTaskFormType;
   label: string;
+  isTaskFilter?: boolean;
   contacts: Contact[];
   recentUserContact: Contact[];
   createCallback?: (type: string, label: string) => void;
@@ -41,8 +42,14 @@ interface IProps {
 
 function UserDropDown(props: IProps) {
   const [isSelfAssign, setIsSelfAssign] = useState(false);
-  const { name, label, contacts, handleChangeValues, recentUserContact } =
-    props;
+  const {
+    name,
+    isTaskFilter,
+    label,
+    contacts,
+    handleChangeValues,
+    recentUserContact,
+  } = props;
   const [filteredRecentUserContact, setFilteredRecentUserContact] =
     React.useState<Contact[]>(recentUserContact);
   const [selected, setSelected] = React.useState<any[]>([]);
@@ -190,7 +197,11 @@ function UserDropDown(props: IProps) {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
         variant="standard"
-        sx={{ marginTop: "8px", width: "100%", maxWidth: "100%" }}
+        sx={{
+          marginTop: isTaskFilter ? "0" : "8px",
+          width: "100%",
+          maxWidth: "100%",
+        }}
       >
         {label === "Assign to" && selected.length === 0 && (
           <RequiredFieldMark>*</RequiredFieldMark>
@@ -276,6 +287,7 @@ function UserDropDown(props: IProps) {
               minHeight: "66px",
               display: "flex",
               padding: "6px 7px",
+              maxWidth: `${isTaskFilter ? "300px" : "100%"}`,
               overflow: "auto",
               "&::-webkit-scrollbar": {
                 height: "0.4rem",
@@ -308,51 +320,53 @@ function UserDropDown(props: IProps) {
                   alignItems: "end",
                 }}
               >
-                Select task assignee(s)
+                Select {isTaskFilter ? "users" : "task assignee(s)"}
               </Typography>
             )}
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              margin: "0px 8px 0px",
-            }}
-          >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="self-assign"
-                  checked={isSelfAssign}
-                  onChange={handleSelfAssignChange}
-                  size="small"
-                  color="primary"
-                  sx={{
-                    ml: 1,
-                    fontFamily: "Inter",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    color: "#818181",
-                    lineHeight: "16px",
-                  }}
-                />
-              }
-              label={
-                <Typography
-                  sx={{
-                    fontFamily: "Inter",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    color: "#605C5C",
-                    lineHeight: "16px",
-                  }}
-                >
-                  Self assign
-                </Typography>
-              }
-            />
-          </Box>
+          {!isTaskFilter && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                margin: "0px 8px 0px",
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="self-assign"
+                    checked={isSelfAssign}
+                    onChange={handleSelfAssignChange}
+                    size="small"
+                    color="primary"
+                    sx={{
+                      ml: 1,
+                      fontFamily: "Inter",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      color: "#818181",
+                      lineHeight: "16px",
+                    }}
+                  />
+                }
+                label={
+                  <Typography
+                    sx={{
+                      fontFamily: "Inter",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      color: "#605C5C",
+                      lineHeight: "16px",
+                    }}
+                  >
+                    Self assign
+                  </Typography>
+                }
+              />
+            </Box>
+          )}
           <Box sx={{ margin: "0px 16px" }}>
             <Divider sx={{ marginTop: "8px", marginBottom: "20px" }} />
             <GroupContactList

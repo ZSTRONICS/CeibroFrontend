@@ -50,6 +50,7 @@ function TabsViewTaskDetail(props: IProps) {
       label: "Comments",
       content: (
         <AddedDetails
+          taskId={selectedTask._id}
           parentheight={parentheight}
           selectedTab={selectedTab}
           isCommentView={isCommentView}
