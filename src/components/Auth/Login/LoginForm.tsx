@@ -84,7 +84,7 @@ const LoginForm: React.FC<Props> = (props) => {
         if (res) {
           setShowLoading(false);
           const redirectTo =
-            (location.state as any)?.redirectTo || "/tasks/allTaskFromMe";
+            (location.state as any)?.redirectTo || "/tasks/ongoing";
           history.push(redirectTo);
           dispatch(userApiAction.getUserContacts());
         }

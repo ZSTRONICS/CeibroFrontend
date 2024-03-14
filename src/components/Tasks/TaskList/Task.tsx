@@ -2,19 +2,18 @@ import { Box, Button, Grid } from "@mui/material";
 import assets from "assets";
 import { CustomDivider, CustomStack, Heading2 } from "components/CustomTags";
 import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
-import { momentLocalDateTime } from "components/Utills/Globals";
+import {
+  countUnseenTasksForTabs,
+  momentLocalDateTime,
+} from "components/Utills/Globals";
 import { ApprovalIcon, TaskIcon } from "components/material-ui/icons";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
-import {
-  AllTasksAllEvents,
-  ITask,
-  TaskRootStateTags,
-} from "constants/interfaces";
+import { AllTasksAllEvents, ITask, TaskRootState } from "constants/interfaces";
 import { useDynamicDimensions } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { taskActions } from "redux/action";
+import { PROJECT_APIS, taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT, filterTasks, openFormInNewWindow } from "utills/common";
 import TaskDetails from "../TaskDetails";
@@ -24,6 +23,8 @@ import TaskMain from "./TaskMain";
 function Task() {
   const [size, ratio] = useWindowSize();
   const dispatch = useDispatch();
+  const { user } = useSelector((store: RootState) => store.auth);
+  const userId = user && String(user._id);
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(true);
   const [commentDiv, setCommentDiv] = useState<boolean>(false);
@@ -40,17 +41,22 @@ function Task() {
   } = useDynamicDimensions();
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
-  const {
-    allTasksAllEvents,
-    loadingAllTasksAllEvents,
-    RECENT_TASK_UPDATED_TIME_STAMP,
-  } = useSelector((state: RootState) => state.task);
+  const { allTasksAllEvents, RECENT_TASK_UPDATED_TIME_STAMP } = useSelector(
+    (state: RootState) => state.task
+  );
+  const { allProjects } = useSelector((state: RootState) => state.project);
+  const { userAllContacts } = useSelector((state: RootState) => state.user);
+  const Topics = useSelector((state: RootState) => state.task.Topics);
   const { allTasks, allEvents }: AllTasksAllEvents = allTasksAllEvents;
+
   useEffect(() => {
     if (isRenderEffect.current) {
       isRenderEffect.current = false;
       allTasksAllEvents.allTasks.length === 0 &&
         dispatch(taskActions.getAllTasksAllEvents());
+      allProjects.length === 0 && dispatch(PROJECT_APIS.getAllProjects());
+      userAllContacts.length === 0 && dispatch(userApiAction.getUserContacts());
+      Topics.allTopics.length === 0 && dispatch(taskActions.getAllTopic());
     }
   }, []);
 
@@ -81,15 +87,20 @@ function Task() {
         <TaskMain
           allTaskList={filterTasks(
             allTasks,
-            TaskRootStateTags.Ongoing,
-            null,
-            null
+            TaskRootState.Hidden,
+            true,
+            "ongoing"
           )}
+          showHiddenTasks={showHiddenTasks}
+          selectedRootTask={selectedTab}
           setSelectedTask={setSelectedTask}
           selectedTask={selectedTask}
         />
       ),
-      count: 7,
+      count: countUnseenTasksForTabs(
+        filterTasks(allTasks, TaskRootState.Hidden, true, "ongoing"),
+        userId
+      ),
     },
     {
       label: "Closed",
@@ -100,12 +111,22 @@ function Task() {
       ),
       content: (
         <TaskMain
-          allTaskList={filterTasks(allTasks, TaskRootStateTags.Closed)}
+          allTaskList={filterTasks(
+            allTasks,
+            TaskRootState.Hidden,
+            true,
+            "done"
+          )}
+          showHiddenTasks={showHiddenTasks}
+          selectedRootTask={selectedTab}
           setSelectedTask={setSelectedTask}
           selectedTask={selectedTask}
         />
       ),
-      count: 7,
+      count: countUnseenTasksForTabs(
+        filterTasks(allTasks, TaskRootState.Hidden, true, "done"),
+        userId
+      ),
     },
   ];
 
@@ -119,12 +140,17 @@ function Task() {
       ),
       content: (
         <TaskMain
-          allTaskList={filterTasks(allTasks, TaskRootStateTags.Ongoing)}
+          showHiddenTasks={showHiddenTasks}
+          allTaskList={filterTasks(allTasks, TaskRootState.Ongoing)}
           setSelectedTask={setSelectedTask}
+          selectedRootTask={selectedTab}
           selectedTask={selectedTask}
         />
       ),
-      count: 7,
+      count: countUnseenTasksForTabs(
+        filterTasks(allTasks, TaskRootState.Ongoing),
+        userId
+      ),
     },
     {
       label: "Approval",
@@ -135,12 +161,17 @@ function Task() {
       ),
       content: (
         <TaskMain
-          allTaskList={filterTasks(allTasks, TaskRootStateTags.Approval)}
+          selectedRootTask={selectedTab}
+          showHiddenTasks={showHiddenTasks}
+          allTaskList={filterTasks(allTasks, TaskRootState.Approval)}
           setSelectedTask={setSelectedTask}
           selectedTask={selectedTask}
         />
       ),
-      count: 12,
+      count: countUnseenTasksForTabs(
+        filterTasks(allTasks, TaskRootState.Approval),
+        userId
+      ),
     },
     {
       label: "Closed",
@@ -151,12 +182,17 @@ function Task() {
       ),
       content: (
         <TaskMain
-          allTaskList={filterTasks(allTasks, TaskRootStateTags.Closed)}
+          selectedRootTask={selectedTab}
+          showHiddenTasks={showHiddenTasks}
+          allTaskList={filterTasks(allTasks, TaskRootState.Closed)}
           setSelectedTask={setSelectedTask}
           selectedTask={selectedTask}
         />
       ),
-      count: 7,
+      count: countUnseenTasksForTabs(
+        filterTasks(allTasks, TaskRootState.Closed),
+        userId
+      ),
     },
     {
       label: "Canceled",
@@ -167,12 +203,17 @@ function Task() {
       ),
       content: (
         <TaskMain
-          allTaskList={filterTasks(allTasks, TaskRootStateTags.Canceled)}
+          selectedRootTask={selectedTab}
+          showHiddenTasks={showHiddenTasks}
+          allTaskList={filterTasks(allTasks, TaskRootState.Canceled)}
           setSelectedTask={setSelectedTask}
           selectedTask={selectedTask}
         />
       ),
-      count: 6,
+      count: countUnseenTasksForTabs(
+        filterTasks(allTasks, TaskRootState.Canceled),
+        userId
+      ),
     },
   ];
 
@@ -275,7 +316,7 @@ function Task() {
         {ShowTaskHeader()}
         <BasicTabs
           setSelectedTab={setSelectedTab}
-          tabsBgColor="white"
+          tabsBgColor="#F4F4F4"
           tabsData={showHiddenTasks ? ongoingClosedTasks : rootTaskFilter}
         />
       </Grid>
@@ -343,10 +384,10 @@ function Task() {
               )
             ) : (
               <>
-                {selectedTask && (
+                {selectedTask && selectedTaskandEvents && (
                   <TabsViewTaskDetail
                     taskDetailContDimension={taskDetailContDimension}
-                    selectedTask={selectedTask}
+                    selectedTask={selectedTaskandEvents}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
                     }
@@ -368,19 +409,19 @@ function Task() {
             {arrowBtn()}
             {commentDiv ? (
               <>
-                {selectedTask && (
+                {selectedTask && selectedTaskandEvents && (
                   <TabsViewTaskDetail
                     taskDetailContDimension={taskDetailContDimension}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
                     }
-                    selectedTask={selectedTask}
+                    selectedTask={selectedTaskandEvents}
                     isCommentView={true}
                   />
                 )}
               </>
             ) : (
-              ""
+              <></>
             )}
           </Grid>
         </Grid>

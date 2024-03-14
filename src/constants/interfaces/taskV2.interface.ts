@@ -198,11 +198,12 @@ export interface TaskFile {
   isTaskFile: boolean;
 }
 
-export enum TaskRootStateTags {
+export enum TaskRootState {
   Ongoing = "Ongoing",
   Approval = "Approval",
   Closed = "Closed",
   Canceled = "Canceled",
+  Hidden = "Hidden",
 }
 
 export enum TaskState {
@@ -212,4 +213,6 @@ export enum TaskState {
   DONE = "done",
   CANCELED = "canceled",
   HIDDEN = "hidden",
+  INREVIEW = "in-review",
+  TOREVIEW = "to-review",
 }

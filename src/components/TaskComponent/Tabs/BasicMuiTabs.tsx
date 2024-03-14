@@ -64,7 +64,7 @@ export default function BasicTabs({
             ...(isFileTabs ? filesTabSActivetyle : { display: "none" }),
           },
           "& .MuiTabs-flexContainer": {
-            gap: 1,
+            gap: 0.5,
             overflow: "auto",
           },
         }}
@@ -92,6 +92,7 @@ export default function BasicTabs({
                 <AddStatusTag sx={{ color: "unset" }}>{tab.label}</AddStatusTag>
                 {tab.count && (
                   <Badge
+                    showZero={false}
                     color="primary"
                     sx={{
                       "& .MuiBadge-badge": {

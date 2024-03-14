@@ -1,46 +1,54 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
-import { Box, Button, InputBase } from "@mui/material";
+import { Box, InputBase } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 // mui
 import assets from "assets";
-import { CustomStack } from "components/CustomTags";
-import TagListDropdown from "components/Location/LocationImageDetails/TagsDropdown";
-import UserListDropdown from "components/Location/LocationImageDetails/UserListDropdown";
 import { TaskCard } from "components/TaskComponent";
 import { getTaskCardHeight } from "components/Utills/Globals";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
-import { ITask } from "constants/interfaces";
+import { ITask, TaskRootState } from "constants/interfaces";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
-import { selectedTaskFilterType } from "redux/type";
-import { HEADER_HEIGHT, searchInData } from "utills/common";
+import { TaskFilterType } from "redux/type";
+import {
+  HEADER_HEIGHT,
+  TaskRootSateLocal,
+  calcUserSubState,
+  filterTasks,
+  getTaskFilters,
+  searchInData,
+} from "utills/common";
 import EmptyScreenDescription from "../EmptyScreenDescription";
-import TaskMenu from "./TaskMenu";
+import TaskFilters from "./TaskFilters";
 
 interface RouteParams {
-  subtask: selectedTaskFilterType;
-  filterkey: string;
+  subtask: TaskFilterType;
+  // filterkey: string;
   taskuid: string;
 }
 interface IProps {
   setSelectedTask: (selectedTask: ITask | null) => void;
   selectedTask: ITask | null;
   allTaskList: ITask[] | [];
+  selectedRootTask: string;
+  showHiddenTasks: boolean;
 }
 const TaskMain = (props: IProps) => {
-  const { setSelectedTask, selectedTask, allTaskList } = props;
+  const {
+    setSelectedTask,
+    showHiddenTasks,
+    selectedTask,
+    allTaskList,
+    selectedRootTask,
+  } = props;
   const location = useLocation();
   const { subtask, taskuid } = useParams<RouteParams>();
-  const [selectedUsers, setSelectedUsers] = useState<UserInfo[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedTaskMenu, setSelectedTaskMenu] = useState<string>("All");
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
-  const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
+  const [filteredTask, setFilteredTask] = useState<ITask[]>(allTaskList);
   const [searchText, setSearchText] = useState<string>("");
-
   const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
@@ -59,11 +67,44 @@ const TaskMain = (props: IProps) => {
   const taskCardListRef: any = useRef();
   const task: any = useSelector((state: RootState) => state.task);
   const { loadingAllTasksAllEvents } = task;
+
   const history = useHistory();
-  const [selectedTab, setSelectedTab] = useState("");
+  const [selectedTab, setSelectedTab] = useState("ongoing");
 
   // const subTaskKey = subtask ?? "ongoing";
   const propertiesToSearch = ["taskUID", "title", "description", "creator"];
+  useEffect(() => {
+    setFilteredTask(allTaskList);
+    clearTaskCardListCache();
+  }, [allTaskList.length]);
+
+  const handleRootTask = (taskRootState: string) => {
+    const rootStateLocal = TaskRootSateLocal[selectedRootTask] || "Ongoing";
+    const userSubStateLocal = calcUserSubState[rootStateLocal] || "ongoing";
+    const isCanceled = rootStateLocal === TaskRootState.Canceled;
+    const filteredTask = getTaskFilters(
+      rootStateLocal,
+      userSubStateLocal,
+      isCanceled
+    );
+
+    const criteria = filteredTask[taskRootState];
+    const filteredTasks = filterTasks(
+      allTaskList,
+      criteria.rootState,
+      criteria.isHiddenByMe,
+      criteria.userSubState,
+      criteria.toMeState,
+      criteria.fromMeState,
+      criteria.isCreator,
+      criteria.isAssignedToMe
+    );
+    setFilteredTask(filteredTasks);
+    clearTaskCardListCache();
+    setSelectedTask(null);
+  };
+
+  // console.log("filteredTask", filteredTask);
   // const getTaskDataRequired = () => {
   //   const subtaskPropertyMapping: any = {
   //     allTaskToMe: ["new", "ongoing", "done"],
@@ -76,28 +117,6 @@ const TaskMain = (props: IProps) => {
   //   );
   //   return found;
   // };
-
-  // useEffect(() => {
-  //   if (!isRenderEffect.current) {
-  //     if (
-  //       _.isEmpty(allTaskFromMe.ongoing) &&
-  //       _.isEmpty(allTaskFromMe.unread) &&
-  //       _.isEmpty(allTaskToMe.new) &&
-  //       _.isEmpty(allTaskToMe.ongoing)
-  //     ) {
-  //       dispatch(
-  //         taskActions.syncAllTasks({
-  //           other: {
-  //             syncTime: RECENT_TASK_UPDATED_TIME_STAMP,
-  //           },
-  //         })
-  //       );
-  //     }
-  //   }
-  //   return () => {
-  //     isRenderEffect.current = true;
-  //   };
-  // }, []);
 
   // const getFilterKey = () => {
   //   const defaultKeys = ["new", "unread"];
@@ -419,7 +438,7 @@ const TaskMain = (props: IProps) => {
   // };
 
   const TaskRow = ({ index, style }: any) => {
-    const localTask = allTaskList[index];
+    const localTask = filteredTask[index];
     if (!localTask) {
       return <></>;
     }
@@ -448,24 +467,6 @@ const TaskMain = (props: IProps) => {
     handleResize();
   }, []);
 
-  const handleMenuItemClick = (selectedItem: string) => {
-    setSelectedTaskMenu(selectedItem);
-  };
-
-  const TaskRootState = [
-    {
-      label: "All",
-      callBackHandler: () => handleMenuItemClick("All"),
-    },
-    {
-      label: "From me",
-      callBackHandler: () => handleMenuItemClick("From me"),
-    },
-    {
-      label: "To me",
-      callBackHandler: () => handleMenuItemClick("To me"),
-    },
-  ];
   const LoadingSkeleton = () => (
     <Box style={{ height: windowHeight }}>
       {Array.from({ length: 6 }).map((_, index) => (
@@ -488,35 +489,12 @@ const TaskMain = (props: IProps) => {
   return (
     <>
       <Box>
-        <CustomStack sx={{ gap: 1, alignItems: "flex-start" }}>
-          <TaskMenu menuItems={TaskRootState} selectedMenu={selectedTaskMenu} />
-          <TagListDropdown
-            labelName="Project"
-            isSmall={true}
-            options={[]}
-            selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
-          />
-          <UserListDropdown
-            isSmall={true}
-            options={[]}
-            selectedUsers={selectedUsers}
-            setSelectedUsers={setSelectedUsers}
-          />
-          <TagListDropdown
-            isSmall={true}
-            options={[]}
-            selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
-          />
-
-          <Button
-            variant="text"
-            sx={{ fontSize: "12px", fontWeight: 400, textTransform: "unset" }}
-          >
-            Clear all
-          </Button>
-        </CustomStack>
+        <TaskFilters
+          handleTaskRootState={handleRootTask}
+          handleClearAll={() => {}}
+          selectedRootTask={selectedRootTask}
+          showHiddenTasks={showHiddenTasks}
+        />
         <InputBase
           type="search"
           value={searchText}
@@ -543,18 +521,18 @@ const TaskMain = (props: IProps) => {
       >
         {loadingAllTasksAllEvents ? (
           <LoadingSkeleton />
-        ) : task && allTaskList.length === 0 ? (
+        ) : task && filteredTask.length === 0 ? (
           <EmptyScreen />
         ) : (
           <VariableSizeList
             ref={taskCardListRef}
             style={{ overflowY: "auto" }}
             height={windowHeight - 250}
-            itemCount={allTaskList.length}
+            itemCount={filteredTask.length}
             overscanCount={20}
             layout="vertical"
             itemSize={(index) =>
-              getTaskCardHeight(allTaskList[index]) + TASK_CARD_GAP_BETWEEN
+              getTaskCardHeight(filteredTask[index]) + TASK_CARD_GAP_BETWEEN
             }
             width={"100%"}
           >

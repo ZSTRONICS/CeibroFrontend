@@ -1,6 +1,6 @@
 // const windowsMap = new Map();
 
-import { AssignedUserState, ITask, InvitedNumber, TaskRootStateTags, TaskState } from "constants/interfaces";
+import { AssignedUserState, ITask, InvitedNumber, TaskRootState, TaskState } from "constants/interfaces";
 import _ from "lodash";
 import { MutableRefObject } from "react";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
@@ -279,32 +279,105 @@ export const getWidthWithMarginAndPadding = (
 };
 
 
+
+/**
+ * Returns a record of task filters based on the provided parameters.
+ *
+ * @param {any} rootStateLocal - the local root state
+ * @param {any} userSubStateLocal - the local user sub state
+ * @param {boolean} isCanceled - flag indicating if the task is canceled
+ * @return {Record<string, any>} a record of task filters
+ */
+export const getTaskFilters = (
+  rootStateLocal: any,
+  userSubStateLocal: any,
+  isCanceled: boolean
+): Record<string, any> => {
+  return {
+    All: {
+      rootState: rootStateLocal,
+      isCreator: false,
+      isAssignedToMe: false,
+      userSubState: null,
+      toMeState: null,
+      fromMeState: null,
+    },
+    "To me": {
+      rootState: rootStateLocal,
+      isAssignedToMe: true,
+      userSubState: userSubStateLocal,
+      toMeState: isCanceled ? null : userSubStateLocal,
+      fromMeState: null,
+    },
+    "From me": {
+      rootState: rootStateLocal,
+      isCreator: true,
+      userSubState: userSubStateLocal,
+      toMeState: null,
+      fromMeState: isCanceled ? null : userSubStateLocal,
+    },
+    "To Review": {
+      rootState: rootStateLocal,
+      userSubState: TaskState.TOREVIEW,
+      toMeState: null,
+      fromMeState: null,
+    },
+    Pending: {
+      rootState: rootStateLocal,
+      userSubState: TaskState.INREVIEW,
+      toMeState: null,
+      fromMeState: null,
+    },
+  };
+};
+
+export const TaskRootSateLocal: Record<string, string> = {
+  Ongoing: TaskRootState.Ongoing,
+  Approval: TaskRootState.Approval,
+  Closed: TaskRootState.Closed,
+  Canceled: TaskRootState.Canceled,
+  Hidden: TaskRootState.Hidden,
+};
+export const calcUserSubState: Record<string, string> = {
+  Ongoing: TaskState.ONGOING || TaskState.NEW,
+  Approval: TaskState.TOREVIEW,
+  Pending: TaskState.INREVIEW,
+  Closed: TaskState.DONE,
+  Canceled: TaskState.CANCELED,
+};
+
 /**
  * Filters tasks based on specified criteria.
  *
  * @param {ITask[]} allTasks - array of all tasks to filter
- * @param {TaskRootStateTags} rootStateTag - root state tag to filter tasks by
- * @param {TaskState | null} toMeStatus - status to filter tasks to 'to me'
- * @param {TaskState | null} fromMeStatus - status to filter tasks from 'from me'
- * @param {string | null} userSubState - user sub state to filter tasks by
+ * @param {TaskRootState} rootStateTag - root state tag to filter tasks by
  * @param {boolean} isHiddenByMe - flag to filter tasks hidden by user
+ * @param {string | null} userSubState - user sub state to filter tasks by
+ * @param {TaskState | null} toMeState - status to filter tasks to 'to me'
+ * @param {TaskState | null} fromMeState - status to filter tasks from 'from me'
+ * @param {boolean} isCreator - flag to filter tasks if is isCreator
+ * @param {boolean} isAssignedToMe - flag to filter tasks if is isAssignedToMe
  * @return {ITask[]} filtered array of tasks
  */
 export function filterTasks(
   allTasks: ITask[],
-  rootStateTag: TaskRootStateTags,
-  toMeStatus: TaskState | null = null,
-  fromMeStatus: TaskState | null = null,
+  rootStateTag: TaskRootState,
+  isHiddenByMe: boolean = false,
   userSubState: string | null = null,
-  isHiddenByMe: boolean = false
+  toMeState: TaskState | null = null,
+  fromMeState: TaskState | null = null,
+  isCreator: boolean = false,
+  isAssignedToMe: boolean = false,
 ): ITask[] {
   const preFilterTask = (task: ITask) => {
     const isRootStateMatch = task.taskRootState === rootStateTag;
-    const isToMeStatusMatch = toMeStatus ? task.toMeState === toMeStatus : true;
-    const isFromMeStatusMatch = fromMeStatus ? task.fromMeState === fromMeStatus : true;
-    const isUserSubStateMatch = userSubState ? task.userSubState === userSubState : true;
     const isHiddenByMeMatch = isHiddenByMe ? task.isHiddenByMe === true : true;
-    return isRootStateMatch && isHiddenByMeMatch && isToMeStatusMatch && isFromMeStatusMatch && isUserSubStateMatch;
+    const isCreatorMatch = isCreator ? task.isCreator === true : true;
+    const isAssignedToMeMatch = isAssignedToMe ? task.isAssignedToMe === true : true;
+    const isUserSubStateMatch = userSubState ? task.userSubState === userSubState : true;
+    const isToMeStatusMatch = toMeState ? task.toMeState === toMeState : true;
+    const isFromMeStatusMatch = fromMeState ? task.fromMeState === fromMeState : true;
+    return isRootStateMatch && isCreatorMatch && isAssignedToMeMatch && isHiddenByMeMatch && isToMeStatusMatch && isFromMeStatusMatch && isUserSubStateMatch;
   };
 
   const filteredTasks: ITask[] = [];
@@ -313,7 +386,7 @@ export function filterTasks(
       filteredTasks.push(task);
     }
   }
-  // Sort the filtered tasks by updatedAt property
-  // filteredTasks.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+
+  filteredTasks.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
   return filteredTasks;
 }
