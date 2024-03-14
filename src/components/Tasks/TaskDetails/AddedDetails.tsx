@@ -1,28 +1,14 @@
 import { Box } from "@mui/material";
-import {
-  AddStatusTag,
-  CustomStack,
-  DocName,
-  Span,
-} from "components/CustomTags";
+import { AddStatusTag } from "components/CustomTags";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
-import CustomDivider from "components/Utills/CustomDivider";
-import {
-  DOC_EXT,
-  FILTER_DATA_BY_EXT,
-  MEDIA_EXT,
-  momentLocalDateTime,
-} from "components/Utills/Globals";
-import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
-import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
+import { TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import Comment from "../Comment";
 import CommentCard from "./CommentCard";
-import EventWrap from "./EventWrap";
 import MessageBot from "./MessageBot";
 interface IProps {
   events: TaskEvent[];
@@ -30,14 +16,19 @@ interface IProps {
   isCommentView: boolean;
   contHeight: number;
   selectedTab: string;
+  parentheight?: number;
 }
 
 function AddedDetails(props: IProps) {
   const { user } = useSelector((state: RootState) => state.auth);
-  const { events, isCommentView, selectedTab, contHeight, hasFile } = props;
-  const isInitialRender = useRef(true);
-  const listRef: any = useRef(null);
-  const [heightOffset, setHeightOffset] = useState();
+  const {
+    events,
+    isCommentView,
+    selectedTab,
+    contHeight,
+    hasFile,
+    parentheight,
+  } = props;
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
@@ -73,18 +64,28 @@ function AddedDetails(props: IProps) {
   //   }
   // }, [events?.length, hasFile]);
 
-  const tabContHeight = contHeight - 60 - 50;
+  var IsMessageBot: boolean;
   return (
     <>
       <Box
         sx={{
-          height: `${tabContHeight}px`,
+          // height: `${tabContHeight}px`,
+          height: `${parentheight && parentheight - 160}px`,
+          // height: "40vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          // border: "solid 1px black",
         }}
       >
-        <Box className="custom-scrollbar">
+        <Box
+          className="custom-scrollbar"
+          sx={{
+            overflowY: "auto",
+            height: "90%",
+            minHeight: "20%",
+          }}
+        >
           {events?.length > 0 ? (
             events.map((event: TaskEvent, index: number) => {
               const {
@@ -94,6 +95,7 @@ function AddedDetails(props: IProps) {
                 eventData,
                 commentData,
                 invitedMembers,
+                isPinned,
               } = event;
               const invitedMembersData =
                 eventData &&
@@ -114,323 +116,201 @@ function AddedDetails(props: IProps) {
                   .join(", ");
               switch (eventType) {
                 case TaskEventType.Comment:
-                  let media: any = [];
-                  let docs: any = [];
-                  if (commentData && commentData?.files.length > 0) {
-                    docs = FILTER_DATA_BY_EXT(DOC_EXT, commentData.files);
-                    media = FILTER_DATA_BY_EXT(MEDIA_EXT, commentData.files);
-                  }
-                  let mediaWithComment: any = media.filter(
-                    (file: IFile) => file.comment.length > 0
-                  );
-                  let mediaWithoutComment: any = media.filter(
-                    (file: IFile) => !(file.comment.length > 0)
-                  );
                   return (
-                    <React.Fragment key={`${event.commentData?._id}-${index}`}>
-                      <EventWrap
-                        keyId={`${event.commentData?._id + "Comment" + index}`}
-                        creator={initiator._id === user._id}
-                      >
-                        <CustomStack gap={1.2}>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentLocalDateTime(createdAt)}`}</DocName>
-                        </CustomStack>
-                        <CustomDivider />
-                        {commentData?.message && (
-                          <>
-                            <ReadMoreWrapper
-                              title="Comment"
-                              type="text"
-                              data={commentData.message}
+                    <>
+                      {commentData && (
+                        <CommentCard
+                          initiator={initiator}
+                          commentData={commentData}
+                          isPinned={isPinned}
+                        />
+                      )}
+                    </>
+                  );
+                case TaskEventType.DoneTask:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData.files.length === 0;
+                  return (
+                    <>
+                      {IsMessageBot ? (
+                        <MessageBot
+                          type="DoneTask"
+                          initiator={initiator}
+                          eventData={eventData}
+                        />
+                      ) : (
+                        <>
+                          <MessageBot
+                            type="DoneTask"
+                            initiator={initiator}
+                            eventData={eventData}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
                             />
-                            <CustomDivider />
-                          </>
-                        )}
-                        {docs.length > 0 && (
-                          <>
-                            <ReadMoreWrapper
-                              count={docs.length}
-                              title="Files"
-                              type="file"
-                              data={docs}
+                          )}
+                        </>
+                      )}
+                    </>
+                  );
+                case TaskEventType.ForwardTask:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData?.files?.length === 0;
+                  return (
+                    <>
+                      {IsMessageBot ? (
+                        <>
+                          <MessageBot
+                            type={"ForwardTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={"ForwardTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
                             />
-                            <CustomDivider />
-                          </>
-                        )}
-                        {mediaWithoutComment.length > 0 && (
-                          <>
-                            <ReadMoreWrapper
-                              title="Images"
-                              type="image"
-                              count={mediaWithoutComment.length}
-                              data={mediaWithoutComment}
-                            />
-                            <CustomDivider />
-                          </>
-                        )}
-                        {mediaWithComment.filter(
-                          (file: IFile) => file.comment.length > 0
-                        ).length > 0 && (
-                          <>
-                            {/* //// */}
-                            <ReadMoreWrapper
-                              title="Images with comments"
-                              type="imageWithDesp"
-                              count={mediaWithComment.length}
-                              data={mediaWithComment}
-                            />
-                            {/* ////// */}
-                            <CustomDivider />
-                          </>
-                        )}
-                      </EventWrap>
-                    </React.Fragment>
+                          )}
+                        </>
+                      )}
+                    </>
                   );
                 case TaskEventType.InvitedUser:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData?.files?.length === 0;
                   return (
-                    <React.Fragment key={`${event._id}-${index}`}>
-                      <EventWrap
-                        keyId={`${event._id + "InvitedUser" + index}`}
-                        creator={initiator._id === user._id}
-                      >
-                        <CustomStack gap={1.2}>
-                          <Span sx={{ fontSize: "12px" }}>invited by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentLocalDateTime(createdAt)}`}</DocName>
-                        </CustomStack>
-                        <DocName>{`${invitedMembersData}`}</DocName>
-                      </EventWrap>
-                    </React.Fragment>
+                    <>
+                      {IsMessageBot ? (
+                        <>
+                          <MessageBot
+                            type={"InvitedUser"}
+                            initiator={initiator}
+                            invitedMembers={invitedMembers}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={"InvitedUser"}
+                            initiator={initiator}
+                            invitedMembers={invitedMembers}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
+                            />
+                          )}
+                        </>
+                      )}
+                    </>
                   );
-
-                case TaskEventType.ForwardTask:
-                  const userInfo =
-                    eventData && eventData.length > 0
-                      ? eventData
-                          .map((user) => {
-                            const { firstName, surName, phoneNumber } = user;
-                            if (firstName && surName) {
-                              return `${firstName} ${surName}`;
-                            } else if (firstName) {
-                              return firstName;
-                            } else if (surName) {
-                              return surName;
-                            }
-                            return phoneNumber;
-                          })
-                          .join(", ")
-                      : "N/A";
-
-                  const invitedMembersLocal =
-                    invitedMembers && invitedMembers.length > 0
-                      ? invitedMembers
-                          .map((user) => {
-                            const { firstName, surName, phoneNumber } = user;
-                            if (firstName && surName) {
-                              return `${firstName} ${surName}`;
-                            } else if (firstName) {
-                              return firstName;
-                            } else if (surName) {
-                              return surName;
-                            }
-                            return phoneNumber;
-                          })
-                          .join(", ")
-                      : "N/A";
-                  return (
-                    <React.Fragment key={`${event._id}-${index}`}>
-                      <EventWrap
-                        keyId={`${event._id + "invitedMembersLocal" + index}`}
-                        creator={initiator._id === user._id}
-                      >
-                        {eventData && eventData.length > 0 && (
-                          <>
-                            <CustomStack gap={1.2}>
-                              <DocName>{` ${momentLocalDateTime(
-                                createdAt
-                              )}`}</DocName>
-                              <Span
-                                sx={{ fontSize: "12px" }}
-                              >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
-                              <DocName>{userInfo}</DocName>
-                              <CustomDivider />
-                            </CustomStack>
-                            <>
-                              {commentData?.message && (
-                                <ReadMoreWrapper
-                                  title="Comment"
-                                  type="text"
-                                  data={commentData?.message}
-                                />
-                              )}
-                              <CustomDivider />
-                            </>
-                          </>
-                        )}
-                        {invitedMembers.length > 0 && (
-                          <React.Fragment key={event._id + "invitedMembers"}>
-                            <CustomStack gap={1.2}>
-                              <Span sx={{ fontSize: "12px" }}>invited by</Span>
-                              <DocName>{`${initiator.firstName} ${
-                                initiator.surName
-                              } ${momentLocalDateTime(createdAt)}`}</DocName>
-                            </CustomStack>
-                            <CustomDivider />
-                            <DocName>{`${invitedMembersLocal}`}</DocName>
-                          </React.Fragment>
-                        )}
-                      </EventWrap>
-                    </React.Fragment>
-                  );
-
                 case TaskEventType.CancelTask:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData?.files?.length === 0;
                   return (
-                    <React.Fragment key={`${event._id}-${index}`}>
-                      <EventWrap
-                        keyId={`${event._id + "CancelTask" + index}`}
-                        creator={initiator._id === user._id}
-                      >
-                        <CustomStack gap={1.2}>
-                          <Span sx={{ fontSize: "12px" }}>Canceled by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentLocalDateTime(createdAt)}`}</DocName>
-                        </CustomStack>
-                        <CustomDivider />
-                        <Span sx={{ fontSize: "12px" }}>
-                          Task has been Canceled
-                        </Span>
-                      </EventWrap>
-                    </React.Fragment>
+                    <>
+                      {IsMessageBot ? (
+                        <>
+                          <MessageBot
+                            type={"CancelTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={"CancelTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
+                            />
+                          )}
+                        </>
+                      )}
+                    </>
                   );
-
                 case TaskEventType.UnCancelTask:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData?.files?.length === 0;
                   return (
-                    <React.Fragment key={`${event._id}-${index}`}>
-                      <EventWrap
-                        keyId={`${event._id + "UnCancelTask" + index}`}
-                        creator={initiator._id === user._id}
-                      >
-                        <CustomStack gap={1.2}>
-                          <Span sx={{ fontSize: "12px" }}>Un-canceled by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentLocalDateTime(createdAt)}`}</DocName>
-                        </CustomStack>
-                        <CustomDivider />
-                        <Span sx={{ fontSize: "12px" }}>
-                          Task has been Un-canceled
-                        </Span>
-                      </EventWrap>
-                    </React.Fragment>
-                  );
-
-                case TaskEventType.DoneTask:
-                  let mediaLocal: any = [];
-                  let docsLocal: any = [];
-                  if (commentData && commentData?.files.length > 0) {
-                    docsLocal = FILTER_DATA_BY_EXT(DOC_EXT, commentData.files);
-                    mediaLocal = FILTER_DATA_BY_EXT(
-                      MEDIA_EXT,
-                      commentData.files
-                    );
-                  }
-                  let mediaLocalWithComment: any = mediaLocal.filter(
-                    (file: IFile) => file.comment.length > 0
-                  );
-                  let mediaLocalWithoutComment: any = mediaLocal.filter(
-                    (file: IFile) => !(file.comment.length > 0)
-                  );
-                  return (
-                    <Box
-                      key={event._id + "DoneTask"}
-                      sx={{
-                        backgroundColor: "#55bcb3",
-                        width: "100%",
-                        padding: "8px 10px 8px 16px",
-                        marginBottom: "11px",
-                      }}
-                    >
-                      <CustomStack gap={1.2}>
-                        <Span sx={{ fontSize: "12px" }}>Done by</Span>
-                        <DocName>{`${initiator.firstName} ${
-                          initiator.surName
-                        } ${momentLocalDateTime(createdAt)}`}</DocName>
-                      </CustomStack>
-                      {/* <CustomDivider /> */}
-
-                      {commentData?.message && (
+                    <>
+                      {IsMessageBot ? (
                         <>
-                          <ReadMoreWrapper
-                            title={"Comment"}
-                            type="text"
-                            data={commentData.message}
+                          <MessageBot
+                            type={"UnCancelTask"}
+                            initiator={initiator}
+                            eventData={eventData}
                           />
-                          <CustomDivider />
+                        </>
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={"UnCancelTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
+                            />
+                          )}
                         </>
                       )}
-                      {mediaLocalWithoutComment.length > 0 && (
-                        <>
-                          <ReadMoreWrapper
-                            title="Images"
-                            type="image"
-                            count={mediaLocalWithoutComment.length}
-                            data={mediaLocalWithoutComment}
-                          />
-                          <CustomDivider />
-                        </>
-                      )}
-                      {mediaLocalWithComment.length > 0 && (
-                        <>
-                          <ReadMoreWrapper
-                            count={mediaLocalWithComment.length}
-                            title="Images with comments"
-                            type="imageWithDesp"
-                            data={mediaLocalWithComment}
-                          />
-                          <CustomDivider />
-                        </>
-                      )}
-                      {docsLocal.length > 0 && (
-                        <>
-                          <ReadMoreWrapper
-                            count={docsLocal.length}
-                            title="Files"
-                            type="file"
-                            data={docsLocal}
-                          />
-                          <CustomDivider />
-                        </>
-                      )}
-                    </Box>
+                    </>
                   );
-
-                default:
-                  return <></>;
               }
             })
           ) : (
             <AddStatusTag sx={{ color: "black", textAlign: "center", mt: 2 }}>
-              {/* No comment has been done in this task yet! */}
-              <MessageBot />
-              <CommentCard
-              //  docs={docs}
-              />
+              No comment has been done in this task yet!
             </AddStatusTag>
           )}
         </Box>
-
         {showComment && (
-          <Comment
-            doneCommentsRequired={false}
-            doneImageRequired={false}
-            title={""}
-            showHeader={true}
-            taskId={""}
-          />
+          <Box
+            sx={{
+              // height: "10%",
+              // maxHeight: "50%",
+              // border: "solid 2px yellow",
+              marginTop: "5px",
+              overflow: "visible",
+            }}
+          >
+            <Comment
+              doneCommentsRequired={false}
+              doneImageRequired={false}
+              title={""}
+              showHeader={true}
+              taskId={""}
+            />
+          </Box>
         )}
       </Box>
 

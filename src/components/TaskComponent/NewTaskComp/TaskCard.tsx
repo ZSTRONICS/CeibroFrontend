@@ -157,7 +157,7 @@ const TaskCard = React.memo((props: IProps) => {
           <Span
             sx={{
               // border: "solid 1px #E2E4E5",
-              border: `2px solid ${currentTaskColor}`,
+              border: `1px solid ${currentTaskColor}`,
               fontWeight: "700",
               padding: "3px",
               borderRadius: "4px",

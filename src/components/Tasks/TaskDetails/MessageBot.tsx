@@ -1,43 +1,59 @@
 import { Box, Typography } from "@mui/material";
 
-const MessageBot = () => {
-  const array = [
-    { label: "jaanus Kutson", value: "Task Title Will Go Here" },
-    // { label: "jaanus Kutson", value: "Task Title Will Go Here" },
-    // { label: "jaanus Kutson", value: "Task Title Will Go Here" },
-    // { label: "jaanus Kutson", value: "Task Title Will Go Here" },
-  ];
+interface Props {
+  eventData?: any;
+  initiator?: any;
+  type?: any;
+  invitedMembers?: any;
+}
 
-  const renderedArray = array.map((items, index) => {
-    const { label, value } = items;
-    return (
-      <Box
-        key={index}
-        sx={{
-          padding: " 6px 16px 6px 16px",
-          backgroundColor: "#D4D4D4",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: "5px",
-        }}
-      >
-        <Typography sx={{ fontSize: "12px", fontWeight: "500" }}>
-          {label}
-        </Typography>
-        <Typography sx={{ fontSize: "12px", fontWeight: "500" }}>
-          {value}
-        </Typography>
-      </Box>
-    );
-  });
+const MessageBot = ({ eventData, initiator, type }: Props) => {
+  const Forward = () => {
+    return eventData.map((items: any) => {
+      const { firstName } = items;
+      return <>{firstName}</>;
+    });
+  };
+
+  var ShowContent = () => {
+    switch (type) {
+      case "ForwardTask":
+        return `${initiator?.firstName} forwarded task to: ${
+          eventData[0]?.firstName
+        } ${eventData[0]?.lastName && eventData[0]?.lastName} `;
+      case "DoneTask":
+        return `${initiator?.firstName} ${initiator?.lastName} marked the task as done `;
+      case "InvitedUser":
+        return ` Invited by ${initiator?.firstName}`;
+      case "CancelTask":
+        return `Task canceled by ${initiator?.firstName}`;
+      case "UnCancelTask":
+        return `Task un-canceled by ${initiator?.firstName}`;
+      default:
+        return "";
+    }
+  };
 
   return (
     <>
       <Box
         sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
       >
-        {renderedArray}
+        <Box
+          sx={{
+            padding: "6px 16px 6px 16px",
+            backgroundColor: "#D4D4D4",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "5px",
+            marginTop: "10px",
+          }}
+        >
+          <Typography sx={{ fontSize: "12px", fontWeight: "500" }}>
+            {ShowContent()}
+          </Typography>
+        </Box>
       </Box>
     </>
   );

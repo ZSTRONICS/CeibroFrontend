@@ -18,48 +18,19 @@ import { useEffect, useRef, useState } from "react";
 
 interface Props {
   docs?: string | IFile[] | File[] | [];
+  commentData: any;
+  initiator: any;
+  isPinned: boolean;
 }
 
-const CommentCard = ({ docs }: Props) => {
+const CommentCard = ({ docs, commentData, initiator, isPinned }: Props) => {
   const array = docs && [docs[0], docs[0], docs[0], docs[0], docs[0], docs[0]];
   const [showMore, setShowMore] = useState<boolean>(false);
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
-  const isFiltericonShow = useMediaQuery(theme.breakpoints.down(1366));
-  const isLarge = useMediaQuery(theme.breakpoints.up(1400));
-  const isMeduim = useMediaQuery(theme.breakpoints.down(1400));
   const isSmall = useMediaQuery(theme.breakpoints.down(1100));
   const commentshowonlarge = useMediaQuery(
     theme.breakpoints.between(1100, 1620)
   );
-
-  const arr = [
-    {
-      title: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo ullam, error similique obcaecati iste omnis? Quae, quisquam pariatur. Eos nulla quis, voluptatibus ducimus ab officia facere est velit odit ipsam!
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo ullam, error similique obcaecati iste omnis? Quae, quisquam pariatur. Eos nulla quis, voluptatibus ducimus ab officia facere est velit odit ipsam!`,
-      creator: "Jaanus Kutson",
-      media: [
-        {
-          img: "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8",
-        },
-        {
-          img: "https://images.pexels.com/photos/20309830/pexels-photo-20309830/free-photo-of-common-buckeye-junonia-coenia.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-        },
-        {
-          img: "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8",
-        },
-        {
-          img: "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8",
-        },
-        {
-          img: "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8",
-        },
-        {
-          img: "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8",
-        },
-      ],
-    },
-  ];
 
   const boximgref = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState<number>(0);
@@ -119,140 +90,139 @@ const CommentCard = ({ docs }: Props) => {
     window.addEventListener("resize", handleResize);
   }, []);
 
-  const renderedArray = arr.map((items, index) => {
-    const { title, creator, media } = items;
-    return (
+  const CommentCardContent = (
+    <Box
+      sx={{
+        padding: "16px ",
+        backgroundColor: "#F4F4F4",
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+        maxWidth: "65%",
+        width: "max-contnet",
+        borderRadius: "15px",
+        flexDirection: "column",
+        marginTop: "10px",
+        marginLeft: "4px",
+      }}
+    >
       <Box
-        key={index}
         sx={{
-          padding: "16px ",
-          backgroundColor: "#F4F4F4",
+          width: "100%",
           display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-          maxWidth: "65%",
-          width: "max-contnet",
-          borderRadius: "15px",
-          flexDirection: "column",
-          marginTop: "10px",
-          marginLeft: "4px",
-          // transform: "translateY(-200px)",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <Box
           sx={{
-            width: "100%",
+            width: "max-content",
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              width: "max-content",
-              display: "flex",
-            }}
-          >
-            <Avatar
-              alt="avater"
-              src={
-                "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8"
-              }
-              variant="circular"
-              sx={{ width: "30px", height: "30px" }}
-            />
+          <Avatar
+            alt="avater"
+            src={initiator?.profilePic}
+            variant="circular"
+            sx={{ width: "30px", height: "30px" }}
+          />
 
-            <Typography
-              sx={{
-                width: "max-content",
-                marginLeft: "7px",
-                paddingTop: "5px",
-                fontWeight: "700",
-                fontSize: "12",
-              }}
-            >
-              {creator}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              float: "right",
-            }}
-          >
-            <PinIcon color="#0076C8" />
-            <GenericMenu
-              icon={
-                <assets.MoreVertIcon
-                  sx={{
-                    color: "#000000",
-                    transform: "translateX(18px)",
-                  }}
-                />
-              }
-              isProjectGroup={true}
-              options={[
-                {
-                  menuName: "Unpin comment",
-                  callBackHandler: () => {},
-                },
-              ]}
-              key={1}
-              paddingTop={0}
-              disableMenu={false}
-            />
-          </Box>
-        </Box>
-        <Box sx={{ marginTop: "5px" }}>
           <Typography
             sx={{
-              fontSize: "14px",
-              lineHeight: "20px",
-              color: "#131516",
-              textAlign: "start",
-              fontWeight: "500",
+              width: "max-content",
+              marginLeft: "7px",
+              paddingTop: "5px",
+              fontWeight: "700",
+              fontSize: "12",
             }}
           >
-            {title !== undefined && title.length > 0
-              ? showMore
-                ? title
-                : title !== undefined && title.length > 270
-                ? `${title.substring(
-                    0,
-                    isSmall ? 60 : commentshowonlarge ? 150 : 270
-                  )}...`
-                : `${title.substring(
-                    0,
-                    isSmall ? 60 : commentshowonlarge ? 150 : 270
-                  )}`
-              : ""}
+            {initiator?.firstName}
           </Typography>
-          {title && title.length > 270 && (
-            <Box
-              sx={{
-                textAlign: "right",
-                padding: "10px 0",
+        </Box>
+        <Box
+          sx={{
+            float: "right",
+          }}
+        >
+          {isPinned ? <PinIcon color="#0076C8" /> : ""}
+          <GenericMenu
+            icon={
+              <assets.MoreVertIcon
+                sx={{
+                  color: "#000000",
+                  transform: "translateX(18px)",
+                }}
+              />
+            }
+            isProjectGroup={true}
+            options={[
+              {
+                menuName: "Unpin comment",
+                callBackHandler: () => {},
+              },
+            ]}
+            key={1}
+            paddingTop={0}
+            disableMenu={false}
+          />
+        </Box>
+      </Box>
+      <Box sx={{ marginTop: "5px" }}>
+        <Typography
+          sx={{
+            fontSize: "14px",
+            lineHeight: "20px",
+            color: "#131516",
+            textAlign: "start",
+            fontWeight: "500",
+          }}
+        >
+          {commentData &&
+          commentData.message !== undefined &&
+          commentData.message.length > 0
+            ? showMore
+              ? commentData.message
+              : commentData.message !== undefined &&
+                commentData.message.length > 270
+              ? `${commentData.message.substring(
+                  0,
+                  isSmall ? 60 : commentshowonlarge ? 150 : 270
+                )}...`
+              : `${commentData.message.substring(
+                  0,
+                  isSmall ? 60 : commentshowonlarge ? 150 : 270
+                )}`
+            : ""}
+        </Typography>
+        {commentData.message && commentData.message.length > 270 && (
+          <Box
+            sx={{
+              textAlign: "right",
+              padding: "10px 0",
+            }}
+          >
+            <button
+              className="btn"
+              onClick={handleClick}
+              style={{
+                color: "#0076C8",
+                fontSize: "12px",
+                fontWeight: "400",
+                lineHeight: "175%",
+                letterSpacing: "0.15px",
+                backgroundColor: "transparent",
+                border: "none",
+                padding: "none",
+                cursor: "pointer",
               }}
             >
-              <button
-                className="btn"
-                onClick={handleClick}
-                style={{
-                  color: "#0076C8",
-                  fontSize: "12px",
-                  fontWeight: "400",
-                  lineHeight: "175%",
-                  letterSpacing: "0.15px",
-                  backgroundColor: "transparent",
-                  border: "none",
-                  padding: "none",
-                  cursor: "pointer",
-                }}
-              >
-                {!showMore ? "View more" : "View less"}
-              </button>
-            </Box>
-          )}
-        </Box>
+              {!showMore ? "View more" : "View less"}
+            </button>
+          </Box>
+        )}
+      </Box>
+      {/* //// */}
+      {commentData && commentData?.files && commentData?.files?.length >= 1 ? (
         <Box
           ref={boximgref}
           sx={{
@@ -264,7 +234,7 @@ const CommentCard = ({ docs }: Props) => {
             border: "solid 1px #F4F4F4 ",
           }}
         >
-          {media?.map((items, index) => {
+          {commentData?.files?.map((items: any, index: number) => {
             return (
               <div
                 onClick={() => handleImgClick(index)}
@@ -277,7 +247,9 @@ const CommentCard = ({ docs }: Props) => {
                   cursor: "pointer",
                 }}
               >
-                {media && media?.length - count !== 0 && index === count - 1 ? (
+                {commentData?.files &&
+                commentData?.files?.length - count !== 0 &&
+                index === count - 1 ? (
                   <>
                     <Box
                       sx={{
@@ -303,7 +275,9 @@ const CommentCard = ({ docs }: Props) => {
                         height: "100%",
                       }}
                     >
-                      {`+${media && media?.length - count}`}
+                      {`+${
+                        commentData?.files && commentData?.files?.length - count
+                      }`}
                     </Box>
                   </>
                 ) : null}
@@ -317,57 +291,56 @@ const CommentCard = ({ docs }: Props) => {
                     width: "100%",
                     position: "absolute",
                   }}
-                  image={items.img}
+                  image={items.fileUrl}
                 />
               </div>
             );
           })}
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            // marginTop: "5px",
-          }}
-        >
-          {docs && (
-            <ReadMoreWrapper
-              count={array?.length}
-              title=""
-              type="file"
-              // data={array}
-              download={false}
-            />
-          )}
-        </Box>
-        <Box sx={{ width: "100%" }}>
-          <Typography
-            sx={{
-              float: "right",
-              fontSize: "12px",
-              color: "#605C5C",
-              // marginTop: "8px",
-            }}
-          >
-            12:50{" "}
-            <DoneOutlinedIcon
-              style={{ fontSize: "18px", transform: "translateY(3px)" }}
-            />
-          </Typography>
-        </Box>
-        {isOpen && media.length > 0 && (
-          <ImgsViewerSlider
-            imgs={media.map((image: any) => image.img)}
-            currImg={currentImageIndex}
-            isOpen={isOpen}
-            onClose={handleClose}
+      ) : (
+        ""
+      )}
+
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+        }}
+      >
+        {docs && (
+          <ReadMoreWrapper
+            count={array?.length}
+            title=""
+            type="file"
+            download={false}
           />
         )}
       </Box>
-    );
-  });
-
-  return <div>{renderedArray}</div>;
+      <Box sx={{ width: "100%" }}>
+        <Typography
+          sx={{
+            float: "right",
+            fontSize: "12px",
+            color: "#605C5C",
+          }}
+        >
+          12:50{" "}
+          <DoneOutlinedIcon
+            style={{ fontSize: "18px", transform: "translateY(3px)" }}
+          />
+        </Typography>
+      </Box>
+      {isOpen && commentData.files.length > 0 && (
+        <ImgsViewerSlider
+          imgs={commentData.files.map((image: any) => image.fileUrl)}
+          currImg={currentImageIndex}
+          isOpen={isOpen}
+          onClose={handleClose}
+        />
+      )}
+    </Box>
+  );
+  return <div>{CommentCardContent}</div>;
 };
 
 export default CommentCard;

@@ -32,7 +32,7 @@ export interface ITask {
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
   description: string;
-  confirmer: any,
+  confirmer: any;
   viewer: UserInfo[];
   project: Project;
   topic: Topic;
@@ -70,17 +70,17 @@ export interface ITaskFilterInterace {
     unread: boolean;
     ongoing: boolean;
     done: boolean;
-  },
+  };
   toMe: {
     new: boolean;
     ongoing: boolean;
     done: boolean;
-  },
+  };
   hidden: {
     ongoing: boolean;
     done: boolean;
     canceled: boolean;
-  }
+  };
   isAllSelected: boolean;
 }
 
@@ -115,7 +115,6 @@ export interface AssignedUserState extends UserInfo {
   phoneNumber: string;
   state: string;
   profilePic: string;
-
 }
 
 export interface InvitedNumber {
@@ -148,7 +147,7 @@ export enum TaskEventType {
   DoneTask = "doneTask",
   CancelTask = "cancelTask",
   InvitedUser = "invitedUser",
-  UnCancelTask = "unCancelTask"
+  UnCancelTask = "unCancelTask",
 }
 
 export interface TaskEvent {
@@ -160,9 +159,10 @@ export interface TaskEvent {
   initiator: UserInfo;
   eventData?: EventData[];
   commentData?: CommentData;
-  invitedMembers: InvitedMember[]
+  invitedMembers: InvitedMember[];
   createdAt: string;
   updatedAt: string;
+  isPinned: boolean;
 }
 
 export interface InvitedMember {

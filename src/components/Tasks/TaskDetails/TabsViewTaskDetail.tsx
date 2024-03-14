@@ -14,6 +14,7 @@ interface IProps {
   selectedTask: ITask;
   taskDetailContDimension: DynamicDimensions;
   RECENT_TASK_UPDATED_TIME_STAMP: string;
+  parentheight?: number;
 }
 function TabsViewTaskDetail(props: IProps) {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function TabsViewTaskDetail(props: IProps) {
     taskDetailContDimension,
     selectedTask,
     RECENT_TASK_UPDATED_TIME_STAMP,
+    parentheight,
   } = props;
   const { events, files } = selectedTask;
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
@@ -48,6 +50,7 @@ function TabsViewTaskDetail(props: IProps) {
       label: "Comments",
       content: (
         <AddedDetails
+          parentheight={parentheight}
           selectedTab={selectedTab}
           isCommentView={isCommentView}
           contHeight={taskDetailContDimension.height}
@@ -80,13 +83,11 @@ function TabsViewTaskDetail(props: IProps) {
   ];
 
   return (
-    <div>
-      <BasicTabs
-        setSelectedTab={setSelectedTab}
-        tabsBgColor={isCommentView ? "white" : "#F4F4F4"}
-        tabsData={isCommentView ? commentsAndFilesTabs : allTabs}
-      />
-    </div>
+    <BasicTabs
+      setSelectedTab={setSelectedTab}
+      tabsBgColor={isCommentView ? "white" : "#F4F4F4"}
+      tabsData={isCommentView ? commentsAndFilesTabs : allTabs}
+    />
   );
 }
 

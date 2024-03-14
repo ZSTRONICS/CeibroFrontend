@@ -332,25 +332,28 @@ function Task() {
       >
         <Box ref={detailHeaderRef}>
           {selectedTask && (
-            <DetailActions
-              isLocationTaskDetail={false}
-              taskDetailContDimension={taskDetailContDimension}
-              doneImageRequired={false}
-              doneCommentsRequired={false}
-              taskId={selectedTask._id}
-              userSubState={"ongoing"}
-              dueDate={"12.1.2024"}
-              title={selectedTask.title}
-              taskUid={selectedTask.taskUID}
-              createdOn={momentLocalDateTime(selectedTask.createdAt)}
-              assignedToState={selectedTask.assignedToState}
-              invitedNumbers={selectedTask.invitedNumbers}
-              isExpanded={false}
-              setIsExpanded={() => {}}
-              DrawDetailCollapse={false}
-            />
+            <>
+              {" "}
+              <DetailActions
+                isLocationTaskDetail={false}
+                taskDetailContDimension={taskDetailContDimension}
+                doneImageRequired={false}
+                doneCommentsRequired={false}
+                taskId={selectedTask._id}
+                userSubState={"ongoing"}
+                dueDate={"12.1.2024"}
+                title={selectedTask.title}
+                taskUid={selectedTask.taskUID}
+                createdOn={momentLocalDateTime(selectedTask.createdAt)}
+                assignedToState={selectedTask.assignedToState}
+                invitedNumbers={selectedTask.invitedNumbers}
+                isExpanded={false}
+                setIsExpanded={() => {}}
+                DrawDetailCollapse={false}
+              />
+              <CustomDivider sx={{ my: 1 }} />
+            </>
           )}
-          <CustomDivider sx={{ my: 1 }} />
         </Box>
         <Grid
           container
@@ -387,6 +390,9 @@ function Task() {
                 {selectedTask && selectedTaskandEvents && (
                   <TabsViewTaskDetail
                     taskDetailContDimension={taskDetailContDimension}
+                    parentheight={
+                      windowActualHeight - detailHeaderRefDimension.height - 20
+                    }
                     selectedTask={selectedTaskandEvents}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
