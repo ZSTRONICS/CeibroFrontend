@@ -2,10 +2,7 @@ import { Box, Button, Grid } from "@mui/material";
 import assets from "assets";
 import { CustomDivider, CustomStack, Heading2 } from "components/CustomTags";
 import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
-import {
-  countUnseenTasksForTabs,
-  momentLocalDateTime,
-} from "components/Utills/Globals";
+import { countUnseenTasksForTabs } from "components/Utills/Globals";
 import { ApprovalIcon, TaskIcon } from "components/material-ui/icons";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
 import { AllTasksAllEvents, ITask, TaskRootState } from "constants/interfaces";
@@ -337,18 +334,7 @@ function Task() {
               <DetailActions
                 isLocationTaskDetail={false}
                 taskDetailContDimension={taskDetailContDimension}
-                doneImageRequired={false}
-                doneCommentsRequired={false}
-                taskId={selectedTask._id}
-                userSubState={"ongoing"}
-                dueDate={"12.1.2024"}
-                title={selectedTask.title}
-                taskUid={selectedTask.taskUID}
-                createdOn={momentLocalDateTime(selectedTask.createdAt)}
-                assignedToState={selectedTask.assignedToState}
-                invitedNumbers={selectedTask.invitedNumbers}
-                isExpanded={false}
-                setIsExpanded={() => {}}
+                selectedTask={selectedTask}
                 DrawDetailCollapse={false}
               />
               <CustomDivider sx={{ my: 1 }} />

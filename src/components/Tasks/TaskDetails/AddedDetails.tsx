@@ -22,6 +22,7 @@ interface IProps {
 
 function AddedDetails(props: IProps) {
   const { user } = useSelector((state: RootState) => state.auth);
+  const userId = user && String(user._id);
   const {
     events,
     isCommentView,
@@ -99,6 +100,8 @@ function AddedDetails(props: IProps) {
                 invitedMembers,
                 isPinned,
               } = event;
+              const isCommentInitiator = initiator && initiator._id === userId;
+              console.log("isCommentInitiator", isCommentInitiator);
               const invitedMembersData =
                 eventData &&
                 eventData.length > 0 &&

@@ -1,26 +1,15 @@
 import { Box, Chip, Grid } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import DragableDrawer from "Drawer/DragableDrawer";
 import { LoadingButton } from "components/Button";
 import { ReplyIcon } from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
-import { AssignedUserState, InvitedNumber } from "constants/interfaces";
-import { useOpenCloseModal } from "hooks";
+import { ITask } from "constants/interfaces";
 import { DynamicDimensions } from "hooks/useDynamicDimensions";
 import { capitalize } from "lodash";
-import React, {
-  Dispatch,
-  SetStateAction,
-  useState,
-  useTransition,
-} from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
-import Comment from "../Comment";
-import ForwardTask from "../Forward-Task";
 
 import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import CancelPresentationOutlinedIcon from "@mui/icons-material/CancelPresentationOutlined";
@@ -28,21 +17,10 @@ import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 
 interface IProps {
-  taskId: string;
-  userSubState: string;
-  dueDate: string | null;
-  taskUid: string;
-  title: string;
-  createdOn: Date | any;
-  doneImageRequired: boolean;
-  doneCommentsRequired: boolean;
-  assignedToState: AssignedUserState[];
-  invitedNumbers: InvitedNumber[];
-  isExpanded: boolean;
   DrawDetailCollapse: boolean;
-  setIsExpanded: Dispatch<SetStateAction<boolean>>;
   taskDetailContDimension: DynamicDimensions | undefined;
   isLocationTaskDetail?: boolean;
+  selectedTask: ITask;
 }
 
 enum statusColors {
@@ -50,32 +28,27 @@ enum statusColors {
   unread = "#CFECFF",
   ongoing = "#F1B740",
   done = "#55BCB3",
-  canceled = "#FFE7E7",
+  canceled = "#E85555",
+  "to-review" = "#CFECFF",
+  "in-review" = "#E2E4E5",
 }
 type TaskAction = "comment" | "forward" | "done";
 
 const DetailActions: React.FC<IProps> = (props) => {
   const { subtask, filterkey } = useParams<any>();
   const [hide, setHide] = useState(true);
-  const [isPending, startTransition] = useTransition();
+  const { selectedTask, isLocationTaskDetail } = props;
   const {
+    _id: taskId,
     userSubState,
-    taskUid,
-    taskId,
-    title,
-    doneImageRequired,
     doneCommentsRequired,
-    assignedToState,
-    invitedNumbers,
-    isExpanded,
-    DrawDetailCollapse,
-    setIsExpanded,
-    taskDetailContDimension,
-    isLocationTaskDetail,
-  } = props;
+    doneImageRequired,
+    title,
+  } = selectedTask;
+
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isOpen, closeModal, openModal } = useOpenCloseModal();
+  console.log("userSubState", userSubState);
   const [taskAction, setTaskAction] = useState<TaskAction>("comment");
   const [isloading, setIsLoading] = useState(false);
   const taskDragContHeight = useSelector(
@@ -92,7 +65,6 @@ const DetailActions: React.FC<IProps> = (props) => {
             : 200
           : taskDragContHeight,
     });
-    // openModal();
   };
 
   const handleDoneClick = () => {
@@ -127,88 +99,17 @@ const DetailActions: React.FC<IProps> = (props) => {
     }
   };
 
-  const theme = useTheme();
-  const isTabletdown = useMediaQuery(theme.breakpoints.down(1400));
-  const isMinitabdown = useMediaQuery(theme.breakpoints.down(1200));
-  const isMiniScreen = useMediaQuery(theme.breakpoints.down(1100));
-  const isXlscreendown = useMediaQuery(theme.breakpoints.down("xl"));
-
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
 
-  const getModalContent = () => {
-    if (taskAction === "forward")
-      return (
-        <ForwardTask
-          taskDetailContDimension={taskDetailContDimension}
-          invitedNumbers={invitedNumbers}
-          assignedToState={assignedToState}
-          taskId={taskId}
-          closeModal={closeModal}
-          isOpen={isOpen}
-        />
-      );
-    return (
-      <Comment
-        doneCommentsRequired={doneCommentsRequired}
-        doneImageRequired={doneImageRequired}
-        title={getTitle()}
-        showHeader={true}
-        taskId={taskId}
-      />
-    );
-  };
-
-  const titles = {
-    comment: "New comment",
-    forward: "Forward",
-    done: "Task Done",
-  };
-
-  const justifyContent = {
-    xs: "flex-start",
-    md: "flex-end",
-  };
-
-  const handleFullView = () => {
-    let showFullViewData;
-    const data = localStorage.getItem("showFullView");
-    if (data) {
-      showFullViewData = JSON.parse(data);
-    }
-    localStorage.setItem(
-      "showFullView",
-      JSON.stringify({ ...showFullViewData, [taskUid]: !isExpanded })
-    );
-    startTransition(() => {
-      setIsExpanded(!isExpanded);
-    });
-  };
-
-  const getTitle = () => titles[taskAction] || "";
-
-  const calculateWidth = () => {
-    switch (true) {
-      case DrawDetailCollapse && !isTabletdown:
-        return "52%";
-      case !DrawDetailCollapse && !isTabletdown:
-        return "85%";
-      case DrawDetailCollapse && isTabletdown:
-      case !DrawDetailCollapse && isTabletdown:
-        return "100%";
-      default:
-        return "initial";
-    }
-  };
-
   const DataforCondition = [
-    // { status: "pending", subStatus: null },
-    // { status: "review", subStatus: null },
+    { status: "pending", subStatus: null },
+    { status: "review", subStatus: null },
     { status: "ongoing", subStatus: "hidden" },
-    // { status: "ongoing", subStatus: "assignee" },
-    // { status: "ongoing", subStatus: "creator" },
-    // { status: "done", subStatus: null },
-    // { status: "cancelled", subStatus: null },
+    { status: "ongoing", subStatus: "assignee" },
+    { status: "ongoing", subStatus: "creator" },
+    { status: "done", subStatus: null },
+    { status: "cancelled", subStatus: null },
   ];
 
   const OngoingStatus = (status: any, myCase: any) => {
@@ -247,32 +148,28 @@ const DetailActions: React.FC<IProps> = (props) => {
               minHeight: "38px",
             }}
           >
-            {!["done", "canceled", "new"].includes(userSubState) && (
-              <>
-                {Obj.map((items: any, index: any) => {
-                  const { icon } = items;
-                  return (
-                    <React.Fragment key={index}>
-                      {index !== 0 && (
-                        <Box
-                          sx={{
-                            height: "20px",
-                            width: "1.5px",
-                            backgroundColor: "rgb(226,228,229)",
-                          }}
-                        ></Box>
-                      )}
-                      <LoadingButton
-                        // onClick={() => handleClick("comment")}
-                        sx={{ maxWidth: "35px", minWidth: "35px" }}
-                      >
-                        {icon}
-                      </LoadingButton>
-                    </React.Fragment>
-                  );
-                })}
-              </>
-            )}
+            {Obj.map((items: any, index: any) => {
+              const { icon } = items;
+              return (
+                <React.Fragment key={index}>
+                  {index !== 0 && (
+                    <Box
+                      sx={{
+                        height: "20px",
+                        width: "1.5px",
+                        backgroundColor: "rgb(226,228,229)",
+                      }}
+                    ></Box>
+                  )}
+                  <LoadingButton
+                    // onClick={() => handleClick("comment")}
+                    sx={{ maxWidth: "35px", minWidth: "35px" }}
+                  >
+                    {icon}
+                  </LoadingButton>
+                </React.Fragment>
+              );
+            })}
           </Box>
 
           <Box sx={{ position: "relative" }}>
@@ -319,10 +216,14 @@ const DetailActions: React.FC<IProps> = (props) => {
     );
   };
 
-  //////////////
+  const replyBtn = [
+    { title: "reply", icon: <ReplyIcon />, callback: handleDoneClick },
+  ];
+  const dontBtn = [
+    { title: "reply", icon: <ReplyIcon />, callback: handleDoneClick },
+  ];
 
   const pending = [
-    { title: "arrowleft", icon: <ReplyIcon /> },
     { title: "check", icon: <AssignmentTurnedInOutlinedIcon /> },
     { title: "cancel", icon: <CancelPresentationOutlinedIcon /> },
   ];
@@ -346,27 +247,22 @@ const DetailActions: React.FC<IProps> = (props) => {
     { title: "personadd", icon: <PersonAddAlt1OutlinedIcon /> },
   ];
 
-  //////////////
-
   const ShowBtns = DataforCondition?.map((item, index) => {
     const { status, subStatus } = item;
 
-    switch (status) {
-      case "pending":
+    switch (userSubState) {
+      case "in-review":
         return GroupBtnFunc(pending, "pending");
-
-      case "review":
+      case "unread":
+        return GroupBtnFunc(pending, "unread");
+      case "to-review":
         return GroupBtnFunc(review, "review");
-
       case "ongoing":
         return OngoingStatus(subStatus, "ongoing");
-
       case "done":
         return GroupBtnFunc(done, "done");
-
       case "cancelled":
         return GroupBtnFunc(cancelled, "cancelled");
-
       default:
         return null;
     }
@@ -382,63 +278,37 @@ const DetailActions: React.FC<IProps> = (props) => {
         alignItems: "center",
       }}
     >
-      {!["done", "canceled", "new"].includes(userSubState) && <>{ShowBtns}</>}
+      {ShowBtns}
     </Box>
   );
+
   const userSUBState = (
     <Chip
-      label={capitalize(userSubState)}
+      label={capitalize(
+        userSubState === "in-review"
+          ? "Pending"
+          : userSubState.replace(/-/g, " ")
+      )}
       size="small"
       sx={{
         borderColor: chipColor,
         backgroundColor: chipColor,
+        color: userSubState === "canceled" ? "white" : "#131516",
         borderRadius: "4px",
         fontFamily: "Inter",
         fontSize: "12px",
         fontWeight: 600,
-        color: "#131516",
         padding: "2px 8px",
-      }}
-    />
-  );
-
-  const TaskUID = (
-    <Chip
-      label={taskUid}
-      size="small"
-      sx={{
-        borderColor: "#818181",
-        backgroundColor: "white",
-        borderWidth: "1px",
-        borderStyle: "solid",
-        borderRadius: "5px",
-        fontFamily: "Inter",
-        fontSize: "12px",
-        fontWeight: 600,
-        color: "#131516",
-        padding: "2px 8px",
-        marginLeft:
-          !isXlscreendown && isLocationTaskDetail && DrawDetailCollapse
-            ? "-3.5px"
-            : !isXlscreendown && isLocationTaskDetail && !DrawDetailCollapse
-            ? "-4.5px"
-            : "",
       }}
     />
   );
 
   return (
     <>
-      <Grid
-        // sx={{ border: "solid 1px red" }}
-        container
-        justifyContent="space-between"
-        // rowGap={1.25}
-      >
+      <Grid container justifyContent="space-between">
         <Grid
           item
           container
-          // xs={ isMiniScreen ? 4 : (!isTabletdown ? 7 : 5)}
           xl={isLocationTaskDetail && isLocationTaskDetail ? 12 : 7}
           lg={isLocationTaskDetail && isLocationTaskDetail ? 12 : 6}
           md={12}
@@ -460,8 +330,6 @@ const DetailActions: React.FC<IProps> = (props) => {
           </Grid>
 
           <Grid item sx={{ marginTop: "10px", fontWeight: "600" }}>
-            {/* Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente
-            recusandae totam autem quaerat illo */}
             {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
           </Grid>
         </Grid>
@@ -477,18 +345,10 @@ const DetailActions: React.FC<IProps> = (props) => {
           md={12}
           sm={12}
           xs={12}
-          // xs={!isTabletdown ? 5 : 7}
         >
           <>{HeaderBtns}</>
         </Grid>
       </Grid>
-      <DragableDrawer
-        title={getTitle()}
-        children={getModalContent()}
-        openModal={openModal}
-        closeModal={closeModal}
-        isOpen={isOpen}
-      />
     </>
   );
 };

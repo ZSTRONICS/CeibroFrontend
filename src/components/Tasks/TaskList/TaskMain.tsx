@@ -330,7 +330,7 @@ const TaskMain = (props: IProps) => {
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const searchTxt = event.target.value;
     const filterData = searchInData(
-      task[subtask][selectedTab],
+      filteredTask,
       searchTxt,
       propertiesToSearch
     );
