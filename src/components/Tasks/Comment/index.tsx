@@ -180,7 +180,6 @@ const Comment = ({
       sx={{
         height: "max-contnet",
         overflow: "auto",
-        border: "solid 1px green",
       }}
     >
       <CustomStack sx={{ gap: 0.8, alignItems: "baseline" }}>

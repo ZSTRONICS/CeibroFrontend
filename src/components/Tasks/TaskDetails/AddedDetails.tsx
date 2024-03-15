@@ -77,7 +77,6 @@ function AddedDetails(props: IProps) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          border: "solid 1px black",
         }}
       >
         <Box
@@ -85,7 +84,6 @@ function AddedDetails(props: IProps) {
           sx={{
             overflowY: "auto",
             flex: "1",
-            // border: "solid 2px red",
           }}
         >
           {events?.length > 0 ? (
