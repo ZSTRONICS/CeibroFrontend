@@ -10,10 +10,9 @@ import { ITask } from "constants/interfaces";
 import { DynamicDimensions } from "hooks/useDynamicDimensions";
 import { capitalize } from "lodash";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
-import { RootState } from "redux/reducers";
 
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { GenericMenu } from "components/GenericComponents";
@@ -23,6 +22,7 @@ interface IProps {
   taskDetailContDimension: DynamicDimensions | undefined;
   isLocationTaskDetail?: boolean;
   selectedTask: ITask;
+  userId: string;
 }
 
 enum statusColors {
@@ -38,7 +38,7 @@ type TaskAction = "comment" | "forward" | "done";
 
 const DetailActions: React.FC<IProps> = (props) => {
   const { subtask, filterkey } = useParams<any>();
-  const { selectedTask, isLocationTaskDetail } = props;
+  const { selectedTask, isLocationTaskDetail, userId } = props;
   const {
     _id: taskId,
     userSubState,
@@ -54,38 +54,63 @@ const DetailActions: React.FC<IProps> = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   console.log("selectedTask", selectedTask);
-  const [taskAction, setTaskAction] = useState<TaskAction>("comment");
   const [isloading, setIsLoading] = useState(false);
-  const taskDragContHeight = useSelector(
-    (store: RootState) => store.task.taskDragContHeight
-  );
-  const handleClick = (action: TaskAction) => {
-    setTaskAction(action);
-    dispatch({
-      type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
-      payload:
-        taskDragContHeight === 0
-          ? window.innerHeight < 768
-            ? 140
-            : 200
-          : taskDragContHeight,
-    });
-  };
+
+  const chipColor: string =
+    statusColors[userSubState as keyof typeof statusColors];
+
+  const checkIsStateMatch = (states: string[]) => states.includes(userSubState);
+
+  const isOngoingUnread = ["ongoing", "unread"];
+  const inReviewToReview = ["in-review", "to-review"];
+  const showPendingReviewBtn = checkIsStateMatch([...inReviewToReview]);
+  const showDoneBtn = checkIsStateMatch([...isOngoingUnread, "new"]);
+  const showCancelBtn = checkIsStateMatch([...isOngoingUnread, "canceled"]);
+  const pendingReviewCancel = checkIsStateMatch([
+    ...inReviewToReview,
+    "canceled",
+    "done",
+  ]);
+  const doneHideBtnVisible: boolean =
+    (isAssignedToMe || isCreator) &&
+    taskRootState !== "Canceled" &&
+    taskRootState !== "Approval";
+  const doneHideBtnLabel: string =
+    taskRootState === "Hidden" ? "Un hide" : "Hide";
 
   const handleAcceptance = () => {};
   const handleRejectClose = () => {
     console.log("reject close");
   };
   const handleHideUnHide = (label: string) => {
-    console.log("label", label);
+    if (label === "Hide") {
+      handleTaskAction(taskActions.taskHide, {
+        eventType: TASK_CONFIG.TASK_HIDDEN,
+      });
+    } else {
+      handleTaskAction(taskActions.taskShow, {
+        eventType: TASK_CONFIG.TASK_SHOW,
+      });
+    }
   };
+  const handleCancelUnCancel = (label: string) => {
+    if (label === "Cancel") {
+      handleTaskAction(taskActions.taskCaneled, {
+        eventType: TASK_CONFIG.TASK_CANCELED,
+      });
+    } else {
+      handleTaskAction(taskActions.taskUnCanel, {
+        eventType: TASK_CONFIG.TASK_UN_CANCEL,
+      });
+    }
+  };
+
   const handleReplyClick = () => {};
   const handleForwardClick = () => {};
   const handleDoneClick = () => {
     setIsLoading(true);
     if (doneImageRequired === true || doneCommentsRequired === true) {
       setIsLoading(false);
-      handleClick("done");
     } else {
       dispatch(
         taskActions.taskEventsWithFiles({
@@ -113,10 +138,36 @@ const DetailActions: React.FC<IProps> = (props) => {
     }
   };
 
-  const chipColor: string =
-    statusColors[userSubState as keyof typeof statusColors];
+  const handleTaskAction = (
+    actionType: (arg: {
+      other: { taskId: string };
+      success: (res: any) => void;
+    }) => any,
+    actionConfig: { eventType: any }
+  ) => {
+    if (selectedTask) {
+      dispatch(
+        actionType({
+          other: { taskId: selectedTask._id },
+          success: (res: any) => {
+            if (res) {
+              dispatch({
+                type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                payload: {
+                  ...res.data,
+                  userId,
+                  eventType: actionConfig.eventType,
+                },
+              });
+            }
+          },
+        })
+      );
+    }
+  };
 
   const CancelBtn = () => {
+    const cancelText = isCanceled ? "Un cancel" : "Cancel";
     return (
       <LoadingButton
         sx={{
@@ -130,9 +181,10 @@ const DetailActions: React.FC<IProps> = (props) => {
             backgroundColor: "#E85555",
           },
         }}
+        onClick={() => handleCancelUnCancel(cancelText)}
         disabled={isloading}
       >
-        {isCanceled ? "Un canceled" : "Cancel"}
+        {cancelText}
       </LoadingButton>
     );
   };
@@ -141,7 +193,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     return (
       <LoadingButton
         variant="contained"
-        onClick={() => (isHide ? handleHideUnHide(label) : handleDoneClick)}
+        onClick={() => (isHide ? handleHideUnHide(label) : handleDoneClick())}
         sx={{
           ml: 0.7,
           backgroundColor: isHide ? "#F4F4F4" : "#0076C8",
@@ -160,22 +212,6 @@ const DetailActions: React.FC<IProps> = (props) => {
       </LoadingButton>
     );
   };
-
-  const checkIsStateMatch = (states: string[]) => states.includes(userSubState);
-
-  const isOngoingUnread = ["ongoing", "unread"];
-  const inReviewToReview = ["in-review", "to-review"];
-  const showPendingReviewBtn = checkIsStateMatch([...inReviewToReview]);
-  const showDoneBtn = checkIsStateMatch([...isOngoingUnread, "new"]);
-  const showCancelBtn = checkIsStateMatch([...isOngoingUnread, "canceled"]);
-  const pendingReviewCancel = checkIsStateMatch([
-    ...inReviewToReview,
-    "canceled",
-  ]);
-  const doneHideBtnVisible: boolean =
-    (isAssignedToMe || isCreator) && taskRootState !== "Canceled";
-  const doneHideBtnLabel: string =
-    taskRootState === "Hidden" ? "Un hide" : "Hide";
 
   const GroupBtnFunc = (buttons: any) => {
     return (
@@ -265,11 +301,11 @@ const DetailActions: React.FC<IProps> = (props) => {
           isProjectGroup={true}
           options={[
             {
-              menuName: "Reject",
+              menuName: "Reject-reopen",
               callBackHandler: () => {},
             },
             {
-              menuName: "Reject & Close",
+              menuName: "Reject-Close",
               callBackHandler: () => {},
             },
           ]}

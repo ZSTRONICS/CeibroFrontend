@@ -332,6 +332,7 @@ function Task() {
             <>
               {" "}
               <DetailActions
+                userId={userId}
                 isLocationTaskDetail={false}
                 taskDetailContDimension={taskDetailContDimension}
                 selectedTask={selectedTask}

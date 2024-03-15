@@ -107,6 +107,28 @@ const taskEventsWithFiles = apiCall({
   path: (payload) => `/task/upload/${payload.other.eventName}/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`  // eventName = [comment, doneTask]
 })
 
+const taskApprove = apiCall({
+  useV2Route: true,
+  isFormData: true,
+  type: TASK_CONFIG.TASK_APPROVE,
+  method: "post",
+  path: (payload) => `/task/approval/approve/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`
+})
+const taskRejectReopen = apiCall({
+  useV2Route: true,
+  isFormData: true,
+  type: TASK_CONFIG.TASK_REJECTED_REOPEN,
+  method: "post",
+  path: (payload) => `/task/approval/reject-reopen/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`
+})
+const taskRejectClose = apiCall({
+  useV2Route: true,
+  isFormData: true,
+  type: TASK_CONFIG.TASK_REJECTED_CLOSE,
+  method: "post",
+  path: (payload) => `/task/approval/reject-close/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`
+})
+
 const uploadDocs = apiCall({
   useV2Route: false,
   type: TASK_CONFIG.UPLOAD_TASK_DOCS,
@@ -122,6 +144,11 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.DELETE_TOPIC, deleteTopic)
   // task
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
+
+  yield takeLatest(TASK_CONFIG.TASK_APPROVE, taskApprove)
+  yield takeLatest(TASK_CONFIG.TASK_REJECTED_REOPEN, taskRejectReopen)
+  yield takeLatest(TASK_CONFIG.TASK_REJECTED_CLOSE, taskRejectClose)
+
   yield takeLatest(TASK_CONFIG.SYNC_ALL_TASKS, syncAllTasks)
   yield takeLatest(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS, getAllTasksAllEvents)
   yield takeLatest(TASK_CONFIG.GET_ALL_TASK_FILES, getAllTaskFiles)

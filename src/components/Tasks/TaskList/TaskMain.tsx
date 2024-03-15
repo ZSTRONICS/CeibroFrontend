@@ -338,82 +338,6 @@ const TaskMain = (props: IProps) => {
     setFilteredTask(filterData);
   };
 
-  // const handleTaskAction = (
-  //   actionType: (arg: {
-  //     other: { taskId: string };
-  //     success: (res: any) => void;
-  //   }) => any,
-  //   actionConfig: { eventType: any }
-  // ) => {
-  //   if (selectedTask) {
-  //     dispatch(
-  //       actionType({
-  //         other: { taskId: selectedTask._id },
-  //         success: (res: any) => {
-  //           if (res) {
-  //             dispatch({
-  //               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-  //               payload: {
-  //                 ...res.data,
-  //                 userId,
-  //                 eventType: actionConfig.eventType,
-  //               },
-  //             });
-  //           }
-  //           setFilteredTask((prevFilteredTask) =>
-  //             prevFilteredTask.filter(
-  //               (item) => item.taskUID !== selectedTask.taskUID
-  //             )
-  //           );
-  //         },
-  //       })
-  //     );
-  //   }
-  // };
-
-  // const menuOptions = [
-  //   {
-  //     menuName: "Hide",
-  //     callBackHandler: () => {
-  //       if (selectedTask) {
-  //         handleTaskAction(taskActions.taskHide, {
-  //           eventType: TASK_CONFIG.TASK_HIDDEN,
-  //         });
-  //       }
-  //     },
-  //   },
-  //   {
-  //     menuName: "Un-hide",
-  //     callBackHandler: () => {
-  //       if (selectedTask) {
-  //         handleTaskAction(taskActions.taskShow, {
-  //           eventType: TASK_CONFIG.TASK_SHOW,
-  //         });
-  //       }
-  //     },
-  //   },
-  //   {
-  //     menuName: "Cancel",
-  //     callBackHandler: () => {
-  //       if (selectedTask) {
-  //         handleTaskAction(taskActions.taskCaneled, {
-  //           eventType: TASK_CONFIG.TASK_CANCELED,
-  //         });
-  //       }
-  //     },
-  //   },
-  //   {
-  //     menuName: "Un-cancel",
-  //     callBackHandler: () => {
-  //       if (selectedTask) {
-  //         handleTaskAction(taskActions.taskUnCanel, {
-  //           eventType: TASK_CONFIG.TASK_UN_CANCEL,
-  //         });
-  //       }
-  //     },
-  //   },
-  // ];
-
   /**
    * Clears the cache of the task card list.
    */
@@ -484,7 +408,7 @@ const TaskMain = (props: IProps) => {
     </div>
   );
 
-  const TASK_CARD_GAP_BETWEEN = 18;
+  const TASK_CARD_GAP_BETWEEN = 14;
 
   return (
     <>
