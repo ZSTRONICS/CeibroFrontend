@@ -54,6 +54,7 @@ const TaskCard = React.memo((props: IProps) => {
     seenBy,
     title,
   } = task;
+
   const taskCreatedAt = momentLocalDateTime(createdAt).split(" ");
   const formattedDate = convertDateFormat(dueDate);
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
@@ -156,7 +157,6 @@ const TaskCard = React.memo((props: IProps) => {
         >
           <Span
             sx={{
-              // border: "solid 1px #E2E4E5",
               border: `1px solid ${currentTaskColor}`,
               fontWeight: "700",
               padding: "3px",
@@ -179,7 +179,7 @@ const TaskCard = React.memo((props: IProps) => {
               transform: "translateY(4px)",
             }}
           >
-            Kloostri 14
+            {project?.title}
           </Typography>
           <Span
             sx={{
@@ -241,10 +241,7 @@ const TaskCard = React.memo((props: IProps) => {
                     borderRadius: "5px",
                     width: "100%",
                   }}
-                  // image={files[0].fileUrl}
-                  image={
-                    "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8"
-                  }
+                  image={files[0].fileUrl}
                   alt={files[0].fileName}
                 />
               ) : (

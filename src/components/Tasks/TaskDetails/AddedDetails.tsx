@@ -140,6 +140,7 @@ function AddedDetails(props: IProps) {
                           type="DoneTask"
                           initiator={initiator}
                           eventData={eventData}
+                          isCommentInitiator={isCommentInitiator}
                         />
                       ) : (
                         <>
@@ -147,6 +148,7 @@ function AddedDetails(props: IProps) {
                             type="DoneTask"
                             initiator={initiator}
                             eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
                           />
                           {commentData && (
                             <CommentCard
@@ -172,6 +174,7 @@ function AddedDetails(props: IProps) {
                             type={"ForwardTask"}
                             initiator={initiator}
                             eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
                           />
                         </>
                       ) : (
@@ -180,6 +183,7 @@ function AddedDetails(props: IProps) {
                             type={"ForwardTask"}
                             initiator={initiator}
                             eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
                           />
                           {commentData && (
                             <CommentCard
@@ -205,6 +209,7 @@ function AddedDetails(props: IProps) {
                             type={"InvitedUser"}
                             initiator={initiator}
                             invitedMembers={invitedMembers}
+                            isCommentInitiator={isCommentInitiator}
                           />
                         </>
                       ) : (
@@ -213,6 +218,7 @@ function AddedDetails(props: IProps) {
                             type={"InvitedUser"}
                             initiator={initiator}
                             invitedMembers={invitedMembers}
+                            isCommentInitiator={isCommentInitiator}
                           />
                           {commentData && (
                             <CommentCard
@@ -238,6 +244,7 @@ function AddedDetails(props: IProps) {
                             type={"CancelTask"}
                             initiator={initiator}
                             eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
                           />
                         </>
                       ) : (
@@ -246,6 +253,7 @@ function AddedDetails(props: IProps) {
                             type={"CancelTask"}
                             initiator={initiator}
                             eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
                           />
                           {commentData && (
                             <Box>
@@ -273,6 +281,7 @@ function AddedDetails(props: IProps) {
                             type={"UnCancelTask"}
                             initiator={initiator}
                             eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
                           />
                         </>
                       ) : (
@@ -281,6 +290,7 @@ function AddedDetails(props: IProps) {
                             type={"UnCancelTask"}
                             initiator={initiator}
                             eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
                           />
                           {commentData && (
                             <CommentCard

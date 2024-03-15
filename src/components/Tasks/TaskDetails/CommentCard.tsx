@@ -10,6 +10,7 @@ import { useTheme } from "@mui/material/styles";
 import assets from "assets";
 import { GenericMenu } from "components/GenericComponents";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
+import { DOC_EXT, MEDIA_EXT } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { PinIcon } from "components/material-ui/icons";
 import { IFile } from "constants/interfaces";
@@ -96,10 +97,6 @@ const CommentCard = ({
     handleResize();
     window.addEventListener("resize", handleResize);
   }, []);
-
-  console.log(commentData, "commentdata");
-  // console.log(MEDIA_EXT.includes(commentData?.files?.fileType), "type boolean");
-  console.log(commentData?.files?.fileType, "type");
 
   const CommentCardContent = (
     <Box
@@ -247,9 +244,8 @@ const CommentCard = ({
               border: "solid 1px #F4F4F4 ",
             }}
           >
-            {commentData?.files?.map((items: any, index: number) => {
-              // MEDIA_EXT.includes(items.fileType);
-              return (
+            {commentData?.files?.map((items: any, index: number) =>
+              MEDIA_EXT.includes(items.fileType) ? (
                 <div
                   onClick={() => handleImgClick(index)}
                   key={index}
@@ -309,23 +305,27 @@ const CommentCard = ({
                     image={items.fileUrl}
                   />
                 </div>
-              );
-            })}
+              ) : null
+            )}
           </Box>
           {/* ) : ( */}
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-            }}
-          >
-            <ReadMoreWrapper
-              count={array?.length}
-              title=""
-              type="file"
-              download={false}
-            />
-          </Box>
+          {DOC_EXT.includes(commentData?.files.fileType) ? (
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+              }}
+            >
+              <ReadMoreWrapper
+                count={array?.length}
+                title=""
+                type="file"
+                download={false}
+              />
+            </Box>
+          ) : (
+            ""
+          )}
         </>
       ) : (
         // )

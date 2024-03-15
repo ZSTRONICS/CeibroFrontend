@@ -5,9 +5,15 @@ interface Props {
   initiator?: any;
   type?: any;
   invitedMembers?: any;
+  isCommentInitiator: boolean;
 }
 
-const MessageBot = ({ eventData, initiator, type }: Props) => {
+const MessageBot = ({
+  eventData,
+  initiator,
+  type,
+  isCommentInitiator,
+}: Props) => {
   const Forward = () => {
     return eventData.map((items: any) => {
       const { firstName } = items;
@@ -19,10 +25,11 @@ const MessageBot = ({ eventData, initiator, type }: Props) => {
     switch (type) {
       case "ForwardTask":
         return `${initiator?.firstName} forwarded task to: ${
-          eventData[0]?.firstName
-        } ${eventData[0]?.lastName && eventData[0]?.lastName} `;
+          // eventData[0]?.firstName
+          eventData?.map((item: any) => item.firstName).join(", ")
+        }`;
       case "DoneTask":
-        return `${initiator?.firstName} ${initiator?.lastName} marked the task as done `;
+        return `${initiator?.firstName} ${initiator?.surName} marked the task as done `;
       case "InvitedUser":
         return ` Invited by ${initiator?.firstName}`;
       case "CancelTask":
@@ -42,7 +49,7 @@ const MessageBot = ({ eventData, initiator, type }: Props) => {
         <Box
           sx={{
             padding: "6px 16px 6px 16px",
-            backgroundColor: "#D4D4D4",
+            backgroundColor: !isCommentInitiator ? "#D4D4D4" : "#CFECFF",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
