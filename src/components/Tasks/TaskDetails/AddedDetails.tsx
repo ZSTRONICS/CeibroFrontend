@@ -68,25 +68,24 @@ function AddedDetails(props: IProps) {
   // }, [events?.length, hasFile]);
 
   var IsMessageBot: boolean;
+
   return (
     <>
       <Box
         sx={{
-          // height: `${tabContHeight}px`,
           height: `${parentheight && parentheight - 160}px`,
-          // height: "40vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          // border: "solid 1px black",
+          border: "solid 1px black",
         }}
       >
         <Box
           className="custom-scrollbar"
           sx={{
             overflowY: "auto",
-            height: "90%",
-            minHeight: "20%",
+            flex: "1",
+            // border: "solid 2px red",
           }}
         >
           {events?.length > 0 ? (
@@ -127,6 +126,7 @@ function AddedDetails(props: IProps) {
                           initiator={initiator}
                           commentData={commentData}
                           isPinned={isPinned}
+                          isCommentInitiator={isCommentInitiator}
                         />
                       )}
                     </>
@@ -155,6 +155,7 @@ function AddedDetails(props: IProps) {
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
+                              isCommentInitiator={isCommentInitiator}
                             />
                           )}
                         </>
@@ -187,6 +188,7 @@ function AddedDetails(props: IProps) {
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
+                              isCommentInitiator={isCommentInitiator}
                             />
                           )}
                         </>
@@ -219,6 +221,7 @@ function AddedDetails(props: IProps) {
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
+                              isCommentInitiator={isCommentInitiator}
                             />
                           )}
                         </>
@@ -247,11 +250,14 @@ function AddedDetails(props: IProps) {
                             eventData={eventData}
                           />
                           {commentData && (
-                            <CommentCard
-                              initiator={initiator}
-                              commentData={commentData}
-                              isPinned={isPinned}
-                            />
+                            <Box>
+                              <CommentCard
+                                initiator={initiator}
+                                commentData={commentData}
+                                isPinned={isPinned}
+                                isCommentInitiator={isCommentInitiator}
+                              />
+                            </Box>
                           )}
                         </>
                       )}
@@ -283,6 +289,7 @@ function AddedDetails(props: IProps) {
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
+                              isCommentInitiator={isCommentInitiator}
                             />
                           )}
                         </>
@@ -300,9 +307,9 @@ function AddedDetails(props: IProps) {
         {showComment && (
           <Box
             sx={{
-              // height: "10%",
-              // maxHeight: "50%",
-              // border: "solid 2px yellow",
+              maxHeight: "50%",
+              minHeight: "15%",
+              height: "max-content",
               marginTop: "5px",
               overflow: "visible",
             }}

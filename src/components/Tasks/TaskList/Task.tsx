@@ -404,6 +404,9 @@ function Task() {
               <>
                 {selectedTask && selectedTaskandEvents && (
                   <TabsViewTaskDetail
+                    parentheight={
+                      windowActualHeight - detailHeaderRefDimension.height - 20
+                    }
                     taskDetailContDimension={taskDetailContDimension}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP

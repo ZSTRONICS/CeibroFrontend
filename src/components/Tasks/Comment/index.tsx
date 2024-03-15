@@ -35,6 +35,7 @@ const Comment = ({
   doneCommentsRequired,
   doneImageRequired,
 }: CommentProps) => {
+  ////
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -175,7 +176,13 @@ const Comment = ({
   };
 
   return (
-    <Box sx={{ maxHeight: "350px", overflow: "auto" }}>
+    <Box
+      sx={{
+        height: "max-contnet",
+        overflow: "auto",
+        border: "solid 1px green",
+      }}
+    >
       <CustomStack sx={{ gap: 0.8, alignItems: "baseline" }}>
         <Box sx={{ width: "90%" }}>
           <FormControl
