@@ -1,6 +1,10 @@
 import { Box, Chip, Grid } from "@mui/material";
 import { LoadingButton } from "components/Button";
-import { ReplyIcon } from "components/material-ui/icons";
+import {
+  AcceptIcon,
+  RejectAndCloseIcon,
+  ReplyIcon,
+} from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
 import { DynamicDimensions } from "hooks/useDynamicDimensions";
@@ -11,10 +15,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 
-import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
-import CancelPresentationOutlinedIcon from "@mui/icons-material/CancelPresentationOutlined";
-import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
+import { GenericMenu } from "components/GenericComponents";
 
 interface IProps {
   DrawDetailCollapse: boolean;
@@ -36,7 +38,6 @@ type TaskAction = "comment" | "forward" | "done";
 
 const DetailActions: React.FC<IProps> = (props) => {
   const { subtask, filterkey } = useParams<any>();
-  const [hide, setHide] = useState(true);
   const { selectedTask, isLocationTaskDetail } = props;
   const {
     _id: taskId,
@@ -44,11 +45,15 @@ const DetailActions: React.FC<IProps> = (props) => {
     doneCommentsRequired,
     doneImageRequired,
     title,
+    isCreator,
+    isCanceled,
+    isAssignedToMe,
+    taskRootState,
   } = selectedTask;
 
   const history = useHistory();
   const dispatch = useDispatch();
-  console.log("userSubState", userSubState);
+  console.log("selectedTask", selectedTask);
   const [taskAction, setTaskAction] = useState<TaskAction>("comment");
   const [isloading, setIsLoading] = useState(false);
   const taskDragContHeight = useSelector(
@@ -67,6 +72,15 @@ const DetailActions: React.FC<IProps> = (props) => {
     });
   };
 
+  const handleAcceptance = () => {};
+  const handleRejectClose = () => {
+    console.log("reject close");
+  };
+  const handleHideUnHide = (label: string) => {
+    console.log("label", label);
+  };
+  const handleReplyClick = () => {};
+  const handleForwardClick = () => {};
   const handleDoneClick = () => {
     setIsLoading(true);
     if (doneImageRequired === true || doneCommentsRequired === true) {
@@ -102,28 +116,68 @@ const DetailActions: React.FC<IProps> = (props) => {
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
 
-  const DataforCondition = [
-    { status: "pending", subStatus: null },
-    { status: "review", subStatus: null },
-    { status: "ongoing", subStatus: "hidden" },
-    { status: "ongoing", subStatus: "assignee" },
-    { status: "ongoing", subStatus: "creator" },
-    { status: "done", subStatus: null },
-    { status: "cancelled", subStatus: null },
-  ];
-
-  const OngoingStatus = (status: any, myCase: any) => {
-    switch (status) {
-      case "assignee":
-        return GroupBtnFunc(ongoing, "assignee");
-      case "creator":
-        return GroupBtnFunc(ongoing, "creator");
-      case "hidden":
-        return GroupBtnFunc(ongoing, "hidden");
-    }
+  const CancelBtn = () => {
+    return (
+      <LoadingButton
+        sx={{
+          width: "107px",
+          color: "white",
+          marginRight: "10px",
+          backgroundColor: "#E85555",
+          textTransform: "unset",
+          "&:hover": {
+            border: "none",
+            backgroundColor: "#E85555",
+          },
+        }}
+        disabled={isloading}
+      >
+        {isCanceled ? "Un canceled" : "Cancel"}
+      </LoadingButton>
+    );
+  };
+  const DoneHideBtn = (label: string) => {
+    const isHide = label === "Hide" || label === "Un hide";
+    return (
+      <LoadingButton
+        variant="contained"
+        onClick={() => (isHide ? handleHideUnHide(label) : handleDoneClick)}
+        sx={{
+          ml: 0.7,
+          backgroundColor: isHide ? "#F4F4F4" : "#0076C8",
+          color: isHide ? "#818181" : "white",
+          width: "89px",
+          borderRadius: "4px",
+          fontWeight: "500",
+          "&:hover": {
+            border: "none",
+            backgroundColor: isHide ? "#F4F4F4" : "#0076C8",
+          },
+        }}
+        disabled={isloading}
+      >
+        {label}
+      </LoadingButton>
+    );
   };
 
-  const GroupBtnFunc = (Obj: any, myCase: any) => {
+  const checkIsStateMatch = (states: string[]) => states.includes(userSubState);
+
+  const isOngoingUnread = ["ongoing", "unread"];
+  const inReviewToReview = ["in-review", "to-review"];
+  const showPendingReviewBtn = checkIsStateMatch([...inReviewToReview]);
+  const showDoneBtn = checkIsStateMatch([...isOngoingUnread, "new"]);
+  const showCancelBtn = checkIsStateMatch([...isOngoingUnread, "canceled"]);
+  const pendingReviewCancel = checkIsStateMatch([
+    ...inReviewToReview,
+    "canceled",
+  ]);
+  const doneHideBtnVisible: boolean =
+    (isAssignedToMe || isCreator) && taskRootState !== "Canceled";
+  const doneHideBtnLabel: string =
+    taskRootState === "Hidden" ? "Un hide" : "Hide";
+
+  const GroupBtnFunc = (buttons: any) => {
     return (
       <>
         <Box
@@ -148,8 +202,9 @@ const DetailActions: React.FC<IProps> = (props) => {
               minHeight: "38px",
             }}
           >
-            {Obj.map((items: any, index: any) => {
-              const { icon } = items;
+            {buttons.map((items: any, index: any) => {
+              const { icon, callback } = items;
+
               return (
                 <React.Fragment key={index}>
                   {index !== 0 && (
@@ -162,7 +217,7 @@ const DetailActions: React.FC<IProps> = (props) => {
                     ></Box>
                   )}
                   <LoadingButton
-                    // onClick={() => handleClick("comment")}
+                    onClick={callback}
                     sx={{ maxWidth: "35px", minWidth: "35px" }}
                   >
                     {icon}
@@ -173,43 +228,9 @@ const DetailActions: React.FC<IProps> = (props) => {
           </Box>
 
           <Box sx={{ position: "relative" }}>
-            {myCase === "assignee" ||
-            myCase === "creator" ||
-            myCase === "hidden" ? (
-              <>
-                {myCase === "creator" || myCase === "hidden" ? (
-                  <LoadingButton
-                    sx={{
-                      width: "75px",
-                      color: hide ? "white" : null,
-                      marginRight: "10px",
-                      backgroundColor: hide ? "#E85555" : "#F4F4F4",
-                      "&:hover": {
-                        border: "none",
-                        backgroundColor: hide ? "#E85555" : "#F4F4F4",
-                      },
-                    }}
-                    disabled={isloading}
-                  >
-                    {myCase === "hidden" ? "Hide" : "cancel"}
-                  </LoadingButton>
-                ) : (
-                  ""
-                )}
-                <LoadingButton
-                  variant="contained"
-                  onClick={handleDoneClick}
-                  sx={{
-                    width: "75px",
-                    borderRadius: "4px",
-                    fontWeight: "700",
-                  }}
-                  disabled={isloading}
-                >
-                  Done
-                </LoadingButton>
-              </>
-            ) : null}
+            {isCreator && showCancelBtn && CancelBtn()}
+            {doneHideBtnVisible && DoneHideBtn(doneHideBtnLabel)}
+            {showDoneBtn && DoneHideBtn("Done")}
           </Box>
         </Box>
       </>
@@ -217,57 +238,51 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const replyBtn = [
-    { title: "reply", icon: <ReplyIcon />, callback: handleDoneClick },
-  ];
-  const dontBtn = [
-    { title: "reply", icon: <ReplyIcon />, callback: handleDoneClick },
+    { title: "reply", icon: <ReplyIcon />, callback: handleReplyClick },
   ];
 
-  const pending = [
-    { title: "check", icon: <AssignmentTurnedInOutlinedIcon /> },
-    { title: "cancel", icon: <CancelPresentationOutlinedIcon /> },
+  const forWardBtn = [
+    {
+      title: "forward",
+      icon: <PersonAddAlt1OutlinedIcon />,
+      callback: handleForwardClick,
+    },
   ];
 
-  const review = [
-    { title: "arrowleft", icon: <ReplyIcon /> },
-    { title: "check", icon: <AssignmentTurnedInOutlinedIcon /> },
-    { title: "cancel", icon: <CancelPresentationOutlinedIcon /> },
+  const showReplyForwad = [
+    ...replyBtn,
+    ...(!pendingReviewCancel ? forWardBtn : []),
   ];
 
-  const done = [
-    { title: "arrowleft", icon: <ReplyIcon /> },
-    { title: "personadd", icon: <PersonAddAlt1OutlinedIcon /> },
-    { title: "revert", icon: <HistoryOutlinedIcon /> },
+  const pendingReview = [
+    ...replyBtn,
+    { title: "pending", icon: <AcceptIcon />, callback: handleAcceptance },
+    {
+      title: "review",
+      icon: (
+        <GenericMenu
+          icon={<RejectAndCloseIcon />}
+          isProjectGroup={true}
+          options={[
+            {
+              menuName: "Reject",
+              callBackHandler: () => {},
+            },
+            {
+              menuName: "Reject & Close",
+              callBackHandler: () => {},
+            },
+          ]}
+          key={1}
+          paddingTop={0}
+          disableMenu={false}
+        />
+      ),
+      callback: handleRejectClose,
+    },
   ];
 
-  const cancelled = [{ title: "arrowleft", icon: <ReplyIcon /> }];
-
-  const ongoing = [
-    { title: "arrowleft", icon: <ReplyIcon /> },
-    { title: "personadd", icon: <PersonAddAlt1OutlinedIcon /> },
-  ];
-
-  const ShowBtns = DataforCondition?.map((item, index) => {
-    const { status, subStatus } = item;
-
-    switch (userSubState) {
-      case "in-review":
-        return GroupBtnFunc(pending, "pending");
-      case "unread":
-        return GroupBtnFunc(pending, "unread");
-      case "to-review":
-        return GroupBtnFunc(review, "review");
-      case "ongoing":
-        return OngoingStatus(subStatus, "ongoing");
-      case "done":
-        return GroupBtnFunc(done, "done");
-      case "cancelled":
-        return GroupBtnFunc(cancelled, "cancelled");
-      default:
-        return null;
-    }
-  });
-
+  const showBtns = showPendingReviewBtn ? pendingReview : showReplyForwad;
   const HeaderBtns = (
     <Box
       sx={{
@@ -278,7 +293,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         alignItems: "center",
       }}
     >
-      {ShowBtns}
+      {GroupBtnFunc(showBtns)}
     </Box>
   );
 

@@ -3,8 +3,10 @@ import { FavIcon, UnFavIcon } from "./LocationIcons/FavUnFavIcon";
 import PrivateIcon from "./LocationIcons/PrivateIcon";
 import PublicIcon from "./LocationIcons/PublicIcon";
 import ShareIcon from "./LocationIcons/ShareIcon";
+import AcceptIcon from "./TaskIcons/AcceptIcon";
 import FileDownloadIcon from "./TaskIcons/FileDownloadIcon";
 import ForwardIcon from "./TaskIcons/ForwardIcon";
+import RejectAndCloseIcon from "./TaskIcons/RejectAndCloseIcon";
 import ReplyIcon from "./TaskIcons/ReplyIcon";
 import { PinIcon } from "./pin/PinIcon";
 export * from "./ConfigIcons";
@@ -28,6 +30,7 @@ export { RemoveIcon } from "./remove/Remove";
 export { SendIcon } from "./send/Send";
 
 export {
+  AcceptIcon,
   ClearIconSvgGray,
   FavIcon,
   FileDownloadIcon,
@@ -35,6 +38,7 @@ export {
   PinIcon,
   PrivateIcon,
   PublicIcon,
+  RejectAndCloseIcon,
   ReplyIcon,
   ShareIcon,
   UnFavIcon,

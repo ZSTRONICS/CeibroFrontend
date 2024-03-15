@@ -101,7 +101,6 @@ function AddedDetails(props: IProps) {
                 isPinned,
               } = event;
               const isCommentInitiator = initiator && initiator._id === userId;
-              console.log("isCommentInitiator", isCommentInitiator);
               const invitedMembersData =
                 eventData &&
                 eventData.length > 0 &&
