@@ -280,8 +280,8 @@ const ForwardTask = ({
   const hasAssignTo = renderValue();
   return (
     <>
-      <Box sx={{ height: "100%", overflow: "auto", pr: 1.5 }}>
-        <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
+      <Box sx={{ width: "100%", height: "450px", overflow: "auto", px: 2.5 }}>
+        {/* <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} /> */}
         <Box>
           <Box
             sx={{
@@ -364,7 +364,8 @@ const ForwardTask = ({
                         taskDetailContDimension &&
                         taskDetailContDimension?.width > 0
                           ? taskDetailContDimension.width
-                          : `calc(100vw - 29.4rem)`,
+                          : "max-content",
+                      // : `calc(100vw - 29.4rem)`,
                     },
                   },
                 }}
@@ -473,6 +474,7 @@ const ForwardTask = ({
                 autoFocus
                 inputProps={{ maxLength: 1500 }}
                 multiline
+                maxRows={10}
                 value={comment}
                 sx={{
                   width: "100%",

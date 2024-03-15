@@ -365,7 +365,7 @@ export const getTaskCardHeight = (task: ITask) => {
     const CHAR_COUNT_DESCRIPTION = 55;
     let height = 100;
     if (TASK_WITH_FILES_AND_NO_DESC || TASK_WITH_FILES_AND_DESC) {
-      height = 140
+      height = 130
     }
     else {
       height = task.description.length > 0 ? (task.description.length > CHAR_COUNT_DESCRIPTION ? DOUBLE_LINE_DESCRIPTION_CARD_HEIGHT : SINGLE_LINE_DESCRIPTION_CARD_HEIGHT) : NO_DESCRIPTION_CARD_HEIGHT;

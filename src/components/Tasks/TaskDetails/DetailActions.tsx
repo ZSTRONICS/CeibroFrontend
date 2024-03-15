@@ -16,6 +16,9 @@ import { taskActions } from "redux/action";
 
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { GenericMenu } from "components/GenericComponents";
+import CustomModal from "components/Modal";
+import { useOpenCloseModal } from "hooks";
+import ForwardTask from "../Forward-Task";
 
 interface IProps {
   DrawDetailCollapse: boolean;
@@ -49,13 +52,34 @@ const DetailActions: React.FC<IProps> = (props) => {
     isCanceled,
     isAssignedToMe,
     taskRootState,
+    assignedToState,
+    invitedNumbers,
   } = selectedTask;
 
   const history = useHistory();
   const dispatch = useDispatch();
   console.log("selectedTask", selectedTask);
   const [isloading, setIsLoading] = useState(false);
-
+  const {
+    isOpen: isOpenLocal,
+    openModal: openModalLocal,
+    closeModal: closeModalLocal,
+  } = useOpenCloseModal();
+  const {
+    isOpen: isApprovalModalOpen,
+    openModal: openApprovalModal,
+    closeModal: closeApprovalModal,
+  } = useOpenCloseModal();
+  const {
+    isOpen: isRejectReOpenModalOpen,
+    openModal: openRejectReOpenModal,
+    closeModal: closeRejectReOpenModal,
+  } = useOpenCloseModal();
+  const {
+    isOpen: isRejectCloseModalOpen,
+    openModal: openRejectCloseModal,
+    closeModal: closeRejectCloseModal,
+  } = useOpenCloseModal();
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
 
@@ -78,7 +102,6 @@ const DetailActions: React.FC<IProps> = (props) => {
   const doneHideBtnLabel: string =
     taskRootState === "Hidden" ? "Un hide" : "Hide";
 
-  const handleAcceptance = () => {};
   const handleRejectClose = () => {
     console.log("reject close");
   };
@@ -281,7 +304,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     {
       title: "forward",
       icon: <PersonAddAlt1OutlinedIcon />,
-      callback: handleForwardClick,
+      callback: openModalLocal,
     },
   ];
 
@@ -292,7 +315,7 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   const pendingReview = [
     ...replyBtn,
-    { title: "pending", icon: <AcceptIcon />, callback: handleAcceptance },
+    { title: "pending", icon: <AcceptIcon />, callback: openApprovalModal },
     {
       title: "review",
       icon: (
@@ -302,11 +325,11 @@ const DetailActions: React.FC<IProps> = (props) => {
           options={[
             {
               menuName: "Reject-reopen",
-              callBackHandler: () => {},
+              callBackHandler: openRejectReOpenModal,
             },
             {
               menuName: "Reject-Close",
-              callBackHandler: () => {},
+              callBackHandler: openRejectCloseModal,
             },
           ]}
           key={1}
@@ -400,6 +423,67 @@ const DetailActions: React.FC<IProps> = (props) => {
           <>{HeaderBtns}</>
         </Grid>
       </Grid>
+
+      {isOpenLocal === true && (
+        <CustomModal
+          maxWidth={"md"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={true}
+          title="Add user"
+          isOpen={isOpenLocal}
+          handleClose={closeModalLocal}
+          children={
+            <ForwardTask
+              invitedNumbers={invitedNumbers}
+              assignedToState={assignedToState}
+              taskId={taskId}
+              closeModal={closeModalLocal}
+              isOpen={false}
+            />
+          }
+        />
+      )}
+      {isApprovalModalOpen === true && (
+        <CustomModal
+          maxWidth={"md"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={true}
+          title={title}
+          isOpen={isApprovalModalOpen}
+          handleClose={closeApprovalModal}
+          children={<>{title} Approval modal open</>}
+        />
+      )}
+      {isRejectReOpenModalOpen === true && (
+        <CustomModal
+          maxWidth={"md"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={true}
+          title={title}
+          isOpen={isRejectReOpenModalOpen}
+          handleClose={closeRejectReOpenModal}
+          children={<>{title} Reject-Reopen modal open</>}
+        />
+      )}
+      {isRejectCloseModalOpen === true && (
+        <CustomModal
+          maxWidth={"md"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={true}
+          title={title}
+          isOpen={isRejectCloseModalOpen}
+          handleClose={closeRejectCloseModal}
+          children={<>{title} Reject-Close modal open</>}
+        />
+      )}
     </>
   );
 };
