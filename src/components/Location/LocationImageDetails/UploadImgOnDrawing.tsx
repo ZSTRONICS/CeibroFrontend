@@ -161,6 +161,7 @@ function UploadImgOnDrawing(props: IProps) {
         />
         {selectedImages.length > 0 && (
           <ImagesToUpload
+            showLabel={false}
             imgwithcomment={true}
             updateImageWithComment={(updatedImage: ImageWithComment) => {
               const updatedImagesLocal = selectedImages.map(

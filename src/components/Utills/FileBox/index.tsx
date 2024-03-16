@@ -22,7 +22,7 @@ interface IProps {
   bb?: boolean;
   media?: any;
   title?: string;
-  files: IFile[] | File[] | string | undefined;
+  files: IFile[] | File[] | ImageWithComment[] | string | undefined;
   textColor?: string;
   showFullHeight?: boolean;
   isnoWrap?: boolean;
@@ -112,11 +112,13 @@ const FileBox: React.FC<IProps> = ({
         }}
       >
         {files && Array.isArray(files) && files.length > 0 ? (
-          files.map((item: IFile | File | any) => {
+          files.map((item: IFile | File | ImageWithComment | any) => {
             const fileSize = filesizes(item.size);
             let f_name = "";
             let key = "";
-            const { fileName, _id, name } = item;
+            const { fileName, _id, name, type, fileType } = item.file
+              ? item.file
+              : item;
             if (fileName) {
               f_name = fileName;
               key = _id;
@@ -141,9 +143,9 @@ const FileBox: React.FC<IProps> = ({
                 }}
                 onClick={() => openPDFNewTab(item)}
               >
-                {item.type
-                  ? getFileIconThumbnail(item.type, 16, 20)
-                  : getFileIconThumbnail(item.fileType, 16, 20)}
+                {type
+                  ? getFileIconThumbnail(type, 16, 20)
+                  : getFileIconThumbnail(fileType, 16, 20)}
                 <Tooltip title={f_name}>
                   <Typography
                     sx={{

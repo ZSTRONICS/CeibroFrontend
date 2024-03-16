@@ -11,7 +11,7 @@ import _ from "lodash";
 interface FooterPropsType {
   handleSubmitForm: () => void;
   handleAttachImageValue?: (file: ImageWithComment[] | File[] | any) => void;
-  handleSelectDocumentValue?: (file: File[]) => void;
+  handleSelectDocumentValue?: (file: File[] | ImageWithComment[] | any) => void;
   handleGetLocationValue?: () => void;
   handleClose: () => void;
   isCommentUi?: boolean;
@@ -22,10 +22,16 @@ interface FooterPropsType {
   disabled: boolean;
   isSubmitted: boolean;
   isImgWithComment?: boolean;
+  isFilesWithComment?: boolean;
 }
 
 const Footer = (props: FooterPropsType) => {
-  const { FooterPosition, acceptImgOnly, isImgWithComment } = props;
+  const {
+    FooterPosition,
+    acceptImgOnly,
+    isFilesWithComment,
+    isImgWithComment,
+  } = props;
   const handleGetLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -59,10 +65,19 @@ const Footer = (props: FooterPropsType) => {
             file.type.startsWith("image/")
           );
         }
-
-        const validFiles = Array.from(files).filter((file) =>
-          isValidDocumentType(file.type)
-        );
+        let validFiles: any[] = [];
+        if (isFilesWithComment) {
+          validFiles = Array.from(files)
+            .filter((file) => isValidDocumentType(file.type))
+            .map((file) => ({
+              file: file,
+              comment: "",
+            }));
+        } else {
+          validFiles = Array.from(files).filter((file) =>
+            isValidDocumentType(file.type)
+          );
+        }
         if (attachments.length > 0) {
           props.handleAttachImageValue &&
             props.handleAttachImageValue(attachments);

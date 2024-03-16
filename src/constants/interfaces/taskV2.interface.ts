@@ -52,6 +52,7 @@ export interface ITask {
   creatorState: string;
   rootState: string;
   isCreator: boolean;
+  isTaskConfirmer: boolean;
   isHiddenByMe: boolean;
   isSeenByMe: boolean;
   isAssignedToMe: boolean;

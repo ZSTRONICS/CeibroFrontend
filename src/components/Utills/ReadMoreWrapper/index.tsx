@@ -24,7 +24,7 @@ interface ReadMoreWrapperProps {
   readMore?: boolean;
   count?: number;
   type: "text" | "image" | "imageWithDesp" | "file" | "Location";
-  data?: string | IFile[] | File[] | [];
+  data?: string | IFile[] | File[] | ImageWithComment[] | [];
   children?: JSX.Element | JSX.Element[];
   callback?: (file: File | any, type: fileType) => void;
   allowExpandedView?: boolean;

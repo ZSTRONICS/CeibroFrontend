@@ -194,7 +194,6 @@ function CreateNewTask() {
     name: keyof CreateNewTaskFormType
   ) => {
     if (value === undefined) {
-      console.log("name", name, value);
       setSelectedData((prevSelectedData) => ({
         ...prevSelectedData,
         [name]: initialValues[name],
@@ -409,6 +408,7 @@ function CreateNewTask() {
             </Box>
             {selectedImages.length > 0 && (
               <ImagesToUpload
+                showLabel={true}
                 updateImageWithComment={() => {}}
                 selectedImages={selectedImages}
                 onClearFile={(file: any, type: any) =>

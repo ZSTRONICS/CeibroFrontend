@@ -16,9 +16,10 @@ import { taskActions } from "redux/action";
 
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { GenericMenu } from "components/GenericComponents";
-import CustomModal from "components/Modal";
 import { useOpenCloseModal } from "hooks";
 import ForwardTask from "../Forward-Task";
+import ApprovalOverlays from "./ApprovalOverlays";
+import TaskHeaderModals from "./TaskHeaderModals";
 
 interface IProps {
   DrawDetailCollapse: boolean;
@@ -49,6 +50,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     doneImageRequired,
     title,
     isCreator,
+    isTaskConfirmer,
     isCanceled,
     isAssignedToMe,
     taskRootState,
@@ -58,7 +60,7 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  console.log("selectedTask", selectedTask);
+  // console.log("selectedTask", selectedTask);
   const [isloading, setIsLoading] = useState(false);
   const {
     isOpen: isOpenLocal,
@@ -129,7 +131,6 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const handleReplyClick = () => {};
-  const handleForwardClick = () => {};
   const handleDoneClick = () => {
     setIsLoading(true);
     if (doneImageRequired === true || doneCommentsRequired === true) {
@@ -341,7 +342,13 @@ const DetailActions: React.FC<IProps> = (props) => {
     },
   ];
 
-  const showBtns = showPendingReviewBtn ? pendingReview : showReplyForwad;
+  const isCreatorOrConfirmer = isCreator || isTaskConfirmer;
+  const showBtns = showPendingReviewBtn
+    ? isCreatorOrConfirmer
+      ? pendingReview
+      : replyBtn
+    : showReplyForwad;
+
   const HeaderBtns = (
     <Box
       sx={{
@@ -376,6 +383,58 @@ const DetailActions: React.FC<IProps> = (props) => {
       }}
     />
   );
+  const modals = [
+    {
+      title: "Add user",
+      isOpen: isOpenLocal,
+      handleClose: closeModalLocal,
+      content: (
+        <ForwardTask
+          invitedNumbers={invitedNumbers}
+          assignedToState={assignedToState}
+          taskId={taskId}
+          closeModal={closeModalLocal}
+          isOpen={false}
+        />
+      ),
+    },
+    {
+      title: title,
+      isOpen: isApprovalModalOpen,
+      handleClose: closeApprovalModal,
+      content: (
+        <ApprovalOverlays
+          taskId={taskId}
+          title="Approve"
+          handleClose={closeApprovalModal}
+        />
+      ),
+    },
+    {
+      title: title,
+      isOpen: isRejectReOpenModalOpen,
+      handleClose: closeRejectReOpenModal,
+      content: (
+        <ApprovalOverlays
+          taskId={taskId}
+          title="Reject-Reopen"
+          handleClose={closeRejectReOpenModal}
+        />
+      ),
+    },
+    {
+      title: title,
+      isOpen: isRejectCloseModalOpen,
+      handleClose: closeRejectCloseModal,
+      content: (
+        <ApprovalOverlays
+          taskId={taskId}
+          title="Reject-Close"
+          handleClose={closeRejectCloseModal}
+        />
+      ),
+    },
+  ];
 
   return (
     <>
@@ -424,66 +483,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         </Grid>
       </Grid>
 
-      {isOpenLocal === true && (
-        <CustomModal
-          maxWidth={"md"}
-          showFullWidth={true}
-          showDivider={true}
-          showCloseBtn={false}
-          showTitleWithLogo={true}
-          title="Add user"
-          isOpen={isOpenLocal}
-          handleClose={closeModalLocal}
-          children={
-            <ForwardTask
-              invitedNumbers={invitedNumbers}
-              assignedToState={assignedToState}
-              taskId={taskId}
-              closeModal={closeModalLocal}
-              isOpen={false}
-            />
-          }
-        />
-      )}
-      {isApprovalModalOpen === true && (
-        <CustomModal
-          maxWidth={"md"}
-          showFullWidth={true}
-          showDivider={true}
-          showCloseBtn={false}
-          showTitleWithLogo={true}
-          title={title}
-          isOpen={isApprovalModalOpen}
-          handleClose={closeApprovalModal}
-          children={<>{title} Approval modal open</>}
-        />
-      )}
-      {isRejectReOpenModalOpen === true && (
-        <CustomModal
-          maxWidth={"md"}
-          showFullWidth={true}
-          showDivider={true}
-          showCloseBtn={false}
-          showTitleWithLogo={true}
-          title={title}
-          isOpen={isRejectReOpenModalOpen}
-          handleClose={closeRejectReOpenModal}
-          children={<>{title} Reject-Reopen modal open</>}
-        />
-      )}
-      {isRejectCloseModalOpen === true && (
-        <CustomModal
-          maxWidth={"md"}
-          showFullWidth={true}
-          showDivider={true}
-          showCloseBtn={false}
-          showTitleWithLogo={true}
-          title={title}
-          isOpen={isRejectCloseModalOpen}
-          handleClose={closeRejectCloseModal}
-          children={<>{title} Reject-Close modal open</>}
-        />
-      )}
+      <TaskHeaderModals modals={modals} />
     </>
   );
 };

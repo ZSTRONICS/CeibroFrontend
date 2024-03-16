@@ -262,6 +262,7 @@ const Comment = ({
       </CustomStack>
       {selectedImages.length > 0 && (
         <ImagesToUpload
+          showLabel={true}
           updateImageWithComment={() => {}}
           isComment={true}
           selectedImages={selectedImages}

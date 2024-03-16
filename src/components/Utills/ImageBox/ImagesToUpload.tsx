@@ -9,6 +9,7 @@ interface ImageUploadProps {
   onClearFile: (file: any, type: fileType) => void;
   isComment?: boolean;
   imgwithcomment?: boolean;
+  showLabel: boolean;
   updateImageWithComment: (image: ImageWithComment) => void;
 }
 
@@ -18,6 +19,7 @@ function ImagesToUpload(props: ImageUploadProps) {
     selectedImages,
     isComment = false,
     imgwithcomment,
+    showLabel,
     updateImageWithComment,
   } = props;
   const updatedImgWidthComment = {};
@@ -35,7 +37,7 @@ function ImagesToUpload(props: ImageUploadProps) {
           gap: 5,
         }}
       >
-        {imgwithcomment ? null : (
+        {showLabel && (
           <Typography
             sx={{
               fontFamily: "Inter",
