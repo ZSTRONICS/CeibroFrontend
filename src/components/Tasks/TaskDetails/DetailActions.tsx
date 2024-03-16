@@ -1,4 +1,4 @@
-import { Box, Chip, Grid } from "@mui/material";
+import { Box, Chip, Grid, Typography } from "@mui/material";
 import { LoadingButton } from "components/Button";
 import {
   AcceptIcon,
@@ -222,7 +222,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           ml: 0.7,
           backgroundColor: isHide ? "#F4F4F4" : "#0076C8",
           color: isHide ? "#818181" : "white",
-          width: "89px",
+          width: "84px",
           borderRadius: "4px",
           fontWeight: "500",
           "&:hover": {
@@ -444,7 +444,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           container
           xl={isLocationTaskDetail && isLocationTaskDetail ? 12 : 7}
           lg={isLocationTaskDetail && isLocationTaskDetail ? 12 : 6}
-          md={12}
+          md={isLocationTaskDetail ? 12 : 3}
           sm={12}
           xs={12}
           sx={{ width: "100%" }}
@@ -462,8 +462,17 @@ const DetailActions: React.FC<IProps> = (props) => {
             </Grid>
           </Grid>
 
-          <Grid item sx={{ marginTop: "10px", fontWeight: "600" }}>
-            {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
+          <Grid xs={12} item sx={{ marginTop: "10px" }}>
+            <Typography
+              sx={{
+                fontWeight: "600",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {title ? title.charAt(0).toUpperCase() + title.slice(1) : ""}
+            </Typography>
           </Grid>
         </Grid>
         <Grid
@@ -475,7 +484,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           item
           xl={isLocationTaskDetail && isLocationTaskDetail ? 12 : 5}
           lg={isLocationTaskDetail && isLocationTaskDetail ? 12 : 6}
-          md={12}
+          md={isLocationTaskDetail ? 12 : 9}
           sm={12}
           xs={12}
         >

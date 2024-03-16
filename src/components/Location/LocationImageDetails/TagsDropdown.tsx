@@ -16,6 +16,7 @@ interface TagListDropdownProps {
   labelName?: string;
   isSmall?: boolean;
   selectedTags: string[];
+  tasktilters?: boolean;
   setSelectedTags: Dispatch<SetStateAction<string[]>>;
 }
 
@@ -25,6 +26,7 @@ const TagListDropdown = ({
   labelName,
   selectedTags,
   setSelectedTags,
+  tasktilters,
 }: TagListDropdownProps) => {
   const handleChange = (
     event: SyntheticEvent<Element, Event>,

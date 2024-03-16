@@ -218,7 +218,6 @@ const ReadMoreWrapper = ({
                     display: "flex",
                     flexWrap: "wrap",
                     gap: "10px",
-                    border: "solid 1px green",
                   }}
                 >
                   {

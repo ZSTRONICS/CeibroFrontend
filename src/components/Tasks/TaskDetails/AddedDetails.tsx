@@ -73,7 +73,7 @@ function AddedDetails(props: IProps) {
     <>
       <Box
         sx={{
-          height: `${parentheight && parentheight - 160}px`,
+          height: `${parentheight && parentheight - 60}px`,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",

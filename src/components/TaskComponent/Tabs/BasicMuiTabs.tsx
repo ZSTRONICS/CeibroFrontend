@@ -118,7 +118,7 @@ export default function BasicTabs({
           id={`tabpanel-${index}`}
           aria-labelledby={`tab-${index}`}
         >
-          {value === index && <Box sx={{ p: 1 }}>{tab.content}</Box>}
+          {value === index && <Box>{tab.content}</Box>}
         </div>
       ))}
     </Box>

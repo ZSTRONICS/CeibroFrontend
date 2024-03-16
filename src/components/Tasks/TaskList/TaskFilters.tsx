@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { CustomStack } from "components/CustomTags";
 import TagListDropdown from "components/Location/LocationImageDetails/TagsDropdown";
 import { getDropdownOptions } from "components/Utills/Globals";
@@ -143,43 +143,65 @@ function TaskFilters(props: Props) {
   };
 
   return (
-    <CustomStack sx={{ gap: 1, alignItems: "flex-start" }}>
-      {!showHiddenTasks && (
-        <TaskMenu
-          menuItems={isApproval ? TaskRootStateApproval : TaskRootState}
-          selectedMenu={selectedTaskMenu}
-        />
-      )}
-      <TagListDropdown
-        isSmall={true}
-        options={[]}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
-      <Box sx={{ maxWidth: "90px", width: "100%", mt: "-10px" }}>
-        <UserDropDown
-          isTaskFilter={true}
-          name="assignedToState"
-          label={"Users"}
-          contacts={userAllContacts}
-          recentUserContact={recentUserContact}
-          handleChangeValues={handleChangeValues}
-        />
-      </Box>
-      <TagListDropdown
-        isSmall={true}
-        options={[]}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
-      <Button
-        variant="text"
-        sx={{ fontSize: "12px", fontWeight: 400, textTransform: "unset" }}
-        onClick={handleClearAll}
+    <>
+      <CustomStack
+        sx={{
+          gap: 1,
+          alignItems: "flex-start",
+          width: "100%",
+        }}
       >
-        Clear all
-      </Button>
-    </CustomStack>
+        {!showHiddenTasks && (
+          <TaskMenu
+            menuItems={isApproval ? TaskRootStateApproval : TaskRootState}
+            selectedMenu={selectedTaskMenu}
+          />
+        )}
+        <TagListDropdown
+          isSmall={true}
+          options={[]}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+          tasktilters={true}
+        />
+        <Box sx={{ maxWidth: "90px", width: "100%", mt: "-10px" }}>
+          <UserDropDown
+            isTaskFilter={true}
+            name="assignedToState"
+            label={"Users"}
+            contacts={userAllContacts}
+            recentUserContact={recentUserContact}
+            handleChangeValues={handleChangeValues}
+            tasktilters={true}
+          />
+        </Box>
+        <TagListDropdown
+          isSmall={true}
+          options={[]}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+          tasktilters={true}
+        />
+        <Box
+          // variant="text"
+          sx={{
+            fontSize: "12px",
+            color: "#0076C8",
+            fontWeight: 400,
+            textTransform: "unset",
+            display: "inline",
+            width: "200px",
+            // width: "max-contnet",
+            marginTop: "10px",
+            cursor: "pointer",
+            transform: "translateX(5px)",
+          }}
+          onClick={handleClearAll}
+        >
+          Clear all
+        </Box>
+      </CustomStack>
+    </>
   );
 }
 

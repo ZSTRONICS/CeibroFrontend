@@ -33,6 +33,7 @@ interface IProps {
   isTaskFilter?: boolean;
   contacts: Contact[];
   recentUserContact: Contact[];
+  tasktilters?: boolean;
   createCallback?: (type: string, label: string) => void;
   handleChangeValues: (
     value: ChangeValueType,
@@ -49,6 +50,7 @@ function UserDropDown(props: IProps) {
     contacts,
     handleChangeValues,
     recentUserContact,
+    tasktilters,
   } = props;
   const [filteredRecentUserContact, setFilteredRecentUserContact] =
     React.useState<Contact[]>(recentUserContact);

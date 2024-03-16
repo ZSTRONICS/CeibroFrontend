@@ -13,12 +13,10 @@ import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import { DOC_EXT, MEDIA_EXT } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { PinIcon } from "components/material-ui/icons";
-import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
 
 interface Props {
-  docs?: string | IFile[] | File[] | [];
   commentData: any;
   initiator: any;
   isPinned: boolean;
@@ -26,19 +24,19 @@ interface Props {
 }
 
 const CommentCard = ({
-  docs,
   commentData,
   initiator,
   isPinned,
   isCommentInitiator,
 }: Props) => {
-  const array = docs && [docs[0], docs[0], docs[0], docs[0], docs[0], docs[0]];
   const [showMore, setShowMore] = useState<boolean>(false);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down(1100));
   const commentshowonlarge = useMediaQuery(
     theme.breakpoints.between(1100, 1620)
   );
+
+  // console.log(commentData, "commentdata...");
 
   const boximgref = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState<number>(0);
@@ -87,14 +85,26 @@ const CommentCard = ({
     return count;
   };
 
+  const [doxdata, setdoxData] = useState([]);
+  const [Imgdata, setImgData] = useState([]);
+
   const handleResize = () => {
     const Count = getVisibleChildrenCount();
     if (Count) {
       setCount(Count);
     }
   };
+
   useEffect(() => {
-    handleResize();
+    const DoxfilteredData = commentData.files.filter((item: any) =>
+      DOC_EXT.includes(item.fileType)
+    );
+    const ImgfilteredData = commentData.files.filter((item: any) =>
+      MEDIA_EXT.includes(item.fileType)
+    );
+    setdoxData(DoxfilteredData);
+    setImgData(ImgfilteredData);
+    handleResize(); // Call the function directly here
     window.addEventListener("resize", handleResize);
   }, []);
 
@@ -229,9 +239,7 @@ const CommentCard = ({
           </Box>
         )}
       </Box>
-      {commentData && commentData?.files && commentData?.files?.length >= 1 ? (
-        // {
-        // MEDIA_EXT.includes(commentData?.files?.fileType) ? (
+      {commentData && commentData?.files && Imgdata?.length >= 1 ? (
         <>
           <Box
             ref={boximgref}
@@ -241,98 +249,90 @@ const CommentCard = ({
               width: "100%",
               overflow: "hidden",
               height: "72px",
-              border: "solid 1px #F4F4F4 ",
+              border: !isCommentInitiator
+                ? "solid 1px #F4F4F4 "
+                : "solid 1px #CFECFF ",
             }}
           >
-            {commentData?.files?.map((items: any, index: number) =>
-              MEDIA_EXT.includes(items.fileType) ? (
-                <div
-                  onClick={() => handleImgClick(index)}
-                  key={index}
-                  style={{
-                    position: "relative",
-                    width: "70px",
-                    height: "70px",
-                    marginLeft: index !== 0 ? "10px" : "",
-                    cursor: "pointer",
-                  }}
-                >
-                  {commentData?.files &&
-                  commentData?.files?.length - count !== 0 &&
-                  index === count - 1 ? (
-                    <>
-                      <Box
-                        sx={{
-                          height: "100%",
-                          width: "100%",
-                          backgroundColor: "black",
-                          opacity: "0.6",
-                          zIndex: "10",
-                          position: "absolute",
-                          borderRadius: "10px",
-                        }}
-                      ></Box>
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          zIndex: "15",
-                          color: "white",
-                          fontSize: "20px",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          width: "100%",
-                          height: "100%",
-                        }}
-                      >
-                        {`+${
-                          commentData?.files &&
-                          commentData?.files?.length - count
-                        }`}
-                      </Box>
-                    </>
-                  ) : null}
+            {Imgdata?.map((items: any, index: number) => (
+              <div
+                onClick={() => handleImgClick(index)}
+                key={index}
+                style={{
+                  position: "relative",
+                  width: "70px",
+                  height: "70px",
+                  marginLeft: index !== 0 ? "10px" : "",
+                  cursor: "pointer",
+                }}
+              >
+                {Imgdata &&
+                Imgdata?.length - count !== 0 &&
+                index === count - 1 ? (
+                  <>
+                    <Box
+                      sx={{
+                        height: "100%",
+                        width: "100%",
+                        backgroundColor: "black",
+                        opacity: "0.6",
+                        zIndex: "10",
+                        position: "absolute",
+                        borderRadius: "10px",
+                      }}
+                    ></Box>
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        zIndex: "15",
+                        color: "white",
+                        fontSize: "20px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    >
+                      {`+${Imgdata && Imgdata?.length - count}`}
+                    </Box>
+                  </>
+                ) : null}
 
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      top: "0px",
-                      height: "100%",
-                      borderRadius: "10px",
-                      width: "100%",
-                      position: "absolute",
-                    }}
-                    image={items.fileUrl}
-                  />
-                </div>
-              ) : null
-            )}
+                <CardMedia
+                  component="img"
+                  sx={{
+                    top: "0px",
+                    height: "100%",
+                    borderRadius: "10px",
+                    width: "100%",
+                    position: "absolute",
+                  }}
+                  image={items.fileUrl}
+                />
+              </div>
+            ))}
           </Box>
-          {/* ) : ( */}
-          {DOC_EXT.includes(commentData?.files.fileType) ? (
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-              }}
-            >
-              <ReadMoreWrapper
-                count={array?.length}
-                title=""
-                type="file"
-                download={false}
-              />
-            </Box>
-          ) : (
-            ""
-          )}
         </>
       ) : (
-        // )
-        // }
         ""
       )}
-
+      {doxdata.length >= 1 ? (
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+          }}
+        >
+          <ReadMoreWrapper
+            count={doxdata?.length}
+            title=""
+            data={doxdata}
+            type="file"
+            download={false}
+          />
+        </Box>
+      ) : null}
       <Box sx={{ width: "100%" }}>
         <Typography
           sx={{
@@ -347,9 +347,9 @@ const CommentCard = ({
           />
         </Typography>
       </Box>
-      {isOpen && commentData.files.length > 0 && (
+      {isOpen && Imgdata.length > 0 && (
         <ImgsViewerSlider
-          imgs={commentData.files.map((image: any) => image.fileUrl)}
+          imgs={Imgdata.map((image: any) => image.fileUrl)}
           currImg={currentImageIndex}
           isOpen={isOpen}
           onClose={handleClose}

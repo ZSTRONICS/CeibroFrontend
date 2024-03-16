@@ -130,11 +130,11 @@ const TaskCard = React.memo((props: IProps) => {
       <Card
         sx={{
           ":hover": {
-            boxShadow: "inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            boxShadow:
+              "inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           },
-          width: "98%",
-          marginTop: "2px",
-          marginLeft: "1%",
+          width: "96%",
+          marginLeft: "3%",
           borderRadius: "15px",
           boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           paddingTop: "8px",

@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 // mui
 import assets from "assets";
+import { Span } from "components/CustomTags";
 import { TaskCard } from "components/TaskComponent";
 import { getTaskCardHeight } from "components/Utills/Globals";
+import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { ITask, TaskRootState } from "constants/interfaces";
 import { useHistory, useLocation, useParams } from "react-router-dom";
@@ -412,29 +414,52 @@ const TaskMain = (props: IProps) => {
 
   return (
     <>
-      <Box>
-        <TaskFilters
-          handleTaskRootState={handleRootTask}
-          handleClearAll={() => {}}
-          selectedRootTask={selectedRootTask}
-          showHiddenTasks={showHiddenTasks}
-        />
-        <InputBase
-          type="search"
-          value={searchText}
-          placeholder="Start typing to search"
+      <Box
+        sx={{
+          width: "100%",
+          marginTop: "15px",
+        }}
+      >
+        <Box sx={{ width: "94%", marginLeft: "3%" }}>
+          <TaskFilters
+            handleTaskRootState={handleRootTask}
+            handleClearAll={() => {}}
+            selectedRootTask={selectedRootTask}
+            showHiddenTasks={showHiddenTasks}
+          />
+        </Box>
+        <Box sx={{ border: "1px solid #E2E4E5", marginTop: "15px" }}></Box>
+        <Box
           sx={{
-            pt: 2,
-            borderWidth: "0px 0px 1px 0px",
-            borderColor: "#818181",
-            borderStyle: "solid",
-            width: "100%",
-            paddingLeft: "38px",
-            background: `url(${assets.searchSvgIcon})no-repeat`,
-            backgroundPosition: "5px 20px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            // border: "solid 1px red",
+            width: "96%",
+            marginLeft: "2%",
           }}
-          onChange={handleSearch}
-        />
+        >
+          <InputBase
+            type="search"
+            value={searchText}
+            placeholder="Start typing to search"
+            sx={{
+              pt: 2,
+              borderWidth: "0px 0px 1px 0px",
+              borderColor: "#818181",
+              borderStyle: "solid",
+              width: "92%",
+              paddingLeft: "38px",
+              background: `url(${assets.searchSvgIcon})no-repeat`,
+              backgroundPosition: "5px 20px",
+              paddingBottom: "10px",
+            }}
+            onChange={handleSearch}
+          />
+          <Span>
+            <SortIcon />
+          </Span>
+        </Box>
       </Box>
 
       <Box

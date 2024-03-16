@@ -247,11 +247,15 @@ function Task() {
       <>
         {showHiddenTasks ? (
           <CustomStack sx={{ justifyContent: "space-between", width: "100%" }}>
-            <Heading2 sx={{ py: 2 }}>Hidden Tasks</Heading2>
+            <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Hidden Tasks</Heading2>
             <Button
               disableRipple
               component="label"
-              sx={{ padding: "5px 8px", textTransform: "unset" }}
+              sx={{
+                padding: "5px 8px",
+                textTransform: "unset",
+                marginRight: "15px",
+              }}
               onClick={() => setShowHiddenTasks(false)}
               variant="contained"
             >
@@ -259,8 +263,13 @@ function Task() {
             </Button>
           </CustomStack>
         ) : (
-          <CustomStack sx={{ justifyContent: "space-between", width: "100%" }}>
-            <Heading2 sx={{ py: 2 }}>Tasks</Heading2>
+          <CustomStack
+            sx={{
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Tasks</Heading2>
             <Box>
               <Button
                 disableRipple
@@ -278,7 +287,11 @@ function Task() {
               <Button
                 disableRipple
                 component="label"
-                sx={{ padding: "5px 8px", textTransform: "unset" }}
+                sx={{
+                  padding: "5px 8px",
+                  textTransform: "unset",
+                  marginRight: "15px",
+                }}
                 onClick={() =>
                   openFormInNewWindow("/create-new-task", "Create New Task")
                 }
@@ -298,16 +311,24 @@ function Task() {
     <Grid
       container
       gap={1.8}
-      sx={{ width: "99%", margin: "auto", flexWrap: "nowrap" }}
+      sx={{
+        width: "99%",
+        margin: "auto",
+        flexWrap: "nowrap",
+      }}
     >
       <Grid
         item
         sx={{
-          maxWidth: { lg: "30%", md: "40%", sm: "40%" },
+          maxWidth: {
+            lg: "30%",
+            md: "40%",
+            sm: "40%",
+          },
           width: "100%",
           ...gridStyle,
-          px: 2,
           py: 1.5,
+          overflow: "hidden",
         }}
       >
         {ShowTaskHeader()}
