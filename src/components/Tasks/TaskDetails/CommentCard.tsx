@@ -116,7 +116,7 @@ const CommentCard = ({
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "flex-start",
-        maxWidth: "65%",
+        maxWidth: "70%",
         width: "max-contnet",
         borderRadius: "15px",
         flexDirection: "column",
@@ -357,6 +357,7 @@ const CommentCard = ({
       )}
     </Box>
   );
+
   return <div>{CommentCardContent}</div>;
 };
 

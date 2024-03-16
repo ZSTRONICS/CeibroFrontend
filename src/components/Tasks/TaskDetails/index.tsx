@@ -40,8 +40,6 @@ function TaskDetails(props: IProps) {
     invitedNumbers,
     files,
     _id,
-    doneCommentsRequired,
-    doneImageRequired,
     title,
     confirmer,
     viewer,
@@ -159,9 +157,6 @@ function TaskDetails(props: IProps) {
           </>
         )}
       </Box>
-
-      {/* <CommentCard docs={docs} /> */}
-
       {uniqueImageFiles.length > 0 && (
         <ImgsViewerSlider
           imgs={uniqueImageFiles.map((image: any) => image.fileUrl)}

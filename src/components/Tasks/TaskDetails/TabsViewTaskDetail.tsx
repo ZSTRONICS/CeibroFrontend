@@ -30,16 +30,11 @@ function TabsViewTaskDetail(props: IProps) {
   const { events, files } = selectedTask;
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
   useEffect(() => {
-    if (!isRenderEffect.current) {
-      if (selectedTask && selectedTask._id) {
-        dispatch(
-          taskActions.getAllTaskFiles({ other: { taskId: selectedTask._id } })
-        );
-      }
+    if (selectedTask && selectedTask._id) {
+      dispatch(
+        taskActions.getAllTaskFiles({ other: { taskId: selectedTask._id } })
+      );
     }
-    return () => {
-      isRenderEffect.current = true;
-    };
   }, [selectedTask._id]);
   const { loadingAllTaskFiles, allTaskFiles } = useSelector(
     (state: RootState) => state.task
