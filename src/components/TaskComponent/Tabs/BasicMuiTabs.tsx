@@ -17,6 +17,7 @@ interface BasicTabsProps {
   tabsBgColor: string;
   isFileTabs?: boolean;
   setSelectedTab?: (label: string) => void;
+  onChangeTab?: (label: string) => void;
 }
 
 export default function BasicTabs({
@@ -90,9 +91,8 @@ export default function BasicTabs({
             label={
               <CustomStack sx={{ gap: 2 }}>
                 <AddStatusTag sx={{ color: "unset" }}>{tab.label}</AddStatusTag>
-                {tab.count && (
+                {tab.count && tab.count > 0 ? (
                   <Badge
-                    showZero={false}
                     color="primary"
                     sx={{
                       "& .MuiBadge-badge": {
@@ -104,6 +104,8 @@ export default function BasicTabs({
                     variant="standard"
                     badgeContent={tab.count}
                   />
+                ) : (
+                  <></>
                 )}
               </CustomStack>
             }

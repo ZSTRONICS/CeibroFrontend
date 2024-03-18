@@ -17,6 +17,7 @@ import { taskActions } from "redux/action";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { GenericMenu } from "components/GenericComponents";
 import { useOpenCloseModal } from "hooks";
+import DoneComment from "../Comment/DoneComment";
 import ForwardTask from "../Forward-Task";
 import ApprovalOverlays from "./ApprovalOverlays";
 import TaskHeaderModals from "./TaskHeaderModals";
@@ -62,26 +63,39 @@ const DetailActions: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
   // console.log("selectedTask", selectedTask);
   const [isloading, setIsLoading] = useState(false);
+  const modalsActions = {
+    local: useOpenCloseModal(),
+    approval: useOpenCloseModal(),
+    rejectReOpen: useOpenCloseModal(),
+    rejectClose: useOpenCloseModal(),
+    done: useOpenCloseModal(),
+  };
   const {
     isOpen: isOpenLocal,
     openModal: openModalLocal,
     closeModal: closeModalLocal,
-  } = useOpenCloseModal();
+  } = modalsActions.local;
   const {
     isOpen: isApprovalModalOpen,
     openModal: openApprovalModal,
     closeModal: closeApprovalModal,
-  } = useOpenCloseModal();
+  } = modalsActions.approval;
   const {
     isOpen: isRejectReOpenModalOpen,
     openModal: openRejectReOpenModal,
     closeModal: closeRejectReOpenModal,
-  } = useOpenCloseModal();
+  } = modalsActions.rejectReOpen;
   const {
     isOpen: isRejectCloseModalOpen,
     openModal: openRejectCloseModal,
     closeModal: closeRejectCloseModal,
-  } = useOpenCloseModal();
+  } = modalsActions.rejectClose;
+  const {
+    isOpen: isDoneModalOpen,
+    openModal: openDoneModal,
+    closeModal: closeDoneModal,
+  } = modalsActions.done;
+
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
 
@@ -134,6 +148,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   const handleDoneClick = () => {
     setIsLoading(true);
     if (doneImageRequired === true || doneCommentsRequired === true) {
+      openDoneModal();
       setIsLoading(false);
     } else {
       dispatch(
@@ -407,6 +422,21 @@ const DetailActions: React.FC<IProps> = (props) => {
           taskId={taskId}
           title="Approve"
           handleClose={closeApprovalModal}
+        />
+      ),
+    },
+    {
+      title: "Task Done",
+      isOpen: isDoneModalOpen,
+      handleClose: closeDoneModal,
+      content: (
+        <DoneComment
+          title="Task Done"
+          doneCommentsRequired={doneCommentsRequired}
+          doneImageRequired={doneImageRequired}
+          showHeader={true}
+          taskId={taskId}
+          closeModal={closeDoneModal}
         />
       ),
     },
