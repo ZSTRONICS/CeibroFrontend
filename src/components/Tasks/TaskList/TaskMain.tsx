@@ -106,7 +106,6 @@ const TaskMain = (props: IProps) => {
     setSelectedTask(null);
   };
 
-  // console.log("filteredTask", filteredTask);
   // const getTaskDataRequired = () => {
   //   const subtaskPropertyMapping: any = {
   //     allTaskToMe: ["new", "ongoing", "done"],

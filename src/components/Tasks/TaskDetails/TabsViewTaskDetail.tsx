@@ -2,7 +2,7 @@ import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
 import { FILTER_DATA_BY_EXT, MEDIA_EXT } from "components/Utills/Globals";
 import { ITask } from "constants/interfaces";
 import { DynamicDimensions } from "hooks/useDynamicDimensions";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
@@ -15,18 +15,23 @@ interface IProps {
   taskDetailContDimension: DynamicDimensions;
   RECENT_TASK_UPDATED_TIME_STAMP: string;
   parentheight?: number;
+  openCommentTab: string;
+  handleSelectedDetailTab: (tab: string) => void;
 }
 function TabsViewTaskDetail(props: IProps) {
   const dispatch = useDispatch();
-  const isRenderEffect = useRef<boolean>(false);
-  const [selectedTab, setSelectedTab] = useState("Details");
   const {
     isCommentView,
     taskDetailContDimension,
     selectedTask,
     RECENT_TASK_UPDATED_TIME_STAMP,
     parentheight,
+    openCommentTab,
+    handleSelectedDetailTab,
   } = props;
+  const showDefault = isCommentView ? "Comments" : "Details";
+  const [selectedTab, setSelectedTab] = useState(showDefault);
+  const [tabIndex, setTabIndex] = useState(0);
   const { events, files } = selectedTask;
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
   useEffect(() => {
@@ -77,12 +82,33 @@ function TabsViewTaskDetail(props: IProps) {
     },
     ...commentsAndFilesTabs,
   ];
+  const allTabsData = isCommentView ? commentsAndFilesTabs : allTabs;
+  const findTabIndex = allTabsData.findIndex(
+    (tab: any) => tab.label === openCommentTab
+  );
+
+  useEffect(() => {
+    if (openCommentTab !== "") {
+      if (findTabIndex === -1) {
+        setTabIndex(0);
+      } else {
+        setTabIndex(findTabIndex);
+      }
+    }
+  }, [openCommentTab, selectedTab]);
+
+  useEffect(() => {
+    if (selectedTab !== "") {
+      handleSelectedDetailTab(selectedTab);
+    }
+  }, [selectedTab]);
 
   return (
     <BasicTabs
+      selectedTabIndex={tabIndex}
       setSelectedTab={setSelectedTab}
       tabsBgColor={isCommentView ? "white" : "#F4F4F4"}
-      tabsData={isCommentView ? commentsAndFilesTabs : allTabs}
+      tabsData={allTabsData}
     />
   );
 }

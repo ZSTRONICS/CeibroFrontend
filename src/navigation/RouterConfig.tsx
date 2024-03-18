@@ -66,7 +66,7 @@ const RouterConfig = () => {
             <Route path="/t&c" component={TermsAndConditions} />
             <Route path="/profile-setup" component={Register} />
 
-            <Redirect exact from="/tasks" to="/tasks/ongoing" />
+            <Redirect exact from="/tasks" to="/tasks/Ongoing" />
             <PrivateRoute
               exact
               path="/profile-pic"

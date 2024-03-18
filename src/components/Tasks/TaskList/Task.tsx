@@ -10,6 +10,7 @@ import { useDynamicDimensions } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 import { PROJECT_APIS, taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT, filterTasks, openFormInNewWindow } from "utills/common";
@@ -17,7 +18,13 @@ import TaskDetails from "../TaskDetails";
 import DetailActions from "../TaskDetails/DetailActions";
 import TabsViewTaskDetail from "../TaskDetails/TabsViewTaskDetail";
 import TaskMain from "./TaskMain";
+interface RouteParams {
+  subtask: TaskRootState;
+  taskuid: string;
+}
 function Task() {
+  const { subtask, taskuid } = useParams<RouteParams>();
+  const history = useHistory();
   const [size, ratio] = useWindowSize();
   const dispatch = useDispatch();
   const { user } = useSelector((store: RootState) => store.auth);
@@ -25,9 +32,11 @@ function Task() {
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(true);
   const [commentDiv, setCommentDiv] = useState<boolean>(false);
-  const [selectedTab, setSelectedTab] = useState<string>("");
+  const [selectedTab, setSelectedTab] = useState<string>("Ongoing");
+  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const [showHiddenTasks, setShowHiddenTasks] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
+  const [commentTab, setCommentTab] = useState<string>("");
   const {
     containerRef: taskDetailContRef,
     dimensions: taskDetailContDimension,
@@ -41,40 +50,11 @@ function Task() {
   const { allTasksAllEvents, RECENT_TASK_UPDATED_TIME_STAMP } = useSelector(
     (state: RootState) => state.task
   );
+
   const { allProjects } = useSelector((state: RootState) => state.project);
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   const Topics = useSelector((state: RootState) => state.task.Topics);
   const { allTasks, allEvents }: AllTasksAllEvents = allTasksAllEvents;
-
-  useEffect(() => {
-    if (isRenderEffect.current) {
-      isRenderEffect.current = false;
-      allTasksAllEvents.allTasks.length === 0 &&
-        dispatch(taskActions.getAllTasksAllEvents());
-      allProjects.length === 0 && dispatch(PROJECT_APIS.getAllProjects());
-      userAllContacts.length === 0 && dispatch(userApiAction.getUserContacts());
-      Topics.allTopics.length === 0 && dispatch(taskActions.getAllTopic());
-    }
-  }, []);
-
-  useEffect(() => {
-    if (windowWidth < 1199) {
-      setCommentDiv(false);
-    }
-  }, [windowWidth, windowHeight]);
-
-  const gridStyle = {
-    borderRadius: "4px",
-    background: "#FFF",
-    boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-    height: `${windowActualHeight}px`,
-  };
-
-  const handleCollapseComment = () => {
-    if (selectedTask && selectedTask?._id) {
-      setCommentDiv((prev) => !prev);
-    }
-  };
 
   const ongoingClosedTasks = [
     {
@@ -215,6 +195,49 @@ function Task() {
       ),
     },
   ];
+  const TabsDataLocal = showHiddenTasks ? ongoingClosedTasks : rootTaskFilter;
+
+  useEffect(() => {
+    if (isRenderEffect.current) {
+      isRenderEffect.current = false;
+      allTasksAllEvents.allTasks.length === 0 &&
+        dispatch(taskActions.getAllTasksAllEvents());
+      allProjects.length === 0 && dispatch(PROJECT_APIS.getAllProjects());
+      userAllContacts.length === 0 && dispatch(userApiAction.getUserContacts());
+      Topics.allTopics.length === 0 && dispatch(taskActions.getAllTopic());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedTab) {
+      history.push(`/tasks/${selectedTab}`);
+      setSelectedTask(null);
+      const findTabIndex = TabsDataLocal.findIndex(
+        (tab) => tab.label === subtask
+      );
+      if (findTabIndex > -1) {
+        setSelectedTabIndex(findTabIndex);
+      }
+    }
+  }, [selectedTab, subtask]);
+
+  useEffect(() => {
+    if (windowWidth < 1199) {
+      setCommentDiv(false);
+    }
+  }, [windowWidth, windowHeight]);
+
+  const gridStyle = {
+    borderRadius: "4px",
+    background: "#FFF",
+    boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+    height: `${windowActualHeight}px`,
+  };
+
+  const handleCollapseComment = () => {
+    setCommentDiv((prev) => !prev);
+    setSelectedTabIndex(0);
+  };
 
   const filterTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -223,6 +246,10 @@ function Task() {
     ...selectedTask,
     events: filterTaskEvents || [],
   };
+  const handleCommentView = () => {
+    setCommentTab("Comments");
+  };
+
   const arrowBtn = () => {
     return (
       <Box
@@ -336,8 +363,9 @@ function Task() {
         {ShowTaskHeader()}
         <BasicTabs
           setSelectedTab={setSelectedTab}
+          selectedTabIndex={selectedTabIndex}
           tabsBgColor="#F4F4F4"
-          tabsData={showHiddenTasks ? ongoingClosedTasks : rootTaskFilter}
+          tabsData={TabsDataLocal}
         />
       </Grid>
       <Grid
@@ -356,6 +384,7 @@ function Task() {
             <>
               {" "}
               <DetailActions
+                handleReply={handleCommentView}
                 userId={userId}
                 isLocationTaskDetail={false}
                 taskDetailContDimension={taskDetailContDimension}
@@ -401,6 +430,8 @@ function Task() {
               <>
                 {selectedTask && selectedTaskandEvents ? (
                   <TabsViewTaskDetail
+                    handleSelectedDetailTab={(tab) => setCommentTab(tab)}
+                    openCommentTab={commentTab}
                     taskDetailContDimension={taskDetailContDimension}
                     parentheight={
                       windowActualHeight - detailHeaderRefDimension.height - 20
@@ -440,6 +471,8 @@ function Task() {
               <>
                 {selectedTask && selectedTaskandEvents && (
                   <TabsViewTaskDetail
+                    handleSelectedDetailTab={(tab) => setCommentTab(tab)}
+                    openCommentTab={commentTab}
                     parentheight={
                       windowActualHeight - detailHeaderRefDimension.height - 20
                     }

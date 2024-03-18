@@ -28,6 +28,7 @@ interface IProps {
   isLocationTaskDetail?: boolean;
   selectedTask: ITask;
   userId: string;
+  handleReply: () => void;
 }
 
 enum statusColors {
@@ -39,11 +40,10 @@ enum statusColors {
   "to-review" = "#CFECFF",
   "in-review" = "#E2E4E5",
 }
-type TaskAction = "comment" | "forward" | "done";
 
 const DetailActions: React.FC<IProps> = (props) => {
   const { subtask, filterkey } = useParams<any>();
-  const { selectedTask, isLocationTaskDetail, userId } = props;
+  const { selectedTask, isLocationTaskDetail, userId, handleReply } = props;
   const {
     _id: taskId,
     userSubState,
@@ -90,6 +90,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     openModal: openRejectCloseModal,
     closeModal: closeRejectCloseModal,
   } = modalsActions.rejectClose;
+
   const {
     isOpen: isDoneModalOpen,
     openModal: openDoneModal,
@@ -144,7 +145,9 @@ const DetailActions: React.FC<IProps> = (props) => {
     }
   };
 
-  const handleReplyClick = () => {};
+  const handleReplyClick = () => {
+    handleReply();
+  };
   const handleDoneClick = () => {
     setIsLoading(true);
     if (doneImageRequired === true || doneCommentsRequired === true) {

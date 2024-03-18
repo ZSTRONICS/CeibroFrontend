@@ -30,10 +30,10 @@ const SidebarConfig: SidebarConfigInterface = {
     icon: TaskIcon,
     getPath: () =>
       window.location.pathname.split("/").pop() === "tasks"
-        ? "tasks/ongoing"
+        ? "tasks/Ongoing"
         : window.location.pathname.includes("tasks")
         ? window.location.pathname
-        : "tasks/ongoing",
+        : "tasks/Ongoing",
     active: false,
     childTab: {
       newTask: {
