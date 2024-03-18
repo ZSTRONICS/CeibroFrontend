@@ -66,6 +66,8 @@ export default function BasicTabs({
         onChange={handleChange}
         aria-label="basic tabs"
         sx={{
+          display: "flex",
+          justifyContent: "space-between",
           backgroundColor: tabsBgColor || "transparent",
           "& .Mui-selected": {
             color: `${isFileTabs ? "white !important" : "black !important"}`,
@@ -84,6 +86,7 @@ export default function BasicTabs({
           <Tab
             key={index + tab.label}
             sx={{
+              // border: "solid 1px red",
               gap: 0.5,
               textTransform: "capitalize",
               fontWeight: 500,

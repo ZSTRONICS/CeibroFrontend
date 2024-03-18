@@ -28,7 +28,7 @@ function FilesTab(props: IFilesTab) {
     // { label: "Links", content: "All Links" },
   ];
   return (
-    <Box sx={{ mt: 1 }}>
+    <Box sx={{ mt: 1, marginLeft: "8px" }}>
       <BasicTabs isFileTabs={true} tabsBgColor={"white"} tabsData={FilesTabs} />
     </Box>
   );

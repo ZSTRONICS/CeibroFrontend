@@ -21,7 +21,6 @@ import ImageBoxWithDesp from "../ImageBoxWithDesp";
 interface ReadMoreWrapperProps {
   imgcard?: boolean;
   title: string;
-  Showtitle?: boolean;
   readMore?: boolean;
   count?: number;
   type: "text" | "image" | "imageWithDesp" | "file" | "Location";
@@ -44,7 +43,6 @@ const ReadMoreWrapper = ({
   type,
   data,
   callback,
-  Showtitle,
   allowExpandedView = true,
   download,
 }: ReadMoreWrapperProps) => {
@@ -176,7 +174,7 @@ const ReadMoreWrapper = ({
               overflowWrap: "anywhere",
             }}
           >
-            {Showtitle ? title : ""}
+            {title}
           </Typography>
           <Box
             sx={{
@@ -302,34 +300,14 @@ const ReadMoreWrapper = ({
                   ref={fileCompRef}
                   sx={{
                     maxHeight: `${allowExpandedView ? height : "auto"}`,
-                    display: "flex",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: "12px",
-                      marginTop: "4px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    Files
-                  </Typography>
-                  <Box
-                    sx={{
-                      border: "1px solid #818181",
-                      height: "15px",
-                      marginTop: "7px",
-                      marginLeft: "20px",
-                    }}
-                  ></Box>
-                  <Box sx={{ marginLeft: "8px" }}>
-                    <FileBox
-                      title={title}
-                      files={data}
-                      handleClearFile={callback}
-                      download={download}
-                    />
-                  </Box>
+                  <FileBox
+                    title={title}
+                    files={data}
+                    handleClearFile={callback}
+                    download={download}
+                  />
                 </Box>
               )}
               {children ?? ""}

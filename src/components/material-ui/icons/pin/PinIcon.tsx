@@ -4,7 +4,7 @@ interface Props {
 export function PinIcon(props: Props) {
   const { color } = props;
   return (
-    <span style={{ transform: "translateX(68px)" }}>
+    <span>
       <svg
         width="16"
         height="16"

@@ -121,6 +121,7 @@ function AddedDetails(props: IProps) {
                     <>
                       {commentData && (
                         <CommentCard
+                          createdAt={createdAt}
                           initiator={initiator}
                           commentData={commentData}
                           isPinned={isPinned}
@@ -152,6 +153,7 @@ function AddedDetails(props: IProps) {
                           />
                           {commentData && (
                             <CommentCard
+                              createdAt={createdAt}
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
@@ -187,6 +189,7 @@ function AddedDetails(props: IProps) {
                           />
                           {commentData && (
                             <CommentCard
+                              createdAt={createdAt}
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
@@ -222,6 +225,7 @@ function AddedDetails(props: IProps) {
                           />
                           {commentData && (
                             <CommentCard
+                              createdAt={createdAt}
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
@@ -258,6 +262,7 @@ function AddedDetails(props: IProps) {
                           {commentData && (
                             <Box>
                               <CommentCard
+                                createdAt={createdAt}
                                 initiator={initiator}
                                 commentData={commentData}
                                 isPinned={isPinned}
@@ -294,6 +299,7 @@ function AddedDetails(props: IProps) {
                           />
                           {commentData && (
                             <CommentCard
+                              createdAt={createdAt}
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}

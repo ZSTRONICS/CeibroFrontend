@@ -14,28 +14,22 @@ const MessageBot = ({
   type,
   isCommentInitiator,
 }: Props) => {
-  const Forward = () => {
-    return eventData.map((items: any) => {
-      const { firstName } = items;
-      return <>{firstName}</>;
-    });
-  };
-
   var ShowContent = () => {
     switch (type) {
       case "ForwardTask":
-        return `${initiator?.firstName} forwarded task to: ${
-          // eventData[0]?.firstName
-          eventData?.map((item: any) => item.firstName).join(", ")
-        }`;
+        return `${initiator?.firstName} ${
+          initiator?.surName
+        } forwarded task to: ${eventData
+          ?.map((item: any) => `${item.firstName} ${item?.surName}`)
+          .join(", ")}`;
       case "DoneTask":
-        return `${initiator?.firstName} ${initiator?.surName} marked the task as done `;
+        return `${initiator?.firstName} ${initiator?.surName} marked the task as done`;
       case "InvitedUser":
-        return ` Invited by ${initiator?.firstName}`;
+        return `Invited by ${initiator?.firstName} ${initiator?.surName}`;
       case "CancelTask":
-        return `Task canceled by ${initiator?.firstName}`;
+        return `Task canceled by ${initiator?.firstName} ${initiator?.surName}`;
       case "UnCancelTask":
-        return `Task un-canceled by ${initiator?.firstName}`;
+        return `Task un-canceled by ${initiator?.firstName} ${initiator?.surName}`;
       default:
         return "";
     }
@@ -55,6 +49,7 @@ const MessageBot = ({
             justifyContent: "center",
             borderRadius: "5px",
             marginTop: "10px",
+            maxWidth: "380px",
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "500" }}>

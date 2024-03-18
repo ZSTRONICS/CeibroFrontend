@@ -235,8 +235,10 @@ function Task() {
   };
 
   const handleCollapseComment = () => {
-    setCommentDiv((prev) => !prev);
-    setSelectedTabIndex(0);
+    if (selectedTask) {
+      setCommentDiv((prev) => !prev);
+      setSelectedTabIndex(0);
+    }
   };
 
   const filterTaskEvents = allEvents.filter(

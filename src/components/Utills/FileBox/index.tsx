@@ -203,6 +203,7 @@ const FileBox: React.FC<IProps> = ({
               opacity: 0.9,
               marginLeft: "5px",
               marginRight: "16px",
+              marginTop: "4px",
             }}
           >
             No attachment found

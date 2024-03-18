@@ -10,7 +10,11 @@ import { useTheme } from "@mui/material/styles";
 import assets from "assets";
 import { GenericMenu } from "components/GenericComponents";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
-import { DOC_EXT, MEDIA_EXT } from "components/Utills/Globals";
+import {
+  DOC_EXT,
+  MEDIA_EXT,
+  momentdeDateFormat,
+} from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { PinIcon } from "components/material-ui/icons";
 import { useOpenCloseModal } from "hooks";
@@ -21,6 +25,7 @@ interface Props {
   initiator: any;
   isPinned: boolean;
   isCommentInitiator: boolean;
+  createdAt: any;
 }
 
 const CommentCard = ({
@@ -28,6 +33,7 @@ const CommentCard = ({
   initiator,
   isPinned,
   isCommentInitiator,
+  createdAt,
 }: Props) => {
   const [showMore, setShowMore] = useState<boolean>(false);
   const theme = useTheme();
@@ -36,7 +42,7 @@ const CommentCard = ({
     theme.breakpoints.between(1100, 1620)
   );
 
-  // console.log(commentData, "commentdata...");
+  // console.log(createdAt, "commentdata...");
 
   const boximgref = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState<number>(0);
@@ -60,40 +66,10 @@ const CommentCard = ({
     setCurrentImageIndex(index);
   };
 
-  const getVisibleChildrenCount = () => {
-    if (!boximgref?.current) {
-      return;
-    }
-    const container = boximgref?.current;
-    const containerRect = container?.getBoundingClientRect();
-
-    let count = 0;
-
-    for (let i = 0; i < container?.children?.length; i++) {
-      const child = container?.children[i];
-      const childRect = child.getBoundingClientRect();
-      if (
-        childRect.top >= containerRect.top &&
-        childRect.bottom <= containerRect.bottom
-      ) {
-        count++;
-      } else {
-        break;
-      }
-    }
-
-    return count;
-  };
+  ////
 
   const [doxdata, setdoxData] = useState([]);
   const [Imgdata, setImgData] = useState([]);
-
-  const handleResize = () => {
-    const Count = getVisibleChildrenCount();
-    if (Count) {
-      setCount(Count);
-    }
-  };
 
   useEffect(() => {
     const DoxfilteredData = commentData.files.filter((item: any) =>
@@ -102,11 +78,45 @@ const CommentCard = ({
     const ImgfilteredData = commentData.files.filter((item: any) =>
       MEDIA_EXT.includes(item.fileType)
     );
+
     setdoxData(DoxfilteredData);
     setImgData(ImgfilteredData);
-    handleResize(); // Call the function directly here
+
+    const getVisibleChildrenCount = () => {
+      if (!boximgref.current) return 0;
+
+      const containerRect = boximgref.current.getBoundingClientRect();
+      let count = 0;
+
+      for (let i = 0; i < boximgref.current.children.length; i++) {
+        const childRect = boximgref.current.children[i].getBoundingClientRect();
+        if (
+          childRect.top >= containerRect.top &&
+          childRect.bottom <= containerRect.bottom
+        ) {
+          count++;
+        } else {
+          break;
+        }
+      }
+
+      return count;
+    };
+
+    const handleResize = () => {
+      const count = getVisibleChildrenCount();
+      setCount(count);
+    };
+    handleResize();
+
     window.addEventListener("resize", handleResize);
-  }, []);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [boximgref.current]);
+
+  ////
 
   const CommentCardContent = (
     <Box
@@ -154,15 +164,19 @@ const CommentCard = ({
               fontSize: "12",
             }}
           >
-            {initiator?.firstName}
+            {`${initiator?.firstName} ${initiator?.surName}`}
           </Typography>
         </Box>
         <Box
           sx={{
             float: "right",
+
+            display: "flex",
           }}
         >
-          {isPinned ? <PinIcon color="#0076C8" /> : ""}
+          <Box sx={{ transform: "translateX(20px)" }}>
+            {!isPinned ? <PinIcon color="#0076C8" /> : ""}
+          </Box>
           <GenericMenu
             icon={
               <assets.MoreVertIcon
@@ -198,6 +212,7 @@ const CommentCard = ({
             color: "#131516",
             textAlign: "start",
             fontWeight: "500",
+            overflowWrap: "break-word",
           }}
         >
           {commentData &&
@@ -346,7 +361,7 @@ const CommentCard = ({
             color: "#605C5C",
           }}
         >
-          12:50{" "}
+          {momentdeDateFormat(createdAt)}
           <DoneOutlinedIcon
             style={{ fontSize: "18px", transform: "translateY(3px)" }}
           />

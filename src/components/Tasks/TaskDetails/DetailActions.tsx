@@ -59,6 +59,8 @@ const DetailActions: React.FC<IProps> = (props) => {
     invitedNumbers,
   } = selectedTask;
 
+  // console.log(selectedTask, "selectedTask");
+
   const history = useHistory();
   const dispatch = useDispatch();
   // console.log("selectedTask", selectedTask);
@@ -120,7 +122,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     taskRootState === "Hidden" ? "Un hide" : "Hide";
 
   const handleRejectClose = () => {
-    console.log("reject close");
+    // console.log("reject close");
   };
   const handleHideUnHide = (label: string) => {
     if (label === "Hide") {
@@ -215,7 +217,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         sx={{
           width: "107px",
           color: "white",
-          marginRight: "10px",
+          // marginRight: "10px",
           backgroundColor: "#E85555",
           textTransform: "unset",
           "&:hover": {
@@ -273,7 +275,7 @@ const DetailActions: React.FC<IProps> = (props) => {
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "#F4F4F4",
-              marginRight: "10px",
+              marginRight: "5px",
               padding: "2px 2px",
               borderRadius: "4px",
               maxHeight: "38px",
