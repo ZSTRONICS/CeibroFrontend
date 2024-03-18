@@ -828,5 +828,6 @@ export {
   momentdeDateFormatWithDay,
   optionMapping,
   trimFileName,
-  updateLocalStorageObject,
+  updateLocalStorageObject
 };
+

@@ -256,6 +256,7 @@ const Comment = ({
               marginRight: "0px",
             },
           }}
+          disabled={description.length === 0}
           icon={<SendIcon />}
           onClick={handleSubmit}
         />

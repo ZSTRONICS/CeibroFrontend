@@ -36,7 +36,7 @@ const taskActions = {
   taskCaneled: createAction(TASK_CONFIG.TASK_CANCELED),
   taskUnCanel: createAction(TASK_CONFIG.TASK_UN_CANCEL),
   taskEventsWithFiles: createAction(TASK_CONFIG.TASK_EVENT_WITH_FILES),
-
+  pinUnPinTaskComment: createAction(TASK_CONFIG.PIN_UNPIN_TASK_COMMENT),
   taskApprove: createAction(TASK_CONFIG.TASK_APPROVE),
   taskRejectReopen: createAction(TASK_CONFIG.TASK_REJECTED_REOPEN),
   taskRejectClose: createAction(TASK_CONFIG.TASK_REJECTED_CLOSE),

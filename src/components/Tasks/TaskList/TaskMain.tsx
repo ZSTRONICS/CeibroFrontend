@@ -10,9 +10,11 @@ import { TaskCard } from "components/TaskComponent";
 import { getTaskCardHeight } from "components/Utills/Globals";
 import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
+import { TASK_CONFIG } from "config";
 import { ITask, TaskRootState } from "constants/interfaces";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
+import { taskActions } from "redux/action";
 import { TaskFilterType } from "redux/type";
 import {
   HEADER_HEIGHT,
@@ -46,14 +48,16 @@ const TaskMain = (props: IProps) => {
     selectedRootTask,
   } = props;
   const location = useLocation();
+  const history = useHistory();
+  const taskCardListRef: any = useRef();
   const { subtask, taskuid } = useParams<RouteParams>();
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
+  const { user } = useSelector((store: RootState) => store.auth);
+  const userId = user && String(user._id);
   const [filteredTask, setFilteredTask] = useState<ITask[]>(allTaskList);
   const [searchText, setSearchText] = useState<string>("");
   const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
-  const { user } = useSelector((store: RootState) => store.auth);
-  const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
   const [currentTask, setCurrentTask] = useState<number>(-1);
   const [emptyScreenContent, setEmptyScreenContent] = useState([
@@ -66,18 +70,19 @@ const TaskMain = (props: IProps) => {
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - HEADER_HEIGHT
   );
-  const taskCardListRef: any = useRef();
+
   const task: any = useSelector((state: RootState) => state.task);
   const { loadingAllTasksAllEvents } = task;
-
-  const history = useHistory();
-  const [selectedTab, setSelectedTab] = useState("ongoing");
-
-  // const subTaskKey = subtask ?? "ongoing";
   const propertiesToSearch = ["taskUID", "title", "description", "creator"];
+  const findSelectedTask = allTaskList.findIndex(
+    (task: ITask) => task.taskUID === taskuid
+  );
   useEffect(() => {
     setFilteredTask(allTaskList);
     clearTaskCardListCache();
+    if (findSelectedTask === -1) {
+      setSelectedTask(null);
+    }
   }, [allTaskList.length]);
 
   const handleRootTask = (taskRootState: string) => {
@@ -151,9 +156,6 @@ const TaskMain = (props: IProps) => {
   //   if (isTaskRoute[1] === "tasks") {
   //     let ischangeUrl = false;
   //     let path = "";
-  //     let getFilteredKey = getFilterKey();
-  //     // let isTaskData = getTaskDataRequired();
-  //     const isUnreadOrNew = filterkey === "new" || filterkey === "unread";
   //     let foundTask = filteredTask.find(
   //       (taskItem) => taskItem.taskUID === taskuid
   //     );
@@ -161,33 +163,21 @@ const TaskMain = (props: IProps) => {
   //       (item, index) => index === currentTask
   //     );
 
-  //     if (!foundTask && filteredTask.length > 0 && !isUnreadOrNew) {
+  //     if (!foundTask && filteredTask.length > 0) {
   //       if (foundIndex !== -1 && filteredTask.length - 1 !== foundIndex) {
   //         foundTask = filteredTask[currentTask];
   //       } else {
   //         foundTask = filteredTask[currentTask - 1];
   //       }
   //     }
-  //     if (!subtask && !filterkey) {
-  //       path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+  //     if (!subtask) {
+  //       // path = `/tasks/${subTaskKey}/${getFilteredKey}`;
   //       ischangeUrl = true;
-  //       selectedTab != null &&
-  //         selectedTab !== getFilteredKey &&
-  //         setSelectedTab(getFilteredKey);
-  //     } else if (subtask && filterkey) {
+  //     } else if (subtask) {
   //       ischangeUrl = true;
-  //       selectedTab != null &&
-  //         selectedTab !== filterkey &&
-  //         setSelectedTab(filterkey);
-  //       path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+  //       // path = `/tasks/${subTaskKey}/${getFilteredKey}`;
   //       setSelectedTask(null);
   //       setCurrentTask(0);
-  //     } else if (subtask && !filterkey) {
-  //       ischangeUrl = true;
-  //       path = `/tasks/${subTaskKey}/${getFilteredKey}`;
-  //       selectedTab != null &&
-  //         selectedTab !== getFilteredKey &&
-  //         setSelectedTab(getFilteredKey);
   //     }
   //     if (
   //       ischangeUrl &&
@@ -199,7 +189,7 @@ const TaskMain = (props: IProps) => {
   //         setSelectedTask(foundTask);
   //         const selecteTaskIndex = filteredTask.indexOf(foundTask);
   //         setCurrentTask(selecteTaskIndex);
-  //         path = `/tasks/${subTaskKey}/${getFilteredKey}/${foundTask.taskUID}`;
+  //         // path = `/tasks/${subTaskKey}/${getFilteredKey}/${foundTask.taskUID}`;
   //       }
   //       history.push(path);
   //     } else if (filteredTask.length === 0) {
@@ -210,7 +200,7 @@ const TaskMain = (props: IProps) => {
   //   setTimeout(() => {
   //     clearTaskCardListCache();
   //   }, 10);
-  // }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
+  // }, [subtask, taskuid, filteredTask.length, selectedTask]);
 
   // useEffect(() => {
   //   if (loadingAllTasksAllEvents) {
@@ -248,52 +238,44 @@ const TaskMain = (props: IProps) => {
   //   }, 10);
   // }, [subtask, selectedTab, RECENT_TASK_UPDATED_TIME_STAMP]);
 
-  // const userSubStateLocal: string =
-  //   selectedTask === null
-  //     ? "N/A"
-  //     : subtask === "allTaskFromMe"
-  //     ? selectedTask.creatorState
-  //     : selectedTask.userSubState;
+  const markTaskAsSeen = (taskId: string): void => {
+    dispatch(
+      taskActions.taskSeen({
+        other: { taskId },
+        success: (res: any) => {
+          if (res) {
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: {
+                ...res.data.taskSeen,
+                userId,
+                eventType: TASK_CONFIG.TASK_SEEN,
+              },
+            });
+          }
+        },
+      })
+    );
+  };
 
-  // const markTaskAsSeen = (taskId: string): void => {
-  //   dispatch(
-  //     taskActions.taskSeen({
-  //       other: { taskId },
-  //       success: (res: any) => {
-  //         if (res) {
-  //           dispatch({
-  //             type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-  //             payload: {
-  //               ...res.data.taskSeen,
-  //               userId,
-  //               eventType: TASK_CONFIG.TASK_SEEN,
-  //             },
-  //           });
-  //         }
-  //       },
-  //     })
-  //   );
-  // };
+  useEffect(() => {
+    if (loadingAllTasksAllEvents) {
+      return;
+    }
+    const isUserSubstateFind = selectedTask && selectedTask !== null;
+    let taskNeedToBeSeen =
+      isUserSubstateFind && !selectedTask.seenBy.includes(userId);
 
-  // useEffect(() => {
-  //   if (loadingAllTasksAllEvents) {
-  //     return;
-  //   }
-  //   const isUserSubstateFind =
-  //     selectedTask && selectedTask !== null && userSubStateLocal === filterkey;
-  //   let taskNeedToBeSeen =
-  //     isUserSubstateFind && !selectedTask.seenBy.includes(userId);
-
-  //   if (
-  //     taskNeedToBeSeen ||
-  //     (selectedTask?.userSubState === "new" && isUserSubstateFind)
-  //   ) {
-  //     selectedTask !== null && markTaskAsSeen(selectedTask._id);
-  //   }
-  //   setTimeout(() => {
-  //     clearTaskCardListCache();
-  //   }, 5);
-  // }, [selectedTask, selectedTask?.events?.length]);
+    if (
+      taskNeedToBeSeen ||
+      (selectedTask?.userSubState === "new" && isUserSubstateFind)
+    ) {
+      selectedTask !== null && markTaskAsSeen(selectedTask._id);
+    }
+    setTimeout(() => {
+      clearTaskCardListCache();
+    }, 5);
+  }, [selectedTask, selectedTask?.events?.length]);
 
   // useEffect(() => {
   //   const newIsTaskFromMe = subtaskToIsTaskFromMe[subtask];
@@ -311,11 +293,6 @@ const TaskMain = (props: IProps) => {
   //     setEmptyScreenContent([...emptyScreenContent]);
   //   }
   // }, [filterkey, subtask]);
-
-  // const handleTabClick = (type: string) => {
-  //   resetScrollPosition();
-  //   history.push(`/tasks/${subtask}/${type}`);
-  // };
 
   // const resetScrollPosition = () => {
   //   if (taskCardListRef.current) {

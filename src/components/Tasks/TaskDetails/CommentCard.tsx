@@ -19,11 +19,15 @@ import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { PinIcon } from "components/material-ui/icons";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { taskActions } from "redux/action";
 
 interface Props {
   commentData: any;
   initiator: any;
   isPinned: boolean;
+  taskId: string;
+  eventId: string;
   isCommentInitiator: boolean;
   createdAt: any;
 }
@@ -34,6 +38,8 @@ const CommentCard = ({
   isPinned,
   isCommentInitiator,
   createdAt,
+  taskId,
+  eventId,
 }: Props) => {
   const [showMore, setShowMore] = useState<boolean>(false);
   const theme = useTheme();
@@ -42,8 +48,7 @@ const CommentCard = ({
     theme.breakpoints.between(1100, 1620)
   );
 
-  // console.log(createdAt, "commentdata...");
-
+  const dispatch = useDispatch();
   const boximgref = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState<number>(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -110,14 +115,17 @@ const CommentCard = ({
     handleResize();
 
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
+  }, []);
+  const handlePinUnPinTaskComment = () => {
+    const payload = {
+      other: {
+        taskId: taskId,
+        eventId: eventId,
+        isPinned: isPinned ? false : true,
+      },
     };
-  }, [boximgref.current]);
-
-  ////
-
+    dispatch(taskActions.pinUnPinTaskComment(payload));
+  };
   const CommentCardContent = (
     <Box
       sx={{
@@ -189,8 +197,8 @@ const CommentCard = ({
             isProjectGroup={true}
             options={[
               {
-                menuName: "Unpin comment",
-                callBackHandler: () => {},
+                menuName: isPinned ? "Unpin comment" : "Pin comment",
+                callBackHandler: handlePinUnPinTaskComment,
               },
             ]}
             key={1}

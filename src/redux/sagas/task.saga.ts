@@ -121,12 +121,20 @@ const taskRejectReopen = apiCall({
   method: "post",
   path: (payload) => `/task/approval/reject-reopen/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`
 })
+
 const taskRejectClose = apiCall({
   useV2Route: true,
   isFormData: true,
   type: TASK_CONFIG.TASK_REJECTED_CLOSE,
   method: "post",
   path: (payload) => `/task/approval/reject-close/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`
+})
+const pinUnPinTaskComment = apiCall({
+  useV2Route: true,
+  isFormData: false,
+  type: TASK_CONFIG.PIN_UNPIN_TASK_COMMENT,
+  method: "post",
+  path: (payload) => `/task/updatePin/${payload.other.taskId}/${payload.other.eventId}?isPinned=${payload.other.isPinned}`
 })
 
 const uploadDocs = apiCall({
@@ -148,6 +156,7 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.TASK_APPROVE, taskApprove)
   yield takeLatest(TASK_CONFIG.TASK_REJECTED_REOPEN, taskRejectReopen)
   yield takeLatest(TASK_CONFIG.TASK_REJECTED_CLOSE, taskRejectClose)
+  yield takeLatest(TASK_CONFIG.PIN_UNPIN_TASK_COMMENT, pinUnPinTaskComment)
 
   yield takeLatest(TASK_CONFIG.SYNC_ALL_TASKS, syncAllTasks)
   yield takeLatest(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS, getAllTasksAllEvents)

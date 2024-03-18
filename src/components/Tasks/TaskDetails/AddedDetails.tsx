@@ -96,6 +96,8 @@ function AddedDetails(props: IProps) {
                 commentData,
                 invitedMembers,
                 isPinned,
+                _id,
+                taskId,
               } = event;
               const isCommentInitiator = initiator && initiator._id === userId;
               const invitedMembersData =
@@ -122,6 +124,8 @@ function AddedDetails(props: IProps) {
                       {commentData && (
                         <CommentCard
                           createdAt={createdAt}
+                          taskId={taskId}
+                          eventId={_id}
                           initiator={initiator}
                           commentData={commentData}
                           isPinned={isPinned}
@@ -154,6 +158,8 @@ function AddedDetails(props: IProps) {
                           {commentData && (
                             <CommentCard
                               createdAt={createdAt}
+                              taskId={taskId}
+                              eventId={_id}
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
@@ -190,6 +196,8 @@ function AddedDetails(props: IProps) {
                           {commentData && (
                             <CommentCard
                               createdAt={createdAt}
+                              taskId={taskId}
+                              eventId={_id}
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
@@ -226,6 +234,8 @@ function AddedDetails(props: IProps) {
                           {commentData && (
                             <CommentCard
                               createdAt={createdAt}
+                              taskId={taskId}
+                              eventId={_id}
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}
@@ -263,6 +273,8 @@ function AddedDetails(props: IProps) {
                             <Box>
                               <CommentCard
                                 createdAt={createdAt}
+                                taskId={taskId}
+                                eventId={_id}
                                 initiator={initiator}
                                 commentData={commentData}
                                 isPinned={isPinned}
@@ -300,6 +312,8 @@ function AddedDetails(props: IProps) {
                           {commentData && (
                             <CommentCard
                               createdAt={createdAt}
+                              taskId={taskId}
+                              eventId={_id}
                               initiator={initiator}
                               commentData={commentData}
                               isPinned={isPinned}

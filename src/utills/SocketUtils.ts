@@ -165,6 +165,21 @@ export const useSocket = () => {
                 updateLocalTaskTabSeen(data.newTaskData)
                 break;
 
+            case TASK_CONFIG.TASK_APPROVED:
+            case TASK_CONFIG.TASK_REJECTED_CLOSED:
+            case TASK_CONFIG.TASK_REJECTED_REOPENED:
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: data,
+                });
+                break;
+            case TASK_CONFIG.TASK_EVENT_UPDATED:
+                dispatch({
+                    type: TASK_CONFIG.TASK_EVENT_UPDATED,
+                    payload: data,
+                });
+                break;
+
             case DOCS_CONFIG.COMMENT_WITH_FILES:
                 dispatch({
                     type: DOCS_CONFIG.COMMENT_FILES_UPLOADED,

@@ -242,7 +242,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           ml: 0.7,
           backgroundColor: isHide ? "#F4F4F4" : "#0076C8",
           color: isHide ? "#818181" : "white",
-          width: "84px",
+          width: "90px",
           borderRadius: "4px",
           fontWeight: "500",
           "&:hover": {

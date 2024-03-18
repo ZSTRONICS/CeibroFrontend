@@ -196,6 +196,7 @@ function Task() {
     },
   ];
   const TabsDataLocal = showHiddenTasks ? ongoingClosedTasks : rootTaskFilter;
+  const findTabIndex = TabsDataLocal.findIndex((tab) => tab.label === subtask);
 
   useEffect(() => {
     if (isRenderEffect.current) {
@@ -205,6 +206,9 @@ function Task() {
       allProjects.length === 0 && dispatch(PROJECT_APIS.getAllProjects());
       userAllContacts.length === 0 && dispatch(userApiAction.getUserContacts());
       Topics.allTopics.length === 0 && dispatch(taskActions.getAllTopic());
+      if (subtask && findTabIndex > -1) {
+        setSelectedTabIndex(findTabIndex);
+      }
     }
   }, []);
 
@@ -212,12 +216,6 @@ function Task() {
     if (selectedTab) {
       history.push(`/tasks/${selectedTab}`);
       setSelectedTask(null);
-      const findTabIndex = TabsDataLocal.findIndex(
-        (tab) => tab.label === subtask
-      );
-      if (findTabIndex > -1) {
-        setSelectedTabIndex(findTabIndex);
-      }
     }
   }, [selectedTab, subtask]);
 
