@@ -20,6 +20,7 @@ interface IProps {
   showPdf?: boolean;
   isBase64String?: boolean;
   ImageWithComments?: boolean;
+  taskApproveModal?: boolean;
 }
 
 function ImgCard(props: IProps) {
@@ -39,8 +40,16 @@ function ImgCard(props: IProps) {
     <Card
       sx={{
         maxWidth: 345,
-        width: props.ImageWithComments ? 160 : "100%",
-        height: props.ImageWithComments ? 130 : 300,
+        width: props.ImageWithComments
+          ? props.taskApproveModal
+            ? "110px"
+            : 160
+          : "100%",
+        height: props.ImageWithComments
+          ? props.taskApproveModal
+            ? "100px"
+            : 130
+          : 300,
         margin: cardMargin,
       }}
     >
@@ -55,7 +64,7 @@ function ImgCard(props: IProps) {
           action={
             <>
               {props.showCancelBtn && (
-                <IconButton aria-label="settings" onClick={props.removeImg}>
+                <IconButton onClick={props.removeImg}>
                   <assets.CancelIcon />
                 </IconButton>
               )}
@@ -92,6 +101,8 @@ function ImgCard(props: IProps) {
         </object>
       )}
       <CardMedia
+        // sx={{ height: "100px", width: "100px" }}
+        // taskApproveModal={props.taskApproveModal}
         onLoad={handleImageLoad}
         component="img"
         height="100%"

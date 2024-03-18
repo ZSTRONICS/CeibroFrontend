@@ -23,6 +23,7 @@ interface FooterPropsType {
   isSubmitted: boolean;
   isImgWithComment?: boolean;
   isFilesWithComment?: boolean;
+  isforward?: boolean;
 }
 
 const Footer = (props: FooterPropsType) => {
@@ -131,9 +132,9 @@ const Footer = (props: FooterPropsType) => {
         alignItems: "center",
         background: "white",
         borderTop: "1px solid rgba(0, 0, 0, 0.1)",
-        boxShadow: `${
-          props.showHeader ? "0px -2px 6px rgba(0, 0, 0, 0.1)" : "none"
-        }`,
+        // boxShadow: `${
+        //   props.showHeader ? "0px -2px 6px rgba(0, 0, 0, 0.1)" : "none"
+        // }`,
         textTransform: "capitalize",
         position: `${position}`,
         paddingBottom: `${props.showHeader ? "0" : "unset"}`,
@@ -148,23 +149,27 @@ const Footer = (props: FooterPropsType) => {
     >
       {props.isCommentUi ? (
         <>
-          <LoadingButton
-            color="error"
-            variant="outlined"
-            onClick={handleClick}
-            sx={{
-              fontSize: "12px",
-              borderRadius: "4px",
-              fontWeight: "700",
-              border: "1px solid #FA0808",
-              padding: "2px 16px",
-              color: "#D9000D",
-              maxWidth: "100px",
-              maxHeight: "30px",
-            }}
-          >
-            Cancel
-          </LoadingButton>
+          {props.isforward ? (
+            <LoadingButton
+              color="error"
+              variant="outlined"
+              onClick={handleClick}
+              sx={{
+                fontSize: "12px",
+                borderRadius: "4px",
+                fontWeight: "700",
+                border: "1px solid #FA0808",
+                padding: "2px 16px",
+                color: "#D9000D",
+                maxWidth: "100px",
+                maxHeight: "30px",
+              }}
+            >
+              Cancel
+            </LoadingButton>
+          ) : (
+            <Box></Box>
+          )}
         </>
       ) : (
         <>

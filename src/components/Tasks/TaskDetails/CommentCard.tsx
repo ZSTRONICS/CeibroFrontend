@@ -185,8 +185,13 @@ const CommentCard = ({
           />
         </Box>
       </Box>
-      <Box sx={{ marginTop: "5px" }}>
-        <Typography
+      <Box
+        sx={{
+          marginTop: "5px",
+          width: "95%",
+        }}
+      >
+        <Box
           sx={{
             fontSize: "14px",
             lineHeight: "20px",
@@ -211,7 +216,7 @@ const CommentCard = ({
                   isSmall ? 60 : commentshowonlarge ? 150 : 270
                 )}`
             : ""}
-        </Typography>
+        </Box>
         {commentData.message && commentData.message.length > 270 && (
           <Box
             sx={{

@@ -283,6 +283,7 @@ const ForwardTask = ({
       <Box sx={{ width: "100%", height: "450px", overflow: "auto", px: 2.5 }}>
         {/* <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} /> */}
         <Box>
+          {/* //// */}
           <Box
             sx={{
               display: "flex",
@@ -295,10 +296,11 @@ const ForwardTask = ({
               sx={{
                 fontSize: "14px",
                 pr: 1,
-                // display: { md: "none", lg: "block" },
+                fontWeight: "500",
+                width: "120px",
               }}
             >
-              Forward
+              Select users
             </SubLabelTag>
             <FormControl
               variant="standard"
@@ -306,8 +308,8 @@ const ForwardTask = ({
                 marginTop: "8px",
                 width: "100%",
                 maxWidth: "100%",
-                pl: 1,
-                borderLeft: "1.9px solid #818181",
+                // pl: 1,
+                // borderLeft: "1.9px solid #818181",
               }}
             >
               {selected.length === 0 && (
@@ -330,8 +332,10 @@ const ForwardTask = ({
                 className="custom-select"
                 labelId="controlled-open-select-label"
                 id="controlled-open-select"
+                label="Select users"
                 sx={{
                   position: "relative",
+                  color: "black",
                   width: "100%",
                   "&:hover:not(.Mui-disabled, .Mui-error):before": {
                     borderBottom: "none !important",
@@ -455,7 +459,16 @@ const ForwardTask = ({
               </Select>
             </FormControl>
           </Box>
-          <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
+          {/* ///// */}
+          <CustomDivider
+            key="bottom-divider2"
+            sx={{
+              my: 1.25,
+              borderColor: "#777777",
+              background: "black",
+              filter: "blur(0px)",
+            }}
+          />
           <Box
             sx={{
               padding: "2px 2px",
@@ -486,7 +499,16 @@ const ForwardTask = ({
                 onChange={handleDescriptionChange}
               />
             </FormControl>
-            <CustomDivider key="bottom-divider3" sx={{ mt: "3px", mb: 1 }} />
+            <CustomDivider
+              key="bottom-divider3"
+              sx={{
+                mt: "3px",
+                mb: 1,
+                borderColor: "#777777",
+                background: "black",
+                filter: "blur(0px)",
+              }}
+            />
             <span
               style={{
                 display: "flex",
@@ -505,6 +527,7 @@ const ForwardTask = ({
       </Box>
 
       <Footer
+        isforward={true}
         isCommentUi={true}
         isForwardUi={true}
         isSubmitted={false}

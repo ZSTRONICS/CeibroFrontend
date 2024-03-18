@@ -10,6 +10,7 @@ interface ImageUploadProps {
   isComment?: boolean;
   imgwithcomment?: boolean;
   showLabel: boolean;
+  taskApproveModal?: boolean;
   updateImageWithComment: (image: ImageWithComment) => void;
 }
 
@@ -21,6 +22,7 @@ function ImagesToUpload(props: ImageUploadProps) {
     imgwithcomment,
     showLabel,
     updateImageWithComment,
+    taskApproveModal,
   } = props;
   const updatedImgWidthComment = {};
 
@@ -84,6 +86,7 @@ function ImagesToUpload(props: ImageUploadProps) {
               >
                 {imgwithcomment ? (
                   <ImageCardWithComment
+                    taskApproveModal={true}
                     selectedImages={selectedImages}
                     setDescription={(comment) => {
                       file.comment = comment;
@@ -125,6 +128,7 @@ function ImagesToUpload(props: ImageUploadProps) {
                     width: imgwithcomment ? "20px" : "16px",
                     height: imgwithcomment ? "20px" : "16px",
                     position: "absolute",
+                    left: taskApproveModal ? "-0.5%" : null,
                   }}
                   disableRipple
                 >

@@ -146,7 +146,9 @@ function ApprovalOverlays(props: IProps) {
         <Heading2 sx={{ color: isApprove ? "#1A8718" : "#D9000D" }}>
           {title}{" "}
         </Heading2>
-        <Heading2 sx={{ fontWeight: 400, py: 1 }}>
+        <Heading2
+          sx={{ fontWeight: 400, py: 1, color: "#818181", fontSize: "14px" }}
+        >
           Please provide reason or attach image/file as prove for {title} of
           this task.
         </Heading2>
@@ -167,6 +169,7 @@ function ApprovalOverlays(props: IProps) {
         {selectedImages.length > 0 && (
           <>
             <ImagesToUpload
+              taskApproveModal={true}
               showLabel={true}
               imgwithcomment={true}
               updateImageWithComment={(updatedImage: ImageWithComment) => {
@@ -191,6 +194,7 @@ function ApprovalOverlays(props: IProps) {
         {selectedDocuments.length > 0 && (
           <Box>
             <ReadMoreWrapper
+              Showtitle={false}
               count={0}
               title="Files"
               type="file"

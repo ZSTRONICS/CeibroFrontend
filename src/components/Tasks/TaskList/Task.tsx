@@ -71,7 +71,9 @@ function Task() {
   };
 
   const handleCollapseComment = () => {
-    setCommentDiv((prev) => !prev);
+    if (selectedTask && selectedTask?._id) {
+      setCommentDiv((prev) => !prev);
+    }
   };
 
   const ongoingClosedTasks = [
@@ -231,7 +233,7 @@ function Task() {
           backgroundColor: "#EBF5FB",
           zIndex: "20",
           borderRadius: "50%",
-          cursor: "pointer",
+          cursor: !selectedTask ? "not-allowed" : "pointer",
           padding: "6px 7px",
           transform: `${commentDiv ? "rotate(180deg)" : ""}`,
           transition: "all linear 0.30s",
@@ -346,6 +348,7 @@ function Task() {
           ...gridStyle,
           px: 2,
           py: 1.5,
+          overflow: "hidden",
         }}
       >
         <Box ref={detailHeaderRef}>
@@ -380,6 +383,7 @@ function Task() {
               width: "100%",
               height: "100%",
               transition: "all 0.30s linear",
+              borderRight: "2px solid #F4F4F4",
             }}
             ref={taskDetailContRef}
           >
@@ -395,7 +399,7 @@ function Task() {
               )
             ) : (
               <>
-                {selectedTask && selectedTaskandEvents && (
+                {selectedTask && selectedTaskandEvents ? (
                   <TabsViewTaskDetail
                     taskDetailContDimension={taskDetailContDimension}
                     parentheight={
@@ -407,6 +411,17 @@ function Task() {
                     }
                     isCommentView={false}
                   />
+                ) : (
+                  <Box
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    Selected any task
+                  </Box>
                 )}
               </>
             )}
