@@ -328,7 +328,7 @@ export default function DetailsHeader(props: IProps) {
                 );
               })}
             </Box>{" "}
-            {isSentTo && isExpanded && localCount && localCount > 0 && (
+            {isSentTo && isExpanded && localCount && localCount > 0 ? (
               <Box
                 sx={{
                   fontFamily: "Inter",
@@ -343,6 +343,8 @@ export default function DetailsHeader(props: IProps) {
               >
                 +{localCount}
               </Box>
+            ) : (
+              <></>
             )}
           </Box>
         )}
