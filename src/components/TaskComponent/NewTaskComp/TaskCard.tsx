@@ -254,7 +254,7 @@ const TaskCard = React.memo((props: IProps) => {
                   sx={{
                     position: "absolute",
                     top: "68%",
-                    left: "65%",
+                    left: "66%",
                     width: "25px",
                     height: "24.5px",
                     color: "white",
