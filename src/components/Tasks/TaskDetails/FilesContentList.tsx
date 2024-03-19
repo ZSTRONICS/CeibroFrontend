@@ -21,9 +21,11 @@ function FilesContentList(props: IFilesContentList) {
       sx={{
         width: "100%",
         maxWidth: "100%",
-        maxHeight: "600px", //calc dynamic height
+        // maxHeight: "600px", //calc dynamic height
+        height: "600px",
         overflow: "auto",
         bgcolor: "background.paper",
+        paddingBottom: "70px",
       }}
     >
       {allFiles.length > 0 ? (
@@ -118,7 +120,16 @@ function FilesContentList(props: IFilesContentList) {
           );
         })
       ) : (
-        <Heading2 sx={{ textAlign: "center", fontWeight: 500 }}>
+        <Heading2
+          sx={{
+            textAlign: "center",
+            fontWeight: 500,
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           No files attached
         </Heading2>
       )}

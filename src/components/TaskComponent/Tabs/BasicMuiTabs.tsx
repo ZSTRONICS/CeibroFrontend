@@ -66,6 +66,9 @@ export default function BasicTabs({
         onChange={handleChange}
         aria-label="basic tabs"
         sx={{
+          span: {
+            display: isFileTabs ? "none" : "",
+          },
           display: "flex",
           justifyContent: "space-between",
           backgroundColor: tabsBgColor || "transparent",
@@ -77,7 +80,7 @@ export default function BasicTabs({
             ...(isFileTabs ? filesTabSActivetyle : { display: "none" }),
           },
           "& .MuiTabs-flexContainer": {
-            gap: 0.5,
+            gap: isFileTabs ? 2 : 0.5,
             overflow: "auto",
           },
         }}
@@ -86,13 +89,15 @@ export default function BasicTabs({
           <Tab
             key={index + tab.label}
             sx={{
-              // border: "solid 1px red",
+              width: "max-contnet",
+              marginTop: isFileTabs ? "10px" : "0px",
               gap: 0.5,
               textTransform: "capitalize",
               fontWeight: 500,
               fontFamily: "Inter",
               fontSize: "14px",
-              minHeight: "50px",
+              maxHeight: isFileTabs ? "32px" : null,
+              minHeight: isFileTabs ? "32px" : "50px",
               ...(isFileTabs && value === index
                 ? filesTabSActivetyle
                 : isFileTabs

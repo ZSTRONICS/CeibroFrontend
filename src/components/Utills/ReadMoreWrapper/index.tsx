@@ -187,7 +187,7 @@ const ReadMoreWrapper = ({
             <Box
               sx={{
                 width: "100%",
-                px: "4px",
+                px: "0px",
                 maxWidth: "95%",
               }}
             >

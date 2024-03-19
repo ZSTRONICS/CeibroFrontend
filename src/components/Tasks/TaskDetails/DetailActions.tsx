@@ -473,7 +473,7 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   return (
     <>
-      <Grid container justifyContent="space-between">
+      <Grid pb={0.6} container justifyContent="space-between">
         <Grid
           item
           container
