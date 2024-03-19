@@ -230,7 +230,7 @@ const Comment = ({
               fontSize: "12px",
               fontWeight: 500,
               color: "#757575",
-              paddingBottom: "12px",
+              paddingBottom: "3px",
               paddingRight: "5px",
             }}
           >

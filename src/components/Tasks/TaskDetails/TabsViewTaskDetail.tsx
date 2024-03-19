@@ -49,11 +49,9 @@ function TabsViewTaskDetail(props: IProps) {
       content: (
         <AddedDetails
           taskId={selectedTask._id}
-          parentheight={parentheight}
           selectedTab={selectedTab}
           isCommentView={isSplitView}
           events={events}
-          hasFile={media.length > 0}
         />
       ),
     },

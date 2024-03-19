@@ -4,7 +4,7 @@ import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import { TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import Comment from "../Comment";
@@ -12,33 +12,44 @@ import CommentCard from "./CommentCard";
 import MessageBot from "./MessageBot";
 interface IProps {
   events: TaskEvent[];
-  hasFile: boolean;
+
   isCommentView: boolean;
-  // contHeight: number;
   selectedTab: string;
-  parentheight?: number;
   taskId: string;
 }
 
 function AddedDetails(props: IProps) {
+  const containerRef: any = useRef(null);
   const { user } = useSelector((state: RootState) => state.auth);
   const userId = user && String(user._id);
-  const { events, isCommentView, selectedTab, hasFile, parentheight, taskId } =
-    props;
+  const { events, isCommentView, selectedTab, taskId } = props;
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
   const [images, setImages] = useState<any>([]);
+  const [heightOffset, setHeightOffset] = useState<number>(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showComment, setShowComment] = useState(true);
+  const [showComment, setShowComment] = useState(false);
 
-  // setTimeout(() => {
-  //   if (selectedTab === "Comments" || isCommentView) {
-  //     setShowComment(true);
-  //   } else {
-  //     setShowComment(false);
-  //   }
-  // }, 500);
+  useEffect(() => {
+    if (selectedTab === "Comments" || isCommentView) {
+      setShowComment(true);
+    } else {
+      setShowComment(false);
+    }
+  }, [selectedTab, isCommentView]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const newTop = containerRef.current.getBoundingClientRect().top;
+      if (showComment) {
+        setHeightOffset(newTop + 25);
+      } else {
+        setHeightOffset(newTop + 30);
+      }
+    }
+  }, [containerRef, showComment]);
+
   const handleClose = () => {
     setImages([]);
     setCurrentImageIndex(0);
@@ -65,13 +76,13 @@ function AddedDetails(props: IProps) {
   return (
     <>
       <Box
+        ref={containerRef}
         sx={{
-          height: "100%",
+          height: `calc(100vh - ${heightOffset}px)`,
           gap: 1.25,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          // border: "1px solid red",
         }}
       >
         <Box
@@ -95,27 +106,27 @@ function AddedDetails(props: IProps) {
                 taskId,
               } = event;
               const isCommentInitiator = initiator && initiator._id === userId;
-              const invitedMembersData =
-                eventData &&
-                eventData.length > 0 &&
-                eventData
-                  .map((user) => {
-                    const { firstName, surName, phoneNumber } = user;
-                    if (firstName && surName) {
-                      return `${firstName} ${surName}`;
-                    } else if (firstName) {
-                      return firstName;
-                    } else if (surName) {
-                      return surName;
-                    } else {
-                      return phoneNumber;
-                    }
-                  })
-                  .join(", ");
+              // const invitedMembersData =
+              //   eventData &&
+              //   eventData.length > 0 &&
+              //   eventData
+              //     .map((user) => {
+              //       const { firstName, surName, phoneNumber } = user;
+              //       if (firstName && surName) {
+              //         return `${firstName} ${surName}`;
+              //       } else if (firstName) {
+              //         return firstName;
+              //       } else if (surName) {
+              //         return surName;
+              //       } else {
+              //         return phoneNumber;
+              //       }
+              //     })
+              //     .join(", ");
               switch (eventType) {
                 case TaskEventType.Comment:
                   return (
-                    <>
+                    <React.Fragment key={index + "comment"}>
                       {commentData && (
                         <CommentCard
                           createdAt={createdAt}
@@ -127,7 +138,7 @@ function AddedDetails(props: IProps) {
                           isCommentInitiator={isCommentInitiator}
                         />
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 case TaskEventType.DoneTask:
                 case TaskEventType.RejectClosed:
@@ -138,7 +149,7 @@ function AddedDetails(props: IProps) {
                     commentData?.message === "" &&
                     commentData.files.length === 0;
                   return (
-                    <>
+                    <React.Fragment key={index + eventType}>
                       {IsMessageBot ? (
                         <MessageBot
                           type={eventType}
@@ -167,14 +178,14 @@ function AddedDetails(props: IProps) {
                           )}
                         </>
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 case TaskEventType.ForwardTask:
                   IsMessageBot =
                     commentData?.message === "" &&
                     commentData?.files?.length === 0;
                   return (
-                    <>
+                    <React.Fragment key={index + eventType}>
                       {IsMessageBot ? (
                         <>
                           <MessageBot
@@ -205,14 +216,14 @@ function AddedDetails(props: IProps) {
                           )}
                         </>
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 case TaskEventType.InvitedUser:
                   IsMessageBot =
                     commentData?.message === "" &&
                     commentData?.files?.length === 0;
                   return (
-                    <>
+                    <React.Fragment key={index + "invitedUser"}>
                       {IsMessageBot ? (
                         <>
                           <MessageBot
@@ -243,14 +254,14 @@ function AddedDetails(props: IProps) {
                           )}
                         </>
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 case TaskEventType.CancelTask:
                   IsMessageBot =
                     commentData?.message === "" &&
                     commentData?.files?.length === 0;
                   return (
-                    <>
+                    <React.Fragment key={index + "cancelTask"}>
                       {IsMessageBot ? (
                         <>
                           <MessageBot
@@ -283,14 +294,14 @@ function AddedDetails(props: IProps) {
                           )}
                         </>
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 case TaskEventType.UnCancelTask:
                   IsMessageBot =
                     commentData?.message === "" &&
                     commentData?.files?.length === 0;
                   return (
-                    <>
+                    <React.Fragment key={index + "unCancelTask"}>
                       {IsMessageBot ? (
                         <>
                           <MessageBot
@@ -321,7 +332,7 @@ function AddedDetails(props: IProps) {
                           )}
                         </>
                       )}
-                    </>
+                    </React.Fragment>
                   );
               }
             })
@@ -331,25 +342,15 @@ function AddedDetails(props: IProps) {
             </AddStatusTag>
           )}
         </Box>
-        {/* {showComment && (
-          <Box
-            sx={{
-              maxHeight: "50%",
-              minHeight: "15%",
-              height: "max-content",
-              marginTop: "5px",
-              overflow: "visible",
-            }}
-          > */}
-        <Comment
-          doneCommentsRequired={false}
-          doneImageRequired={false}
-          title={""}
-          showHeader={true}
-          taskId={taskId}
-        />
-        {/* </Box>
-        )} */}
+        {showComment && (
+          <Comment
+            doneCommentsRequired={false}
+            doneImageRequired={false}
+            title={""}
+            showHeader={true}
+            taskId={taskId}
+          />
+        )}
       </Box>
 
       {isOpen && isPdf && (

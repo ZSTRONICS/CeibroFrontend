@@ -80,7 +80,7 @@ function TaskDetails(props: IProps) {
   useEffect(() => {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
-      setHeightOffset(newTop + 25);
+      setHeightOffset(newTop + 30);
     }
   }, []);
 
