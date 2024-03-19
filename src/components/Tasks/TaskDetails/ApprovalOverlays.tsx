@@ -194,7 +194,7 @@ function ApprovalOverlays(props: IProps) {
         {selectedDocuments.length > 0 && (
           <Box>
             <ReadMoreWrapper
-              Showtitle={false}
+              // Showtitle={false}
               count={0}
               title="Files"
               type="file"

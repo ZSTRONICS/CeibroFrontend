@@ -233,7 +233,7 @@ const CommentCard = ({
               ? `${commentData.message.substring(
                   0,
                   isSmall ? 60 : commentshowonlarge ? 150 : 270
-                )}...`
+                )}... ${(<Box>view More</Box>)} `
               : `${commentData.message.substring(
                   0,
                   isSmall ? 60 : commentshowonlarge ? 150 : 270
@@ -245,6 +245,8 @@ const CommentCard = ({
             sx={{
               textAlign: "right",
               padding: "10px 0",
+              // border: "solid 1px red",
+              height: "max-content",
             }}
           >
             <button
@@ -254,12 +256,13 @@ const CommentCard = ({
                 color: "#0076C8",
                 fontSize: "12px",
                 fontWeight: "400",
-                lineHeight: "175%",
+                // lineHeight: "175%",
                 letterSpacing: "0.15px",
                 backgroundColor: "transparent",
                 border: "none",
                 padding: "none",
                 cursor: "pointer",
+                transform: "translateY(-30px)",
               }}
             >
               {!showMore ? "View more" : "View less"}

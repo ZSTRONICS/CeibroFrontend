@@ -130,7 +130,6 @@ const FileBox: React.FC<IProps> = ({
               <Box
                 key={key}
                 sx={{
-                  // border: "solid 1px red",
                   display: "flex",
                   alignItems: "center",
                   width: `${item.size ? "255px" : "200px"}`,
@@ -201,7 +200,6 @@ const FileBox: React.FC<IProps> = ({
               fontWeight: 450,
               fontSize: "13px",
               opacity: 0.9,
-              marginLeft: "5px",
               marginRight: "16px",
               marginTop: "4px",
             }}

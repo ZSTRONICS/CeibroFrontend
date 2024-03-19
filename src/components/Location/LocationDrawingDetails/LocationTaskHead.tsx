@@ -55,14 +55,6 @@ const LocationTaskHead = ({
   return (
     <Box style={HeadStyles.head_container} ref={headerRef}>
       <TabContext value={value}>
-        {/* <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "start",
-           
-          }}
-        > */}
         <TabList
           sx={{
             width: "100%",
@@ -111,7 +103,6 @@ const LocationTaskHead = ({
             value="2"
           />
         </TabList>
-        {/* </Box> */}
         <Box style={HeadStyles.head_filterization}>
           <TaskFilters isSmallView={isSmallView} />
         </Box>

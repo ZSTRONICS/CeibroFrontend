@@ -60,7 +60,13 @@ function Task() {
     {
       label: "Ongoing",
       icon: (
-        <TaskIcon color={selectedTab === "Ongoing" ? "black" : "#0076C8"} />
+        <Box
+          sx={{
+            transform: "translateX(18px) translateY(5px) ",
+          }}
+        >
+          <TaskIcon color={selectedTab === "Ongoing" ? "black" : "#0076C8"} />
+        </Box>
       ),
       content: (
         <TaskMain
@@ -84,9 +90,15 @@ function Task() {
     {
       label: "Closed",
       icon: (
-        <assets.CheckOutlinedIcon
-          sx={{ color: `${selectedTab === "Closed" ? "black" : "#0076C8"}` }}
-        />
+        <Box
+          sx={{
+            transform: "translateX(10px) translateY(2px) ",
+          }}
+        >
+          <assets.CheckOutlinedIcon
+            sx={{ color: `${selectedTab === "Closed" ? "black" : "#0076C8"}` }}
+          />
+        </Box>
       ),
       content: (
         <TaskMain
@@ -109,13 +121,19 @@ function Task() {
     },
   ];
 
+  //   const LabelIconContainer = styled(Box)`
+  //   transform: "translateX(18px) translateY(4px)
+  // `;
+
   const rootTaskFilter = [
     {
       label: "Ongoing",
       icon: (
-        <TaskIcon
-          color={`${selectedTab === "Ongoing" ? "black" : "#0076C8"}`}
-        />
+        <Box sx={{ transform: "translateX(18px) translateY(5px)" }}>
+          <TaskIcon
+            color={`${selectedTab === "Ongoing" ? "black" : "#0076C8"}`}
+          />
+        </Box>
       ),
       content: (
         <TaskMain
@@ -155,9 +173,15 @@ function Task() {
     {
       label: "Closed",
       icon: (
-        <assets.CheckOutlinedIcon
-          sx={{ color: `${selectedTab === "Closed" ? "black" : "#0076C8"}` }}
-        />
+        <Box
+          sx={{
+            transform: "translateX(12px) translateY(3px)",
+          }}
+        >
+          <assets.CheckOutlinedIcon
+            sx={{ color: `${selectedTab === "Closed" ? "black" : "#0076C8"}` }}
+          />
+        </Box>
       ),
       content: (
         <TaskMain
@@ -176,9 +200,13 @@ function Task() {
     {
       label: "Canceled",
       icon: (
-        <assets.CloseIcon
-          sx={{ color: `${selectedTab === "Canceled" ? "black" : "#0076C8"}` }}
-        />
+        <Box sx={{ transform: "translateX(13px) translateY(3px) " }}>
+          <assets.CloseIcon
+            sx={{
+              color: `${selectedTab === "Canceled" ? "black" : "#0076C8"}`,
+            }}
+          />
+        </Box>
       ),
       content: (
         <TaskMain
