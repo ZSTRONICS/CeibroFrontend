@@ -10,7 +10,7 @@ import TaskDetails from ".";
 import AddedDetails from "./AddedDetails";
 import FilesTab from "./FilesTab";
 interface IProps {
-  isCommentView: boolean;
+  isSplitView: boolean;
   selectedTask: ITask;
   taskDetailContDimension: DynamicDimensions;
   RECENT_TASK_UPDATED_TIME_STAMP: string;
@@ -21,7 +21,7 @@ interface IProps {
 function TabsViewTaskDetail(props: IProps) {
   const dispatch = useDispatch();
   const {
-    isCommentView,
+    isSplitView,
     taskDetailContDimension,
     selectedTask,
     RECENT_TASK_UPDATED_TIME_STAMP,
@@ -29,7 +29,7 @@ function TabsViewTaskDetail(props: IProps) {
     openCommentTab,
     handleSelectedDetailTab,
   } = props;
-  const showDefault = isCommentView ? "Comments" : "Details";
+  const showDefault = isSplitView ? "Comments" : "Details";
   const [selectedTab, setSelectedTab] = useState(showDefault);
   const [tabIndex, setTabIndex] = useState(0);
   const { events, files } = selectedTask;
@@ -53,7 +53,7 @@ function TabsViewTaskDetail(props: IProps) {
           taskId={selectedTask._id}
           parentheight={parentheight}
           selectedTab={selectedTab}
-          isCommentView={isCommentView}
+          isCommentView={isSplitView}
           contHeight={taskDetailContDimension.height}
           events={events}
           hasFile={media.length > 0}
@@ -82,7 +82,7 @@ function TabsViewTaskDetail(props: IProps) {
     },
     ...commentsAndFilesTabs,
   ];
-  const allTabsData = isCommentView ? commentsAndFilesTabs : allTabs;
+  const allTabsData = isSplitView ? commentsAndFilesTabs : allTabs;
   const findTabIndex = allTabsData.findIndex(
     (tab: any) => tab.label === openCommentTab
   );
@@ -107,7 +107,7 @@ function TabsViewTaskDetail(props: IProps) {
     <BasicTabs
       selectedTabIndex={tabIndex}
       setSelectedTab={setSelectedTab}
-      tabsBgColor={isCommentView ? "white" : "#F4F4F4"}
+      tabsBgColor={isSplitView ? "white" : "#F4F4F4"}
       tabsData={allTabsData}
     />
   );

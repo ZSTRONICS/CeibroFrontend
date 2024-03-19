@@ -183,14 +183,14 @@ const CommentCard = ({
           }}
         >
           <Box sx={{ transform: "translateX(20px)" }}>
-            {!isPinned ? <PinIcon color="#0076C8" /> : ""}
+            {isPinned ? <PinIcon color="#0076C8" /> : ""}
           </Box>
           <GenericMenu
             icon={
               <assets.MoreVertIcon
                 sx={{
                   color: "#000000",
-                  transform: "translateX(18px)",
+                  transform: "translateX(10px)",
                 }}
               />
             }

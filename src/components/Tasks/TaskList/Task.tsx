@@ -235,6 +235,7 @@ function Task() {
   const handleCollapseComment = () => {
     if (selectedTask) {
       setCommentDiv((prev) => !prev);
+      if (!commentDiv) setCommentTab("Details");
       setSelectedTabIndex(0);
     }
   };
@@ -263,7 +264,7 @@ function Task() {
           cursor: !selectedTask ? "not-allowed" : "pointer",
           padding: "6px 7px",
           transform: `${commentDiv ? "rotate(180deg)" : ""}`,
-          transition: "all linear 0.30s",
+          // transition: "all linear 0.30s",
         }}
       >
         <Locationarrow />
@@ -411,7 +412,7 @@ function Task() {
               maxWidth: `${commentDiv ? "49%" : "99.5%"}`,
               width: "100%",
               height: "100%",
-              transition: "all 0.30s linear",
+              // transition: "all 0.30s linear",
               borderRight: "2px solid #F4F4F4",
             }}
             ref={taskDetailContRef}
@@ -440,7 +441,7 @@ function Task() {
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
                     }
-                    isCommentView={false}
+                    isSplitView={false}
                   />
                 ) : (
                   <Box
@@ -462,7 +463,7 @@ function Task() {
             sx={{
               maxWidth: `${commentDiv ? "51%" : ".5%"}`,
               width: "100%",
-              transition: "all 0.30s linear",
+              // transition: "all 0.30s linear",
               display: { lg: "block", sm: "none" },
             }}
           >
@@ -481,7 +482,7 @@ function Task() {
                       RECENT_TASK_UPDATED_TIME_STAMP
                     }
                     selectedTask={selectedTaskandEvents}
-                    isCommentView={true}
+                    isSplitView={true}
                   />
                 )}
               </>

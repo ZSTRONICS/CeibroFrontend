@@ -135,6 +135,10 @@ function AddedDetails(props: IProps) {
                     </>
                   );
                 case TaskEventType.DoneTask:
+                case TaskEventType.RejectClosed:
+                case TaskEventType.RejectReopen:
+                case TaskEventType.Reopen:
+                case TaskEventType.Approved:
                   IsMessageBot =
                     commentData?.message === "" &&
                     commentData.files.length === 0;
@@ -142,7 +146,7 @@ function AddedDetails(props: IProps) {
                     <>
                       {IsMessageBot ? (
                         <MessageBot
-                          type="DoneTask"
+                          type={eventType}
                           initiator={initiator}
                           eventData={eventData}
                           isCommentInitiator={isCommentInitiator}
@@ -150,7 +154,7 @@ function AddedDetails(props: IProps) {
                       ) : (
                         <>
                           <MessageBot
-                            type="DoneTask"
+                            type={eventType}
                             initiator={initiator}
                             eventData={eventData}
                             isCommentInitiator={isCommentInitiator}

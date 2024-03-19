@@ -22,14 +22,24 @@ const MessageBot = ({
         } forwarded task to: ${eventData
           ?.map((item: any) => `${item.firstName} ${item?.surName}`)
           .join(", ")}`;
-      case "DoneTask":
-        return `${initiator?.firstName} ${initiator?.surName} marked the task as done`;
+
       case "InvitedUser":
         return `Invited by ${initiator?.firstName} ${initiator?.surName}`;
       case "CancelTask":
         return `Task canceled by ${initiator?.firstName} ${initiator?.surName}`;
       case "UnCancelTask":
         return `Task un-canceled by ${initiator?.firstName} ${initiator?.surName}`;
+
+      case "doneTask":
+        return `${initiator?.firstName} ${initiator?.surName} marked the task as done`;
+      case "reject-reopen":
+        return `Task rejected and reopened by ${initiator?.firstName} ${initiator?.surName}`;
+      case "reject-closed":
+        return `Task rejected and closed by ${initiator?.firstName} ${initiator?.surName}`;
+      case "approved":
+        return `Task approved by ${initiator?.firstName} ${initiator?.surName}`;
+      case "reopen":
+        return `Task reopened by ${initiator?.firstName} ${initiator?.surName}`;
       default:
         return "";
     }

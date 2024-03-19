@@ -146,10 +146,14 @@ export interface IFile {
 export enum TaskEventType {
   ForwardTask = "forwardTask",
   Comment = "comment",
-  DoneTask = "doneTask",
   CancelTask = "cancelTask",
   InvitedUser = "invitedUser",
   UnCancelTask = "unCancelTask",
+  DoneTask = "doneTask",
+  RejectReopen = "reject-reopen",
+  RejectClosed = "reject-closed",
+  Approved = "approved",
+  Reopen = "reopen",
 }
 
 export interface TaskEvent {
