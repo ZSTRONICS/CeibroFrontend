@@ -1,7 +1,6 @@
 import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
 import { FILTER_DATA_BY_EXT, MEDIA_EXT } from "components/Utills/Globals";
 import { ITask } from "constants/interfaces";
-import { DynamicDimensions } from "hooks/useDynamicDimensions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
@@ -12,7 +11,6 @@ import FilesTab from "./FilesTab";
 interface IProps {
   isSplitView: boolean;
   selectedTask: ITask;
-  taskDetailContDimension: DynamicDimensions;
   RECENT_TASK_UPDATED_TIME_STAMP: string;
   parentheight?: number;
   openCommentTab: string;
@@ -23,7 +21,6 @@ function TabsViewTaskDetail(props: IProps) {
   const dispatch = useDispatch();
   const {
     isSplitView,
-    taskDetailContDimension,
     selectedTask,
     RECENT_TASK_UPDATED_TIME_STAMP,
     parentheight,
@@ -55,7 +52,6 @@ function TabsViewTaskDetail(props: IProps) {
           parentheight={parentheight}
           selectedTab={selectedTab}
           isCommentView={isSplitView}
-          contHeight={taskDetailContDimension.height}
           events={events}
           hasFile={media.length > 0}
         />
