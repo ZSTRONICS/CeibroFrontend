@@ -7,7 +7,6 @@ import {
 } from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
-import { DynamicDimensions } from "hooks/useDynamicDimensions";
 import { capitalize } from "lodash";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -24,7 +23,6 @@ import TaskHeaderModals from "./TaskHeaderModals";
 
 interface IProps {
   DrawDetailCollapse: boolean;
-  taskDetailContDimension: DynamicDimensions | undefined;
   isLocationTaskDetail?: boolean;
   selectedTask: ITask;
   userId: string;

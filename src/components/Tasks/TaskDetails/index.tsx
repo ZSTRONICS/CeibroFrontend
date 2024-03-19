@@ -12,8 +12,6 @@ import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
 
@@ -62,9 +60,6 @@ function TaskDetails(props: IProps) {
     }
   }, [taskUID]);
 
-  const taskDragContHeight = useSelector(
-    (store: RootState) => store.task.taskDragContHeight
-  );
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -81,16 +76,13 @@ function TaskDetails(props: IProps) {
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState<number>(0);
   const [initialRender, setInitialRender] = useState(true);
+
   useEffect(() => {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
-      if (taskDragContHeight > 120) {
-        setHeightOffset(newTop + 30 + taskDragContHeight);
-      } else {
-        setHeightOffset(newTop + 25);
-      }
+      setHeightOffset(newTop + 25);
     }
-  }, [taskDragContHeight]);
+  }, []);
 
   useEffect(() => {
     if (containerRef.current && !initialRender) {
@@ -116,7 +108,8 @@ function TaskDetails(props: IProps) {
       key={_id}
       sx={{
         paddingTop: 1.25,
-        px: 2,
+        pl: 2,
+        pr: "10px",
       }}
     >
       <Box

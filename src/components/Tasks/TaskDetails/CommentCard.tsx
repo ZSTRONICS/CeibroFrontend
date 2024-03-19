@@ -71,10 +71,29 @@ const CommentCard = ({
     setCurrentImageIndex(index);
   };
 
-  ////
-
   const [doxdata, setdoxData] = useState([]);
   const [Imgdata, setImgData] = useState([]);
+  const getVisibleChildrenCount = () => {
+    if (!boximgref.current) return 0;
+    let count = 0;
+    const containerRect = boximgref.current.getBoundingClientRect();
+    for (let i = 0; i < boximgref.current.children.length; i++) {
+      const childRect = boximgref.current.children[i].getBoundingClientRect();
+      if (
+        childRect.top >= containerRect.top &&
+        childRect.bottom <= containerRect.bottom
+      ) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    return count;
+  };
+  const localCount = getVisibleChildrenCount();
+  const handleResize = () => {
+    setCount(localCount);
+  };
 
   useEffect(() => {
     const DoxfilteredData = commentData.files.filter((item: any) =>
@@ -83,39 +102,16 @@ const CommentCard = ({
     const ImgfilteredData = commentData.files.filter((item: any) =>
       MEDIA_EXT.includes(item.fileType)
     );
-
     setdoxData(DoxfilteredData);
     setImgData(ImgfilteredData);
 
-    const getVisibleChildrenCount = () => {
-      if (!boximgref.current) return 0;
-
-      const containerRect = boximgref.current.getBoundingClientRect();
-      let count = 0;
-
-      for (let i = 0; i < boximgref.current.children.length; i++) {
-        const childRect = boximgref.current.children[i].getBoundingClientRect();
-        if (
-          childRect.top >= containerRect.top &&
-          childRect.bottom <= containerRect.bottom
-        ) {
-          count++;
-        } else {
-          break;
-        }
-      }
-
-      return count;
-    };
-
-    const handleResize = () => {
-      const count = getVisibleChildrenCount();
-      setCount(count);
-    };
     handleResize();
-
     window.addEventListener("resize", handleResize);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [boximgref, commentData.files.length, localCount]);
+
   const handlePinUnPinTaskComment = () => {
     const payload = {
       other: {
@@ -126,6 +122,7 @@ const CommentCard = ({
     };
     dispatch(taskActions.pinUnPinTaskComment(payload));
   };
+
   const CommentCardContent = (
     <Box
       sx={{
@@ -256,7 +253,6 @@ const CommentCard = ({
             sx={{
               textAlign: "right",
               padding: "10px 0",
-              // border: "solid 1px red",
               height: "max-content",
             }}
           >
@@ -267,7 +263,6 @@ const CommentCard = ({
                 color: "#0076C8",
                 fontSize: "12px",
                 fontWeight: "400",
-                // lineHeight: "175%",
                 letterSpacing: "0.15px",
                 backgroundColor: "transparent",
                 border: "none",
@@ -339,7 +334,9 @@ const CommentCard = ({
                       {`+${Imgdata && Imgdata?.length - count}`}
                     </Box>
                   </>
-                ) : null}
+                ) : (
+                  <></>
+                )}
 
                 <CardMedia
                   component="img"

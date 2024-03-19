@@ -180,10 +180,12 @@ const Comment = ({
     selectedImages.length === 0;
   return (
     <Box
-      sx={{
-        height: "max-contnet",
-        overflow: "auto",
-      }}
+      sx={
+        {
+          // height: "max-contnet",
+          // overflow: "auto",
+        }
+      }
     >
       <CustomStack sx={{ gap: 0.8, alignItems: "center" }}>
         <Box sx={{ width: "90%" }}>

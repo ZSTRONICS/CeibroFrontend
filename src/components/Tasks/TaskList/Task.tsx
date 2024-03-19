@@ -1,6 +1,5 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import assets from "assets";
-import { CustomStack, Heading2 } from "components/CustomTags";
 import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
 import { countUnseenTasksForTabs } from "components/Utills/Globals";
 import { ApprovalIcon, TaskIcon } from "components/material-ui/icons";
@@ -13,10 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { PROJECT_APIS, taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
-import { HEADER_HEIGHT, filterTasks, openFormInNewWindow } from "utills/common";
+import { HEADER_HEIGHT, filterTasks } from "utills/common";
 import TaskDetails from "../TaskDetails";
 import DetailActions from "../TaskDetails/DetailActions";
 import TabsViewTaskDetail from "../TaskDetails/TabsViewTaskDetail";
+import MainTaskHeader from "./MainTaskHeader";
 import TaskMain from "./TaskMain";
 interface RouteParams {
   subtask: TaskRootState;
@@ -37,6 +37,15 @@ function Task() {
   const [showHiddenTasks, setShowHiddenTasks] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [commentTab, setCommentTab] = useState<string>("");
+  const { allTasksAllEvents, RECENT_TASK_UPDATED_TIME_STAMP } = useSelector(
+    (state: RootState) => state.task
+  );
+
+  const { allProjects } = useSelector((state: RootState) => state.project);
+  const { userAllContacts } = useSelector((state: RootState) => state.user);
+  const Topics = useSelector((state: RootState) => state.task.Topics);
+  const { allTasks, allEvents }: AllTasksAllEvents = allTasksAllEvents;
+
   const {
     containerRef: taskDetailContRef,
     dimensions: taskDetailContDimension,
@@ -47,14 +56,6 @@ function Task() {
   } = useDynamicDimensions();
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
-  const { allTasksAllEvents, RECENT_TASK_UPDATED_TIME_STAMP } = useSelector(
-    (state: RootState) => state.task
-  );
-
-  const { allProjects } = useSelector((state: RootState) => state.project);
-  const { userAllContacts } = useSelector((state: RootState) => state.user);
-  const Topics = useSelector((state: RootState) => state.task.Topics);
-  const { allTasks, allEvents }: AllTasksAllEvents = allTasksAllEvents;
 
   const ongoingClosedTasks = [
     {
@@ -120,10 +121,6 @@ function Task() {
       ),
     },
   ];
-
-  //   const LabelIconContainer = styled(Box)`
-  //   transform: "translateX(18px) translateY(4px)
-  // `;
 
   const rootTaskFilter = [
     {
@@ -223,6 +220,7 @@ function Task() {
       ),
     },
   ];
+
   const TabsDataLocal = showHiddenTasks ? ongoingClosedTasks : rootTaskFilter;
   const findTabIndex = TabsDataLocal.findIndex((tab) => tab.label === subtask);
 
@@ -292,76 +290,10 @@ function Task() {
           cursor: !selectedTask ? "not-allowed" : "pointer",
           padding: "6px 7px",
           transform: `${commentDiv ? "rotate(180deg)" : ""}`,
-          // transition: "all linear 0.30s",
         }}
       >
         <Locationarrow />
       </Box>
-    );
-  };
-
-  const ShowTaskHeader = () => {
-    return (
-      <>
-        {showHiddenTasks ? (
-          <CustomStack sx={{ justifyContent: "space-between", width: "100%" }}>
-            <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Hidden Tasks</Heading2>
-            <Button
-              disableRipple
-              component="label"
-              sx={{
-                padding: "5px 8px",
-                textTransform: "unset",
-                marginRight: "15px",
-              }}
-              onClick={() => setShowHiddenTasks(false)}
-              variant="contained"
-            >
-              Go Back
-            </Button>
-          </CustomStack>
-        ) : (
-          <CustomStack
-            sx={{
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Tasks</Heading2>
-            <Box>
-              <Button
-                disableRipple
-                component="label"
-                sx={{
-                  padding: "5px 8px",
-                  textTransform: "unset",
-                  color: "#818181",
-                }}
-                onClick={() => setShowHiddenTasks(true)}
-                variant="text"
-              >
-                Show hidden tasks
-              </Button>
-              <Button
-                disableRipple
-                component="label"
-                sx={{
-                  padding: "5px 8px",
-                  textTransform: "unset",
-                  marginRight: "15px",
-                }}
-                onClick={() =>
-                  openFormInNewWindow("/create-new-task", "Create New Task")
-                }
-                variant="contained"
-              >
-                <assets.AddIcon sx={{ color: "white", marginRight: "10px" }} />
-                New
-              </Button>
-            </Box>
-          </CustomStack>
-        )}
-      </>
     );
   };
 
@@ -389,7 +321,10 @@ function Task() {
           overflow: "hidden",
         }}
       >
-        {ShowTaskHeader()}
+        <MainTaskHeader
+          setShowHiddenTasks={setShowHiddenTasks}
+          showHiddenTasks={showHiddenTasks}
+        />
         <BasicTabs
           setSelectedTab={setSelectedTab}
           selectedTabIndex={selectedTabIndex}
@@ -397,6 +332,8 @@ function Task() {
           tabsData={TabsDataLocal}
         />
       </Grid>
+
+      {/* task detail view start */}
       <Grid
         item
         sx={{
@@ -404,20 +341,22 @@ function Task() {
           width: "100%",
           ...gridStyle,
           px: 2,
-          py: 1.5,
-          overflow: "hidden",
+          py: 0.4,
+          overflow: "auto",
         }}
       >
         {selectedTask && (
           <Box
             ref={detailHeaderRef}
-            sx={{ borderBottom: "1px solid #E2E4E5", pb: 0.5, height: "64px" }}
+            sx={{
+              borderBottom: commentDiv ? "1px solid #E2E4E5" : "",
+              pb: 0.5,
+            }}
           >
             <DetailActions
               handleReply={handleCommentView}
               userId={userId}
               isLocationTaskDetail={false}
-              taskDetailContDimension={taskDetailContDimension}
               selectedTask={selectedTask}
               DrawDetailCollapse={false}
             />
@@ -426,12 +365,7 @@ function Task() {
         <Grid
           container
           justifyContent={"space-between"}
-          sx={{
-            width: "100%",
-            height: `${
-              windowActualHeight - detailHeaderRefDimension.height - 20
-            }px`,
-          }}
+          sx={{ width: "100%", height: !selectedTask ? "100%" : "auto" }}
         >
           <Grid
             item
@@ -439,7 +373,6 @@ function Task() {
               maxWidth: `${commentDiv ? "49%" : "99.5%"}`,
               width: "100%",
               height: "100%",
-              // transition: "all 0.30s linear",
               borderRight: "2px solid #F4F4F4",
             }}
             ref={taskDetailContRef}
@@ -461,10 +394,6 @@ function Task() {
                     handleSelectedDetailTab={(tab) => setCommentTab(tab)}
                     openCommentTab={commentTab}
                     headerHeight={detailHeaderRefDimension.height}
-                    taskDetailContDimension={taskDetailContDimension}
-                    // parentheight={
-                    //   windowActualHeight - detailHeaderRefDimension.height - 20
-                    // }
                     selectedTask={selectedTaskandEvents}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
@@ -491,7 +420,6 @@ function Task() {
             sx={{
               maxWidth: `${commentDiv ? "51%" : ".5%"}`,
               width: "100%",
-              // transition: "all 0.30s linear",
               display: { lg: "block", sm: "none" },
             }}
           >
@@ -503,10 +431,6 @@ function Task() {
                     handleSelectedDetailTab={(tab) => setCommentTab(tab)}
                     openCommentTab={commentTab}
                     headerHeight={detailHeaderRefDimension.height}
-                    // parentheight={
-                    //   windowActualHeight - detailHeaderRefDimension.height - 20
-                    // }
-                    taskDetailContDimension={taskDetailContDimension}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
                     }

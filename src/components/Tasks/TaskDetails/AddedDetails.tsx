@@ -14,7 +14,7 @@ interface IProps {
   events: TaskEvent[];
   hasFile: boolean;
   isCommentView: boolean;
-  contHeight: number;
+  // contHeight: number;
   selectedTab: string;
   parentheight?: number;
   taskId: string;
@@ -23,29 +23,22 @@ interface IProps {
 function AddedDetails(props: IProps) {
   const { user } = useSelector((state: RootState) => state.auth);
   const userId = user && String(user._id);
-  const {
-    events,
-    isCommentView,
-    selectedTab,
-    contHeight,
-    hasFile,
-    parentheight,
-    taskId,
-  } = props;
+  const { events, isCommentView, selectedTab, hasFile, parentheight, taskId } =
+    props;
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
   const [images, setImages] = useState<any>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showComment, setShowComment] = useState(false);
+  const [showComment, setShowComment] = useState(true);
 
-  setTimeout(() => {
-    if (selectedTab === "Comments" || isCommentView) {
-      setShowComment(true);
-    } else {
-      setShowComment(false);
-    }
-  }, 500);
+  // setTimeout(() => {
+  //   if (selectedTab === "Comments" || isCommentView) {
+  //     setShowComment(true);
+  //   } else {
+  //     setShowComment(false);
+  //   }
+  // }, 500);
   const handleClose = () => {
     setImages([]);
     setCurrentImageIndex(0);
@@ -73,10 +66,12 @@ function AddedDetails(props: IProps) {
     <>
       <Box
         sx={{
-          height: `${parentheight && parentheight - 60}px`,
+          height: "100%",
+          gap: 1.25,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          // border: "1px solid red",
         }}
       >
         <Box
@@ -336,7 +331,7 @@ function AddedDetails(props: IProps) {
             </AddStatusTag>
           )}
         </Box>
-        {showComment && (
+        {/* {showComment && (
           <Box
             sx={{
               maxHeight: "50%",
@@ -345,16 +340,16 @@ function AddedDetails(props: IProps) {
               marginTop: "5px",
               overflow: "visible",
             }}
-          >
-            <Comment
-              doneCommentsRequired={false}
-              doneImageRequired={false}
-              title={""}
-              showHeader={true}
-              taskId={taskId}
-            />
-          </Box>
-        )}
+          > */}
+        <Comment
+          doneCommentsRequired={false}
+          doneImageRequired={false}
+          title={""}
+          showHeader={true}
+          taskId={taskId}
+        />
+        {/* </Box>
+        )} */}
       </Box>
 
       {isOpen && isPdf && (
