@@ -66,22 +66,26 @@ function Task() {
             transform: "translateX(18px) translateY(5px) ",
           }}
         >
-          <TaskIcon color={selectedTab === "Ongoing" ? "black" : "#0076C8"} />
+          <TaskIcon
+            isTabs={true}
+            color={selectedTab === "Ongoing" ? "black" : "#0076C8"}
+          />
         </Box>
       ),
       content: (
-        <TaskMain
-          allTaskList={filterTasks(
-            allTasks,
-            TaskRootState.Hidden,
-            true,
-            "ongoing"
-          )}
-          showHiddenTasks={showHiddenTasks}
-          selectedRootTask={selectedTab}
-          setSelectedTask={setSelectedTask}
-          selectedTask={selectedTask}
-        />
+        <></>
+        // <TaskMain
+        //   allTaskList={filterTasks(
+        //     allTasks,
+        //     TaskRootState.Hidden,
+        //     true,
+        //     "ongoing"
+        //   )}
+        //   showHiddenTasks={showHiddenTasks}
+        //   selectedRootTask={selectedTab}
+        //   setSelectedTask={setSelectedTask}
+        //   selectedTask={selectedTask}
+        // />
       ),
       count: countUnseenTasksForTabs(
         filterTasks(allTasks, TaskRootState.Hidden, true, "ongoing"),
@@ -128,6 +132,7 @@ function Task() {
       icon: (
         <Box sx={{ transform: "translateX(18px) translateY(5px)" }}>
           <TaskIcon
+            isTabs={true}
             color={`${selectedTab === "Ongoing" ? "black" : "#0076C8"}`}
           />
         </Box>
