@@ -174,7 +174,10 @@ const Comment = ({
     };
     input.click();
   };
-
+  const disableBtn =
+    description.length === 0 &&
+    selectedDocuments.length === 0 &&
+    selectedImages.length === 0;
   return (
     <Box
       sx={{
@@ -182,7 +185,7 @@ const Comment = ({
         overflow: "auto",
       }}
     >
-      <CustomStack sx={{ gap: 0.8, alignItems: "baseline" }}>
+      <CustomStack sx={{ gap: 0.8, alignItems: "center" }}>
         <Box sx={{ width: "90%" }}>
           <FormControl
             variant="standard"
@@ -215,7 +218,7 @@ const Comment = ({
                 },
               }}
               onChange={handleDescriptionChange}
-              maxRows={5}
+              maxRows={3}
             />
           </FormControl>
           <span
@@ -256,7 +259,7 @@ const Comment = ({
               marginRight: "0px",
             },
           }}
-          disabled={description.length === 0}
+          disabled={disableBtn || isSubmit}
           icon={<SendIcon />}
           onClick={handleSubmit}
         />

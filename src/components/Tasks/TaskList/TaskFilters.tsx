@@ -169,8 +169,8 @@ function TaskFilters(props: Props) {
             isTaskFilter={true}
             name="assignedToState"
             label={"Users"}
-            contacts={userAllContacts}
-            recentUserContact={recentUserContact}
+            contacts={[]}
+            recentUserContact={[]}
             handleChangeValues={handleChangeValues}
             tasktilters={true}
           />

@@ -183,7 +183,7 @@ const CommentCard = ({
           }}
         >
           <Box sx={{ transform: "translateX(20px)" }}>
-            {isPinned ? <PinIcon color="#0076C8" /> : ""}
+            {isPinned ? <PinIcon color="#0076C8" /> : <></>}
           </Box>
           <GenericMenu
             icon={
@@ -216,29 +216,40 @@ const CommentCard = ({
         <Box
           sx={{
             fontSize: "14px",
-            lineHeight: "20px",
-            color: "#131516",
-            textAlign: "start",
             fontWeight: "500",
+            lineHeight: "20px",
+            textAlign: "start",
             overflowWrap: "break-word",
           }}
         >
-          {commentData &&
-          commentData.message !== undefined &&
-          commentData.message.length > 0
-            ? showMore
-              ? commentData.message
-              : commentData.message !== undefined &&
-                commentData.message.length > 270
-              ? `${commentData.message.substring(
-                  0,
-                  isSmall ? 60 : commentshowonlarge ? 150 : 270
-                )}... ${(<Box>view More</Box>)} `
-              : `${commentData.message.substring(
-                  0,
-                  isSmall ? 60 : commentshowonlarge ? 150 : 270
-                )}`
-            : ""}
+          <pre
+            style={{
+              color: "#131516",
+              fontSize: "14px",
+              fontWeight: "500",
+              fontFamily: "Inter",
+              wordWrap: "break-word",
+              whiteSpace: "pre-wrap",
+              overflowWrap: "anywhere",
+            }}
+          >
+            {commentData &&
+            commentData.message !== undefined &&
+            commentData.message.length > 0
+              ? showMore
+                ? commentData.message
+                : commentData.message !== undefined &&
+                  commentData.message.length > 270
+                ? `${commentData.message.substring(
+                    0,
+                    isSmall ? 60 : commentshowonlarge ? 150 : 270
+                  )}...`
+                : `${commentData.message.substring(
+                    0,
+                    isSmall ? 60 : commentshowonlarge ? 150 : 270
+                  )}`
+              : ""}
+          </pre>
         </Box>
         {commentData.message && commentData.message.length > 270 && (
           <Box

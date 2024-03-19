@@ -1,6 +1,6 @@
 import { Box, Button, Grid } from "@mui/material";
 import assets from "assets";
-import { CustomDivider, CustomStack, Heading2 } from "components/CustomTags";
+import { CustomStack, Heading2 } from "components/CustomTags";
 import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
 import { countUnseenTasksForTabs } from "components/Utills/Globals";
 import { ApprovalIcon, TaskIcon } from "components/material-ui/icons";
@@ -408,22 +408,21 @@ function Task() {
           overflow: "hidden",
         }}
       >
-        <Box ref={detailHeaderRef}>
-          {selectedTask && (
-            <>
-              {" "}
-              <DetailActions
-                handleReply={handleCommentView}
-                userId={userId}
-                isLocationTaskDetail={false}
-                taskDetailContDimension={taskDetailContDimension}
-                selectedTask={selectedTask}
-                DrawDetailCollapse={false}
-              />
-              <CustomDivider sx={{ my: 1 }} />
-            </>
-          )}
-        </Box>
+        {selectedTask && (
+          <Box
+            ref={detailHeaderRef}
+            sx={{ borderBottom: "1px solid #E2E4E5", pb: 0.5, height: "64px" }}
+          >
+            <DetailActions
+              handleReply={handleCommentView}
+              userId={userId}
+              isLocationTaskDetail={false}
+              taskDetailContDimension={taskDetailContDimension}
+              selectedTask={selectedTask}
+              DrawDetailCollapse={false}
+            />
+          </Box>
+        )}
         <Grid
           container
           justifyContent={"space-between"}
@@ -461,10 +460,11 @@ function Task() {
                   <TabsViewTaskDetail
                     handleSelectedDetailTab={(tab) => setCommentTab(tab)}
                     openCommentTab={commentTab}
+                    headerHeight={detailHeaderRefDimension.height}
                     taskDetailContDimension={taskDetailContDimension}
-                    parentheight={
-                      windowActualHeight - detailHeaderRefDimension.height - 20
-                    }
+                    // parentheight={
+                    //   windowActualHeight - detailHeaderRefDimension.height - 20
+                    // }
                     selectedTask={selectedTaskandEvents}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
@@ -502,9 +502,10 @@ function Task() {
                   <TabsViewTaskDetail
                     handleSelectedDetailTab={(tab) => setCommentTab(tab)}
                     openCommentTab={commentTab}
-                    parentheight={
-                      windowActualHeight - detailHeaderRefDimension.height - 20
-                    }
+                    headerHeight={detailHeaderRefDimension.height}
+                    // parentheight={
+                    //   windowActualHeight - detailHeaderRefDimension.height - 20
+                    // }
                     taskDetailContDimension={taskDetailContDimension}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP

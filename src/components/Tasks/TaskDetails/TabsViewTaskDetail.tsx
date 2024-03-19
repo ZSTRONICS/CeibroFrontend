@@ -16,6 +16,7 @@ interface IProps {
   RECENT_TASK_UPDATED_TIME_STAMP: string;
   parentheight?: number;
   openCommentTab: string;
+  headerHeight: number;
   handleSelectedDetailTab: (tab: string) => void;
 }
 function TabsViewTaskDetail(props: IProps) {
