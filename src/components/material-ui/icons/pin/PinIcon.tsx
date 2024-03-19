@@ -16,7 +16,7 @@ export function PinIcon(props: Props) {
         <path
           d="M1 15L5.5 10.5M1 6L10 15M9 1L15 7M2 7L10 2M9 14L14 6"
           stroke={color}
-          stroke-width="1.5"
+          strokeWidth="1.5"
         />
       </svg>
     </span>
