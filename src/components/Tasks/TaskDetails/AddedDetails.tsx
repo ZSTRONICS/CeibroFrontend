@@ -20,6 +20,7 @@ interface IProps {
 
 function AddedDetails(props: IProps) {
   const containerRef: any = useRef(null);
+  const commentScrollRef: any = useRef(null);
   const { user } = useSelector((state: RootState) => state.auth);
   const userId = user && String(user._id);
   const { events, isCommentView, selectedTab, taskId } = props;
@@ -73,6 +74,20 @@ function AddedDetails(props: IProps) {
 
   var IsMessageBot: boolean;
 
+  useEffect(() => {
+    // Function to scroll to the bottom
+    const scrollToBottom = () => {
+      if (commentScrollRef.current) {
+        // Set the scrollTop property to the maximum value
+        commentScrollRef.current.scrollTop =
+          commentScrollRef.current.clientHeight;
+      }
+    };
+
+    // Scroll to the bottom when the component mounts or the content changes
+    scrollToBottom();
+  }, [commentScrollRef, events?.length]); // Only run once after component mounts
+
   return (
     <>
       <Box
@@ -91,6 +106,7 @@ function AddedDetails(props: IProps) {
             overflowY: "auto",
             flex: "1",
           }}
+          ref={commentScrollRef}
         >
           {events?.length > 0 ? (
             events.map((event: TaskEvent, index: number) => {

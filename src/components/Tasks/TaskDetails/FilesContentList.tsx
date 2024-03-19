@@ -9,12 +9,21 @@ import { GenericMenu } from "components/GenericComponents";
 import { getFileIconThumbnail } from "components/Utills/FileBox";
 import { MEDIA_EXT, momentdeDateFormat } from "components/Utills/Globals";
 import { TaskFile } from "constants/interfaces";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface IFilesContentList {
   allFiles: TaskFile[];
 }
+
 function FilesContentList(props: IFilesContentList) {
+  const containerRef: any = useRef(null);
+  const [heightOffset, setHeightOffset] = useState<number>(0);
+  useEffect(() => {
+    if (containerRef.current) {
+      const newTop = containerRef.current.getBoundingClientRect().top;
+      setHeightOffset(newTop + 30);
+    }
+  }, [containerRef]);
   const { allFiles } = props;
   return (
     <List
@@ -22,11 +31,12 @@ function FilesContentList(props: IFilesContentList) {
         width: "100%",
         maxWidth: "100%",
         // maxHeight: "600px", //calc dynamic height
-        height: "600px",
-        overflow: "auto",
+        height: `calc(100vh - ${heightOffset}px)`,
+        overflowY: "auto",
         bgcolor: "background.paper",
         paddingBottom: "70px",
       }}
+      ref={containerRef}
     >
       {allFiles.length > 0 ? (
         allFiles.map((file, index) => {

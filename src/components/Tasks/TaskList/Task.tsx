@@ -347,7 +347,7 @@ function Task() {
           ...gridStyle,
           px: 2,
           py: 0.4,
-          overflow: "auto",
+          overflow: "hidden",
         }}
       >
         {selectedTask && (
