@@ -65,7 +65,10 @@ function Task() {
             transform: "translateX(18px) translateY(5px) ",
           }}
         >
-          <TaskIcon color={selectedTab === "Ongoing" ? "black" : "#0076C8"} />
+          <TaskIcon
+            isTabs={true}
+            color={selectedTab === "Ongoing" ? "black" : "#0076C8"}
+          />
         </Box>
       ),
       content: (
