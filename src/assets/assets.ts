@@ -4,7 +4,7 @@ import visualWebp from "./images/Visual.webp";
 import addUser from "./images/addUser.svg";
 import blueDocument from "./images/blueDocument.svg";
 import folderIcon from "./images/blueFolder.png";
-import blueUser from './images/blueUser.webp';
+import blueUser from "./images/blueUser.webp";
 import calender from "./images/calender.png";
 import chatIcon from "./images/chatIcon.png";
 import clearIcon from "./images/clearIcon.png";
@@ -16,6 +16,7 @@ import emoji from "./images/emoji.svg";
 import logo from "./images/logo.webp";
 import mediaIcon from "./images/mediaIcon.png";
 import moreIcon from "./images/moreIcon.png";
+import NotFound from "./images/notFound.svg";
 import pencilIcon from "./images/pencil.png";
 import pencilFilled from "./images/pencilFilled.png";
 import primaryNudgeIcon from "./images/primaryNudge.svg";
@@ -42,18 +43,18 @@ import filterIcon from "./images/filterIcon.svg";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import LanguageOutlinedIcon from "@material-ui/icons/LanguageOutlined";
 import AddIcon from "@mui/icons-material/Add";
-import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DeleteIconMUI from '@mui/icons-material/Delete';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import DeleteIconMUI from "@mui/icons-material/Delete";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -65,7 +66,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import MarkUnreadChatAltOutlinedIcon from "@mui/icons-material/MarkUnreadChatAltOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -93,6 +94,7 @@ import membersDelete from "./images/membersDelete.png";
 // cross icon
 
 const assets = {
+  NotFound,
   ArrowDropDownOutlinedIcon,
   CheckOutlinedIcon,
   FileIcon,

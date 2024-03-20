@@ -105,6 +105,9 @@ function AddedDetails(props: IProps) {
           sx={{
             overflowY: "auto",
             flex: "1",
+            display: events?.length <= 0 ? "flex" : null,
+            justifyContent: "center",
+            alignItems: "center",
           }}
           ref={commentScrollRef}
         >
