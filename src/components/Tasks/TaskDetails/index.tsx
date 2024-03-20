@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { CustomDivider } from "components/CustomTags";
+import { CustomDivider, SubLabelTag } from "components/CustomTags";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import {
   DOC_EXT,
@@ -11,7 +11,9 @@ import {
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
+import _ from "lodash";
 import { useEffect, useRef, useState, useTransition } from "react";
+import CommentCard from "./CommentCard";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
 
@@ -48,6 +50,7 @@ function TaskDetails(props: IProps) {
   const [isPending, startTransition] = useTransition();
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
   const dueDateLocal = convertDateFormat(dueDate);
+  const pinnedComments = _.filter(events, (event) => event.isPinned);
   useEffect(() => {
     let getShowValue = showFullView && JSON.parse(showFullView);
     const isTaskFind = getShowValue && taskUID in getShowValue;
@@ -135,19 +138,43 @@ function TaskDetails(props: IProps) {
         />
         {isShowFullView && (
           <>
-            <ReadMoreWrapper
-              count={docs.length}
-              title="Files"
-              type="file"
-              data={docs}
-            />
-            <CustomDivider />
+            {docs.length > 0 && (
+              <>
+                <ReadMoreWrapper
+                  count={docs.length}
+                  title="Files"
+                  type="file"
+                  data={docs}
+                />
+                <CustomDivider />
+              </>
+            )}
             <DetailsBody
               media={media}
               description={description}
               handleFiles={handleFiles}
             />
           </>
+        )}
+        {pinnedComments.length > 0 ? (
+          <Box>
+            <SubLabelTag>Pinned comments</SubLabelTag>
+            {pinnedComments.map((comment, index) => (
+              <CommentCard
+                key={index}
+                isPinnedView={true}
+                commentData={comment.commentData}
+                initiator={comment.initiator}
+                isCommentInitiator={false}
+                isPinned={false}
+                eventId=""
+                taskId=""
+                createdAt={comment.createdAt}
+              />
+            ))}
+          </Box>
+        ) : (
+          <></>
         )}
       </Box>
       {uniqueImageFiles.length > 0 && (

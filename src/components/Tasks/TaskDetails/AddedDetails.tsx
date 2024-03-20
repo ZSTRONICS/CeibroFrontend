@@ -148,6 +148,7 @@ function AddedDetails(props: IProps) {
                     <React.Fragment key={index + "comment"}>
                       {commentData && (
                         <CommentCard
+                          isPinnedView={false}
                           createdAt={createdAt}
                           taskId={taskId}
                           eventId={_id}
@@ -186,6 +187,7 @@ function AddedDetails(props: IProps) {
                           />
                           {commentData && (
                             <CommentCard
+                              isPinnedView={false}
                               createdAt={createdAt}
                               taskId={taskId}
                               eventId={_id}
@@ -224,6 +226,7 @@ function AddedDetails(props: IProps) {
                           />
                           {commentData && (
                             <CommentCard
+                              isPinnedView={false}
                               createdAt={createdAt}
                               taskId={taskId}
                               eventId={_id}
@@ -262,6 +265,7 @@ function AddedDetails(props: IProps) {
                           />
                           {commentData && (
                             <CommentCard
+                              isPinnedView={false}
                               createdAt={createdAt}
                               taskId={taskId}
                               eventId={_id}
@@ -301,6 +305,7 @@ function AddedDetails(props: IProps) {
                           {commentData && (
                             <Box>
                               <CommentCard
+                                isPinnedView={false}
                                 createdAt={createdAt}
                                 taskId={taskId}
                                 eventId={_id}
@@ -340,6 +345,7 @@ function AddedDetails(props: IProps) {
                           />
                           {commentData && (
                             <CommentCard
+                              isPinnedView={false}
                               createdAt={createdAt}
                               taskId={taskId}
                               eventId={_id}
