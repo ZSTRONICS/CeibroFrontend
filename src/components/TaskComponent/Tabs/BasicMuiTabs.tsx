@@ -91,11 +91,13 @@ export default function BasicTabs({
             sx={{
               width: "max-contnet",
               marginTop: isFileTabs ? "10px" : "0px",
-              gap: 0.5,
               textTransform: "capitalize",
               fontWeight: 500,
               fontFamily: "Inter",
               fontSize: "14px",
+              padding: "0px",
+              pr: 2,
+              pl: 1,
               maxHeight: isFileTabs ? "32px" : null,
               minHeight: isFileTabs ? "32px" : "50px",
               ...(isFileTabs && value === index
@@ -107,7 +109,7 @@ export default function BasicTabs({
             icon={tab.icon || ""}
             iconPosition="start"
             label={
-              <CustomStack sx={{ gap: 2 }}>
+              <CustomStack sx={{ gap: 2, width: "100%" }}>
                 <AddStatusTag sx={{ color: "unset" }}>{tab.label}</AddStatusTag>
                 {tab.count && tab.count > 0 ? (
                   <Badge

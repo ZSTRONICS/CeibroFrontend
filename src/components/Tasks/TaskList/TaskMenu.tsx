@@ -38,15 +38,16 @@ const TaskMenu: React.FC<UserMenuProps> = ({ menuItems, selectedMenu }) => {
           textTransform: "unset",
           color: "#131516",
           minWidth: "85px",
+          maxWidth: "95px",
           width: "100%",
-          padding: "6px 12px",
+          padding: "6px 6px",
         }}
       >
         <LabelTag
           sx={{
             color: "white",
-            minWidth: "53px",
-            maxWidth: "60px",
+            minWidth: "65px",
+            maxWidth: "65px",
             width: "100%",
           }}
         >
