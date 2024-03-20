@@ -129,7 +129,7 @@ function Task() {
     {
       label: "Ongoing",
       icon: (
-        <Box sx={{ transform: "translateX(18px) translateY(5px)" }}>
+        <Box sx={{ transform: "translateX(10px) translateY(7px)" }}>
           <TaskIcon
             isTabs={true}
             color={`${selectedTab === "Ongoing" ? "black" : "#0076C8"}`}
@@ -153,9 +153,11 @@ function Task() {
     {
       label: "Approval",
       icon: (
-        <ApprovalIcon
-          color={`${selectedTab === "Approval" ? "black" : "#0076C8"}`}
-        />
+        <Box sx={{ transform: "translateX(-1px) translateY(3px) " }}>
+          <ApprovalIcon
+            color={`${selectedTab === "Approval" ? "black" : "#0076C8"}`}
+          />
+        </Box>
       ),
       content: (
         <TaskMain
@@ -176,7 +178,7 @@ function Task() {
       icon: (
         <Box
           sx={{
-            transform: "translateX(12px) translateY(3px)",
+            transform: "translateX(5px) translateY(3px)",
           }}
         >
           <assets.CheckOutlinedIcon
@@ -201,7 +203,7 @@ function Task() {
     {
       label: "Canceled",
       icon: (
-        <Box sx={{ transform: "translateX(13px) translateY(3px) " }}>
+        <Box sx={{ transform: "translateX(5px) translateY(3px) " }}>
           <assets.CloseIcon
             sx={{
               color: `${selectedTab === "Canceled" ? "black" : "#0076C8"}`,
@@ -316,7 +318,7 @@ function Task() {
         sx={{
           maxWidth: {
             lg: "30%",
-            md: "40%",
+            md: "33%",
             sm: "40%",
           },
           width: "100%",
@@ -341,7 +343,7 @@ function Task() {
       <Grid
         item
         sx={{
-          maxWidth: { lg: "70%", md: "60%", sm: "60%" },
+          maxWidth: { lg: "70%", md: "67%", sm: "60%" },
           width: "100%",
           ...gridStyle,
           px: 2,

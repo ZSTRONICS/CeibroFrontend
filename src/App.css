@@ -99,6 +99,20 @@ div.react-simple-image-viewer__modal-content {
   height: 100%;
 }
 
+@media (min-width: 900px) {
+  body * {
+    font-weight: 450 !important;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  body * {
+    font-weight: 500 !important;
+
+  }
+}
+
 @media (max-width: 768px) {
   body {
     font-size: 0.9rem;
