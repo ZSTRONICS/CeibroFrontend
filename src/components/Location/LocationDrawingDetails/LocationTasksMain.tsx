@@ -128,7 +128,7 @@ function LocationTasksMain(props: IProps) {
           itemCount={allTasks.length}
           overscanCount={20}
           layout="vertical"
-          itemSize={(index) => getTaskCardHeight(allTasks[index]) + 8}
+          itemSize={(index) => getTaskCardHeight(allTasks[index]) + 10}
           width={"100%"}
         >
           {LocationTaskRow}

@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { TaskCard } from "components/TaskComponent";
 import { optionMapping } from "components/Utills/Globals";
 import {
@@ -136,41 +135,35 @@ function LocationTaskCard(props: IProps) {
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        maxWidth: "342px",
-        minWidth: "325px",
-        display: "flex",
-        alignItems: "center",
-        borderRadius: "8px",
-        boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-        background: `${currentTaskColor}`,
-        border: `1px solid ${currentTaskColor}`,
-        marginLeft: "2px",
-      }}
-    >
-      {currentTaskStateAndIcon && (
-        <Box sx={{ padding: "1px" }}>
-          <currentTaskStateAndIcon.icon />
-        </Box>
-      )}
-      <TaskCard
-        userId={userId}
-        key={localTask._id}
-        isLocationTask={true}
-        isTaskFromMe={isTaskFromMe}
-        task={localTask}
-        selectedTaskId={selectedTaskId}
-        handleClick={handleTaskClick}
-        // menuOption={filteredMenuOptions(taskRootState, localTask.userSubState)}
-        // disableMenu={
-        //   localTask.userSubState === "canceled" && !localTask.isCreator
-        //     ? true
-        //     : false
-        // }
-      />
-    </Box>
+    // <Box
+    //   sx={{
+    //     width: "100%",
+    //     // maxWidth: "342px",
+    //     // minWidth: "325px",
+    //     display: "flex",
+    //     alignItems: "center",
+    //     // borderRadius: "8px",
+    //     // boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+    //     // background: `${currentTaskColor}`,
+    //     // border: `1px solid ${currentTaskColor}`,
+    //     marginLeft: "2px",
+    //   }}
+    // >
+    //   {currentTaskStateAndIcon && (
+    //     <Box sx={{ padding: "1px" }}>
+    //       <currentTaskStateAndIcon.icon />
+    //     </Box>
+    //   )}
+    <TaskCard
+      userId={userId}
+      key={localTask._id}
+      isLocationTask={true}
+      isTaskFromMe={isTaskFromMe}
+      task={localTask}
+      selectedTaskId={selectedTaskId}
+      handleClick={handleTaskClick}
+    />
+    // </Box>
   );
 }
 

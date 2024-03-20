@@ -109,12 +109,13 @@ export default function BasicTabs({
             icon={tab.icon || ""}
             iconPosition="start"
             label={
-              <CustomStack sx={{ gap: 2, width: "100%" }}>
+              <CustomStack sx={{ gap: 1 }}>
                 <AddStatusTag sx={{ color: "unset" }}>{tab.label}</AddStatusTag>
                 {tab.count && tab.count > 0 ? (
                   <Badge
                     color="primary"
                     sx={{
+                      pl: 1,
                       "& .MuiBadge-badge": {
                         backgroundColor: `${
                           value === index ? "black" : "#0076C8"

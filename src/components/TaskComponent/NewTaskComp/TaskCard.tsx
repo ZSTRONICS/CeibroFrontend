@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardMedia,
-  Tooltip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -16,7 +15,7 @@ import {
   momentLocalDateTime,
 } from "components/Utills/Globals";
 import { OutlineIcon } from "components/material-ui/icons/TaskCardIcon";
-import { AssignedUserState, ITask } from "constants/interfaces";
+import { ITask } from "constants/interfaces";
 import React, { useState } from "react";
 import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
 
@@ -51,6 +50,9 @@ const TaskCard = React.memo((props: IProps) => {
     isCreator,
     userSubState,
     assignedToState,
+    isTaskConfirmer,
+    isTaskInApproval,
+    isCanceled,
     seenBy,
     title,
   } = task;
@@ -59,61 +61,23 @@ const TaskCard = React.memo((props: IProps) => {
   const formattedDate = convertDateFormat(dueDate);
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
   const isSelectedTask: boolean = selectedTaskId === _id;
-  const trucateText =
-    project?.title.length > 8
-      ? project?.title.slice(0, 8) + "..."
-      : project?.title;
-  const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
-  const isCanceled: boolean = userSubState === "canceled";
-  const cardLabel = isCanceled && !isCreator ? "From" : isTaskFromMe;
-  const labelContent = cardLabel === "To" ? assignedToState[0] : creator;
+  // const trucateText =
+  //   project?.title.length > 8
+  //     ? project?.title.slice(0, 8) + "..."
+  //     : project?.title;
+  // const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
+  // const isCanceled: boolean = userSubState === "canceled";
+  // const cardLabel = isCanceled && !isCreator ? "From" : isTaskFromMe;
+  const labelContent = creator;
+
   const { firstName = "", surName = "" } = labelContent || {};
   const displayName = `${firstName || ""} ${surName || ""}`;
-
-  const assignToNames = () =>
-    assignedToState.length > 1 ? (
-      <Tooltip title={AssignedToList(assignedToState)}>
-        <span
-          style={{
-            fontWeight: "600",
-            fontSize: "11px",
-            padding: "3px",
-            backgroundColor: "transparent",
-            maxWidth: "43px",
-            width: "100%",
-            WebkitLineClamp: 1,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            textAlign: "end",
-          }}
-        >
-          +{assignedToState.length - 1}
-        </span>
-      </Tooltip>
-    ) : (
-      <></>
-    );
-  const AssignedToList = (membersList: AssignedUserState[]) => {
-    return (
-      <>
-        {membersList.map((item: AssignedUserState, index) => (
-          <span key={item._id} style={{ textTransform: "capitalize" }}>
-            {`${item.firstName} ${item.surName}`}
-            {index !== membersList.length - 1 && <br />}
-          </span>
-        ))}
-      </>
-    );
-  };
-
   const theme = useTheme();
   const isXlScreen = useMediaQuery(theme.breakpoints.down("xl"));
   const isDefualScreen = useMediaQuery(theme.breakpoints.between(1200, 1350));
 
   const currentTaskColor =
-    MUI_TASK_CARD_COLOR_MAP.get(task.userSubState) || "red";
-  const rootState =
-    task.taskRootState === "canceled" ? "hidden" : task.taskRootState || "";
+    MUI_TASK_CARD_COLOR_MAP.get(task.userSubState) || "#CFECFF";
 
   let emptyDiv = false;
 
@@ -144,8 +108,8 @@ const TaskCard = React.memo((props: IProps) => {
         }}
         key={_id}
         id={_id}
-        onMouseOver={() => setIsMouseOver(true)}
-        onMouseOut={() => setIsMouseOver(false)}
+        // onMouseOver={() => setIsMouseOver(true)}
+        // onMouseOut={() => setIsMouseOver(false)}
         onClick={() => handleClick(task)}
       >
         <Box
@@ -181,12 +145,7 @@ const TaskCard = React.memo((props: IProps) => {
           >
             {project?.title}
           </Typography>
-          <Span
-            sx={{
-              marginTop: "5px",
-              float: "right",
-            }}
-          >
+          <Span sx={{ mt: "5px", float: "right" }}>
             {dueDate && dueDate !== "" ? (
               <Span
                 sx={{
@@ -284,7 +243,7 @@ const TaskCard = React.memo((props: IProps) => {
               marginTop: "-7px",
             }}
           >
-            <Span
+            <Box
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -310,7 +269,6 @@ const TaskCard = React.memo((props: IProps) => {
                 {title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"}
               </Typography>
               <Typography
-                // variant="subtitle2"
                 sx={{
                   color: "#605C5C",
                   lineHeight: "18px",
@@ -325,17 +283,15 @@ const TaskCard = React.memo((props: IProps) => {
                   marginTop: "-2px",
                 }}
               >
-                {description && description}
+                {description ? description : ""}
               </Typography>
-            </Span>
+            </Box>
             <Box
               sx={{
-                borderTop: "solid 1px #605C5C",
-                // marginTop: "5px",
+                borderTop: "1px solid #605C5C",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                // border: "solid 1px red",
               }}
             >
               <Span
@@ -355,7 +311,6 @@ const TaskCard = React.memo((props: IProps) => {
                 />
                 <Typography
                   sx={{
-                    // width: isXlScreen ? "20%" : "100%",
                     width: "100%",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
