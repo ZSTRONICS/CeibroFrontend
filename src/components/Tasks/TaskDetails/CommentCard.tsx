@@ -179,7 +179,7 @@ const CommentCard = ({
             display: "flex",
           }}
         >
-          <Box sx={{ transform: "translateX(20px)" }}>
+          <Box sx={{ transform: "translateX(10px)" }}>
             {isPinned ? <PinIcon color="#0076C8" /> : <></>}
           </Box>
           <GenericMenu
@@ -268,7 +268,6 @@ const CommentCard = ({
                 border: "none",
                 padding: "none",
                 cursor: "pointer",
-                transform: "translateY(-30px)",
               }}
             >
               {!showMore ? "View more" : "View less"}

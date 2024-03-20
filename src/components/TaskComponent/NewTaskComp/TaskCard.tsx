@@ -14,7 +14,16 @@ import {
   convertDateFormat,
   momentLocalDateTime,
 } from "components/Utills/Globals";
-import { OutlineIcon } from "components/material-ui/icons/TaskCardIcon";
+// import {
+//   ViewerTaskIcon,
+//   OutlineIcon,
+//   NewTaskIcon,
+//   DoneTaskIcon,
+//   CancelTaskIcon,
+//   OngoingTaskIcon,
+//   PendingTaskIcon
+// } from "components/material-ui/icons/TaskCardIcon";
+import { DoneTaskIcon } from "components/material-ui/icons/TaskCardIcon";
 import { ITask } from "constants/interfaces";
 import React, { useState } from "react";
 import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
@@ -255,7 +264,7 @@ const TaskCard = React.memo((props: IProps) => {
             >
               <Typography
                 sx={{
-                  marginLeft: "10px",
+                  marginLeft: files.length !== 0 ? "10px" : "0px",
                   fontWeight: "500",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
@@ -292,11 +301,12 @@ const TaskCard = React.memo((props: IProps) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
+                marginTop: "1px",
               }}
             >
               <Span
                 sx={{
-                  marginLeft: "10px",
+                  marginLeft: files.length !== 0 ? "10px" : "0px",
                   display: "flex",
                   alignItems: "center",
                   marginTop: "3px",
@@ -351,7 +361,7 @@ const TaskCard = React.memo((props: IProps) => {
                 >
                   {`${taskCreatedAt[1]}`}
                 </Span>
-                <OutlineIcon />
+                <DoneTaskIcon />
               </Span>
             </Box>
           </Box>
