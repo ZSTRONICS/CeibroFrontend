@@ -14,7 +14,7 @@ import {
   convertDateFormat,
   momentLocalDateTime,
 } from "components/Utills/Globals";
-import { OutlineIcon } from "components/material-ui/icons/TaskCardIcon";
+// import { PendingTaskIcon } from "components/material-ui/icons";
 import { ITask } from "constants/interfaces";
 import React, { useState } from "react";
 import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
@@ -351,7 +351,8 @@ const TaskCard = React.memo((props: IProps) => {
                 >
                   {`${taskCreatedAt[1]}`}
                 </Span>
-                <OutlineIcon />
+                {/* show multiple task card icons */}
+                {/* <OutlineIcon /> */}
               </Span>
             </Box>
           </Box>

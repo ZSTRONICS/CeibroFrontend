@@ -33,4 +33,3 @@ const UnFavIcon = () => {
 };
 
 export { FavIcon, UnFavIcon };
-

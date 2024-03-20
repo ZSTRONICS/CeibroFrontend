@@ -1,19 +1,19 @@
-export const OutlineIcon = () => {
+const PendingTaskIcon = () => {
   return (
-    <>
-      <svg
-        width="12"
-        height="14"
-        viewBox="0 0 18 22"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M13.6667 3.00033H17V10.0003M4.33333 3.00033H1V19.0003C1 19.7367 1.59695 20.3337 2.33333 20.3337H7M5 1.66699H13V4.33366C13 5.07004 12.403 5.66699 11.6667 5.66699H6.33333C5.59695 5.66699 5 5.07004 5 4.33366V1.66699Z"
-          stroke="#0076C8"
-          strokeWidth="2"
-        />
-      </svg>
-    </>
+    <></>
+    // <svg
+    //   width={`${width ? width : "16"}`}
+    //   height={`${height ? height : "20"}`}
+    //   viewBox="0 0 16 20"
+    //   fill="none"
+    //   xmlns="http://www.w3.org/2000/svg"
+    // >
+    //   <path
+    //     d="M10 0H2C0.9 0 0.0100002 0.9 0.0100002 2L0 18C0 19.1 0.89 20 1.99 20H14C15.1 20 16 19.1 16 18V6L10 0ZM14 18H2V2H9V7H14V18ZM4 13.01L5.41 14.42L7 12.84V17H9V12.84L10.59 14.43L12 13.01L8.01 9L4 13.01Z"
+    //     fill="#0076C8"
+    //   />
+    // </svg>
   );
 };
+
+export { PendingTaskIcon };
