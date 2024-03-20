@@ -24,7 +24,7 @@ import {
   getTaskFilters,
   searchInData,
 } from "utills/common";
-import EmptyScreenDescription from "../EmptyScreenDescription";
+import TaskNotFound from "../EmptyScreenDescription/TaskNotFound";
 import TaskFilters from "./TaskFilters";
 
 interface RouteParams {
@@ -379,10 +379,7 @@ const TaskMain = (props: IProps) => {
 
   const EmptyScreen = () => (
     <div style={{ height: windowHeight }}>
-      <EmptyScreenDescription
-        showWaterMark={true}
-        content={emptyScreenContent}
-      />
+      <TaskNotFound />
     </div>
   );
 
@@ -390,12 +387,7 @@ const TaskMain = (props: IProps) => {
 
   return (
     <>
-      <Box
-        sx={{
-          width: "100%",
-          marginTop: "15px",
-        }}
-      >
+      <Box sx={{ width: "100%", mt: "15px" }}>
         <Box sx={{ width: "94%", marginLeft: "3%" }}>
           <TaskFilters
             handleTaskRootState={handleRootTask}
@@ -410,7 +402,6 @@ const TaskMain = (props: IProps) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            // border: "solid 1px red",
             width: "96%",
             marginLeft: "2%",
           }}
@@ -438,12 +429,7 @@ const TaskMain = (props: IProps) => {
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          mt: 1,
-          pb: 1,
-        }}
-      >
+      <Box sx={{ mt: 1, pb: 1 }}>
         {loadingAllTasksAllEvents ? (
           <LoadingSkeleton />
         ) : task && filteredTask.length === 0 ? (

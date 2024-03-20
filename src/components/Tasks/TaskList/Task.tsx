@@ -73,19 +73,18 @@ function Task() {
         </Box>
       ),
       content: (
-        <></>
-        // <TaskMain
-        //   allTaskList={filterTasks(
-        //     allTasks,
-        //     TaskRootState.Hidden,
-        //     true,
-        //     "ongoing"
-        //   )}
-        //   showHiddenTasks={showHiddenTasks}
-        //   selectedRootTask={selectedTab}
-        //   setSelectedTask={setSelectedTask}
-        //   selectedTask={selectedTask}
-        // />
+        <TaskMain
+          allTaskList={filterTasks(
+            allTasks,
+            TaskRootState.Hidden,
+            true,
+            "ongoing"
+          )}
+          showHiddenTasks={showHiddenTasks}
+          selectedRootTask={selectedTab}
+          setSelectedTask={setSelectedTask}
+          selectedTask={selectedTask}
+        />
       ),
       count: countUnseenTasksForTabs(
         filterTasks(allTasks, TaskRootState.Hidden, true, "ongoing"),
@@ -357,7 +356,8 @@ function Task() {
             ref={detailHeaderRef}
             sx={{
               borderBottom: commentDiv ? "1px solid #E2E4E5" : "",
-              pb: 0.5,
+              pb: 0.25,
+              pt: 0.7,
             }}
           >
             <DetailActions
