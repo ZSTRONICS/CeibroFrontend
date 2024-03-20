@@ -354,7 +354,8 @@ function Task() {
             ref={detailHeaderRef}
             sx={{
               borderBottom: commentDiv ? "1px solid #E2E4E5" : "",
-              pb: 0.5,
+              pb: 0.25,
+              pt: 0.7,
             }}
           >
             <DetailActions
