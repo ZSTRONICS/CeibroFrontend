@@ -1,3 +1,4 @@
+import { Button } from "@mui/base";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import {
   Avatar,
@@ -61,11 +62,12 @@ const CommentCard = ({
   };
 
   const handleClick = () => {
-    if (showMore) {
-      setShowMore(!true);
-    } else {
-      setShowMore(true);
-    }
+    setShowMore((prev) => !prev);
+    // if (showMore) {
+    //   setShowMore(!true);
+    // } else {
+    //   setShowMore(true);
+    // }
   };
 
   const handleImgClick = (index: any) => {
@@ -130,6 +132,7 @@ const CommentCard = ({
     ? "#F4F4F4"
     : "#CFECFF";
   // const commentCardStyle ={ }
+  const isLargeComment = commentData.message.length > 270;
   const CommentCardContent = (
     <Box
       sx={{
@@ -241,50 +244,43 @@ const CommentCard = ({
               overflowWrap: "anywhere",
             }}
           >
-            {commentData &&
-            commentData.message !== undefined &&
-            commentData.message.length > 0
-              ? showMore
-                ? commentData.message
-                : commentData.message !== undefined &&
-                  commentData.message.length > 270
-                ? `${commentData.message.substring(
-                    0,
-                    isSmall ? 60 : commentshowonlarge ? 150 : 270
-                  )}...`
-                : `${commentData.message.substring(
-                    0,
-                    isSmall ? 60 : commentshowonlarge ? 150 : 270
-                  )}`
-              : ""}
+            {commentData && commentData?.message.length < 370 ? (
+              commentData.message
+            ) : showMore ? (
+              <>
+                {`${commentData.message} `}
+                <Button
+                  onClick={handleClick}
+                  style={{
+                    marginLeft: "5px",
+                    color: "#1976D2",
+                    border: "none",
+                    backgroundColor: "transparent",
+                    cursor: "pointer",
+                  }}
+                >
+                  View less
+                </Button>
+              </>
+            ) : (
+              <>
+                {`${commentData.message.substring(0, 370)} ...`}
+                <Button
+                  onClick={handleClick}
+                  style={{
+                    marginLeft: "5px",
+                    color: "#1976D2",
+                    border: "none",
+                    backgroundColor: "transparent",
+                    cursor: "pointer",
+                  }}
+                >
+                  View more
+                </Button>
+              </>
+            )}
           </pre>
         </Box>
-        {commentData.message && commentData.message.length > 270 && (
-          <Box
-            sx={{
-              textAlign: "right",
-              padding: "10px 0",
-              height: "max-content",
-            }}
-          >
-            <button
-              className="btn"
-              onClick={handleClick}
-              style={{
-                color: "#0076C8",
-                fontSize: "12px",
-                fontWeight: "400",
-                letterSpacing: "0.15px",
-                backgroundColor: "transparent",
-                border: "none",
-                padding: "none",
-                cursor: "pointer",
-              }}
-            >
-              {!showMore ? "View more" : "View less"}
-            </button>
-          </Box>
-        )}
       </Box>
       {commentData && commentData?.files && Imgdata?.length >= 1 ? (
         <>

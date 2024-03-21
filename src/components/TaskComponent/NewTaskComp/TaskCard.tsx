@@ -305,7 +305,7 @@ const TaskCard = React.memo((props: IProps) => {
                 sx={{
                   color: "#605C5C",
                   lineHeight: "18px",
-                  marginLeft: "10px",
+                  marginLeft: files.length === 0 ? "0px" : "10px",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: "vertical",

@@ -184,7 +184,7 @@ const FileBox: React.FC<IProps> = ({
                   <a
                     onClick={(e) => e.stopPropagation()}
                     href={item?.fileUrl}
-                    // download
+                    download
                     // style={{ textDecoration: "none" }}
                   >
                     <FileDownloadOutlinedIcon sx={{ color: "#1976D2" }} />

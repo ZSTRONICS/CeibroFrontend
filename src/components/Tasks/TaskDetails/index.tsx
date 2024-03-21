@@ -145,6 +145,7 @@ function TaskDetails(props: IProps) {
                   title="Files"
                   type="file"
                   data={docs}
+                  download={true}
                 />
                 <CustomDivider />
               </>

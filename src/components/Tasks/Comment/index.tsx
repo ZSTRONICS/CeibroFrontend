@@ -385,9 +385,11 @@ const Comment = ({
               display: "flex",
               flexDirection: "row",
               transform: "translateY(5px)",
+              alignItems: "flex-end",
             }}
           >
             <Input
+              placeholder="Start type here"
               name="comment"
               id="comment"
               required
@@ -396,7 +398,8 @@ const Comment = ({
               multiline
               value={description}
               sx={{
-                width: "100%",
+                // border: "solid 1px red",
+                width: isMdScreen ? "90%" : "95%",
                 "&:hover:not(.Mui-disabled, .Mui-error):before": {
                   borderBottom: "none !important",
                 },
@@ -407,6 +410,21 @@ const Comment = ({
               onChange={handleDescriptionChange}
               maxRows={3}
             />
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#757575",
+                paddingBottom: "3px",
+                paddingRight: "5px",
+                width: isMdScreen ? "15%" : "10%",
+                // border: "solid 1px red",
+              }}
+            >
+              {`${description.length}/ 1500`}
+            </span>
           </FormControl>
           {/* /// */}
           <Box sx={{ width: "100%", marginLeft: "5px" }}>
