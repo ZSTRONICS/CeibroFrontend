@@ -49,13 +49,10 @@ const TaskCard = React.memo((props: IProps) => {
     creator,
     userSubState,
     creatorState,
-
     isCreator,
     isAssignedToMe,
     isTaskConfirmer,
     isTaskViewer,
-    isTaskInApproval,
-    isCanceled,
     taskRootState,
     title,
   } = task;
