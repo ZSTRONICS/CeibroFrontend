@@ -4,10 +4,8 @@ import {
   Checkbox,
   CircularProgress,
   Divider,
-  FormControl,
   FormControlLabel,
   FormGroup,
-  Input,
 } from "@mui/material";
 import CustomDatePicker from "components/Utills/CustomDatePicker";
 import CustomDropDown from "components/Utills/CustomDropDown";
@@ -29,10 +27,10 @@ import {
 } from "../type";
 import Footer from "./Footer";
 
-import { MUIInputLabel } from "components/CustomTags";
 import { IS_IMAGE, getDropdownOptions } from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 
@@ -59,6 +57,7 @@ function CreateNewTask() {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const [descriptionVal, setDescriptionVal] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [selectedData, setSelectedData] =
     useState<CreateNewTaskFormType>(initialValues);
   const [topicOptions, setTopicOptions] = useState<Options>({
@@ -74,7 +73,6 @@ function CreateNewTask() {
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
-  const Topics = useSelector((state: RootState) => state.task.Topics);
   const allProjects = useSelector(
     (state: RootState) => state.project.allProjects
   );
@@ -82,7 +80,6 @@ function CreateNewTask() {
 
   useEffect(() => {
     if (!isRenderEffect.current) {
-      dispatch(taskActions.getAllTopic());
       if (allProjects.length === 0) {
         dispatch(PROJECT_APIS.getAllProjects());
       }
@@ -94,39 +91,15 @@ function CreateNewTask() {
       isRenderEffect.current = true;
     };
   }, []);
-  useEffect(() => {
-    if (Topics && !isEmpty(Topics)) {
-      const getAllTopicOptions = getDropdownOptions(
-        //todo null receive in array from backend
-        Topics.allTopics.filter(Boolean),
-        "topic",
-        "topic",
-        "_id"
-      );
-      const getRecentTopicOptions = getDropdownOptions(
-        //todo null receive in array from backend
-        Topics.recentTopics.filter(Boolean),
-        "topic",
-        "topic",
-        "_id"
-      );
-      setTopicOptions({
-        allOptions: getAllTopicOptions,
-        recentOptions: getRecentTopicOptions,
-      });
-    }
-  }, [Topics, Topics.allTopics.length]);
 
   useEffect(() => {
     if (allProjects && !isEmpty(allProjects)) {
-      //todo : add allProjects
       const getAllProjectOptions = getDropdownOptions(
-        allProjects,
+        allProjects.filter(Boolean),
         "title",
         "title",
         "_id"
       );
-      //todo : add recentProjects
       const getRecentProjectOptions = getDropdownOptions(
         allProjects.filter((project: Project) => project.isRecentlyUsedByMe),
         "title",
@@ -146,6 +119,11 @@ function CreateNewTask() {
   ) => {
     let value = event ? event.target.value : "";
     handleChangeValues(value, "description");
+  };
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    let value = event ? event.target.value : "";
+    setTitle(event.target.value);
+    handleChangeValues(value, "title");
   };
 
   const handleCreateCallback = (type: string, label: string) => {
@@ -346,14 +324,20 @@ function CreateNewTask() {
               overflow: "auto",
             }}
           >
-            <CustomDropDown
-              name="title"
-              label={"Title"}
-              options={topicOptions}
-              createCallback={handleCreateCallback}
-              handleChangeValues={handleChangeValues}
-              handleSelectedMenuList={(option: any) => {}}
-            />
+            <Box sx={{ marginTop: "14px", width: "100%" }}>
+              <CustomMuiTextField
+                inputVariant="standard"
+                required={true}
+                typeName="counterText-field"
+                name="title"
+                label="Task Title"
+                placeholder={"Enter Task Title"}
+                inputValue={title}
+                onChange={handleTitleChange}
+                maxLength={50}
+                inputProps={{ style: { background: "white" } }}
+              />
+            </Box>
             <UserDropDown
               name="assignedToState"
               label={"Assign to"}
@@ -376,35 +360,20 @@ function CreateNewTask() {
               handleChangeValues={handleChangeValues}
             />
             <Box sx={{ marginTop: "8px", width: "100%" }}>
-              <FormControl
-                variant="standard"
-                sx={{ width: "100%", fontFamily: "Inter" }}
-              >
-                <MUIInputLabel htmlFor="description">Description</MUIInputLabel>
-                <Input
-                  inputProps={{
-                    maxLength: 1500,
-                  }}
-                  onChange={(e: any) => setDescriptionVal(e.target.value)}
-                  error={descriptionVal.length === 1500}
-                  name="description"
-                  id="description"
-                  onBlur={handleDescriptionChange}
-                  required
-                  multiline
-                />
-              </FormControl>
-              <span
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  color: "#757575",
-                }}
-              >
-                {`${descriptionVal.length}/1500`}
-              </span>
+              <CustomMuiTextField
+                inputVariant="standard"
+                multiline={true}
+                required={true}
+                typeName="counterText-field"
+                name="description"
+                label="Description"
+                placeholder={"Enter Description"}
+                inputValue={descriptionVal}
+                onChange={(e: any) => setDescriptionVal(e.target.value)}
+                maxLength={1500}
+                onBlur={handleDescriptionChange}
+                inputProps={{ style: { background: "white" } }}
+              />
             </Box>
             {selectedImages.length > 0 && (
               <ImagesToUpload

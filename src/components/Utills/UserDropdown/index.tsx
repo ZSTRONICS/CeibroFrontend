@@ -200,7 +200,7 @@ function UserDropDown(props: IProps) {
       <FormControl
         variant="standard"
         sx={{
-          marginTop: isTaskFilter ? "0" : "8px",
+          marginTop: isTaskFilter ? "0" : "1px",
           width: "100%",
           maxWidth: "100%",
         }}

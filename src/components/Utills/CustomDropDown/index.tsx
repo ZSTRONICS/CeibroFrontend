@@ -65,8 +65,6 @@ function CustomDropDown(props: IProps) {
     recent: OptionType[];
   }>({ all: {}, recent: [] });
 
-  console.log("allFilterData", allFilterData);
-
   const [showAllFloorItems, setShowAllFloorItems] = React.useState(false);
   const [addFloorLabel, setAddFloorLabel] = React.useState("Add Floor");
   // const [recentfilterData, setRecentFilterData] = React.useState<{
@@ -101,11 +99,11 @@ function CustomDropDown(props: IProps) {
         (item) => item.label === selected
       );
       if (updatedSelected) {
-        if (label === "Title") {
-          handleChangeValues(updatedSelected.label, name);
-        } else {
-          handleChangeValues(updatedSelected._id, name);
-        }
+        // if (label === "Title") {
+        //   handleChangeValues(updatedSelected.label, name);
+        // } else {
+        handleChangeValues(updatedSelected._id, name);
+        // }
         handleSelectedMenuList(updatedSelected);
       }
     }
