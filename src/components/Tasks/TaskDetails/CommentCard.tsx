@@ -143,7 +143,8 @@ const CommentCard = ({
         borderRadius: "15px",
         flexDirection: "column",
         marginTop: "10px",
-        marginLeft: isCommentInitiator ? "40%" : "5px",
+        marginRight: !isPinnedView ? "10px" : "0px",
+        marginLeft: isCommentInitiator ? "40%" : "0px",
       }}
     >
       <Box
