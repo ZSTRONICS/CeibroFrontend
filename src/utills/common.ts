@@ -160,14 +160,26 @@ export const taskConstants: any = {
 };
 export const MUI_TASK_CARD_COLOR_MAP: Map<string, string> = new Map([
   ["ongoing", "#F1B740"],
-  ["new", "#CFECFF"],
-  ["canceled", "#E85555"],
+  ["canceled", "#FFE7E7"],
+  ["reject-closed", "#D9000D"],
   ["unread", "#E2E4E5"],
   ["done", "#55BCB3"],
-  // verify and updated color
-  ["in-review", "#CFECFF"],
-  ["to-review", "#CFECFF"],
+  ["new", "#CFECFF"],
+  ["in-review", "#E2E4E5"],
+  ["to-review", "#EBF5FB"],
+  ["reject-closed", "#D9000D"],
 ]);
+
+export enum statusColors {
+  new = "#CFECFF",
+  unread = "#E2E4E5",
+  ongoing = "#F1B740",
+  done = "#55BCB3",
+  canceled = "#FFE7E7",
+  "to-review" = "#EBF5FB",
+  "in-review" = "#E2E4E5",
+  "reject-closed" = "#D9000D",
+}
 
 export const ALL_FLOOR_NAMES = Array.from(
   { length: 29 },

@@ -16,6 +16,7 @@ import { taskActions } from "redux/action";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { GenericMenu } from "components/GenericComponents";
 import { useOpenCloseModal } from "hooks";
+import { statusColors } from "utills/common";
 import DoneComment from "../Comment/DoneComment";
 import ForwardTask from "../Forward-Task";
 import ApprovalOverlays from "./ApprovalOverlays";
@@ -27,16 +28,6 @@ interface IProps {
   selectedTask: ITask;
   userId: string;
   handleReply: () => void;
-}
-
-enum statusColors {
-  new = "#CFECFF",
-  unread = "#CFECFF",
-  ongoing = "#F1B740",
-  done = "#55BCB3",
-  canceled = "#E85555",
-  "to-review" = "#CFECFF",
-  "in-review" = "#E2E4E5",
 }
 
 const DetailActions: React.FC<IProps> = (props) => {
@@ -392,7 +383,7 @@ const DetailActions: React.FC<IProps> = (props) => {
       sx={{
         borderColor: chipColor,
         backgroundColor: chipColor,
-        color: userSubState === "canceled" ? "white" : "#131516",
+        color: userSubState === "reject-closed" ? "white" : "#131516",
         borderRadius: "4px",
         fontFamily: "Inter",
         fontSize: "12px",

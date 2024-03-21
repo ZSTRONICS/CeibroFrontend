@@ -14,18 +14,16 @@ import {
   convertDateFormat,
   momentLocalDateTime,
 } from "components/Utills/Globals";
-// import {
-//   ViewerTaskIcon,
-//   OutlineIcon,
-//   NewTaskIcon,
-//   DoneTaskIcon,
-//   CancelTaskIcon,
-//   OngoingTaskIcon,
-//   PendingTaskIcon
-// } from "components/material-ui/icons/TaskCardIcon";
-import { DoneTaskIcon } from "components/material-ui/icons/TaskCardIcon";
+import {
+  CancelTaskIcon,
+  DoneTaskIcon,
+  NewTaskIcon,
+  OngoingTaskIcon,
+  PendingTaskIcon,
+  ViewerTaskIcon,
+} from "components/material-ui/icons/TaskCardIcon";
 import { ITask } from "constants/interfaces";
-import React, { useState } from "react";
+import React from "react";
 import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
 
 interface IProps {
@@ -38,14 +36,7 @@ interface IProps {
 }
 
 const TaskCard = React.memo((props: IProps) => {
-  const {
-    task,
-    handleClick,
-    selectedTaskId,
-    isTaskFromMe,
-    userId,
-    isLocationTask,
-  } = props;
+  const { task, handleClick, selectedTaskId } = props;
 
   const {
     files,
@@ -56,30 +47,68 @@ const TaskCard = React.memo((props: IProps) => {
     createdAt,
     description,
     creator,
-    isCreator,
     userSubState,
-    assignedToState,
+    creatorState,
+
+    isCreator,
+    isAssignedToMe,
     isTaskConfirmer,
+    isTaskViewer,
     isTaskInApproval,
     isCanceled,
-    seenBy,
+    taskRootState,
     title,
   } = task;
+  const iconMappings: Record<string, JSX.Element> = {
+    Cancelled: <CancelTaskIcon />,
+    NewTaskByCreator: <NewTaskIcon />,
+    Done: <DoneTaskIcon />,
+    Pending: <PendingTaskIcon />,
+    Ongoing: <OngoingTaskIcon />,
+    Viewer: <ViewerTaskIcon />,
+  };
+
+  const getTaskCardIcon = (
+    taskRootState: string,
+    userSubState: string,
+    creatorState: string,
+    isCreator: boolean,
+    isAssignedToMe: boolean,
+    isTaskConfirmer: boolean,
+    isTaskViewer: boolean
+  ): JSX.Element => {
+    if (taskRootState === "Approval") return iconMappings.Pending;
+    if (taskRootState === "Ongoing") {
+      if (isCreator || isTaskViewer || isTaskConfirmer) {
+        if (creatorState === "unread") {
+          return iconMappings.NewTaskByCreator;
+        } else if (creatorState === "ongoing") {
+          return iconMappings.Ongoing;
+        }
+      } else if (isAssignedToMe) {
+        if (userSubState === "new") {
+          return iconMappings.NewTaskByCreator;
+        } else if (userSubState === "ongoing") {
+          return iconMappings.Ongoing;
+        }
+      }
+    }
+    if (taskRootState === "Closed") {
+      if (userSubState === "done") {
+        return iconMappings.Done;
+      } else if (userSubState === "reject-closed") {
+        return iconMappings.Cancelled;
+      }
+    }
+    if (taskRootState === "Canceled") return iconMappings.Cancelled;
+    return iconMappings.Viewer;
+  };
 
   const taskCreatedAt = momentLocalDateTime(createdAt).split(" ");
   const formattedDate = convertDateFormat(dueDate);
-  const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
   const isSelectedTask: boolean = selectedTaskId === _id;
-  // const trucateText =
-  //   project?.title.length > 8
-  //     ? project?.title.slice(0, 8) + "..."
-  //     : project?.title;
-  // const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
-  // const isCanceled: boolean = userSubState === "canceled";
-  // const cardLabel = isCanceled && !isCreator ? "From" : isTaskFromMe;
-  const labelContent = creator;
 
-  const { firstName = "", surName = "" } = labelContent || {};
+  const { firstName = "", surName = "" } = creator || {};
   const displayName = `${firstName || ""} ${surName || ""}`;
   const theme = useTheme();
   const isXlScreen = useMediaQuery(theme.breakpoints.down("xl"));
@@ -117,8 +146,6 @@ const TaskCard = React.memo((props: IProps) => {
         }}
         key={_id}
         id={_id}
-        // onMouseOver={() => setIsMouseOver(true)}
-        // onMouseOut={() => setIsMouseOver(false)}
         onClick={() => handleClick(task)}
       >
         <Box
@@ -361,7 +388,15 @@ const TaskCard = React.memo((props: IProps) => {
                 >
                   {`${taskCreatedAt[1]}`}
                 </Span>
-                <DoneTaskIcon />
+                {getTaskCardIcon(
+                  taskRootState,
+                  userSubState,
+                  creatorState,
+                  isCreator,
+                  isAssignedToMe,
+                  isTaskConfirmer,
+                  isTaskViewer
+                )}
               </Span>
             </Box>
           </Box>

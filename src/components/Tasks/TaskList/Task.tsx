@@ -416,7 +416,7 @@ function Task() {
                       alignItems: "center",
                     }}
                   >
-                    Selected any task
+                    Select any task
                   </Box>
                 )}
               </>

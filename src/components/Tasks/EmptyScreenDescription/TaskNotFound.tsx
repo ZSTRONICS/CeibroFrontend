@@ -80,7 +80,7 @@ function TaskNotFound() {
           <CustomStack
             sx={{
               flexDirection: "column",
-              maxWidth: "58%",
+              maxWidth: "70%",
               width: "100%",
               alignItems: "center",
             }}
@@ -100,8 +100,8 @@ function TaskNotFound() {
                 marginTop: "10px",
               }}
             >
-              We cannot find the task you are searching for, may be a little
-              spelling mistake?
+              We cannot find the task you are searching
+              {/* for, may be a little spelling mistake? */}
             </DescriptionTag>
           </CustomStack>
         </CustomStack>
