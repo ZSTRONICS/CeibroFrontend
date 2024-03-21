@@ -369,6 +369,7 @@ function AddedDetails(props: IProps) {
         </Box>
         {showComment && (
           <Comment
+            isCommentView={isCommentView}
             doneCommentsRequired={false}
             doneImageRequired={false}
             title={""}

@@ -35,7 +35,16 @@ function MainTaskHeader(props: Props) {
             width: "100%",
           }}
         >
-          <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Tasks</Heading2>
+          <Heading2
+            sx={{
+              py: 2,
+              marginLeft: "15px",
+              fontSize: "14px",
+              fontWeight: "700",
+            }}
+          >
+            Tasks
+          </Heading2>
           <Box>
             <Button
               disableRipple

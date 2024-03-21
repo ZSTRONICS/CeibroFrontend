@@ -63,7 +63,7 @@ function Task() {
       icon: (
         <Box
           sx={{
-            transform: "translateX(18px) translateY(5px) ",
+            transform: "translateX(12px) translateY(6px) ",
           }}
         >
           <TaskIcon
@@ -332,6 +332,7 @@ function Task() {
           showHiddenTasks={showHiddenTasks}
         />
         <BasicTabs
+          showHiddenTasks={showHiddenTasks}
           setSelectedTab={setSelectedTab}
           selectedTabIndex={selectedTabIndex}
           tabsBgColor="#F4F4F4"

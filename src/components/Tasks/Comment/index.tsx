@@ -1,7 +1,7 @@
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
-import { Box, Divider, FormControl, Input, Typography } from "@mui/material";
-import { CustomStack } from "components/CustomTags";
-import CustomButton from "components/Utills/CustomButton";
+import { Box, FormControl, Input, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import FileBox from "components/Utills/FileBox";
 import {
   IS_IMAGE,
@@ -11,6 +11,7 @@ import {
 } from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
 import { SendIcon } from "components/material-ui/icons";
+import Emoji from "components/material-ui/icons/emoji/Emoji";
 import { TASK_CONFIG } from "config";
 import _ from "lodash";
 import { ChangeEvent, useCallback, useRef, useState } from "react";
@@ -26,6 +27,7 @@ interface CommentProps {
   taskId: string;
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
+  isCommentView?: boolean;
 }
 
 const Comment = ({
@@ -34,6 +36,7 @@ const Comment = ({
   taskId,
   doneCommentsRequired,
   doneImageRequired,
+  isCommentView,
 }: CommentProps) => {
   ////
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -178,17 +181,27 @@ const Comment = ({
     description.length === 0 &&
     selectedDocuments.length === 0 &&
     selectedImages.length === 0;
+
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.down(1300));
+
   return (
     <Box
-      sx={
-        {
-          // height: "max-contnet",
-          // overflow: "auto",
-        }
-      }
+      sx={{
+        // border: "solid 1px red",
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        borderTop: "1px solid #E2E4E5",
+        paddingTop: "6px",
+      }}
     >
-      <CustomStack sx={{ gap: 0.8, alignItems: "center" }}>
-        <Box sx={{ width: "90%" }}>
+      {/* startInputmain */}
+      {/* <CustomStack
+        sx={{ gap: 0.8, alignItems: "center", border: "solid 2px green" }}
+      > */}
+      {/* input */}
+      {/* <Box sx={{ width: "90%", border: "solid 1px red" }}>
           <FormControl
             variant="standard"
             sx={{
@@ -236,8 +249,10 @@ const Comment = ({
           >
             {`${description.length}/ 1500`}
           </span>
-        </Box>
-        <CustomButton
+        </Box> */}
+      {/* end input //// */}
+      {/* getfile */}
+      {/* <CustomButton
           sx={{
             "&:hover": {
               border: "0px solid transparent",
@@ -248,8 +263,10 @@ const Comment = ({
           }}
           icon={<AttachFileOutlinedIcon sx={{ color: "#818181" }} />}
           onClick={handleSelectDocument}
-        />
-        <CustomButton
+        /> */}
+      {/* // endgetfile */}
+      {/* sendbutton */}
+      {/* <CustomButton
           sx={{
             "&:hover": {
               border: "0px solid transparent",
@@ -264,50 +281,216 @@ const Comment = ({
           disabled={disableBtn || isSubmit}
           icon={<SendIcon />}
           onClick={handleSubmit}
-        />
-      </CustomStack>
-      {selectedImages.length > 0 && (
-        <ImagesToUpload
-          showLabel={true}
-          updateImageWithComment={() => {}}
-          isComment={true}
-          selectedImages={selectedImages}
-          onClearFile={(file: any, type: any) => handleClearFile(file, type)}
-        />
-      )}
-      {selectedDocuments.length > 0 && (
-        <>
-          <Box>
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontWeight: 600,
-                fontSize: "12px",
-                color: "#605C5C",
-              }}
-            >
-              Files
-            </Typography>
-            <FileBox
-              isnoWrap={true}
-              title={title}
-              files={selectedDocuments}
-              handleClearFile={handleClearFile}
-            />
-          </Box>
-          <Divider
-            key="bottom-divider"
-            sx={{
-              my: 1.25,
-              borderColor: "#9e9e9e",
-              borderRadius: "4px",
-              opacity: "0.9",
-              background: "#F4F4F4",
-              filter: "blur(2px)",
-            }}
+        /> */}
+      {/* endsendbutton */}
+      {/* </CustomStack> */}
+      {/* endInputmain */}
+
+      {/* start file and media attachment */}
+      {/* <Box sx={{ border: "solid 2px yellow" }}>
+        {selectedImages.length > 0 && (
+          <ImagesToUpload
+            showLabel={true}
+            updateImageWithComment={() => {}}
+            isComment={true}
+            selectedImages={selectedImages}
+            onClearFile={(file: any, type: any) => handleClearFile(file, type)}
           />
-        </>
-      )}
+        )}
+        {selectedDocuments.length > 0 && (
+          <>
+            <Box>
+              <Typography
+                sx={{
+                  fontFamily: "Inter",
+                  fontWeight: 600,
+                  fontSize: "12px",
+                  color: "#605C5C",
+                }}
+              >
+                Files
+              </Typography>
+              <FileBox
+                isnoWrap={true}
+                title={title}
+                files={selectedDocuments}
+                handleClearFile={handleClearFile}
+              />
+            </Box>
+            <Divider
+              key="bottom-divider"
+              sx={{
+                my: 1.25,
+                borderColor: "#9e9e9e",
+                borderRadius: "4px",
+                opacity: "0.9",
+                background: "#F4F4F4",
+                filter: "blur(2px)",
+              }}
+            />
+          </>
+        )}
+      </Box> */}
+      {/* end file and media attachment */}
+
+      {/* new Design  */}
+
+      <Box
+        sx={{
+          width: isCommentView ? "85%" : "95%",
+          // border: "solid 1px green",
+          backgroundColor: "#E2E4E5",
+          borderRadius: "22px",
+          display: "flex",
+          alignItems: "flex-end",
+          paddingBottom: "8px",
+        }}
+      >
+        <Box
+          sx={{
+            width: "5%",
+            marginBottom: "3px",
+            marginLeft: isCommentView ? "16px" : isMdScreen ? "7px" : "0px",
+            // border: "solid 1px green",
+            display: "flex",
+            justifyContent: isMdScreen ? "flex-end" : "center",
+          }}
+        >
+          <Emoji />
+        </Box>
+        <Box
+          // className="custom-scrollbar"
+          sx={{
+            // border: "solid 2px green",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            width: isCommentView
+              ? isMdScreen
+                ? "80%"
+                : "85%"
+              : isMdScreen
+              ? "85%"
+              : "90%",
+          }}
+        >
+          <FormControl
+            variant="standard"
+            sx={{
+              width: "100%",
+              height: "100%",
+              fontFamily: "Inter",
+              background: "#E2E4E5",
+              padding: "3px 2px 3px 12px",
+              display: "flex",
+              flexDirection: "row",
+              transform: "translateY(5px)",
+            }}
+          >
+            <Input
+              name="comment"
+              id="comment"
+              required
+              inputProps={{ maxLength: 1500 }}
+              autoFocus
+              multiline
+              value={description}
+              sx={{
+                width: "100%",
+                "&:hover:not(.Mui-disabled, .Mui-error):before": {
+                  borderBottom: "none !important",
+                },
+                "&::before, &::after": {
+                  borderBottom: "none",
+                },
+              }}
+              onChange={handleDescriptionChange}
+              maxRows={3}
+            />
+          </FormControl>
+          {/* /// */}
+          <Box sx={{ width: "100%", marginLeft: "5px" }}>
+            {selectedImages.length > 0 && (
+              <ImagesToUpload
+                showDivder={false}
+                showLabel={true}
+                updateImageWithComment={() => {}}
+                isComment={true}
+                selectedImages={selectedImages}
+                onClearFile={(file: any, type: any) =>
+                  handleClearFile(file, type)
+                }
+              />
+            )}
+            {selectedDocuments.length > 0 && (
+              <>
+                <Box
+                  sx={{
+                    width: "100%",
+                    overflow: "auto",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "Inter",
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      color: "#605C5C",
+                    }}
+                  >
+                    Files
+                  </Typography>
+                  <FileBox
+                    isnoWrap={true}
+                    title={title}
+                    files={selectedDocuments}
+                    handleClearFile={handleClearFile}
+                  />
+                </Box>
+              </>
+            )}
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            transform: "translateY(5px)",
+            width: isCommentView
+              ? isMdScreen
+                ? "10%"
+                : "10%"
+              : isMdScreen
+              ? "10%"
+              : "5%",
+          }}
+          onClick={handleSelectDocument}
+        >
+          <AttachFileOutlinedIcon sx={{ color: "#818181" }} />
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          width: isCommentView ? "15%" : "10%",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Box
+          onClick={handleSubmit}
+          sx={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            backgroundColor: "#0076C8",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: "10px",
+          }}
+        >
+          <SendIcon />
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -2,6 +2,8 @@ import { Badge } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { AddStatusTag, CustomStack } from "components/CustomTags";
 import * as React from "react";
 
@@ -17,6 +19,7 @@ interface BasicTabsProps {
   tabsBgColor: string;
   isFileTabs?: boolean;
   selectedTabIndex?: number;
+  showHiddenTasks?: boolean;
   setSelectedTab?: (label: string) => void;
   onChangeTab?: (label: string) => void;
 }
@@ -25,6 +28,7 @@ export default function BasicTabs({
   tabsData,
   tabsBgColor,
   isFileTabs,
+  showHiddenTasks,
   setSelectedTab,
   selectedTabIndex,
 }: BasicTabsProps) {
@@ -59,6 +63,19 @@ export default function BasicTabs({
     }
   }, [selectedTabIndex]);
 
+  const theme = useTheme();
+  const isLgScreen = useMediaQuery(theme.breakpoints.between(1450, 1600));
+  const isMdScreen = useMediaQuery(theme.breakpoints.between(1150, 1450));
+  const isSmScreen = useMediaQuery(theme.breakpoints.between(900, 1150));
+
+  const TabsLeft = isLgScreen
+    ? "19%"
+    : isMdScreen
+    ? "15%"
+    : isSmScreen
+    ? "14%"
+    : "21%";
+
   return (
     <Box sx={{ width: "100%" }}>
       <Tabs
@@ -66,6 +83,8 @@ export default function BasicTabs({
         onChange={handleChange}
         aria-label="basic tabs"
         sx={{
+          alignItems: "center",
+          width: "100%",
           span: {
             display: isFileTabs ? "none" : "",
           },
@@ -89,6 +108,8 @@ export default function BasicTabs({
           <Tab
             key={index + tab.label}
             sx={{
+              marginLeft: showHiddenTasks ? TabsLeft : "2%",
+              // border: "solid 1px red",
               width: "max-contnet",
               marginTop: isFileTabs ? "10px" : "0px",
               textTransform: "capitalize",

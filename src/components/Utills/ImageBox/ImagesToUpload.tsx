@@ -11,6 +11,7 @@ interface ImageUploadProps {
   imgwithcomment?: boolean;
   showLabel: boolean;
   taskApproveModal?: boolean;
+  showDivder?: boolean;
   updateImageWithComment: (image: ImageWithComment) => void;
 }
 
@@ -21,6 +22,7 @@ function ImagesToUpload(props: ImageUploadProps) {
     isComment = false,
     imgwithcomment,
     showLabel,
+    showDivder,
     updateImageWithComment,
     taskApproveModal,
   } = props;
@@ -139,18 +141,20 @@ function ImagesToUpload(props: ImageUploadProps) {
           })}
         </Box>
       </Box>
-      {!imgwithcomment && (
-        <Divider
-          sx={{
-            my: 1.25,
-            borderColor: "#9e9e9e",
-            borderRadius: "4px",
-            opacity: "0.9",
-            background: "#F4F4F4",
-            filter: "blur(2px)",
-          }}
-        />
-      )}
+      {showDivder
+        ? !imgwithcomment && (
+            <Divider
+              sx={{
+                my: 1.25,
+                borderColor: "#9e9e9e",
+                borderRadius: "4px",
+                opacity: "0.9",
+                background: "#F4F4F4",
+                filter: "blur(2px)",
+              }}
+            />
+          )
+        : null}
     </>
   );
 }
