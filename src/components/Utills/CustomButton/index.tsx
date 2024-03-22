@@ -24,7 +24,7 @@ const CustomButton = ({ label, loading, icon, ...rest }: CustomButtonProps) => {
           marginRight: 0,
         },
       }}
-      startIcon={icon ? icon : null}
+      startIcon={icon && !loading ? icon : null}
       {...rest}
     >
       {" "}

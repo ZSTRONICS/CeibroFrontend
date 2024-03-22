@@ -46,87 +46,85 @@ function FilesContentList(props: IFilesContentList) {
           }`;
           const isImgType = MEDIA_EXT.includes(file.fileType);
           return (
-            <>
-              <ListItem
-                key={index}
-                alignItems="flex-start"
+            <ListItem
+              key={index}
+              alignItems="flex-start"
+              sx={{
+                borderBottom: "1px solid #E2E4E5",
+                "& .MuiListItemSecondaryAction-root": {
+                  right: "0",
+                },
+              }}
+              secondaryAction={
+                <CustomStack>
+                  <LabelTag>{fileCreatedAt}</LabelTag>
+                  <GenericMenu
+                    isProjectGroup={true}
+                    options={[
+                      {
+                        menuName: "Go to file location",
+                        callBackHandler: () => {},
+                      },
+                      {
+                        menuName: "Share",
+                        callBackHandler: () => {},
+                      },
+                      {
+                        menuName: "Download",
+                        callBackHandler: () => {},
+                      },
+                    ]}
+                    key={1}
+                    paddingTop={0}
+                    disableMenu={false}
+                  />
+                </CustomStack>
+              }
+              disablePadding
+            >
+              <ListItemAvatar>
+                {isImgType && file.fileUrl ? (
+                  <Avatar
+                    sx={{ width: "40px", height: "40px" }}
+                    alt={file.fileName}
+                    variant="rounded"
+                    srcSet={file.fileUrl}
+                  />
+                ) : (
+                  getFileIconThumbnail(file.fileType, 35, 40)
+                )}
+              </ListItemAvatar>
+              <ListItemText
                 sx={{
-                  borderBottom: "1px solid #E2E4E5",
-                  "& .MuiListItemSecondaryAction-root": {
-                    right: "0",
+                  "& span.MuiTypography-body1": {
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    maxWidth: "74%",
+                    width: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
                   },
                 }}
-                secondaryAction={
-                  <CustomStack>
-                    <LabelTag>{fileCreatedAt}</LabelTag>
-                    <GenericMenu
-                      isProjectGroup={true}
-                      options={[
-                        {
-                          menuName: "Go to file location",
-                          callBackHandler: () => {},
-                        },
-                        {
-                          menuName: "Share",
-                          callBackHandler: () => {},
-                        },
-                        {
-                          menuName: "Download",
-                          callBackHandler: () => {},
-                        },
-                      ]}
-                      key={1}
-                      paddingTop={0}
-                      disableMenu={false}
-                    />
-                  </CustomStack>
+                primary={file.fileName}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{
+                        display: "inline",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                      }}
+                      component="span"
+                      variant="body2"
+                      color="#605C5C"
+                    >
+                      {fullName}
+                    </Typography>
+                  </React.Fragment>
                 }
-                disablePadding
-              >
-                <ListItemAvatar>
-                  {isImgType && file.fileUrl ? (
-                    <Avatar
-                      sx={{ width: "40px", height: "40px" }}
-                      alt={file.fileName}
-                      variant="rounded"
-                      srcSet={file.fileUrl}
-                    />
-                  ) : (
-                    getFileIconThumbnail(file.fileType, 35, 40)
-                  )}
-                </ListItemAvatar>
-                <ListItemText
-                  sx={{
-                    "& span.MuiTypography-body1": {
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      maxWidth: "74%",
-                      width: "100%",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    },
-                  }}
-                  primary={file.fileName}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{
-                          display: "inline",
-                          fontSize: "12px",
-                          fontWeight: "500",
-                        }}
-                        component="span"
-                        variant="body2"
-                        color="#605C5C"
-                      >
-                        {fullName}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-            </>
+              />
+            </ListItem>
           );
         })
       ) : (

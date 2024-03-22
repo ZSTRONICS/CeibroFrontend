@@ -371,9 +371,6 @@ function AddedDetails(props: IProps) {
         {showComment && (
           <Comment
             isCommentView={isCommentView}
-            doneCommentsRequired={false}
-            doneImageRequired={false}
-            title={""}
             showHeader={true}
             taskId={taskId}
           />

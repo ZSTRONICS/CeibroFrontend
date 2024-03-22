@@ -167,9 +167,9 @@ function TaskDetails(props: IProps) {
                 commentData={comment.commentData}
                 initiator={comment.initiator}
                 isCommentInitiator={false}
-                isPinned={false}
-                eventId=""
-                taskId=""
+                isPinned={comment.isPinned}
+                eventId={comment._id}
+                taskId={comment.taskId}
                 createdAt={comment.createdAt}
               />
             ))}

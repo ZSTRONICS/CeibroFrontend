@@ -37,7 +37,7 @@ function ImagesToUpload(props: ImageUploadProps) {
           // justifyContent: imgwithcomment ? "space-between" : null,
           // flexDirection: imgwithcomment ? "row" : null,
           mt: 1,
-          mb: 2,
+          mb: 1.2,
           gap: 5,
         }}
       >

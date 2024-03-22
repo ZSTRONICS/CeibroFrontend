@@ -185,38 +185,37 @@ const CommentCard = ({
             </Typography>
           </Box>
         )}
-        {!isPinnedView && (
-          <Box
-            sx={{
-              float: "right",
-              display: "flex",
-            }}
-          >
-            <Box sx={{ transform: "translateX(10px)" }}>
-              {isPinned ? <PinIcon color="#0076C8" /> : <></>}
-            </Box>
-            <GenericMenu
-              icon={
-                <assets.MoreVertIcon
-                  sx={{
-                    color: "#000000",
-                    transform: "translateX(10px)",
-                  }}
-                />
-              }
-              isProjectGroup={true}
-              options={[
-                {
-                  menuName: isPinned ? "Unpin comment" : "Pin comment",
-                  callBackHandler: handlePinUnPinTaskComment,
-                },
-              ]}
-              key={1}
-              paddingTop={0}
-              disableMenu={false}
-            />
+
+        <Box
+          sx={{
+            float: "right",
+            display: "flex",
+          }}
+        >
+          <Box sx={{ transform: "translateX(10px)" }}>
+            {isPinned ? <PinIcon color="#0076C8" /> : <></>}
           </Box>
-        )}
+          <GenericMenu
+            icon={
+              <assets.MoreVertIcon
+                sx={{
+                  color: "#000000",
+                  transform: "translateX(10px)",
+                }}
+              />
+            }
+            isProjectGroup={true}
+            options={[
+              {
+                menuName: isPinned ? "Unpin comment" : "Pin comment",
+                callBackHandler: handlePinUnPinTaskComment,
+              },
+            ]}
+            key={1}
+            paddingTop={0}
+            disableMenu={false}
+          />
+        </Box>
       </Box>
       <Box
         sx={{
