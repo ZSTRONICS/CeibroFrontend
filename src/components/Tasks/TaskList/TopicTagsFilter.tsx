@@ -148,9 +148,10 @@ const TopicTagsFilter = ({
       renderInput={(params) => (
         <TextField
           sx={{
-            position: "absolute",
+            // position: "absolute",
             zIndex: "500",
-            width: "125px",
+            minWidth: "100px",
+            maxWidth: "max-content",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
           }}
           {...params}

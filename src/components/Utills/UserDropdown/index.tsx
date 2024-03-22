@@ -201,8 +201,8 @@ function UserDropDown(props: IProps) {
         variant="standard"
         sx={{
           marginTop: isTaskFilter ? "0" : "1px",
-          width: "100%",
-          maxWidth: "100%",
+          width: "100px",
+          maxWidth: "max-contnet",
         }}
       >
         {label === "Assign to" && selected.length === 0 && (
@@ -256,7 +256,7 @@ function UserDropDown(props: IProps) {
             style={{
               display: "flex",
               alignItems: "center",
-              width: "100%",
+              width: "100px",
               gap: "5px",
             }}
           >
@@ -266,7 +266,7 @@ function UserDropDown(props: IProps) {
               value={searchQuery}
               onChange={handleSearchChange}
               style={{
-                width: "100px",
+                // width: "200px",
 
                 flex: 1,
                 borderBottomWidth: "1px",

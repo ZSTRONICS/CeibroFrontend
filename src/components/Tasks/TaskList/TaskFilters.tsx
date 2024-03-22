@@ -175,9 +175,8 @@ function TaskFilters(props: Props) {
           gap: 1,
           alignItems: "flex-start",
           width: "100%",
-          // overflow: "auto",
-          // border: "solid 1px red",
-          // dis
+          overflowX: "auto",
+          display: "flex",
         }}
       >
         {!showHiddenTasks && (
@@ -193,7 +192,7 @@ function TaskFilters(props: Props) {
         />
         <Box
           sx={{
-            maxWidth: "90px",
+            maxWidth: "110px",
             width: "100%",
             mt: "-10px",
           }}
@@ -229,7 +228,6 @@ function TaskFilters(props: Props) {
             textTransform: "unset",
             display: "inline",
             minWidth: "60px",
-            border: "solid 1px red",
             // width: "max-contnet",
             marginTop: "10px",
             cursor: "pointer",
