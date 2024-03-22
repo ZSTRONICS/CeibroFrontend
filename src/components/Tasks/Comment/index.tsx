@@ -302,6 +302,7 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
                     Files
                   </Typography>
                   <FileBox
+                    iscomment={true}
                     isnoWrap={true}
                     files={selectedDocuments}
                     handleClearFile={handleClearFile}
@@ -345,14 +346,13 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
           // disabled={true}
           // loading={true}
           sx={{
-            width: "40px",
-            height: "40px",
+            height: "60px",
             borderRadius: "50%",
             backgroundColor: "#0076C8",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            marginRight: "10px",
+            transform: "scale(0.8) translateY(8px) ",
           }}
         />
       </Box>

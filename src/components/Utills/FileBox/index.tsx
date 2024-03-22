@@ -28,6 +28,7 @@ interface IProps {
   isnoWrap?: boolean;
   handleClearFile?: (file: File | any, type: fileType) => void;
   download?: boolean;
+  iscomment?: boolean;
 }
 
 const getFileIconThumbnail = (
@@ -81,6 +82,7 @@ const FileBox: React.FC<IProps> = ({
   title,
   isnoWrap,
   handleClearFile,
+  iscomment,
   download,
 }) => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
@@ -135,6 +137,7 @@ const FileBox: React.FC<IProps> = ({
                   width: `${item.size ? "255px" : "200px"}`,
                   gap: "10px",
                   pl: 0,
+                  marginLeft: iscomment ? "-13px" : null,
 
                   "&:hover": {
                     cursor: "pointer",

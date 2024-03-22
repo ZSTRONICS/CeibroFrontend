@@ -102,7 +102,7 @@ function AddedDetails(props: IProps) {
         }}
       >
         <Box
-          className="custom-scrollbar"
+          // className="custom-scrollbar"
           sx={{
             overflowY: "auto",
             flex: "1",

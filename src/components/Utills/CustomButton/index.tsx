@@ -19,9 +19,13 @@ const CustomButton = ({ label, loading, icon, ...rest }: CustomButtonProps) => {
         p: "0px",
         textTransform: "capitalize",
         border: "none",
-        "& .MuiButton-startIcon": {
-          marginLeft: 0,
-          marginRight: 0,
+        "&:hover": {
+          backgroundColor: "#0076C8",
+        },
+        "& .MuiButton-icon": {
+          border: "solid 1px red",
+          marginLeft: "0px !important ",
+          marginRight: "0px !important  ",
         },
       }}
       startIcon={icon && !loading ? icon : null}
