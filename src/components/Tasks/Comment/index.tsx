@@ -189,6 +189,7 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
           display: "flex",
           alignItems: "flex-end",
           paddingBottom: "8px",
+          marginLeft: "4px",
         }}
       >
         <Box
@@ -240,7 +241,7 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
               multiline
               value={description}
               sx={{
-                width: isMdScreen ? "90%" : "95%",
+                width: isMdScreen ? "80%" : "80%",
                 "&:hover:not(.Mui-disabled, .Mui-error):before": {
                   borderBottom: "none !important",
                 },
@@ -260,7 +261,8 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
                 color: "#757575",
                 paddingBottom: "3px",
                 paddingRight: "5px",
-                width: isMdScreen ? "15%" : "10%",
+                width: isMdScreen ? "20%" : "20%",
+                // border: "solid 1px red",
               }}
             >
               {`${description.length}/ 1500`}
@@ -269,6 +271,7 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
           <Box sx={{ width: "100%", marginLeft: "5px" }}>
             {selectedImages.length > 0 && (
               <ImagesToUpload
+                imgwithcomment={false}
                 showDivder={false}
                 showLabel={true}
                 updateImageWithComment={() => {}}

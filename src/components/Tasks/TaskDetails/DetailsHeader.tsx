@@ -371,10 +371,19 @@ export default function DetailsHeader(props: IProps) {
     <Box>
       <Box>
         <Grid container sx={{ gap: 0.8 }} justifyContent="space-between">
-          <Grid container justifyContent={"space-between"}>
+          <Grid
+            // sx={{ border: "solid 1px red" }}
+            container
+            justifyContent={"space-between"}
+          >
             <Grid item> {renderLabel("Main Information")}</Grid>
             <Grid item>
-              <Box sx={{ display: "flex", justifyContent: "end" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "end",
+                }}
+              >
                 <IconButton
                   onClick={handleFullView}
                   sx={{ height: "24px", width: "24px" }}
@@ -417,8 +426,14 @@ export default function DetailsHeader(props: IProps) {
           </Grid>
         </Grid>
         {/* users */}
-        <Grid container sx={{ gap: 1.25 }}>
-          <Grid className="ellipsis" item sx={{ width: "26%" }}>
+        <Grid container>
+          <Grid
+            className="ellipsis"
+            item
+            sx={{
+              width: "26%",
+            }}
+          >
             {renderUserWithAvatar({
               label: data.Createdby.label,
               users: data.Createdby.value,

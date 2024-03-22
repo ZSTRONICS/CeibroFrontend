@@ -131,8 +131,7 @@ const CommentCard = ({
     : !isCommentInitiator
     ? "#F4F4F4"
     : "#CFECFF";
-  // const commentCardStyle ={ }
-  const isLargeComment = commentData.message.length > 270;
+
   const CommentCardContent = (
     <Box
       sx={{
@@ -147,7 +146,7 @@ const CommentCard = ({
         flexDirection: "column",
         marginTop: "10px",
         marginRight: !isPinnedView ? "10px" : "0px",
-        marginLeft: isCommentInitiator ? "40%" : "0px",
+        marginLeft: isCommentInitiator ? "40%" : "8px",
       }}
     >
       <Box
