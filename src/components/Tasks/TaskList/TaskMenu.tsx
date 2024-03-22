@@ -75,7 +75,7 @@ const TaskMenu: React.FC<UserMenuProps> = ({ menuItems, selectedMenu }) => {
             }}
             sx={{
               "&.MuiMenuItem-root": {
-                padding: "8px 20px",
+                // padding: "8px 20px",
                 fontSize: "14px",
                 fontWeight: 500,
               },
