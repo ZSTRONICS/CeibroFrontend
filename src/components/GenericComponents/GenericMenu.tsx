@@ -11,6 +11,7 @@ interface MenuProps {
   paddingTop?: null | number;
   isTaskSelected?: boolean;
   isProjectGroup?: boolean;
+  data?: any;
 }
 
 const GenericMenu: React.FC<MenuProps> = ({
@@ -20,6 +21,7 @@ const GenericMenu: React.FC<MenuProps> = ({
   isTaskSelected,
   paddingTop = null,
   isProjectGroup,
+  data,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -88,7 +90,18 @@ const GenericMenu: React.FC<MenuProps> = ({
                 handleMenuClose();
               }}
             >
-              {option.menuName}
+              {isProjectGroup ? (
+                <a
+                  onClick={(e) => e.stopPropagation()}
+                  href={data?.fileUrl}
+                  download
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  {option.menuName}
+                </a>
+              ) : (
+                option.menuName
+              )}
             </MenuItemTag>
           ))}
         </Menu>

@@ -59,16 +59,9 @@ function FilesContentList(props: IFilesContentList) {
                 <CustomStack>
                   <LabelTag>{fileCreatedAt}</LabelTag>
                   <GenericMenu
+                    data={file}
                     isProjectGroup={true}
                     options={[
-                      {
-                        menuName: "Go to file location",
-                        callBackHandler: () => {},
-                      },
-                      {
-                        menuName: "Share",
-                        callBackHandler: () => {},
-                      },
                       {
                         menuName: "Download",
                         callBackHandler: () => {},
