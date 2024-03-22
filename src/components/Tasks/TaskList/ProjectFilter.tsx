@@ -1,6 +1,7 @@
+import { Button } from "@mui/base";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import { Checkbox, Paper, TextField } from "@mui/material";
+import { Box, Checkbox, TextField } from "@mui/material";
 import Autocomplete, {
   AutocompleteChangeReason,
 } from "@mui/material/Autocomplete";
@@ -41,6 +42,9 @@ const ProjectFilter = ({
     <Autocomplete
       sx={{
         position: "relative",
+        "& .MuiSvgIcon-root": {
+          position: "absolute",
+        },
         "& .MuiAutocomplete-inputRoot": {
           height: "36px", // Adjust the height as needed
         },
@@ -55,15 +59,93 @@ const ProjectFilter = ({
       onChange={handleChange}
       getOptionLabel={(option: Project) => option.title}
       renderOption={(props, option, { selected }) => (
-        <li {...props}>
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8 }}
-            checked={selected}
-          />
-          {option.title}
-        </li>
+        <>
+          <li {...props}>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              style={{ marginRight: 8 }}
+              checked={selected}
+            />
+            {option.title}
+          </li>
+        </>
+        // <Box>clear</Box>
+      )}
+      PaperComponent={({ children }) => (
+        <Box
+          sx={{
+            backgroundColor: "white",
+            minWidth: "250px",
+            boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
+            borderRadius: "20px",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "10px",
+            }}
+          >
+            <input
+              placeholder="searching"
+              style={{
+                width: "55%",
+                marginLeft: "7%",
+                border: "none",
+                // marginTop: "10px",
+                borderBottom: "1px solid #818181",
+              }}
+            />
+            <Button
+              style={{
+                backgroundColor: "white",
+                color: "#818181",
+                border: "1px solid #818181",
+                cursor: "pointer",
+                padding: "6px 12px 6px 12px",
+                borderRadius: "5px",
+                marginRight: "7%",
+              }}
+            >
+              Done
+            </Button>
+          </Box>
+          <ul>{children}</ul>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              borderTop: "1px solid #818181",
+            }}
+            p={2}
+            bgcolor="background.paper"
+          >
+            <Button
+              style={{
+                border: "none",
+                backgroundColor: "transparent",
+                color: "#0076C8",
+                cursor: "pointer",
+              }}
+            >
+              Clear all
+            </Button>
+            <Button
+              style={{
+                backgroundColor: "#0076C8",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
+                padding: "6px 12px 6px 12px",
+                borderRadius: "5px",
+              }}
+            >
+              Apply
+            </Button>
+          </Box>
+        </Box>
       )}
       style={{ width: 500 }}
       renderInput={(params) => (
@@ -78,9 +160,11 @@ const ProjectFilter = ({
           // placeholder="Start typing tags project"
         />
       )}
-      PaperComponent={({ children }) => (
-        <Paper sx={{ minWidth: "300px" }}>{children}</Paper>
-      )}
+      // PaperComponent={({ children }) => (
+      //   <Paper sx={{ minWidth: "300px" }}>
+      //     {children}
+      //     </Paper>
+      // )}
     />
   );
 };
