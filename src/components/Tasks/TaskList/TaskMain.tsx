@@ -90,7 +90,7 @@ const TaskMain = (props: IProps) => {
   }, [allTaskList.length]);
 
   useEffect(() => {
-    console.log(selectedProjects, selectedTopicTags, selectedUsers);
+    // console.log(selectedProjects, selectedTopicTags, selectedUsers);
     let filteredData = handleFilterRootTask(selectedTaskRootState);
     if (selectedProjects && selectedProjects.length > 0) {
       filteredData = filteredData.filter((task: ITask) =>

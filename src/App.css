@@ -372,6 +372,14 @@ textarea::-webkit-input-placeholder {
   color: black !important
 }
 
+button>span.MuiButton-startIcon {
+  margin: 0;
+}
+
+button.loadingButton:hover {
+  background-color: #0076c8;
+  border: none;
+}
 
 .MuiFormControlLabel-label.Mui-disabled {
   color: black !important;

@@ -12,6 +12,7 @@ interface CustomButtonProps extends ButtonProps {
 const CustomButton = ({ label, loading, icon, ...rest }: CustomButtonProps) => {
   return (
     <Button
+      className="loadingButton"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -19,13 +20,11 @@ const CustomButton = ({ label, loading, icon, ...rest }: CustomButtonProps) => {
         p: "0px",
         textTransform: "capitalize",
         border: "none",
-        "&:hover": {
-          backgroundColor: "#0076C8",
+        "& .MuiButtonBase-root .MuiButton-root :hover": {
+          backgroundColor: "red",
         },
-        "& .MuiButton-icon": {
-          border: "solid 1px red",
-          marginLeft: "0px !important ",
-          marginRight: "0px !important  ",
+        "& .MuiButton-startIcon": {
+          m: 0,
         },
       }}
       startIcon={icon && !loading ? icon : null}
