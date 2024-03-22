@@ -1,19 +1,27 @@
 import { Box } from "@mui/material";
 import { CustomStack } from "components/CustomTags";
-import TagListDropdown from "components/Location/LocationImageDetails/TagsDropdown";
 import { getDropdownOptions } from "components/Utills/Globals";
 import UserDropDown from "components/Utills/UserDropdown";
+import { Topic } from "constants/interfaces";
 import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { ChangeValueType, CreateNewTaskFormType, Options } from "../type";
+import ProjectFilter from "./ProjectFilter";
 import TaskMenu from "./TaskMenu";
+import TopicTagsFilter from "./TopicTagsFilter";
 interface Props {
   handleTaskRootState: (rootState: string) => void;
   handleClearAll: () => void;
   showHiddenTasks: boolean;
   selectedRootTask: string;
+  selectedUsers: string[];
+  selectedTopicTags: Topic[];
+  selectedProjects: Project[];
+  setSelectedUsers: Dispatch<SetStateAction<string[]>>;
+  setSelectedTopicTags: Dispatch<SetStateAction<Topic[]>>;
+  setSelectedProjects: Dispatch<SetStateAction<Project[]>>;
 }
 function TaskFilters(props: Props) {
   const {
@@ -21,8 +29,14 @@ function TaskFilters(props: Props) {
     handleClearAll,
     selectedRootTask,
     showHiddenTasks,
+    selectedUsers,
+    setSelectedUsers,
+    selectedTopicTags,
+    setSelectedTopicTags,
+    selectedProjects,
+    setSelectedProjects,
   } = props;
-  const [selectedUsers, setSelectedUsers] = useState<UserInfo[]>([]);
+  // const [selectedUsers, setSelectedUsers] = useState<UserInfo[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedTaskMenu, setSelectedTaskMenu] = useState<string>("All");
   var initialValues: any = {
@@ -128,17 +142,29 @@ function TaskFilters(props: Props) {
     }
   }, [allProjects.length]);
   const isApproval = selectedRootTask === "Approval";
-  const handleChangeValues = (value: ChangeValueType, name: keyof any) => {
-    if (value === undefined) {
-      setSelectedData((prevSelectedData) => ({
-        ...prevSelectedData,
-        [name]: initialValues[name],
-      }));
+
+  const handleChangeValues = (values: ChangeValueType, name: keyof any) => {
+    if (values === undefined) {
+      console.log(selectedData);
+      setSelectedUsers([]);
+      // setSelectedData((prevSelectedData) => ({
+      //   ...prevSelectedData,
+      //   [name]: initialValues[name],
+      // }));
+      // setSelectedUsers(initialValues[name]);
     } else {
-      setSelectedData((prevSelectedData) => ({
-        ...prevSelectedData,
-        [name]: value,
-      }));
+      // setSelectedData((prevSelectedData) => ({
+      //   ...prevSelectedData,
+      //   [name]: value,
+      // }));
+      // const filteredUsers = userAllContacts.filter((contact: any) =>
+      //   values.some((value) => contact.userId == value.userId)
+      // );
+      // debugger;
+      if (Array.isArray(values) && name != "invitedNumbers") {
+        const userIds = values.map((value: any) => value.userId);
+        setSelectedUsers([...selectedUsers, ...userIds]);
+      }
     }
   };
 
@@ -157,31 +183,34 @@ function TaskFilters(props: Props) {
             selectedMenu={selectedTaskMenu}
           />
         )}
-        <TagListDropdown
-          isSmall={true}
-          options={[]}
-          selectedTags={selectedTags}
-          setSelectedTags={setSelectedTags}
-          tasktilters={true}
+        <ProjectFilter
+          options={allProjects}
+          selectedProjects={selectedProjects}
+          setSelectedProjects={setSelectedProjects}
         />
         <Box sx={{ maxWidth: "90px", width: "100%", mt: "-10px" }}>
           <UserDropDown
             isTaskFilter={true}
             name="assignedToState"
             label={"Users"}
-            contacts={[]}
-            recentUserContact={[]}
+            contacts={userAllContacts}
+            recentUserContact={recentUserContact}
             handleChangeValues={handleChangeValues}
             tasktilters={true}
           />
         </Box>
-        <TagListDropdown
+        <TopicTagsFilter
+          options={Topics.allTopics}
+          selectedTopics={selectedTopicTags}
+          setSelectedTopics={setSelectedTopicTags}
+        />
+        {/* <TagListDropdown
           isSmall={true}
           options={[]}
           selectedTags={selectedTags}
           setSelectedTags={setSelectedTags}
           tasktilters={true}
-        />
+        /> */}
         <Box
           // variant="text"
           sx={{
@@ -196,7 +225,10 @@ function TaskFilters(props: Props) {
             cursor: "pointer",
             transform: "translateX(5px)",
           }}
-          onClick={handleClearAll}
+          onClick={() => {
+            setSelectedTaskMenu("All");
+            handleClearAll();
+          }}
         >
           Clear all
         </Box>

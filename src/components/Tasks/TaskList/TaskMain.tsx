@@ -11,7 +11,7 @@ import { getTaskCardHeight } from "components/Utills/Globals";
 import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
-import { ITask, TaskRootState } from "constants/interfaces";
+import { ITask, TaskRootState, Topic } from "constants/interfaces";
 import { useHistory, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { taskActions } from "redux/action";
@@ -24,7 +24,7 @@ import {
   getTaskFilters,
   searchInData,
 } from "utills/common";
-import TaskNotFound from "../EmptyScreenDescription/TaskNotFound";
+import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskFilters from "./TaskFilters";
 
 interface RouteParams {
@@ -50,6 +50,10 @@ const TaskMain = (props: IProps) => {
   // const location = useLocation();
   const history = useHistory();
   const taskCardListRef: any = useRef();
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
+  const [selectedTopicTags, setSelectedTopicTags] = useState<Topic[]>([]);
+  const [selectedTaskRootState, setSelectedTaskRootState] = useState("All");
   const { subtask, taskuid } = useParams<RouteParams>();
   // const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
@@ -60,12 +64,12 @@ const TaskMain = (props: IProps) => {
   const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
   // const isTaskRoute = location.pathname.split("/");
   // const [currentTask, setCurrentTask] = useState<number>(-1);
-  // const [emptyScreenContent, setEmptyScreenContent] = useState([
-  //   {
-  //     heading: "",
-  //     description: "",
-  //   },
-  // ]);
+  const [emptyScreenContent, setEmptyScreenContent] = useState([
+    {
+      heading: "",
+      description: "",
+    },
+  ]);
 
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - HEADER_HEIGHT
@@ -85,7 +89,38 @@ const TaskMain = (props: IProps) => {
     }
   }, [allTaskList.length]);
 
-  const handleRootTask = (taskRootState: string) => {
+  useEffect(() => {
+    console.log(selectedProjects, selectedTopicTags, selectedUsers);
+    let filteredData = handleFilterRootTask(selectedTaskRootState);
+    if (selectedProjects && selectedProjects.length > 0) {
+      filteredData = filteredData.filter((task: ITask) =>
+        selectedProjects.some(
+          (selectedProject) =>
+            task.project && task.project.title.includes(selectedProject.title)
+        )
+      );
+    }
+    if (selectedUsers && selectedUsers.length > 0) {
+      filteredData = filteredData.filter((task: ITask) =>
+        selectedUsers.some(
+          (id) =>
+            (task.confirmer && task.confirmer._id == id) ||
+            (task.creator && task.creator._id == id)
+        )
+      );
+    }
+    if (selectedTopicTags && selectedTopicTags.length > 0) {
+      filteredData = filteredData.filter((task: ITask) =>
+        selectedTopicTags.some(
+          (selectedTopicTag) =>
+            task.topic && task.topic._id == selectedTopicTag._id
+        )
+      );
+    }
+    setFilteredTask(filteredData);
+  }, [selectedProjects.length, selectedTopicTags.length, selectedUsers]);
+
+  const handleFilterRootTask = (taskRootState: string) => {
     const rootStateLocal = TaskRootSateLocal[selectedRootTask] || "Ongoing";
     const userSubStateLocal = calcUserSubState[rootStateLocal] || "ongoing";
     const isCanceled = rootStateLocal === TaskRootState.Canceled;
@@ -106,7 +141,13 @@ const TaskMain = (props: IProps) => {
       criteria.isCreator,
       criteria.isAssignedToMe
     );
+    return filteredTasks;
+  };
+
+  const handleRootTask = (taskRootState: string) => {
+    const filteredTasks = handleFilterRootTask(taskRootState);
     setFilteredTask(filteredTasks);
+    setSelectedTaskRootState(taskRootState);
     clearTaskCardListCache();
     setSelectedTask(null);
   };
@@ -307,11 +348,7 @@ const TaskMain = (props: IProps) => {
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const searchTxt = event.target.value;
-    const filterData = searchInData(
-      filteredTask,
-      searchTxt,
-      propertiesToSearch
-    );
+    const filterData = searchInData(allTaskList, searchTxt, propertiesToSearch);
     setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
@@ -379,7 +416,10 @@ const TaskMain = (props: IProps) => {
 
   const EmptyScreen = () => (
     <div style={{ height: windowHeight }}>
-      <TaskNotFound />
+      <EmptyScreenDescription
+        showWaterMark={true}
+        content={emptyScreenContent}
+      />
     </div>
   );
 
@@ -387,13 +427,29 @@ const TaskMain = (props: IProps) => {
 
   return (
     <>
-      <Box sx={{ width: "100%", mt: "15px" }}>
+      <Box
+        sx={{
+          width: "100%",
+          marginTop: "15px",
+        }}
+      >
         <Box sx={{ width: "94%", marginLeft: "3%" }}>
           <TaskFilters
             handleTaskRootState={handleRootTask}
-            handleClearAll={() => {}}
+            handleClearAll={() => {
+              setSelectedTopicTags([]);
+              setSelectedProjects([]);
+              setSelectedUsers([]);
+              setSelectedTaskRootState("All");
+            }}
             selectedRootTask={selectedRootTask}
             showHiddenTasks={showHiddenTasks}
+            selectedUsers={selectedUsers}
+            setSelectedUsers={setSelectedUsers}
+            selectedTopicTags={selectedTopicTags}
+            setSelectedTopicTags={setSelectedTopicTags}
+            selectedProjects={selectedProjects}
+            setSelectedProjects={setSelectedProjects}
           />
         </Box>
         <Box sx={{ border: "1px solid #E2E4E5", marginTop: "15px" }}></Box>
@@ -402,6 +458,7 @@ const TaskMain = (props: IProps) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            // border: "solid 1px red",
             width: "96%",
             marginLeft: "2%",
           }}
@@ -429,7 +486,12 @@ const TaskMain = (props: IProps) => {
         </Box>
       </Box>
 
-      <Box sx={{ mt: 1, pb: 1 }}>
+      <Box
+        sx={{
+          mt: 1,
+          pb: 1,
+        }}
+      >
         {loadingAllTasksAllEvents ? (
           <LoadingSkeleton />
         ) : task && filteredTask.length === 0 ? (
