@@ -64,12 +64,12 @@ const TaskMain = (props: IProps) => {
   const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
   // const isTaskRoute = location.pathname.split("/");
   // const [currentTask, setCurrentTask] = useState<number>(-1);
-  // const [emptyScreenContent, setEmptyScreenContent] = useState([
-  //   {
-  //     heading: "",
-  //     description: "",
-  //   },
-  // ]);
+  const [emptyScreenContent, setEmptyScreenContent] = useState([
+    {
+      heading: "",
+      description: "",
+    },
+  ]);
 
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - HEADER_HEIGHT
