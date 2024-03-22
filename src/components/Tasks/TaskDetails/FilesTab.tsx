@@ -29,7 +29,12 @@ function FilesTab(props: IFilesTab) {
   ];
   return (
     <Box sx={{ mt: 1, marginLeft: "9px" }}>
-      <BasicTabs isFileTabs={true} tabsBgColor={"white"} tabsData={FilesTabs} />
+      <BasicTabs
+        selectedTabIndex={0}
+        isFileTabs={true}
+        tabsBgColor={"white"}
+        tabsData={FilesTabs}
+      />
     </Box>
   );
 }

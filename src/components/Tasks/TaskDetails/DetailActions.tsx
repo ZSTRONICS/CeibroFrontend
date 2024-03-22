@@ -45,6 +45,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     isAssignedToMe,
     taskRootState,
     assignedToState,
+    isTaskViewer,
     invitedNumbers,
   } = selectedTask;
 
@@ -320,7 +321,7 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   const showReplyForwad = [
     ...replyBtn,
-    ...(!pendingReviewCancel ? forWardBtn : []),
+    ...(!pendingReviewCancel && !isTaskViewer ? forWardBtn : []),
   ];
 
   const pendingReview = [

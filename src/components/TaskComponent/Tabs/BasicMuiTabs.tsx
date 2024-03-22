@@ -18,7 +18,7 @@ interface BasicTabsProps {
   tabsData: TabData[];
   tabsBgColor: string;
   isFileTabs?: boolean;
-  selectedTabIndex?: number;
+  selectedTabIndex: number;
   showHiddenTasks?: boolean;
   setSelectedTab?: (label: string) => void;
   onChangeTab?: (label: string) => void;
@@ -51,11 +51,8 @@ export default function BasicTabs({
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab && setSelectedTab(tabsData[newValue].label);
     setValue(newValue);
-
-    // searchParams.set('tab', newValue.toString());
-    // history.push({ search: searchParams.toString() });
   };
-  // console.log("selectedTab", selectedTab);
+
   React.useEffect(() => {
     if (selectedTabIndex) {
       setSelectedTab && setSelectedTab(tabsData[selectedTabIndex].label);

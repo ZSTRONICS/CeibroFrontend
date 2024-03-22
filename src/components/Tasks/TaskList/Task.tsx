@@ -271,6 +271,12 @@ function Task() {
     }
   }, [selectedTab, subtask]);
 
+  // useEffect(() => {
+  //   if (taskuid) {
+  //     console.log("taskuid", taskuid);
+  //     setCommentTab("Details");
+  //   }
+  // }, [taskuid]);
   useEffect(() => {
     if (windowWidth < 1199) {
       setCommentDiv(false);
@@ -421,7 +427,6 @@ function Task() {
                   <TabsViewTaskDetail
                     handleSelectedDetailTab={(tab) => setCommentTab(tab)}
                     openCommentTab={commentTab}
-                    headerHeight={detailHeaderRefDimension.height}
                     selectedTask={selectedTaskandEvents}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
@@ -458,7 +463,6 @@ function Task() {
                   <TabsViewTaskDetail
                     handleSelectedDetailTab={(tab) => setCommentTab(tab)}
                     openCommentTab={commentTab}
-                    headerHeight={detailHeaderRefDimension.height}
                     RECENT_TASK_UPDATED_TIME_STAMP={
                       RECENT_TASK_UPDATED_TIME_STAMP
                     }

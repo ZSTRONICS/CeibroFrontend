@@ -370,7 +370,7 @@ export default function DetailsHeader(props: IProps) {
   return (
     <Box>
       <Box>
-        <Grid container sx={{ gap: 0.8 }} justifyContent="space-between">
+        <Grid container sx={{ gap: 0.8 }}>
           <Grid
             // sx={{ border: "solid 1px red" }}
             container
@@ -398,32 +398,36 @@ export default function DetailsHeader(props: IProps) {
             </Grid>
           </Grid>
 
-          <Grid item sx={{ width: "20%" }}>
+          <Grid item sx={{ width: "24.5%" }}>
             {renderInfoBox({
               label: data.TaskID.label,
               value: data.TaskID.value,
             })}
           </Grid>
           {data.Project.value && (
-            <Grid item sx={{ width: "20%" }} ref={containerRef}>
+            <Grid item sx={{ width: "27%" }} ref={containerRef}>
               {renderInfoBox({
                 label: data.Project.label,
                 value: data.Project.value,
               })}
             </Grid>
           )}
-          <Grid item sx={{ width: "20%" }}>
-            {renderInfoBox({
-              label: data.CreatedDate.label,
-              value: data.CreatedDate.value,
-            })}
-          </Grid>
-          <Grid item sx={{ width: "20%" }}>
-            {renderInfoBox({
-              label: data.DueDate.label,
-              value: data.DueDate.value,
-            })}
-          </Grid>
+          {data.CreatedDate.value && (
+            <Grid item sx={{ width: "24%" }}>
+              {renderInfoBox({
+                label: data.CreatedDate.label,
+                value: data.CreatedDate.value,
+              })}
+            </Grid>
+          )}
+          {data.DueDate.value && (
+            <Grid item sx={{ width: "22%" }}>
+              {renderInfoBox({
+                label: data.DueDate.label,
+                value: data.DueDate.value,
+              })}
+            </Grid>
+          )}
         </Grid>
         {/* users */}
         <Grid container>
@@ -431,7 +435,7 @@ export default function DetailsHeader(props: IProps) {
             className="ellipsis"
             item
             sx={{
-              width: "26%",
+              width: "25%",
             }}
           >
             {renderUserWithAvatar({
