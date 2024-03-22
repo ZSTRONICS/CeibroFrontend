@@ -266,6 +266,8 @@ function UserDropDown(props: IProps) {
               value={searchQuery}
               onChange={handleSearchChange}
               style={{
+                width: "100px",
+
                 flex: 1,
                 borderBottomWidth: "1px",
                 borderColor: "#818181",

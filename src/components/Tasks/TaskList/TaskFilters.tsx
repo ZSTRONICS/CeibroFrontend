@@ -175,6 +175,9 @@ function TaskFilters(props: Props) {
           gap: 1,
           alignItems: "flex-start",
           width: "100%",
+          // overflow: "auto",
+          // border: "solid 1px red",
+          // dis
         }}
       >
         {!showHiddenTasks && (
@@ -188,7 +191,13 @@ function TaskFilters(props: Props) {
           selectedProjects={selectedProjects}
           setSelectedProjects={setSelectedProjects}
         />
-        <Box sx={{ maxWidth: "90px", width: "100%", mt: "-10px" }}>
+        <Box
+          sx={{
+            maxWidth: "90px",
+            width: "100%",
+            mt: "-10px",
+          }}
+        >
           <UserDropDown
             isTaskFilter={true}
             name="assignedToState"
@@ -219,7 +228,8 @@ function TaskFilters(props: Props) {
             fontWeight: 400,
             textTransform: "unset",
             display: "inline",
-            width: "200px",
+            minWidth: "60px",
+            border: "solid 1px red",
             // width: "max-contnet",
             marginTop: "10px",
             cursor: "pointer",

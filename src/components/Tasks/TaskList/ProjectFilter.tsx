@@ -42,9 +42,6 @@ const ProjectFilter = ({
     <Autocomplete
       sx={{
         position: "relative",
-        "& .MuiSvgIcon-root": {
-          position: "absolute",
-        },
         "& .MuiAutocomplete-inputRoot": {
           height: "36px", // Adjust the height as needed
         },
@@ -81,7 +78,7 @@ const ProjectFilter = ({
             borderRadius: "20px",
           }}
         >
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -111,7 +108,7 @@ const ProjectFilter = ({
             >
               Done
             </Button>
-          </Box>
+          </Box> */}
           <ul>{children}</ul>
           <Box
             sx={{
@@ -153,6 +150,7 @@ const ProjectFilter = ({
           sx={{
             position: "absolute",
             zIndex: "500",
+            width: "125px",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
           }}
           {...params}
