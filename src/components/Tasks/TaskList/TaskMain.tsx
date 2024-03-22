@@ -12,7 +12,7 @@ import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
 import { ITask, TaskRootState } from "constants/interfaces";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { taskActions } from "redux/action";
 import { TaskFilterType } from "redux/type";
@@ -47,25 +47,25 @@ const TaskMain = (props: IProps) => {
     allTaskList,
     selectedRootTask,
   } = props;
-  const location = useLocation();
+  // const location = useLocation();
   const history = useHistory();
   const taskCardListRef: any = useRef();
   const { subtask, taskuid } = useParams<RouteParams>();
-  const isRenderEffect = useRef<any>(false);
+  // const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
   const [filteredTask, setFilteredTask] = useState<ITask[]>(allTaskList);
   const [searchText, setSearchText] = useState<string>("");
   const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
-  const isTaskRoute = location.pathname.split("/");
-  const [currentTask, setCurrentTask] = useState<number>(-1);
-  const [emptyScreenContent, setEmptyScreenContent] = useState([
-    {
-      heading: "",
-      description: "",
-    },
-  ]);
+  // const isTaskRoute = location.pathname.split("/");
+  // const [currentTask, setCurrentTask] = useState<number>(-1);
+  // const [emptyScreenContent, setEmptyScreenContent] = useState([
+  //   {
+  //     heading: "",
+  //     description: "",
+  //   },
+  // ]);
 
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - HEADER_HEIGHT

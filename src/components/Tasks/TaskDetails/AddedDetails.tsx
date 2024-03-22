@@ -98,6 +98,7 @@ function AddedDetails(props: IProps) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          borderLeft: isCommentView ? "1px solid #F4F4F4" : "none",
         }}
       >
         <Box

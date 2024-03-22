@@ -4,7 +4,12 @@ import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
 import { countUnseenTasksForTabs } from "components/Utills/Globals";
 import { ApprovalIcon, TaskIcon } from "components/material-ui/icons";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
-import { AllTasksAllEvents, ITask, TaskRootState } from "constants/interfaces";
+import {
+  AllTasksAllEvents,
+  ITask,
+  TaskRootState,
+  TaskState,
+} from "constants/interfaces";
 import { useDynamicDimensions } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
@@ -56,7 +61,18 @@ function Task() {
   } = useDynamicDimensions();
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
-
+  const HiddenDoneTask = filterTasks(
+    allTasks,
+    TaskRootState.Hidden,
+    false,
+    TaskState.DONE
+  );
+  const HiddenRejectTask = filterTasks(
+    allTasks,
+    TaskRootState.Hidden,
+    false,
+    TaskState.REJECT_CLOSED
+  );
   const ongoingClosedTasks = [
     {
       label: "Ongoing",
@@ -74,12 +90,20 @@ function Task() {
       ),
       content: (
         <TaskMain
-          allTaskList={filterTasks(
-            allTasks,
-            TaskRootState.Hidden,
-            true,
-            "ongoing"
-          )}
+          allTaskList={[
+            ...filterTasks(
+              allTasks,
+              TaskRootState.Hidden,
+              true,
+              TaskState.ONGOING
+            ),
+            ...filterTasks(
+              allTasks,
+              TaskRootState.Hidden,
+              true,
+              TaskState.UNREAD
+            ),
+          ]}
           showHiddenTasks={showHiddenTasks}
           selectedRootTask={selectedTab}
           setSelectedTask={setSelectedTask}
@@ -87,7 +111,7 @@ function Task() {
         />
       ),
       count: countUnseenTasksForTabs(
-        filterTasks(allTasks, TaskRootState.Hidden, true, "ongoing"),
+        filterTasks(allTasks, TaskRootState.Hidden, true),
         userId
       ),
     },
@@ -106,12 +130,7 @@ function Task() {
       ),
       content: (
         <TaskMain
-          allTaskList={filterTasks(
-            allTasks,
-            TaskRootState.Hidden,
-            true,
-            "done"
-          )}
+          allTaskList={[...HiddenDoneTask, ...HiddenRejectTask]}
           showHiddenTasks={showHiddenTasks}
           selectedRootTask={selectedTab}
           setSelectedTask={setSelectedTask}
@@ -119,7 +138,7 @@ function Task() {
         />
       ),
       count: countUnseenTasksForTabs(
-        filterTasks(allTasks, TaskRootState.Hidden, true, "done"),
+        [...HiddenDoneTask, ...HiddenRejectTask],
         userId
       ),
     },
@@ -248,6 +267,7 @@ function Task() {
     if (selectedTab) {
       history.push(`/tasks/${selectedTab}`);
       setSelectedTask(null);
+      setCommentDiv(false);
     }
   }, [selectedTab, subtask]);
 
@@ -381,7 +401,7 @@ function Task() {
               maxWidth: `${commentDiv ? "49%" : "99.5%"}`,
               width: "100%",
               height: "100%",
-              borderRight: "2px solid #F4F4F4",
+              borderRight: commentDiv ? "1px solid #F4F4F4" : "none",
             }}
             ref={taskDetailContRef}
           >

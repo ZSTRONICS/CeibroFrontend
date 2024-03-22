@@ -50,8 +50,8 @@ const ReadMoreWrapper = ({
   const compHeight = {
     text: "23",
     file: 21,
-    image: 151,
-    imageWithDesp: 151,
+    image: 90,
+    imageWithDesp: 100,
   };
   const [isReadMore, setIsReadMore] = useState(false);
   const [height, setHeight] = useState("auto");
@@ -86,21 +86,23 @@ const ReadMoreWrapper = ({
     }
   };
 
+  const handleResize = () => {
+    if (imageRef.current) {
+      const localWidth = getWidthWithMarginAndPadding(imageRef);
+
+      if (count && count > 0 && localWidth > 150) {
+        setLocalCount(count - Math.floor(localWidth / 160));
+      }
+    }
+    if (fileCompRef.current) {
+      const fielsContWidth = getWidthWithMarginAndPadding(fileCompRef);
+      if (count && count > 0 && fielsContWidth > 164) {
+        setLocalCount(count - Math.floor(fielsContWidth / 165));
+      }
+    }
+  };
+
   useEffect(() => {
-    const handleResize = () => {
-      if (imageRef.current) {
-        const localWidth = getWidthWithMarginAndPadding(imageRef);
-        if (count && count > 0 && localWidth > 150) {
-          setLocalCount(count - Math.floor(localWidth / 160));
-        }
-      }
-      if (fileCompRef.current) {
-        const fielsContWidth = getWidthWithMarginAndPadding(fileCompRef);
-        if (count && count > 0 && fielsContWidth > 164) {
-          setLocalCount(count - Math.floor(fielsContWidth / 165));
-        }
-      }
-    };
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -115,7 +117,7 @@ const ReadMoreWrapper = ({
         getHeight(imageRef, type, isExpanded);
         const imgContWidth = getWidthWithMarginAndPadding(imageRef);
         if (count && count > 0 && imgContWidth > 150) {
-          setLocalCount(count - Math.floor(imgContWidth / 160));
+          setLocalCount(count - Math.floor(imgContWidth / 98));
         }
       } else if (type === "imageWithDesp") {
         getHeight(imageWithCommentRef, type, isExpanded);
@@ -126,8 +128,9 @@ const ReadMoreWrapper = ({
             getComputedStyle(fileCompRef.current).height
           );
           const fielsContWidth = getWidthWithMarginAndPadding(fileCompRef);
+          // console.log("fielsContWidth", fielsContWidth);
           if (count && count > 0 && fielsContWidth > 164) {
-            setLocalCount(count - Math.floor(fielsContWidth / 165));
+            setLocalCount(count - Math.floor(fielsContWidth / 160));
           }
         }
         getHeight(fileCompRef, type, isExpanded);

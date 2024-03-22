@@ -286,9 +286,8 @@ export function addUniqueEventToTask(task: any, forwardedTask: any): void {
 }
 
 export function moveTaskOnTopByIndex(taskArray: any, taskIndex: number): void {
-  if (taskIndex > 0) {
-    const task = taskArray[taskIndex];
-    taskArray.splice(taskIndex, 1);
+  if (taskIndex > 0 && taskIndex < taskArray.length) {
+    const task = taskArray.splice(taskIndex, 1)[0];
     taskArray.unshift(task);
   }
 }

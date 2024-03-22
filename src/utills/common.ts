@@ -327,16 +327,17 @@ export const getTaskFilters = (
     "To me": {
       rootState: rootStateLocal,
       isAssignedToMe: true,
-      userSubState: userSubStateLocal,
-      toMeState: isCanceled ? null : userSubStateLocal,
+      userSubState: null,
+      toMeState: null,
       fromMeState: null,
     },
     "From me": {
       rootState: rootStateLocal,
       isCreator: true,
-      userSubState: userSubStateLocal,
+      userSubState: null,
       toMeState: null,
-      fromMeState: isCanceled ? null : userSubStateLocal,
+      fromMeState: null,
+      // fromMeState: isCanceled ? null : userSubStateLocal,
     },
     "To Review": {
       rootState: rootStateLocal,
@@ -361,11 +362,13 @@ export const TaskRootSateLocal: Record<string, string> = {
   Hidden: TaskRootState.Hidden,
 };
 export const calcUserSubState: Record<string, string> = {
-  Ongoing: TaskState.ONGOING || TaskState.NEW,
+  Ongoing: TaskState.ONGOING,
+  New: TaskState.NEW,
   Approval: TaskState.TOREVIEW,
   Pending: TaskState.INREVIEW,
   Closed: TaskState.DONE,
   Canceled: TaskState.CANCELED,
+  RejectClosed: TaskState.REJECT_CLOSED
 };
 
 /**

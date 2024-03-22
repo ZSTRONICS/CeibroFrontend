@@ -56,6 +56,7 @@ const TaskCard = React.memo((props: IProps) => {
     taskRootState,
     title,
   } = task;
+
   const iconMappings: Record<string, JSX.Element> = {
     Cancelled: <CancelTaskIcon />,
     NewTaskByCreator: <NewTaskIcon />,
@@ -74,9 +75,10 @@ const TaskCard = React.memo((props: IProps) => {
     isTaskConfirmer: boolean,
     isTaskViewer: boolean
   ): JSX.Element => {
+    if (isTaskViewer) return iconMappings.Viewer;
     if (taskRootState === "Approval") return iconMappings.Pending;
     if (taskRootState === "Ongoing") {
-      if (isCreator || isTaskViewer || isTaskConfirmer) {
+      if (isCreator || isTaskConfirmer) {
         if (creatorState === "unread") {
           return iconMappings.NewTaskByCreator;
         } else if (creatorState === "ongoing") {

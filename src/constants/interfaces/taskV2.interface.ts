@@ -222,4 +222,5 @@ export enum TaskState {
   HIDDEN = "hidden",
   INREVIEW = "in-review",
   TOREVIEW = "to-review",
+  REJECT_CLOSED = "reject-closed"
 }
