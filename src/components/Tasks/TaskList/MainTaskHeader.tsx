@@ -9,6 +9,18 @@ interface Props {
 }
 function MainTaskHeader(props: Props) {
   const { showHiddenTasks, setShowHiddenTasks } = props;
+  const btnStyle = {
+    textTransform: "unset",
+    marginRight: "15px",
+    width: "86px",
+    height: "36px",
+    backgroundColor: "#0076C8",
+    borderRadius: "4px",
+    "&:hover": {
+      backgroundColor: "#0076C8",
+    },
+  };
+
   return (
     <>
       {showHiddenTasks ? (
@@ -16,16 +28,14 @@ function MainTaskHeader(props: Props) {
           <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Hidden Tasks</Heading2>
           <Button
             disableRipple
-            component="label"
             sx={{
               padding: "5px 8px",
-              textTransform: "unset",
-              marginRight: "15px",
+              ...btnStyle,
             }}
             onClick={() => setShowHiddenTasks(false)}
             variant="contained"
           >
-            Go Back
+            Go back
           </Button>
         </CustomStack>
       ) : (
@@ -35,16 +45,7 @@ function MainTaskHeader(props: Props) {
             width: "100%",
           }}
         >
-          <Heading2
-            sx={{
-              py: 2,
-              marginLeft: "15px",
-              fontSize: "14px",
-              fontWeight: "700",
-            }}
-          >
-            Tasks
-          </Heading2>
+          <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Tasks</Heading2>
           <Box>
             <Button
               disableRipple
@@ -61,16 +62,15 @@ function MainTaskHeader(props: Props) {
             </Button>
             <Button
               disableRipple
-              component="label"
               sx={{
-                padding: "5px 8px",
-                textTransform: "unset",
-                marginRight: "15px",
+                padding: "8px 16px 8px 12px",
+                gap: "4px",
+                ...btnStyle,
               }}
+              variant="contained"
               onClick={() =>
                 openFormInNewWindow("/create-new-task", "Create New Task")
               }
-              variant="contained"
             >
               <assets.AddIcon sx={{ color: "white", marginRight: "10px" }} />
               New

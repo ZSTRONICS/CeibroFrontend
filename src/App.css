@@ -101,14 +101,14 @@ div.react-simple-image-viewer__modal-content {
 
 @media (min-width: 900px) {
   body * {
-    font-weight: 450 !important;
+    font-weight: 450;
   }
 }
 
 
 @media (min-width: 1200px) {
   body * {
-    font-weight: 500 !important;
+    font-weight: 500;
 
   }
 }
