@@ -158,7 +158,7 @@ function TaskDetails(props: IProps) {
           </>
         )}
         {pinnedComments.length > 0 ? (
-          <Box>
+          <>
             <SubLabelTag>Pinned comments</SubLabelTag>
             {pinnedComments.map((comment, index) => (
               <CommentCard
@@ -173,7 +173,7 @@ function TaskDetails(props: IProps) {
                 createdAt={comment.createdAt}
               />
             ))}
-          </Box>
+          </>
         ) : (
           <></>
         )}

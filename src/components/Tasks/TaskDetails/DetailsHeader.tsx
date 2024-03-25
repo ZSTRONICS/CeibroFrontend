@@ -413,7 +413,7 @@ export default function DetailsHeader(props: IProps) {
             </Grid>
           )}
           {data.CreatedDate.value && (
-            <Grid item sx={{ width: "24%" }}>
+            <Grid item sx={{ width: "22%" }}>
               {renderInfoBox({
                 label: data.CreatedDate.label,
                 value: data.CreatedDate.value,
