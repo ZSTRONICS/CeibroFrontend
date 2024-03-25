@@ -1,9 +1,27 @@
 import { TASK_CONFIG } from "config/task.config";
-import { ITaskFilterInterace } from "constants/interfaces";
+import { ITaskFilterInterace, Topic } from "constants/interfaces";
 import { selectedTaskFilterType } from "redux/type";
 import { createAction } from "./action";
 
 const taskActions = {
+  setSelectedUsers: (selectedUserIds: string[]) => {
+    return {
+      type: TASK_CONFIG.SELECTED_USER_FILTER,
+      payload: selectedUserIds,
+    };
+  },
+  setSelectedProjects: (selectedProjects: Project[]) => {
+    return {
+      type: TASK_CONFIG.SELECTED_PROJECT_FILTER,
+      payload: selectedProjects,
+    };
+  },
+  setSelectedTopicTags: (selectedTopicTags: Topic[]) => {
+    return {
+      type: TASK_CONFIG.SELECTED_TAGS_FILTER,
+      payload: selectedTopicTags,
+    };
+  },
   selectedTaskFilter: (taskFilter: selectedTaskFilterType) => {
     return {
       type: TASK_CONFIG.SELECTED_TASK_FILTER,

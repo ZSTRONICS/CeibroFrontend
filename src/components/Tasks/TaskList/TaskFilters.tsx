@@ -2,10 +2,10 @@ import { Box } from "@mui/material";
 import { CustomStack } from "components/CustomTags";
 import { getDropdownOptions } from "components/Utills/Globals";
 import UserDropDown from "components/Utills/UserDropdown";
-import { Topic } from "constants/interfaces";
 import { isEmpty } from "lodash";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 import { ChangeValueType, CreateNewTaskFormType, Options } from "../type";
 import ProjectFilter from "./ProjectFilter";
@@ -16,25 +16,26 @@ interface Props {
   handleClearAll: () => void;
   showHiddenTasks: boolean;
   selectedRootTask: string;
-  selectedUsers: string[];
-  selectedTopicTags: Topic[];
-  selectedProjects: Project[];
-  setSelectedUsers: Dispatch<SetStateAction<string[]>>;
-  setSelectedTopicTags: Dispatch<SetStateAction<Topic[]>>;
-  setSelectedProjects: Dispatch<SetStateAction<Project[]>>;
+  // selectedUsers: string[];
+  // selectedTopicTags: Topic[];
+  // selectedProjects: Project[];
+  // setSelectedUsers: Dispatch<SetStateAction<string[]>>;
+  // setSelectedTopicTags: Dispatch<SetStateAction<Topic[]>>;
+  // setSelectedProjects: Dispatch<SetStateAction<Project[]>>;
 }
 function TaskFilters(props: Props) {
+  const dispatch = useDispatch();
   const {
     handleTaskRootState,
     handleClearAll,
     selectedRootTask,
     showHiddenTasks,
-    selectedUsers,
-    setSelectedUsers,
-    selectedTopicTags,
-    setSelectedTopicTags,
-    selectedProjects,
-    setSelectedProjects,
+    // selectedUsers,
+    // setSelectedUsers,
+    // selectedTopicTags,
+    // setSelectedTopicTags,
+    // selectedProjects,
+    // setSelectedProjects,
   } = props;
   // const [selectedUsers, setSelectedUsers] = useState<UserInfo[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -52,7 +53,8 @@ function TaskFilters(props: Props) {
   const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
-  const Topics = useSelector((state: RootState) => state.task.Topics);
+  const { Topics, selectedUsers, selectedTopicTags, selectedProjects } =
+    useSelector((state: RootState) => state.task);
   const [selectedData, setSelectedData] =
     useState<CreateNewTaskFormType>(initialValues);
   const [topicOptions, setTopicOptions] = useState<Options>({
@@ -145,8 +147,7 @@ function TaskFilters(props: Props) {
 
   const handleChangeValues = (values: ChangeValueType, name: keyof any) => {
     if (values === undefined) {
-      console.log(selectedData);
-      setSelectedUsers([]);
+      dispatch(taskActions.setSelectedUsers([]));
       // setSelectedData((prevSelectedData) => ({
       //   ...prevSelectedData,
       //   [name]: initialValues[name],
@@ -160,10 +161,9 @@ function TaskFilters(props: Props) {
       // const filteredUsers = userAllContacts.filter((contact: any) =>
       //   values.some((value) => contact.userId == value.userId)
       // );
-      // debugger;
       if (Array.isArray(values) && name != "invitedNumbers") {
         const userIds = values.map((value: any) => value.userId);
-        setSelectedUsers([...selectedUsers, ...userIds]);
+        dispatch(taskActions.setSelectedUsers([...selectedUsers, ...userIds]));
       }
     }
   };
@@ -187,8 +187,8 @@ function TaskFilters(props: Props) {
         )}
         <ProjectFilter
           options={allProjects}
-          selectedProjects={selectedProjects}
-          setSelectedProjects={setSelectedProjects}
+          // selectedProjects={selectedProjects}
+          // setSelectedProjects={dispatchsetSelectedProjects}
         />
         <Box
           sx={{
@@ -207,11 +207,7 @@ function TaskFilters(props: Props) {
             tasktilters={true}
           />
         </Box>
-        <TopicTagsFilter
-          options={Topics.allTopics}
-          selectedTopics={selectedTopicTags}
-          setSelectedTopics={setSelectedTopicTags}
-        />
+        <TopicTagsFilter options={Topics.allTopics} />
         {/* <TagListDropdown
           isSmall={true}
           options={[]}

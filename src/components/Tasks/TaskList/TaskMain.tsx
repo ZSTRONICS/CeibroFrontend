@@ -50,9 +50,11 @@ const TaskMain = (props: IProps) => {
   // const location = useLocation();
   const history = useHistory();
   const taskCardListRef: any = useRef();
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
-  const [selectedTopicTags, setSelectedTopicTags] = useState<Topic[]>([]);
+  // const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  // const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
+  // const [selectedTopicTags, setSelectedTopicTags] = useState<Topic[]>([]);
+  const { Topics, selectedUsers, selectedTopicTags, selectedProjects } =
+    useSelector((state: RootState) => state.task);
   const [selectedTaskRootState, setSelectedTaskRootState] = useState("All");
   const { subtask, taskuid } = useParams<RouteParams>();
   // const isRenderEffect = useRef<any>(false);
@@ -95,7 +97,7 @@ const TaskMain = (props: IProps) => {
     if (selectedProjects && selectedProjects.length > 0) {
       filteredData = filteredData.filter((task: ITask) =>
         selectedProjects.some(
-          (selectedProject) =>
+          (selectedProject: Project) =>
             task.project && task.project.title.includes(selectedProject.title)
         )
       );
@@ -103,7 +105,7 @@ const TaskMain = (props: IProps) => {
     if (selectedUsers && selectedUsers.length > 0) {
       filteredData = filteredData.filter((task: ITask) =>
         selectedUsers.some(
-          (id) =>
+          (id: string) =>
             (task.confirmer && task.confirmer._id == id) ||
             (task.creator && task.creator._id == id)
         )
@@ -112,13 +114,13 @@ const TaskMain = (props: IProps) => {
     if (selectedTopicTags && selectedTopicTags.length > 0) {
       filteredData = filteredData.filter((task: ITask) =>
         selectedTopicTags.some(
-          (selectedTopicTag) =>
+          (selectedTopicTag: Topic) =>
             task.topic && task.topic._id == selectedTopicTag._id
         )
       );
     }
     setFilteredTask(filteredData);
-  }, [selectedProjects.length, selectedTopicTags.length, selectedUsers]);
+  }, [selectedProjects.length, selectedTopicTags.length, selectedUsers.length]);
 
   const handleFilterRootTask = (taskRootState: string) => {
     const rootStateLocal = TaskRootSateLocal[selectedRootTask] || "Ongoing";
@@ -437,19 +439,19 @@ const TaskMain = (props: IProps) => {
           <TaskFilters
             handleTaskRootState={handleRootTask}
             handleClearAll={() => {
-              setSelectedTopicTags([]);
-              setSelectedProjects([]);
-              setSelectedUsers([]);
+              dispatch(taskActions.setSelectedTopicTags([]));
+              dispatch(taskActions.setSelectedProjects([]));
+              dispatch(taskActions.setSelectedUsers([]));
               setSelectedTaskRootState("All");
             }}
             selectedRootTask={selectedRootTask}
             showHiddenTasks={showHiddenTasks}
-            selectedUsers={selectedUsers}
-            setSelectedUsers={setSelectedUsers}
-            selectedTopicTags={selectedTopicTags}
-            setSelectedTopicTags={setSelectedTopicTags}
-            selectedProjects={selectedProjects}
-            setSelectedProjects={setSelectedProjects}
+            // selectedUsers={selectedUsers}
+            // setSelectedUsers={setSelectedUsers}
+            // selectedTopicTags={selectedTopicTags}
+            // setSelectedTopicTags={setSelectedTopicTags}
+            // selectedProjects={selectedProjects}
+            // setSelectedProjects={setSelectedProjects}
           />
         </Box>
         <Box sx={{ border: "1px solid #E2E4E5", marginTop: "15px" }}></Box>
