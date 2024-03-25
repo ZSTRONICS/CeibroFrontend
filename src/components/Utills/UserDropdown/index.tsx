@@ -202,15 +202,35 @@ function UserDropDown(props: IProps) {
         sx={{
           marginTop: isTaskFilter ? "0" : "1px",
           width: "100%",
-          maxWidth: "100%",
+          maxWidth: "20px",
           minWidth: "100px",
-          backgroundColor: "#F4F4F4",
+          backgroundColor: tasktilters ? "#F4F4F4" : null,
+          ...(tasktilters && {
+            "& .MuiInputBase-root": {
+              top: "-12px",
+            },
+          }),
+          ...(tasktilters && {
+            "&.MuiFormControl-root": {
+              borderRadius: "5px",
+              height: "36px",
+              marginLeft: "7px",
+            },
+          }),
         }}
       >
         {label === "Assign to" && selected.length === 0 && (
           <RequiredFieldMark>*</RequiredFieldMark>
         )}
-        <MUIInputLabel id="controlled-open-select-label">{label}</MUIInputLabel>
+        <MUIInputLabel
+          sx={{
+            top: tasktilters ? "-10px" : null,
+            left: tasktilters ? "15px" : null,
+          }}
+          id="controlled-open-select-label"
+        >
+          {label}
+        </MUIInputLabel>
         <Select
           labelId="controlled-open-select-label"
           id="controlled-open-select"

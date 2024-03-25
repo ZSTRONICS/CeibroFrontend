@@ -42,6 +42,10 @@ const ProjectFilter = ({
     <Autocomplete
       sx={{
         position: "relative",
+        marginLeft: "5px",
+        minWidth: "100px",
+        maxWidth: "100px",
+        // marginRight: "5px",
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0px solid",
         },
@@ -156,6 +160,7 @@ const ProjectFilter = ({
             minWidth: "100px",
             maxWidth: "max-content",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
+            borderRadius: "5px",
           }}
           {...params}
           label="Project"

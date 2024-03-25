@@ -90,7 +90,6 @@ const TaskMain = (props: IProps) => {
   }, [allTaskList.length]);
 
   useEffect(() => {
-    // console.log(selectedProjects, selectedTopicTags, selectedUsers);
     let filteredData = handleFilterRootTask(selectedTaskRootState);
     if (selectedProjects && selectedProjects.length > 0) {
       filteredData = filteredData.filter((task: ITask) =>
@@ -430,7 +429,6 @@ const TaskMain = (props: IProps) => {
       <Box
         sx={{
           width: "100%",
-          marginTop: "15px",
         }}
       >
         <Box sx={{ width: "94%", marginLeft: "3%" }}>
@@ -452,13 +450,12 @@ const TaskMain = (props: IProps) => {
             setSelectedProjects={setSelectedProjects}
           />
         </Box>
-        <Box sx={{ border: "1px solid #E2E4E5", marginTop: "15px" }}></Box>
+        <Box sx={{ border: "1px solid #E2E4E5" }}></Box>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            // border: "solid 1px red",
             width: "96%",
             marginLeft: "2%",
           }}

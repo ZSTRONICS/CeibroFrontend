@@ -45,9 +45,10 @@ const TopicTagsFilter = ({
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0px solid",
         },
-        maxWidth: "240px",
+        maxWidth: "100px",
         maxHeight: "40px",
         position: "relative",
+        marginLeft: "14px",
         "& .MuiAutocomplete-inputRoot": {
           height: "36px",
         },
@@ -154,8 +155,9 @@ const TopicTagsFilter = ({
             // position: "absolute",
             zIndex: "500",
             minWidth: "100px",
-            maxWidth: "max-content",
+            maxWidth: "100px",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
+            borderRadius: "5px",
           }}
           {...params}
           label="Tags"

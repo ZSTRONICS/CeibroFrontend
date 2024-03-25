@@ -145,7 +145,6 @@ function TaskFilters(props: Props) {
 
   const handleChangeValues = (values: ChangeValueType, name: keyof any) => {
     if (values === undefined) {
-      console.log(selectedData);
       setSelectedUsers([]);
       // setSelectedData((prevSelectedData) => ({
       //   ...prevSelectedData,
@@ -173,31 +172,44 @@ function TaskFilters(props: Props) {
       <CustomStack
         sx={{
           gap: 1,
-          alignItems: "flex-start",
+          alignItems: "center",
           width: "100%",
-          overflowX: "auto",
+          // overflowX: "auto",
+          // overflowY: "visible",
           display: "flex",
+          // border: "solid 1px red",
         }}
       >
-        {!showHiddenTasks && (
-          <TaskMenu
-            menuItems={isApproval ? TaskRootStateApproval : TaskRootState}
-            selectedMenu={selectedTaskMenu}
-          />
-        )}
-        <ProjectFilter
-          TaskMain={true}
-          options={allProjects}
-          selectedProjects={selectedProjects}
-          setSelectedProjects={setSelectedProjects}
-        />
         <Box
           sx={{
-            maxWidth: "110px",
-            width: "100%",
-            mt: "-10px",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            width: "90%",
+            overflowX: "auto",
+            overflowY: "hidden",
+            padding: "14px 0",
           }}
         >
+          {!showHiddenTasks && (
+            <TaskMenu
+              menuItems={isApproval ? TaskRootStateApproval : TaskRootState}
+              selectedMenu={selectedTaskMenu}
+            />
+          )}
+          <ProjectFilter
+            TaskMain={true}
+            options={allProjects}
+            selectedProjects={selectedProjects}
+            setSelectedProjects={setSelectedProjects}
+          />
+          {/* <Box
+            sx={{
+              maxWidth: "110px",
+              width: "100%",
+              mt: "-10px",
+            }}
+          > */}
           <UserDropDown
             isTaskFilter={true}
             name="assignedToState"
@@ -207,20 +219,21 @@ function TaskFilters(props: Props) {
             handleChangeValues={handleChangeValues}
             tasktilters={true}
           />
+          {/* </Box> */}
+          <TopicTagsFilter
+            TaskMain={true}
+            options={Topics.allTopics}
+            selectedTopics={selectedTopicTags}
+            setSelectedTopics={setSelectedTopicTags}
+          />
+          {/* <TagListDropdown
+            isSmall={true}
+            options={[]}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+            tasktilters={true}
+          /> */}
         </Box>
-        <TopicTagsFilter
-          TaskMain={true}
-          options={Topics.allTopics}
-          selectedTopics={selectedTopicTags}
-          setSelectedTopics={setSelectedTopicTags}
-        />
-        {/* <TagListDropdown
-          isSmall={true}
-          options={[]}
-          selectedTags={selectedTags}
-          setSelectedTags={setSelectedTags}
-          tasktilters={true}
-        /> */}
         <Box
           // variant="text"
           sx={{
