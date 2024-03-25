@@ -73,6 +73,18 @@ function Task() {
     false,
     TaskState.REJECT_CLOSED
   );
+  const HiddenOngoing = filterTasks(
+    allTasks,
+    TaskRootState.Hidden,
+    true,
+    TaskState.ONGOING
+  );
+  const HiddenUnread = filterTasks(
+    allTasks,
+    TaskRootState.Hidden,
+    true,
+    TaskState.UNREAD
+  );
   const ongoingClosedTasks = [
     {
       label: "Ongoing",
@@ -90,20 +102,7 @@ function Task() {
       ),
       content: (
         <TaskMain
-          allTaskList={[
-            ...filterTasks(
-              allTasks,
-              TaskRootState.Hidden,
-              true,
-              TaskState.ONGOING
-            ),
-            ...filterTasks(
-              allTasks,
-              TaskRootState.Hidden,
-              true,
-              TaskState.UNREAD
-            ),
-          ]}
+          allTaskList={[...HiddenOngoing, ...HiddenUnread]}
           showHiddenTasks={showHiddenTasks}
           selectedRootTask={selectedTab}
           setSelectedTask={setSelectedTask}
@@ -248,7 +247,6 @@ function Task() {
 
   const TabsDataLocal = showHiddenTasks ? ongoingClosedTasks : rootTaskFilter;
   const findTabIndex = TabsDataLocal.findIndex((tab) => tab.label === subtask);
-
   useEffect(() => {
     if (isRenderEffect.current) {
       isRenderEffect.current = false;
@@ -294,7 +292,6 @@ function Task() {
     if (selectedTask) {
       setCommentDiv((prev) => !prev);
       if (!commentDiv) setCommentTab("Details");
-      setSelectedTabIndex(0);
     }
   };
 

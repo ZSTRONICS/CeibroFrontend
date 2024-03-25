@@ -12,7 +12,7 @@ interface CustomButtonProps extends ButtonProps {
 const CustomButton = ({ label, loading, icon, ...rest }: CustomButtonProps) => {
   return (
     <Button
-      className="loadingButton"
+      id="loadingButton"
       sx={{
         display: "flex",
         flexDirection: "column",

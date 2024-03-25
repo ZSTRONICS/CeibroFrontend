@@ -1,5 +1,4 @@
 import BasicTabs from "components/TaskComponent/Tabs/BasicMuiTabs";
-import { FILTER_DATA_BY_EXT, MEDIA_EXT } from "components/Utills/Globals";
 import { ITask } from "constants/interfaces";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,18 +11,16 @@ interface IProps {
   isSplitView: boolean;
   selectedTask: ITask;
   RECENT_TASK_UPDATED_TIME_STAMP: string;
-  parentheight?: number;
   openCommentTab: string;
-  headerHeight: number;
   handleSelectedDetailTab: (tab: string) => void;
 }
+
 function TabsViewTaskDetail(props: IProps) {
   const dispatch = useDispatch();
   const {
     isSplitView,
     selectedTask,
     RECENT_TASK_UPDATED_TIME_STAMP,
-    parentheight,
     openCommentTab,
     handleSelectedDetailTab,
   } = props;
@@ -31,7 +28,7 @@ function TabsViewTaskDetail(props: IProps) {
   const [selectedTab, setSelectedTab] = useState(showDefault);
   const [tabIndex, setTabIndex] = useState(0);
   const { events, files } = selectedTask;
-  const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
+  // const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
   useEffect(() => {
     if (selectedTask && selectedTask._id) {
       dispatch(
@@ -65,14 +62,12 @@ function TabsViewTaskDetail(props: IProps) {
     {
       label: "Details",
       content: (
-        <>
-          <TaskDetails
-            DrawDetailCollapse={false}
-            task={selectedTask}
-            userSubStateLocal={"ongoing"}
-            TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
-          />
-        </>
+        <TaskDetails
+          DrawDetailCollapse={false}
+          task={selectedTask}
+          userSubStateLocal={"ongoing"}
+          TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
+        />
       ),
     },
     ...commentsAndFilesTabs,

@@ -376,7 +376,7 @@ button>span.MuiButton-startIcon {
   margin: 0;
 }
 
-button.loadingButton:hover {
+button#loadingButton:hover {
   background-color: #0076c8;
   border: none;
 }
