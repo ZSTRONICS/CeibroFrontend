@@ -186,6 +186,7 @@ function TaskFilters(props: Props) {
           />
         )}
         <ProjectFilter
+          TaskMain={true}
           options={allProjects}
           selectedProjects={selectedProjects}
           setSelectedProjects={setSelectedProjects}
@@ -208,6 +209,7 @@ function TaskFilters(props: Props) {
           />
         </Box>
         <TopicTagsFilter
+          TaskMain={true}
           options={Topics.allTopics}
           selectedTopics={selectedTopicTags}
           setSelectedTopics={setSelectedTopicTags}

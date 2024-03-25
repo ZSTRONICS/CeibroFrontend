@@ -42,6 +42,9 @@ const TopicTagsFilter = ({
   return (
     <Autocomplete
       sx={{
+        "& .MuiOutlinedInput-notchedOutline": {
+          border: "0px solid",
+        },
         maxWidth: "240px",
         maxHeight: "40px",
         position: "relative",

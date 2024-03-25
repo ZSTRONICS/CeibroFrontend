@@ -201,8 +201,10 @@ function UserDropDown(props: IProps) {
         variant="standard"
         sx={{
           marginTop: isTaskFilter ? "0" : "1px",
-          width: "100px",
-          maxWidth: "max-contnet",
+          width: "100%",
+          maxWidth: "100%",
+          minWidth: "100px",
+          backgroundColor: "#F4F4F4",
         }}
       >
         {label === "Assign to" && selected.length === 0 && (
@@ -256,7 +258,7 @@ function UserDropDown(props: IProps) {
             style={{
               display: "flex",
               alignItems: "center",
-              width: "100px",
+              width: "100%",
               gap: "5px",
             }}
           >

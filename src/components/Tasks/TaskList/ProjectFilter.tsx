@@ -42,6 +42,9 @@ const ProjectFilter = ({
     <Autocomplete
       sx={{
         position: "relative",
+        "& .MuiOutlinedInput-notchedOutline": {
+          border: "0px solid",
+        },
         "& .MuiAutocomplete-inputRoot": {
           height: "36px", // Adjust the height as needed
         },
