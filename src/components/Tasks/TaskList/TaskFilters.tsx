@@ -162,7 +162,7 @@ function TaskFilters(props: Props) {
       // const filteredUsers = userAllContacts.filter((contact: any) =>
       //   values.some((value) => contact.userId == value.userId)
       // );
-      if (Array.isArray(values) && name != "invitedNumbers") {
+      if (Array.isArray(values) && name !== "invitedNumbers") {
         const userIds = values.map((value: any) => value.userId);
         dispatch(taskActions.setSelectedUsers([...selectedUsers, ...userIds]));
       }
@@ -176,23 +176,9 @@ function TaskFilters(props: Props) {
           gap: 1,
           alignItems: "center",
           width: "100%",
-          // overflowX: "auto",
-          // overflowY: "visible",
           display: "flex",
-          // border: "solid 1px red",
         }}
       >
-        {/* {!showHiddenTasks && (
-          <TaskMenu
-            menuItems={isApproval ? TaskRootStateApproval : TaskRootState}
-            selectedMenu={selectedTaskMenu}
-          />
-        )} */}
-        {/* <ProjectFilter
-          options={allProjects}
-          // selectedProjects={selectedProjects}
-          // setSelectedProjects={dispatchsetSelectedProjects}
-        /> */}
         <Box
           sx={{
             display: "flex",
@@ -210,19 +196,7 @@ function TaskFilters(props: Props) {
               selectedMenu={selectedTaskMenu}
             />
           )}
-          <ProjectFilter
-            TaskMain={true}
-            options={allProjects}
-            // selectedProjects={selectedProjects}
-            // setSelectedProjects={setSelectedProjects}
-          />
-          {/* <Box
-            sx={{
-              maxWidth: "110px",
-              width: "100%",
-              mt: "-10px",
-            }}
-          > */}
+          <ProjectFilter TaskMain={true} options={allProjects} />
           <UserDropDown
             isTaskFilter={true}
             name="assignedToState"
@@ -232,31 +206,9 @@ function TaskFilters(props: Props) {
             handleChangeValues={handleChangeValues}
             tasktilters={true}
           />
-          {/* </Box> */}
-          <TopicTagsFilter
-            TaskMain={true}
-            options={Topics.allTopics}
-            // selectedTopics={selectedTopicTags}
-            // setSelectedTopics={setSelectedTopicTags}
-          />
-          {/* <TagListDropdown
-            isSmall={true}
-            options={[]}
-            selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
-            tasktilters={true}
-          /> */}
+          <TopicTagsFilter TaskMain={true} options={Topics.allTopics} />
         </Box>
-        {/* <TopicTagsFilter options={Topics.allTopics} /> */}
-        {/* <TagListDropdown
-          isSmall={true}
-          options={[]}
-          selectedTags={selectedTags}
-          setSelectedTags={setSelectedTags}
-          tasktilters={true}
-        /> */}
         <Box
-          // variant="text"
           sx={{
             fontSize: "12px",
             color: "#0076C8",
@@ -264,7 +216,6 @@ function TaskFilters(props: Props) {
             textTransform: "unset",
             display: "inline",
             minWidth: "60px",
-            // width: "max-contnet",
             marginTop: "10px",
             cursor: "pointer",
             transform: "translateX(5px)",
