@@ -187,7 +187,9 @@ function TaskFilters(props: Props) {
             width: "95%",
             overflowX: "auto",
             overflowY: "hidden",
-            padding: "14px 0",
+            marginTop: "14px",
+            marginBottom: "14px",
+            // padding: "14px 0",
           }}
         >
           {!showHiddenTasks && (

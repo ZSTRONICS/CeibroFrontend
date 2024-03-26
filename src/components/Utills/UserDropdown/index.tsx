@@ -202,8 +202,8 @@ function UserDropDown(props: IProps) {
         sx={{
           marginTop: isTaskFilter ? "0" : "1px",
           width: "100%",
-          maxWidth: isTaskFilter ? "100px" : "100%",
-          minWidth: "100px",
+          maxWidth: isTaskFilter ? "110px" : "100%",
+          minWidth: isTaskFilter ? "110px" : "100%",
           backgroundColor: tasktilters ? "#F4F4F4" : null,
           ...(tasktilters && {
             "& .MuiInputBase-root": {
@@ -212,7 +212,14 @@ function UserDropDown(props: IProps) {
             "& .MuiInputBase-root:before": {
               borderBottom: tasktilters ? "none !important" : "",
             },
+            "& .MuiInputBase-root:after": {
+              borderBottom: tasktilters ? "none !important" : "",
+            },
           }),
+          "& .MuiSelect-root:before": {
+            // borderBottom: "none",
+            borderWidth: "5px",
+          },
           ...(tasktilters && {
             "&.MuiFormControl-root": {
               borderRadius: "5px",
@@ -238,9 +245,14 @@ function UserDropDown(props: IProps) {
           labelId="controlled-open-select-label"
           id="controlled-open-select"
           sx={{
+            "& .MuiSelect-root:before": {
+              // borderBottom: "none",
+            },
+            // border: "solid 1px red",
             "& .MuiSelect-icon": {
               right: `${!tasktilters && selected.length > 0 ? "40px" : 0}`,
             },
+
             svg: { color: "#000000" },
           }}
           MenuProps={{
@@ -291,6 +303,11 @@ function UserDropDown(props: IProps) {
               placeholder="Start typing name"
               value={searchQuery}
               onChange={handleSearchChange}
+              sx={{
+                "& .MuiSelect-root:before": {
+                  borderBottom: "none",
+                },
+              }}
               style={{
                 flex: 1,
                 borderBottomWidth: "1px",

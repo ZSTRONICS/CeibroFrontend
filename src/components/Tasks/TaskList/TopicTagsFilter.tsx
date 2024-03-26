@@ -34,7 +34,6 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
       // setIsShow(false);
     }
   };
-
   useEffect(() => {
     window.addEventListener("click", handleClick);
     return () => {
@@ -72,6 +71,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
 
   return (
     <Autocomplete
+      disableClearable={true}
       ref={tagRef}
       open={isShow}
       onOpen={(e) => {
@@ -86,7 +86,8 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0px solid",
         },
-        maxWidth: "100px",
+        maxWidth: "110px",
+        minWidth: "110px",
         maxHeight: "40px",
         // maxWidth: "240px",
         // maxHeight: "40px",
@@ -106,26 +107,70 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
       onChange={handleChange}
       getOptionLabel={(option: Topic) => option.topic}
       renderOption={(props, option, { selected }) => (
-        <li {...props}>
+        <li
+          style={{
+            minHeight: "40px",
+            display: "flex",
+            alignItems: "flex-start",
+          }}
+          {...props}
+        >
           <Checkbox
             icon={icon}
             checkedIcon={checkedIcon}
             style={{ marginRight: 8 }}
             checked={selected}
           />
-          {option.topic}
+          <p
+            style={{
+              fontSize: "12px",
+              marginTop: "8px",
+              overflowWrap: "break-word",
+              width: "160px",
+            }}
+          >
+            {option.topic}
+          </p>
         </li>
       )}
       style={{ width: 500 }}
+      renderTags={() => {
+        return TaskMain ? (
+          <div style={{ display: "flex", marginTop: "4px" }}>
+            {" "}
+            <p style={{ color: "#818181", fontSize: "12px" }}>Tags</p>
+            <div
+              style={{
+                backgroundColor: "#818181",
+                color: "white",
+                borderRadius: "50%",
+                height: "16px",
+                width: "16px",
+                textAlign: "center",
+                fontSize: "11px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginLeft: "4px",
+                marginTop: "2px",
+              }}
+            >
+              {localSelectedTags.length}
+            </div>
+          </div>
+        ) : null;
+      }}
       renderInput={(params) => (
         <TextField
           sx={{
             // position: "absolute",
             zIndex: "10",
-            minWidth: "100px",
-            maxWidth: "100px",
+            minWidth: "110px",
+            maxWidth: "110px",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
             borderRadius: "5px",
+            overflow: "hidden",
+            // border: "solid 1px red",
           }}
           {...params}
           label="Tags"

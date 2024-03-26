@@ -41,6 +41,7 @@ const TaskMenu: React.FC<UserMenuProps> = ({ menuItems, selectedMenu }) => {
           maxWidth: "95px",
           width: "100%",
           padding: "6px 6px",
+          marginRight: "10px",
         }}
       >
         <LabelTag

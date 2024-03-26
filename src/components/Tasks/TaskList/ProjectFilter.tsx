@@ -26,7 +26,6 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
   const [localSelectedProjects, setLocalSelectedProjects] = useState<Project[]>(
     selectedProjects ?? []
   );
-
   const handleClick = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
     //@ts-ignore
@@ -83,11 +82,12 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
         event.stopPropagation();
         setIsOpen(false);
       }}
+      disableClearable={true}
       sx={{
         position: "relative",
-        marginLeft: "10px",
-        minWidth: "100px",
-        maxWidth: "100px",
+        // marginLeft: "10px",
+        minWidth: "110px",
+        maxWidth: "110px",
         // marginRight: "5px",
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0px solid",
@@ -107,29 +107,87 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
       getOptionLabel={(option: Project) => option.title}
       renderOption={(props, option, { selected }) => (
         <>
-          <li {...props}>
+          <li {...props} style={{ display: "flex", alignItems: "flex-start" }}>
             <Checkbox
               icon={icon}
               checkedIcon={checkedIcon}
               style={{ marginRight: 8 }}
               checked={selected}
             />
-            {option.title}
+            <Box sx={{ marginTop: "8px" }}>
+              <Box sx={{ display: "flex" }}>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    color: "#131516",
+                    fontWeight: 500,
+                  }}
+                >
+                  {option.creator.firstName}
+                </p>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    marginLeft: "5px",
+                    color: "#131516",
+                    fontWeight: 500,
+                  }}
+                >
+                  {option.creator.surName}
+                </p>
+              </Box>
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "#605C5C",
+                  overflowWrap: "break-word",
+                  width: "160px",
+                }}
+              >
+                {option.title}
+              </p>
+            </Box>
           </li>
         </>
       )}
+      renderTags={() => {
+        return TaskMain ? (
+          <div style={{ display: "flex", marginTop: "4px" }}>
+            {" "}
+            <p style={{ color: "#818181", fontSize: "12px" }}>Project</p>
+            <div
+              style={{
+                backgroundColor: "#818181",
+                color: "white",
+                borderRadius: "50%",
+                height: "16px",
+                width: "16px",
+                textAlign: "center",
+                fontSize: "11px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginLeft: "4px",
+                marginTop: "2px",
+              }}
+            >
+              {localSelectedProjects.length}
+            </div>
+          </div>
+        ) : null;
+      }}
       style={{ width: 500 }}
       renderInput={(params) => (
         <TextField
+          {...params}
           sx={{
             // position: "absolute",
             zIndex: "10",
-            width: "100px",
-            maxWidth: "100px",
+            width: "110px",
+            maxWidth: "110px",
             borderRadius: "5px",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
           }}
-          {...params}
           label="Project"
         />
       )}
@@ -143,7 +201,6 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
           }}
         >
           {children}
-
           <Box
             sx={{
               display: "flex",
