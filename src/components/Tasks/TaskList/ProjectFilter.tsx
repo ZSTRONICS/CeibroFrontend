@@ -123,7 +123,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
         <TextField
           sx={{
             // position: "absolute",
-            zIndex: "500",
+            zIndex: "10",
             width: "100px",
             maxWidth: "100px",
             borderRadius: "5px",

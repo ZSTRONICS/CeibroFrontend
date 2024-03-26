@@ -121,7 +121,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
         <TextField
           sx={{
             // position: "absolute",
-            zIndex: "500",
+            zIndex: "10",
             minWidth: "100px",
             maxWidth: "100px",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
