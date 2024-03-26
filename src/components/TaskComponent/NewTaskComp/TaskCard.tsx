@@ -310,12 +310,12 @@ const TaskCard = React.memo((props: IProps) => {
                   marginLeft: files.length === 0 ? "0px" : "10px",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
+                  fontWeight: 500,
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
                   wordWrap: "break-word",
                   wordBreak: "break-all",
                   fontSize: "12px",
-                  marginTop: "-2px",
                 }}
               >
                 {description ? description : ""}

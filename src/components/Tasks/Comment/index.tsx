@@ -232,7 +232,7 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
             }}
           >
             <Input
-              placeholder="Start type here"
+              placeholder="Start typing here"
               name="comment"
               id="comment"
               required
