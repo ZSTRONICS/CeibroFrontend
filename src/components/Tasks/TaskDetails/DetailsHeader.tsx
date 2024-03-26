@@ -244,7 +244,7 @@ export default function DetailsHeader(props: IProps) {
             alt="avater"
             src={user?.profilePic}
             variant="circular"
-            sx={{ width: "24px", height: "24px" }}
+            sx={{ width: "24px", height: "24px", border: "1px solid #E2E4E5" }}
           />
         ) : (
           <>

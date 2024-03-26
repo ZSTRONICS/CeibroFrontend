@@ -78,7 +78,11 @@ function FilesContentList(props: IFilesContentList) {
               <ListItemAvatar>
                 {isImgType && file.fileUrl ? (
                   <Avatar
-                    sx={{ width: "40px", height: "40px" }}
+                    sx={{
+                      width: "40px",
+                      height: "40px",
+                      border: "1px solid #E2E4E5",
+                    }}
                     alt={file.fileName}
                     variant="rounded"
                     srcSet={file.fileUrl}

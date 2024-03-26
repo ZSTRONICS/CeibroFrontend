@@ -20,6 +20,8 @@ export default function ImageBox({
         "&:hover": {
           cursor: "pointer",
         },
+        borderRadius: "8px",
+        border: "1px solid #E2E4E5",
       }}
     >
       <img

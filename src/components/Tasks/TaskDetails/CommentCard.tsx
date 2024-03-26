@@ -168,7 +168,11 @@ const CommentCard = ({
               alt="avater"
               src={initiator?.profilePic}
               variant="circular"
-              sx={{ width: "30px", height: "30px" }}
+              sx={{
+                width: "30px",
+                height: "30px",
+                border: "1px solid #E2E4E5",
+              }}
             />
 
             <Typography
@@ -177,7 +181,7 @@ const CommentCard = ({
                 marginLeft: "7px",
                 paddingTop: "5px",
                 fontWeight: "700",
-                fontSize: "12",
+                fontSize: "12px",
               }}
             >
               {`${initiator?.firstName} ${initiator?.surName}`}
@@ -347,7 +351,8 @@ const CommentCard = ({
                   sx={{
                     top: "0px",
                     height: "100%",
-                    borderRadius: "10px",
+                    borderRadius: "8px",
+                    border: "1px solid #E2E4E5",
                     width: "100%",
                     position: "absolute",
                   }}

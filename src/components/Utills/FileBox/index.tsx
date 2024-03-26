@@ -97,7 +97,6 @@ const FileBox: React.FC<IProps> = ({
   };
 
   const Task_Details = true;
-
   return (
     <>
       <Box
@@ -186,13 +185,15 @@ const FileBox: React.FC<IProps> = ({
                 {download ? (
                   <a
                     onClick={(e) => e.stopPropagation()}
-                    href={item?.fileUrl}
-                    download
-                    // style={{ textDecoration: "none" }}
+                    href={item.fileUrl}
+                    download={true}
+                    // style={{ border: "1px solid red" }}
                   >
                     <FileDownloadOutlinedIcon sx={{ color: "#1976D2" }} />
                   </a>
-                ) : null}
+                ) : (
+                  <></>
+                )}
               </Box>
             );
           })
