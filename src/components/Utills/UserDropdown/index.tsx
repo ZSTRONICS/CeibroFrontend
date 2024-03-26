@@ -202,12 +202,15 @@ function UserDropDown(props: IProps) {
         sx={{
           marginTop: isTaskFilter ? "0" : "1px",
           width: "100%",
-          maxWidth: "20px",
+          maxWidth: isTaskFilter ? "100px" : "100%",
           minWidth: "100px",
           backgroundColor: tasktilters ? "#F4F4F4" : null,
           ...(tasktilters && {
             "& .MuiInputBase-root": {
               top: "-12px",
+            },
+            "& .MuiInputBase-root:before": {
+              borderBottom: tasktilters ? "none !important" : "",
             },
           }),
           ...(tasktilters && {
@@ -236,7 +239,7 @@ function UserDropDown(props: IProps) {
           id="controlled-open-select"
           sx={{
             "& .MuiSelect-icon": {
-              right: `${selected.length > 0 ? "40px" : 0}`,
+              right: `${!tasktilters && selected.length > 0 ? "40px" : 0}`,
             },
             svg: { color: "#000000" },
           }}
@@ -263,6 +266,7 @@ function UserDropDown(props: IProps) {
           value={selected}
           renderValue={renderValue}
           endAdornment={
+            !tasktilters &&
             selected.length > 0 && (
               <IconButton
                 size="small"
@@ -288,8 +292,6 @@ function UserDropDown(props: IProps) {
               value={searchQuery}
               onChange={handleSearchChange}
               style={{
-                // width: "200px",
-
                 flex: 1,
                 borderBottomWidth: "1px",
                 borderColor: "#818181",
