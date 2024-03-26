@@ -115,37 +115,56 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
               checked={selected}
             />
             <Box sx={{ marginTop: "8px" }}>
-              <Box sx={{ display: "flex" }}>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    color: "#131516",
-                    fontWeight: 500,
-                  }}
-                >
-                  {option.creator.firstName}
-                </p>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    marginLeft: "5px",
-                    color: "#131516",
-                    fontWeight: 500,
-                  }}
-                >
-                  {option.creator.surName}
-                </p>
-              </Box>
               <p
                 style={{
-                  fontSize: "12px",
+                  fontSize: "14px",
                   color: "#605C5C",
                   overflowWrap: "break-word",
                   width: "160px",
+                  fontWeight: 700,
                 }}
               >
                 {option.title}
               </p>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  flexDirection: "column",
+                }}
+              >
+                <Box sx={{ display: "flex" }}>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "#131516",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {option.creator.firstName}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      marginLeft: "5px",
+                      color: "#131516",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {option.creator.surName}
+                  </p>
+                </Box>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    marginLeft: "5px",
+                    color: "#605C5C",
+                    fontWeight: 500,
+                  }}
+                >
+                  {option.creator.companyName}
+                </p>
+              </Box>
             </Box>
           </li>
         </>
@@ -195,7 +214,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
         <Box
           sx={{
             backgroundColor: "white",
-            minWidth: "250px",
+            minWidth: "275px",
             boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
             borderRadius: "20px",
           }}
