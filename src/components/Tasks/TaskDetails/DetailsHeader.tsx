@@ -20,6 +20,7 @@ interface IProps {
   confirmer: UserInfo;
   viewer: UserInfo[];
   invitedNumbers: InvitedNumber[];
+  splitView: boolean;
 }
 
 interface InfoBoxProps {
@@ -33,7 +34,6 @@ export default function DetailsHeader(props: IProps) {
   const {
     assignedToState,
     project,
-    title,
     createdDate,
     creator,
     taskUID,
@@ -41,6 +41,7 @@ export default function DetailsHeader(props: IProps) {
     dueDate,
     confirmer,
     viewer,
+    splitView,
   } = props;
   const [isExpanded, setIsExpanded] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
@@ -371,11 +372,7 @@ export default function DetailsHeader(props: IProps) {
     <Box>
       <Box>
         <Grid container sx={{ gap: 0.8 }}>
-          <Grid
-            // sx={{ border: "solid 1px red" }}
-            container
-            justifyContent={"space-between"}
-          >
+          <Grid container justifyContent={"space-between"}>
             <Grid item> {renderLabel("Main Information")}</Grid>
             <Grid item>
               <Box
@@ -398,14 +395,14 @@ export default function DetailsHeader(props: IProps) {
             </Grid>
           </Grid>
 
-          <Grid item sx={{ width: "24.5%" }}>
+          <Grid item sx={{ width: "23%" }}>
             {renderInfoBox({
               label: data.TaskID.label,
               value: data.TaskID.value,
             })}
           </Grid>
           {data.Project.value && (
-            <Grid item sx={{ width: "27%" }} ref={containerRef}>
+            <Grid item sx={{ width: "25%" }} ref={containerRef}>
               {renderInfoBox({
                 label: data.Project.label,
                 value: data.Project.value,
@@ -430,13 +427,19 @@ export default function DetailsHeader(props: IProps) {
           )}
         </Grid>
         {/* users */}
-        <Grid container>
+        <Grid
+          container
+          sx={{
+            justifyContent: {
+              sm: "space-between",
+              lg: splitView ? "space-between" : "unset",
+            },
+          }}
+        >
           <Grid
             className="ellipsis"
             item
-            sx={{
-              width: "25%",
-            }}
+            sx={{ width: { sm: "50%", lg: splitView ? "50%" : "23.5%" } }}
           >
             {renderUserWithAvatar({
               label: data.Createdby.label,
@@ -444,7 +447,10 @@ export default function DetailsHeader(props: IProps) {
             })}
           </Grid>
           {data.Confirmer.value && (
-            <Grid item sx={{ width: "26%" }}>
+            <Grid
+              item
+              sx={{ width: { sm: "50%", lg: splitView ? "50%" : "76%" } }}
+            >
               {renderUserWithAvatar({
                 label: data.Confirmer.label,
                 users: data.Confirmer.value,

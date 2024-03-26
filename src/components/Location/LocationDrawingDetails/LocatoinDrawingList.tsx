@@ -315,7 +315,7 @@ const LocatoinDrawingList = ({
                 isSmallView={!s2}
                 task={selectedTaskandEvents}
                 userSubStateLocal={userSubStateLocal}
-                DrawDetailCollapse={DrawDetailCollapse}
+                splitView={false}
                 TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
               />
             ) : (

@@ -412,7 +412,7 @@ function Task() {
               selectedTask &&
               selectedTaskandEvents && (
                 <TaskDetails
-                  DrawDetailCollapse={false}
+                  splitView={commentDiv}
                   task={selectedTaskandEvents}
                   userSubStateLocal={selectedTaskandEvents.userSubState}
                   TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
