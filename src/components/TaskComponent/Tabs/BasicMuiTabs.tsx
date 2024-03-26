@@ -53,12 +53,17 @@ export default function BasicTabs({
     setValue(newValue);
   };
 
+  const findIndex = tabsData.findIndex((tab, i) => i === value);
+
   React.useEffect(() => {
     if (selectedTabIndex) {
       setSelectedTab && setSelectedTab(tabsData[selectedTabIndex].label);
       setValue(selectedTabIndex);
     }
-  }, [selectedTabIndex]);
+    if (findIndex === -1) {
+      setValue(0);
+    }
+  }, [selectedTabIndex, tabsData.length]);
 
   const theme = useTheme();
   const isLgScreen = useMediaQuery(theme.breakpoints.between(1450, 1600));
