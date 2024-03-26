@@ -71,6 +71,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
 
   return (
     <Autocomplete
+      disabled
       disableClearable={true}
       ref={tagRef}
       open={isShow}

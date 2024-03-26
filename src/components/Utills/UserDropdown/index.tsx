@@ -198,6 +198,7 @@ function UserDropDown(props: IProps) {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
+        disabled
         variant="standard"
         sx={{
           marginTop: isTaskFilter ? "0" : "1px",

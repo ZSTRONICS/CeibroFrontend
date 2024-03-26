@@ -72,6 +72,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
 
   return (
     <Autocomplete
+      disabled
       ref={autocompleteRef}
       open={isOpen}
       onOpen={(e) => {
