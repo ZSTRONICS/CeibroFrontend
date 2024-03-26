@@ -42,9 +42,11 @@ function Task() {
   const [showHiddenTasks, setShowHiddenTasks] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [commentTab, setCommentTab] = useState<string>("");
-  const { allTasksAllEvents, RECENT_TASK_UPDATED_TIME_STAMP } = useSelector(
-    (state: RootState) => state.task
-  );
+  const {
+    allTasksAllEvents,
+    loadingAllTasksAllEvents,
+    RECENT_TASK_UPDATED_TIME_STAMP,
+  } = useSelector((state: RootState) => state.task);
 
   const { allProjects } = useSelector((state: RootState) => state.project);
   const { userAllContacts } = useSelector((state: RootState) => state.user);
@@ -351,6 +353,7 @@ function Task() {
         }}
       >
         <MainTaskHeader
+          isTasksLoading={loadingAllTasksAllEvents}
           setShowHiddenTasks={setShowHiddenTasks}
           showHiddenTasks={showHiddenTasks}
         />
@@ -453,7 +456,7 @@ function Task() {
               display: { lg: "block", sm: "none" },
             }}
           >
-            {arrowBtn()}
+            {selectedTask && arrowBtn()}
             {commentDiv ? (
               <>
                 {selectedTask && selectedTaskandEvents && (

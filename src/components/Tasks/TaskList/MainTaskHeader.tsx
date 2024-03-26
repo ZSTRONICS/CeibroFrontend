@@ -6,9 +6,10 @@ import { openFormInNewWindow } from "utills/common";
 interface Props {
   showHiddenTasks: boolean;
   setShowHiddenTasks: (value: boolean) => void;
+  isTasksLoading: boolean;
 }
 function MainTaskHeader(props: Props) {
-  const { showHiddenTasks, setShowHiddenTasks } = props;
+  const { showHiddenTasks, isTasksLoading, setShowHiddenTasks } = props;
   const btnStyle = {
     textTransform: "unset",
     marginRight: "15px",
@@ -57,6 +58,7 @@ function MainTaskHeader(props: Props) {
               }}
               onClick={() => setShowHiddenTasks(true)}
               variant="text"
+              disabled={isTasksLoading}
             >
               Show hidden tasks
             </Button>

@@ -25,6 +25,7 @@ import {
   searchInData,
 } from "utills/common";
 import EmptyScreenDescription from "../EmptyScreenDescription";
+import TaskNotFound from "../EmptyScreenDescription/TaskNotFound";
 import TaskFilters from "./TaskFilters";
 
 interface RouteParams {
@@ -80,14 +81,17 @@ const TaskMain = (props: IProps) => {
   const task: any = useSelector((state: RootState) => state.task);
   const { loadingAllTasksAllEvents } = task;
   const propertiesToSearch = ["taskUID", "title", "description", "creator"];
-  const findSelectedTask = allTaskList.findIndex(
+  const findSelectedTask = allTaskList.find(
     (task: ITask) => task.taskUID === taskuid
   );
   useEffect(() => {
     setFilteredTask(allTaskList);
     clearTaskCardListCache();
-    if (findSelectedTask === -1) {
+    if (!findSelectedTask) {
       setSelectedTask(null);
+    }
+    if (allTaskList.length > 0) {
+      handleSelectedTask(allTaskList[0]);
     }
   }, [allTaskList.length]);
 
@@ -118,7 +122,7 @@ const TaskMain = (props: IProps) => {
         )
       );
     }
-    setFilteredTask(filteredData);
+    // setFilteredTask(filteredData);
   }, [selectedProjects.length, selectedTopicTags.length, selectedUsers.length]);
 
   const handleFilterRootTask = (taskRootState: string) => {
@@ -494,7 +498,15 @@ const TaskMain = (props: IProps) => {
         {loadingAllTasksAllEvents ? (
           <LoadingSkeleton />
         ) : task && filteredTask.length === 0 ? (
-          <EmptyScreen />
+          <Box
+            sx={{
+              display: "flex",
+              height: `${windowHeight}px`,
+              justifyContent: "center",
+            }}
+          >
+            <TaskNotFound />
+          </Box>
         ) : (
           <VariableSizeList
             ref={taskCardListRef}
