@@ -97,7 +97,8 @@ const DetailActions: React.FC<IProps> = (props) => {
   const isOngoingUnread = ["ongoing", "unread"];
   const inReviewToReview = ["in-review", "to-review"];
   const showPendingReviewBtn = checkIsStateMatch([...inReviewToReview]);
-  const showDoneBtn = checkIsStateMatch([...isOngoingUnread, "new"]);
+  const showDoneBtn =
+    checkIsStateMatch([...isOngoingUnread, "new"]) && !isTaskViewer;
   const showCancelBtn = checkIsStateMatch([...isOngoingUnread, "canceled"]);
   const pendingReviewCancel = checkIsStateMatch([
     ...inReviewToReview,

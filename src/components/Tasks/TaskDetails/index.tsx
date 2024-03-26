@@ -24,10 +24,10 @@ interface IProps {
   handleClick?: (task: ITask) => void;
   isLocationTaskDetail?: boolean;
   isSmallView?: boolean;
-  DrawDetailCollapse: boolean;
+  splitView: boolean;
 }
 function TaskDetails(props: IProps) {
-  const { task } = props;
+  const { task, splitView } = props;
   const {
     dueDate,
     taskUID,
@@ -125,6 +125,7 @@ function TaskDetails(props: IProps) {
         }}
       >
         <DetailsHeader
+          splitView={splitView}
           assignedToState={assignedToState}
           title={title}
           creator={creator}
@@ -158,7 +159,7 @@ function TaskDetails(props: IProps) {
           </>
         )}
         {pinnedComments.length > 0 ? (
-          <Box>
+          <>
             <SubLabelTag>Pinned comments</SubLabelTag>
             {pinnedComments.map((comment, index) => (
               <CommentCard
@@ -173,7 +174,7 @@ function TaskDetails(props: IProps) {
                 createdAt={comment.createdAt}
               />
             ))}
-          </Box>
+          </>
         ) : (
           <></>
         )}

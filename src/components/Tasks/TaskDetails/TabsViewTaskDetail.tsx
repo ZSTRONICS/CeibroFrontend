@@ -63,7 +63,7 @@ function TabsViewTaskDetail(props: IProps) {
       label: "Details",
       content: (
         <TaskDetails
-          DrawDetailCollapse={false}
+          splitView={isSplitView}
           task={selectedTask}
           userSubStateLocal={"ongoing"}
           TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}

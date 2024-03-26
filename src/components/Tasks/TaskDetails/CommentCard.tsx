@@ -132,7 +132,7 @@ const CommentCard = ({
     ? "#F4F4F4"
     : "#CFECFF";
 
-  const CommentCardContent = (
+  return (
     <Box
       sx={{
         padding: "16px ",
@@ -402,8 +402,6 @@ const CommentCard = ({
       )}
     </Box>
   );
-
-  return <div>{CommentCardContent}</div>;
 };
 
 export default CommentCard;

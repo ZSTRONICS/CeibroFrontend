@@ -214,7 +214,7 @@ function UserDropDown(props: IProps) {
             "&.MuiFormControl-root": {
               borderRadius: "5px",
               height: "36px",
-              marginLeft: "7px",
+              marginLeft: "10px",
             },
           }),
         }}

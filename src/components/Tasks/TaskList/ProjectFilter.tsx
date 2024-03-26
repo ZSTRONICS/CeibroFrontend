@@ -5,44 +5,87 @@ import { Box, Checkbox, TextField } from "@mui/material";
 import Autocomplete, {
   AutocompleteChangeReason,
 } from "@mui/material/Autocomplete";
-import { Dispatch, SetStateAction, SyntheticEvent } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { taskActions } from "redux/action";
+import { RootState } from "redux/reducers";
 
 interface ProjectFilterProps {
   TaskMain?: boolean;
   options: Project[];
-  selectedProjects: Project[];
-  setSelectedProjects: Dispatch<SetStateAction<Project[]>>;
 }
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const ProjectFilter = ({
-  options,
-  selectedProjects,
-  setSelectedProjects,
-  TaskMain,
-}: ProjectFilterProps) => {
+const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
+  const autocompleteRef = useRef(null);
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const { selectedProjects } = useSelector((state: RootState) => state.task);
+  const [localSelectedProjects, setLocalSelectedProjects] = useState<Project[]>(
+    selectedProjects ?? []
+  );
+
+  const handleClick = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    //@ts-ignore
+    if (autocompleteRef.current && !autocompleteRef.current.contains(target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleClick);
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
     value: Project[],
     reason: AutocompleteChangeReason
   ) => {
+    event.stopPropagation();
     switch (reason) {
       case "selectOption":
-        setSelectedProjects(value);
+        setLocalSelectedProjects(value);
         break;
       case "removeOption":
       case "clear":
-        setSelectedProjects(value);
+        setLocalSelectedProjects(value);
+        dispatch(taskActions.setSelectedProjects([]));
         break;
     }
   };
+
+  const handleApply = () => {
+    dispatch(taskActions.setSelectedProjects(localSelectedProjects));
+    setIsOpen(false);
+  };
+
+  const handleClear = () => {
+    setLocalSelectedProjects([]);
+    dispatch(taskActions.setSelectedProjects([]));
+    setIsOpen(false);
+  };
+
   return (
     <Autocomplete
+      ref={autocompleteRef}
+      open={isOpen}
+      onOpen={(e) => {
+        e.stopPropagation();
+        setIsOpen(true);
+      }}
+      onClose={(event, reason) => {
+        event.stopPropagation();
+        setIsOpen(false);
+      }}
       sx={{
         position: "relative",
-        marginLeft: "5px",
+        marginLeft: "10px",
         minWidth: "100px",
         maxWidth: "100px",
         // marginRight: "5px",
@@ -55,9 +98,9 @@ const ProjectFilter = ({
       }}
       limitTags={0}
       multiple
-      id="checkboxes-tags"
+      id="checkboxes-projects"
       options={options}
-      value={selectedProjects}
+      value={localSelectedProjects}
       size="small"
       disableCloseOnSelect
       onChange={handleChange}
@@ -74,7 +117,21 @@ const ProjectFilter = ({
             {option.title}
           </li>
         </>
-        // <Box>clear</Box>
+      )}
+      style={{ width: 500 }}
+      renderInput={(params) => (
+        <TextField
+          sx={{
+            // position: "absolute",
+            zIndex: "500",
+            width: "100px",
+            maxWidth: "100px",
+            borderRadius: "5px",
+            backgroundColor: !TaskMain ? "white" : "#F4F4F4",
+          }}
+          {...params}
+          label="Project"
+        />
       )}
       PaperComponent={({ children }) => (
         <Box
@@ -85,38 +142,8 @@ const ProjectFilter = ({
             borderRadius: "20px",
           }}
         >
-          {/* <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: "10px",
-            }}
-          >
-            <input
-              placeholder="searching"
-              style={{
-                width: "55%",
-                marginLeft: "7%",
-                border: "none",
-                // marginTop: "10px",
-                borderBottom: "1px solid #818181",
-              }}
-            />
-            <Button
-              style={{
-                backgroundColor: "white",
-                color: "#818181",
-                border: "1px solid #818181",
-                cursor: "pointer",
-                padding: "6px 12px 6px 12px",
-                borderRadius: "5px",
-                marginRight: "7%",
-              }}
-            >
-              Done
-            </Button>
-          </Box> */}
-          <ul>{children}</ul>
+          {children}
+
           <Box
             sx={{
               display: "flex",
@@ -133,6 +160,10 @@ const ProjectFilter = ({
                 color: "#0076C8",
                 cursor: "pointer",
               }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClear();
+              }}
             >
               Clear all
             </Button>
@@ -143,7 +174,10 @@ const ProjectFilter = ({
                 border: "none",
                 cursor: "pointer",
                 padding: "6px 12px 6px 12px",
-                borderRadius: "5px",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleApply();
               }}
             >
               Apply
@@ -151,27 +185,6 @@ const ProjectFilter = ({
           </Box>
         </Box>
       )}
-      style={{ width: 500 }}
-      renderInput={(params) => (
-        <TextField
-          sx={{
-            // position: "absolute",
-            zIndex: "500",
-            minWidth: "100px",
-            maxWidth: "max-content",
-            backgroundColor: !TaskMain ? "white" : "#F4F4F4",
-            borderRadius: "5px",
-          }}
-          {...params}
-          label="Project"
-          // placeholder="Start typing tags project"
-        />
-      )}
-      // PaperComponent={({ children }) => (
-      //   <Paper sx={{ minWidth: "300px" }}>
-      //     {children}
-      //     </Paper>
-      // )}
     />
   );
 };

@@ -47,7 +47,7 @@ const SubHeading = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const Heading2 = styled(Typography)<CustomProps>(({ theme }) => ({
+const Heading2 = styled(Typography)(({ theme }) => ({
   color: "#131516",
   fontSize: 14,
   fontWeight: 700,
@@ -55,7 +55,7 @@ const Heading2 = styled(Typography)<CustomProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {},
 }));
 
-const DescriptionTag = styled(Typography)<CustomProps>(({ theme }) => ({
+const DescriptionTag = styled(Typography)(({ theme }) => ({
   fontSize: 15,
   fontWeight: 500,
   lineHeight: "20px",

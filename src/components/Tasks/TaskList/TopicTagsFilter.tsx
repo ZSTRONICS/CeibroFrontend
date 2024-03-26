@@ -6,24 +6,42 @@ import Autocomplete, {
   AutocompleteChangeReason,
 } from "@mui/material/Autocomplete";
 import { Topic } from "constants/interfaces";
-import { Dispatch, SetStateAction, SyntheticEvent } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { taskActions } from "redux/action";
+import { RootState } from "redux/reducers";
 
 interface TopicTagsFilterProps {
-  TaskMain?: boolean;
   options: Topic[];
-  selectedTopics: Topic[];
-  setSelectedTopics: Dispatch<SetStateAction<Topic[]>>;
+  TaskMain?: boolean;
 }
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const TopicTagsFilter = ({
-  options,
-  selectedTopics,
-  setSelectedTopics,
-  TaskMain,
-}: TopicTagsFilterProps) => {
+const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
+  const tagRef = useRef(null);
+  const dispatch = useDispatch();
+  const [isShow, setIsShow] = useState(false);
+  const { selectedTopicTags } = useSelector((state: RootState) => state.task);
+  const [localSelectedTags, setLocalSelectedTags] = useState<Topic[]>(
+    selectedTopicTags ?? []
+  );
+  const handleClick = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    //@ts-ignore
+    if (tagRef.current && !tagRef.current.contains(target)) {
+      // setIsShow(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleClick);
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
     value: Topic[],
@@ -31,24 +49,49 @@ const TopicTagsFilter = ({
   ) => {
     switch (reason) {
       case "selectOption":
-        setSelectedTopics(value);
+        setLocalSelectedTags(value);
         break;
       case "removeOption":
       case "clear":
-        setSelectedTopics(value);
+        setLocalSelectedTags(value);
+        dispatch(taskActions.setSelectedTopicTags([]));
         break;
     }
   };
+
+  const handleApply = () => {
+    dispatch(taskActions.setSelectedTopicTags(localSelectedTags));
+    setIsShow(false);
+  };
+
+  const handleClear = () => {
+    setLocalSelectedTags([]);
+    dispatch(taskActions.setSelectedTopicTags([]));
+    setIsShow(false);
+  };
+
   return (
     <Autocomplete
+      ref={tagRef}
+      open={isShow}
+      onOpen={(e) => {
+        e.stopPropagation();
+        setIsShow(true);
+      }}
+      onClose={(event, reason) => {
+        event.stopPropagation();
+        setIsShow(false);
+      }}
       sx={{
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0px solid",
         },
         maxWidth: "100px",
         maxHeight: "40px",
+        // maxWidth: "240px",
+        // maxHeight: "40px",
         position: "relative",
-        marginLeft: "14px",
+        marginLeft: "10px",
         "& .MuiAutocomplete-inputRoot": {
           height: "36px",
         },
@@ -57,7 +100,7 @@ const TopicTagsFilter = ({
       multiple
       id="checkboxes-tags"
       options={options}
-      value={selectedTopics}
+      value={localSelectedTags}
       size="small"
       disableCloseOnSelect
       onChange={handleChange}
@@ -72,81 +115,6 @@ const TopicTagsFilter = ({
           />
           {option.topic}
         </li>
-      )}
-      PaperComponent={({ children }) => (
-        <Box
-          sx={{
-            backgroundColor: "white",
-            minWidth: "250px",
-            boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
-            borderRadius: "20px",
-          }}
-        >
-          {/* <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: "10px",
-            }}
-          >
-            <input
-              placeholder="searching"
-              style={{
-                width: "55%",
-                marginLeft: "7%",
-                border: "none",
-                // marginTop: "10px",
-                borderBottom: "1px solid #818181",
-              }}
-            />
-            <Button
-              style={{
-                backgroundColor: "white",
-                color: "#818181",
-                border: "1px solid #818181",
-                cursor: "pointer",
-                padding: "6px 12px 6px 12px",
-                borderRadius: "5px",
-                marginRight: "7%",
-              }}
-            >
-              Done
-            </Button>
-          </Box> */}
-          <ul>{children}</ul>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              borderTop: "1px solid #818181",
-            }}
-            p={2}
-            bgcolor="background.paper"
-          >
-            <Button
-              style={{
-                border: "none",
-                backgroundColor: "transparent",
-                color: "#0076C8",
-                cursor: "pointer",
-              }}
-            >
-              Clear all
-            </Button>
-            <Button
-              style={{
-                backgroundColor: "#0076C8",
-                color: "white",
-                border: "none",
-                cursor: "pointer",
-                padding: "6px 12px 6px 12px",
-                borderRadius: "5px",
-              }}
-            >
-              Apply
-            </Button>
-          </Box>
-        </Box>
       )}
       style={{ width: 500 }}
       renderInput={(params) => (
@@ -164,9 +132,58 @@ const TopicTagsFilter = ({
           //   placeholder="Start typing tags"
         />
       )}
-      // PaperComponent={({ children }) => (
-      //   <Paper sx={{ minWidth: "300px" }}>{children}</Paper>
-      // )}
+      PaperComponent={({ children }) => (
+        <Box
+          sx={{
+            backgroundColor: "white",
+            minWidth: "250px",
+            boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
+            borderRadius: "20px",
+          }}
+        >
+          {children}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              borderTop: "1px solid #818181",
+            }}
+            p={2}
+            bgcolor="background.paper"
+          >
+            <Button
+              style={{
+                border: "none",
+                backgroundColor: "transparent",
+                color: "#0076C8",
+                cursor: "pointer",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClear();
+              }}
+            >
+              Clear all
+            </Button>
+            <Button
+              style={{
+                backgroundColor: "#0076C8",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
+                padding: "6px 12px 6px 12px",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleApply();
+              }}
+            >
+              Apply
+            </Button>
+          </Box>
+        </Box>
+      )}
     />
   );
 };

@@ -154,7 +154,6 @@ const ExportList = (props: IProps) => {
               const isCheck = selectedListItem.some(
                 (selectedItem: PinImage) => selectedItem._id == item._id
               );
-              debugger;
               return (
                 <ListItem
                   key={item._id}
