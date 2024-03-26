@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@material-ui/styles";
-import { CssBaseline } from "@mui/material";
+// import { CssBaseline } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
@@ -15,7 +15,7 @@ const root = createRoot(domNode);
 root.render(
   <Provider store={Store.store}>
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       <PersistGate loading={null} persistor={Store.persistor}>
         <ConfirmProvider>
           <React.StrictMode>
