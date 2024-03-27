@@ -31,6 +31,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
     //@ts-ignore
     if (autocompleteRef.current && !autocompleteRef.current.contains(target)) {
       setIsOpen(false);
+      setLocalSelectedProjects(selectedProjects);
     }
   };
 

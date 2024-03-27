@@ -32,6 +32,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
     //@ts-ignore
     if (tagRef.current && !tagRef.current.contains(target)) {
       setIsShow(false);
+      setLocalSelectedTags(selectedTopicTags);
     }
   };
   useEffect(() => {
@@ -46,6 +47,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
     value: Topic[],
     reason: AutocompleteChangeReason
   ) => {
+    event.stopPropagation();
     switch (reason) {
       case "selectOption":
         setLocalSelectedTags(value);
@@ -172,7 +174,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
             borderRadius: "5px",
           }}
           {...params}
-          label={localSelectedTags?.length < 1 && "Projects"}
+          label={localSelectedTags?.length < 1 && "Tags"}
         />
       )}
       PaperComponent={({ children }) => (
