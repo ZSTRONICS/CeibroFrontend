@@ -94,6 +94,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
         maxHeight: "40px",
         position: "relative",
         marginLeft: "10px",
+        backgroundColor: "#FFFFFF",
         "& .MuiAutocomplete-inputRoot": {
           height: "36px",
         },
@@ -143,7 +144,17 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
         return TaskMain ? (
           <div style={{ display: "flex", marginTop: "4px" }}>
             {" "}
-            <p style={{ color: "#818181", fontSize: "12px" }}>Tags</p>
+            <p
+              style={{
+                color: "#818181",
+                fontSize: "14px",
+                fontWeight: "500",
+                marginLeft: "8px",
+                marginTop: "-2px",
+              }}
+            >
+              Tags
+            </p>
             <div
               style={{
                 backgroundColor: "#818181",
@@ -171,11 +182,16 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
             "& .MuiAutocomplete-input": {
               display: "none",
             },
+            "& .MuiFormLabel-root": {
+              fontSize: "14px",
+              fontWeight: "500",
+            },
             zIndex: "10",
             minWidth: "110px",
             maxWidth: "110px",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
             borderRadius: "5px",
+            fontSize: "12px",
           }}
           {...params}
           label={localSelectedTags?.length < 1 && "Tags"}
@@ -184,7 +200,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
       PaperComponent={({ children }) => (
         <Box
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "#FFFFFF",
             minWidth: "275px",
             boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
             borderRadius: "20px",

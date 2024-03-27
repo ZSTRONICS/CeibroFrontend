@@ -1,12 +1,4 @@
-import {
-  Box,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  ListSubheader,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, ListSubheader, TextField, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -191,7 +183,9 @@ function UserFilter(props: IProps) {
         }}
       >
         {" "}
-        <p style={{ color: "#818181", fontSize: "12px" }}>Users</p>
+        <p style={{ color: "#818181", fontSize: "14px", fontWeight: "500" }}>
+          Users
+        </p>
         <div
           style={{
             backgroundColor: "#818181",
@@ -255,6 +249,9 @@ function UserFilter(props: IProps) {
           sx={{
             top: "-10px",
             left: "15px",
+            fontSize: "14px",
+            fontWeight: "400",
+            color: "#818181",
           }}
           id="controlled-open-select-label"
         >
@@ -380,46 +377,13 @@ function UserFilter(props: IProps) {
               justifyContent: "flex-start",
               margin: "0px 8px 0px",
             }}
-          >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="self-assign"
-                  checked={isSelfAssign}
-                  onChange={handleSelfAssignChange}
-                  size="small"
-                  color="primary"
-                  sx={{
-                    ml: 1,
-                    fontFamily: "Inter",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    color: "#818181",
-                    lineHeight: "16px",
-                  }}
-                />
-              }
-              label={
-                <Typography
-                  sx={{
-                    fontFamily: "Inter",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    color: "#605C5C",
-                    lineHeight: "16px",
-                  }}
-                >
-                  Self assign
-                </Typography>
-              }
-            />
-          </Box>
+          ></Box>
           <Box sx={{ margin: "0px 16px" }}>
-            <Divider sx={{ marginTop: "8px", marginBottom: "20px" }} />
+            {/* <Divider sx={{ marginTop: "8px", marginBottom: "20px" }} /> */}
             <GroupContactList
               filterData={filterData}
               selected={selected}
-              recentData={{ "Suggested Users": filteredRecentUserContact }}
+              recentData={{ "": filteredRecentUserContact }}
               handleSelectedList={handleSelectedList}
             />
           </Box>

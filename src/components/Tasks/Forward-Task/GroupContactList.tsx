@@ -87,7 +87,7 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
     if (recentData) {
       contactListElements = [
         ...createElementList(recentData),
-        divider,
+        // divider,
         ...createElementList(filterData),
       ];
     } else {

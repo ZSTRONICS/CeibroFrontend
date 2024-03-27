@@ -47,6 +47,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
     value: Project[],
     reason: AutocompleteChangeReason
   ) => {
+    event.preventDefault();
     event.stopPropagation();
     switch (reason) {
       case "selectOption":
@@ -91,6 +92,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
         minWidth: "110px",
         maxWidth: "110px",
         overflow: "hidden",
+        backgroundColor: "#FFFFFF",
         // marginRight: "5px",
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0px solid",
@@ -187,7 +189,13 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
           <div style={{ display: "flex", marginTop: "4px" }}>
             {" "}
             <p
-              style={{ color: "#818181", fontSize: "12px", fontWeight: "500" }}
+              style={{
+                color: "#818181",
+                fontSize: "14px",
+                fontWeight: "500",
+                marginLeft: "8px",
+                marginTop: "-2px",
+              }}
             >
               Project
             </p>
@@ -220,6 +228,10 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
             "& .MuiAutocomplete-input": {
               display: "none",
             },
+            "& .MuiFormLabel-root": {
+              fontSize: "14px",
+              fontWeight: "500",
+            },
             // position: "absolute",
             zIndex: "10",
             width: "110px",
@@ -234,7 +246,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
       PaperComponent={({ children }) => (
         <Box
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "#FFFFFF",
             minWidth: "275px",
             boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
             borderRadius: "20px",
