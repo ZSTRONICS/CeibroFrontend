@@ -183,7 +183,13 @@ function UserFilter(props: IProps) {
     //   return "Select Contacts";
     // }
     return (
-      <div style={{ display: "flex", marginTop: "4px" }}>
+      <div
+        style={{
+          display: "flex",
+          marginTop: "4px",
+          marginLeft: "12px",
+        }}
+      >
         {" "}
         <p style={{ color: "#818181", fontSize: "12px" }}>Users</p>
         <div
@@ -214,6 +220,9 @@ function UserFilter(props: IProps) {
         // disabled
         variant="standard"
         sx={{
+          "& .MuiSelect-icon": {
+            left: "72%",
+          },
           marginTop: "0px",
           width: "100%",
           maxWidth: "110px",

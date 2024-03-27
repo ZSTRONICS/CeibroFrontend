@@ -110,9 +110,12 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
       renderOption={(props, option, { selected }) => (
         <li
           style={{
-            minHeight: "40px",
+            minHeight: "30px",
+            maxHeight: "max-content",
             display: "flex",
             alignItems: "flex-start",
+            padding: "0px",
+            paddingTop: "5px",
           }}
           {...props}
         >
@@ -121,11 +124,12 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
             checkedIcon={checkedIcon}
             style={{ marginRight: 8 }}
             checked={selected}
+            sx={{ marginTop: "-10px", marginLeft: "5px" }}
           />
           <p
             style={{
               fontSize: "12px",
-              marginTop: "8px",
+              // marginTop: "8px",
               overflowWrap: "break-word",
               width: "160px",
             }}
@@ -186,12 +190,47 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
             borderRadius: "20px",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <input
+              placeholder="Start searching"
+              style={{
+                marginTop: "15px",
+                border: "none",
+                paddingBottom: "10px",
+                borderBottom: "1px solid #818181",
+                marginLeft: "15px",
+                width: "65%",
+                paddingTop: "5px",
+              }}
+            />{" "}
+            <Button
+              style={{
+                borderRadius: "4px",
+                height: "28px",
+                width: "50px",
+                color: "#818181",
+                backgroundColor: "transparent",
+                border: "1px solid #818181",
+                marginRight: "15px",
+                cursor: "pointer",
+              }}
+            >
+              Done
+            </Button>{" "}
+          </Box>
           {children}
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
               borderTop: "1px solid #818181",
+              height: "56px",
             }}
             p={2}
             bgcolor="background.paper"
@@ -216,8 +255,9 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
                 color: "white",
                 border: "none",
                 cursor: "pointer",
-                padding: "6px 12px 6px 12px",
-                borderRadius: "5px",
+                borderRadius: "4px",
+                height: "28px",
+                width: "55px",
               }}
               onClick={(e) => {
                 e.stopPropagation();

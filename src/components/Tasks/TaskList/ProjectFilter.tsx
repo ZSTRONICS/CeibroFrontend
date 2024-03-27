@@ -110,21 +110,31 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
       getOptionLabel={(option: Project) => option.title}
       renderOption={(props, option, { selected }) => (
         <>
-          <li {...props} style={{ display: "flex", alignItems: "flex-start" }}>
+          <li
+            {...props}
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              padding: "0px",
+            }}
+          >
             <Checkbox
               icon={icon}
               checkedIcon={checkedIcon}
               style={{ marginRight: 8 }}
               checked={selected}
+              sx={{ marginLeft: "5px" }}
             />
             <Box sx={{ marginTop: "8px" }}>
               <p
                 style={{
                   fontSize: "14px",
-                  color: "#605C5C",
+                  color: "#131516",
                   overflowWrap: "break-word",
                   width: "160px",
                   fontWeight: 700,
+                  minHeight: "max-content",
+                  paddingBottom: "0px",
                 }}
               >
                 {option.title}
@@ -176,7 +186,11 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
         return TaskMain ? (
           <div style={{ display: "flex", marginTop: "4px" }}>
             {" "}
-            <p style={{ color: "#818181", fontSize: "12px" }}>Project</p>
+            <p
+              style={{ color: "#818181", fontSize: "12px", fontWeight: "500" }}
+            >
+              Project
+            </p>
             <div
               style={{
                 backgroundColor: "#818181",
@@ -226,12 +240,47 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
             borderRadius: "20px",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <input
+              placeholder="Start searching"
+              style={{
+                marginTop: "15px",
+                border: "none",
+                paddingBottom: "10px",
+                borderBottom: "1px solid #818181",
+                marginLeft: "15px",
+                width: "65%",
+                paddingTop: "5px",
+              }}
+            />{" "}
+            <Button
+              style={{
+                borderRadius: "4px",
+                height: "28px",
+                width: "50px",
+                color: "#818181",
+                backgroundColor: "transparent",
+                border: "1px solid #818181",
+                marginRight: "15px",
+                cursor: "pointer",
+              }}
+            >
+              Done
+            </Button>{" "}
+          </Box>
           {children}
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
               borderTop: "1px solid #818181",
+              height: "56px",
             }}
             p={2}
             bgcolor="background.paper"
@@ -256,7 +305,9 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
                 color: "white",
                 border: "none",
                 cursor: "pointer",
-                padding: "6px 12px 6px 12px",
+                borderRadius: "4px",
+                height: "28px",
+                width: "55px",
               }}
               onClick={(e) => {
                 e.stopPropagation();
