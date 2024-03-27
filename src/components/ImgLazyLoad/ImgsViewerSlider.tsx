@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ImageViewer from "react-simple-image-viewer";
+// import ImageViewer from "react-simple-image-viewer";
 
 interface ImagePreviewModalProps {
   isOpen: boolean;
@@ -53,7 +53,7 @@ const ImgsViewerSlider: React.FC<ImagePreviewModalProps> = ({
   // }, [isOpen]);
   return (
     <>
-      {isOpen && imgs.length > 0 && (
+      {/* {isOpen && imgs.length > 0 && (
         <ImageViewer
           src={imgs}
           currentIndex={currentImageIndex}
@@ -64,7 +64,7 @@ const ImgsViewerSlider: React.FC<ImagePreviewModalProps> = ({
           }}
           closeOnClickOutside={true}
         />
-      )}
+      )} */}
     </>
   );
 };

@@ -9151,6 +9151,11 @@ react-pdf@^7.6.0:
     tiny-invariant "^1.0.0"
     tiny-warning "^1.0.0"
 
+react-photo-view@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/react-photo-view/-/react-photo-view-1.2.4.tgz#0795c7bb961bacbc45d2e9cf91ec35ca5cddce1d"
+  integrity sha512-8G7yb0YgQuVgEMT3DopiROZyY8cgCDpba+G5MoxDkHNFOyqtw3r5T5tazYeifybPrvHWuKXj/bnAlBtQcpxyzQ==
+
 react-popper@^2.2.5:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.3.0.tgz#17891c620e1320dce318bad9fede46a5f71c70ba"
@@ -9282,11 +9287,6 @@ react-select@^5.6.1:
     prop-types "^15.6.0"
     react-transition-group "^4.3.0"
     use-isomorphic-layout-effect "^1.1.2"
-
-react-simple-image-viewer@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/react-simple-image-viewer/-/react-simple-image-viewer-1.2.2.tgz#2a93413512b76ce8d336dd5fa19660a970d05be4"
-  integrity sha512-Vk9p6Glm7uE4cSEBGkqZPGC3qoZcAwd48nq5/JN13NKd9rUrUIWZWFEmRzO+FVwl6c0UdjSDkthGoaoiYeWVjg==
 
 react-toastify@^8.1.0:
   version "8.2.0"

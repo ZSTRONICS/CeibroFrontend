@@ -6,6 +6,7 @@ import "./assets/InterFont.css";
 // import CssBaseline from "@mui/material/CssBaseline";
 
 // styling
+import "react-photo-view/dist/react-photo-view.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import "./components/Topbar/ProfileBtn.css";

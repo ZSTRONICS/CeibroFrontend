@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { AddStatusTag } from "components/CustomTags";
+import ImagePhotoViewer from "components/ImgLazyLoad/ImagePhotoViewer";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
-import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import { TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useEffect, useRef, useState } from "react";
@@ -387,7 +387,7 @@ function AddedDetails(props: IProps) {
         />
       )}
       {isOpen && !isPdf && images.length > 0 && (
-        <ImgsViewerSlider
+        <ImagePhotoViewer
           imgs={images.map((image: any) => image.fileUrl)}
           currImg={currentImageIndex}
           isOpen={isOpen}

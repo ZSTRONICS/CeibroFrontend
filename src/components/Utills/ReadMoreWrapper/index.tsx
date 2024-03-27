@@ -1,7 +1,7 @@
 import { Box, Typography, styled } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import assets from "assets";
-import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
+import ImagePhotoViewer from "components/ImgLazyLoad/ImagePhotoViewer";
 import { fileType } from "components/Tasks/type";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
@@ -370,7 +370,7 @@ const ReadMoreWrapper = ({
         )}
       </Box>
       {isOpen && images.length > 0 && (
-        <ImgsViewerSlider
+        <ImagePhotoViewer
           imgs={images.map((image: any) => image.fileUrl)}
           currImg={currentImgIndex}
           isOpen={isOpen}

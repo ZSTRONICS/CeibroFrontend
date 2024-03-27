@@ -59,16 +59,16 @@ html {
   background-color: red;
 } */
 
-span.react-simple-image-viewer__close {
+/* span.react-simple-image-viewer__close {
   top: 2%;
   right: 3%;
-}
+} */
 
-div#ReactSimpleImageViewer {
+/* div#ReactSimpleImageViewer {
   z-index: 50;
-}
+} */
 
-div.react-simple-image-viewer__modal-content {
+/* div.react-simple-image-viewer__modal-content {
   width: 70vw;
   height: 85%;
   max-height: 100%;
@@ -76,7 +76,7 @@ div.react-simple-image-viewer__modal-content {
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 
 
 @keyframes fadeIn {

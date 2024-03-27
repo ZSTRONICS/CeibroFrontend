@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { CustomDivider, SubLabelTag } from "components/CustomTags";
-import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
+import ImagePhotoViewer from "components/ImgLazyLoad/ImagePhotoViewer";
 import {
   DOC_EXT,
   FILTER_DATA_BY_EXT,
@@ -180,7 +180,7 @@ function TaskDetails(props: IProps) {
         )}
       </Box>
       {uniqueImageFiles.length > 0 && (
-        <ImgsViewerSlider
+        <ImagePhotoViewer
           imgs={uniqueImageFiles.map((image: any) => image.fileUrl)}
           currImg={currentImageIndex}
           isOpen={isOpen}
