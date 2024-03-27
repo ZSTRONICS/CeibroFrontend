@@ -3,6 +3,7 @@ import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
 import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
@@ -33,6 +34,50 @@ export const useSocket = () => {
             }
         });
     }
+
+    const showToast = (eventType: string) => {
+        console.log(eventType);
+        let message = '';
+        switch (eventType) {
+            case TASK_CONFIG.TASK_DONE:
+                message = 'Task has been closed';
+                break;
+            case TASK_CONFIG.CANCELED_TASK:
+                message = 'Task has been canceled';
+                break;
+            case TASK_CONFIG.UN_CANCEL_TASK:
+                message = 'Task cancellation has been undone';
+                break;
+            case TASK_CONFIG.TASK_SHOWN:
+                message = 'Task has been shown';
+                break;
+            case TASK_CONFIG.TASK_HIDDEN:
+                message = 'Task has been hidden';
+                break;
+            case TASK_CONFIG.TASK_APPROVED:
+                message = 'Task has been approved';
+                break;
+            case TASK_CONFIG.TASK_REJECTED_CLOSED:
+                message = 'Task has been rejected and closed';
+                break;
+            case TASK_CONFIG.TASK_REJECTED_REOPENED:
+                message = 'Task has been rejected and reopened';
+                break;
+
+            default:
+                break;
+        }
+        if (message === "") {
+            return
+        }
+        toast.info(message, {
+            position: 'bottom-right',
+            autoClose: 4000,
+            draggable: true,
+            transition: Bounce,
+            theme: 'light',
+        });
+    };
     const handleSocketEvents = (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
@@ -143,6 +188,7 @@ export const useSocket = () => {
             case TASK_CONFIG.TASK_SEEN:
             case TASK_CONFIG.TASK_SHOWN:
             case TASK_CONFIG.TASK_HIDDEN:
+                showToast(eventType);
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: { ...data, userId, eventType },
@@ -158,6 +204,7 @@ export const useSocket = () => {
             case TASK_CONFIG.TASK_DONE:
             case TASK_CONFIG.CANCELED_TASK:
             case TASK_CONFIG.UN_CANCEL_TASK:
+                showToast(eventType);
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: data,
@@ -168,6 +215,7 @@ export const useSocket = () => {
             case TASK_CONFIG.TASK_APPROVED:
             case TASK_CONFIG.TASK_REJECTED_CLOSED:
             case TASK_CONFIG.TASK_REJECTED_REOPENED:
+                showToast(eventType);
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: data,

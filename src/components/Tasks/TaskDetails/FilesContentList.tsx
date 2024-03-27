@@ -13,6 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 interface IFilesContentList {
   allFiles: TaskFile[];
+  handleFileClick: (file: TaskFile, index: any) => void;
 }
 
 function FilesContentList(props: IFilesContentList) {
@@ -24,7 +25,7 @@ function FilesContentList(props: IFilesContentList) {
       setHeightOffset(newTop + 30);
     }
   }, [containerRef]);
-  const { allFiles } = props;
+  const { allFiles, handleFileClick } = props;
   return (
     <List
       sx={{
@@ -78,7 +79,9 @@ function FilesContentList(props: IFilesContentList) {
               <ListItemAvatar>
                 {isImgType && file.fileUrl ? (
                   <Avatar
+                    onClick={() => isImgType && handleFileClick(file, index)}
                     sx={{
+                      cursor: isImgType ? "pointer" : "",
                       width: "40px",
                       height: "40px",
                       border: "1px solid #E2E4E5",

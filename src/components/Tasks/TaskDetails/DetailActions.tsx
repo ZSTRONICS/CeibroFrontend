@@ -492,6 +492,7 @@ const DetailActions: React.FC<IProps> = (props) => {
             <Typography
               sx={{
                 fontWeight: "600",
+                fontSize: "0.875rem",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",

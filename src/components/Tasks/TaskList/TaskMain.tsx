@@ -90,10 +90,14 @@ const TaskMain = (props: IProps) => {
     if (!findSelectedTask) {
       setSelectedTask(null);
     }
+  }, [allTaskList.length]);
+
+  useEffect(() => {
+    clearTaskCardListCache();
     if (allTaskList.length > 0) {
       handleSelectedTask(allTaskList[0]);
     }
-  }, [allTaskList.length]);
+  }, [selectedRootTask]);
 
   useEffect(() => {
     let filteredData = handleFilterRootTask(selectedTaskRootState);

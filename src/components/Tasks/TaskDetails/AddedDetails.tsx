@@ -31,6 +31,7 @@ function AddedDetails(props: IProps) {
   const [heightOffset, setHeightOffset] = useState<number>(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showComment, setShowComment] = useState(false);
+  const isInitialRender = useRef(true);
 
   useEffect(() => {
     if (selectedTab === "Comments" || isCommentView) {
@@ -57,36 +58,20 @@ function AddedDetails(props: IProps) {
     closeModal();
   };
 
-  // useEffect(() => {
-  //   if (listRef.current) {
-  //     const newTop = listRef.current.getBoundingClientRect().top;
-  //     const newHeightOffset = hasFile ? newTop + 16 : newTop;
-  //     if (!isInitialRender.current) {
-  //       if (newHeightOffset !== heightOffset) {
-  //         setHeightOffset(newHeightOffset);
-  //       }
-  //       listRef.current.scrollTo(0, listRef.current.scrollHeight);
-  //     } else {
-  //       isInitialRender.current = false;
-  //     }
-  //   }
-  // }, [events?.length, hasFile]);
-
   var IsMessageBot: boolean;
-
   useEffect(() => {
-    // Function to scroll to the bottom
-    const scrollToBottom = () => {
-      if (commentScrollRef.current) {
-        // Set the scrollTop property to the maximum value
-        commentScrollRef.current.scrollTop =
-          commentScrollRef.current.clientHeight;
+    if (commentScrollRef.current) {
+      if (!isInitialRender.current) {
+        commentScrollRef.current.scrollTo(
+          0,
+          commentScrollRef.current.scrollHeight
+        );
+        console.log("scrolling to bottom", commentScrollRef.current);
+      } else {
+        isInitialRender.current = false;
       }
-    };
-
-    // Scroll to the bottom when the component mounts or the content changes
-    scrollToBottom();
-  }, [commentScrollRef, events?.length]); // Only run once after component mounts
+    }
+  }, [commentScrollRef, events.length]);
 
   return (
     <>
@@ -102,7 +87,6 @@ function AddedDetails(props: IProps) {
         }}
       >
         <Box
-          // className="custom-scrollbar"
           sx={{
             overflowY: "auto",
             flex: "1",
