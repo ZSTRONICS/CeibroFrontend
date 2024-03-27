@@ -31,7 +31,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
     const target = event.target as HTMLElement;
     //@ts-ignore
     if (tagRef.current && !tagRef.current.contains(target)) {
-      // setIsShow(false);
+      setIsShow(false);
     }
   };
   useEffect(() => {
@@ -172,7 +172,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
             borderRadius: "5px",
           }}
           {...params}
-          label="Tags"
+          label={localSelectedTags?.length < 1 && "Projects"}
         />
       )}
       PaperComponent={({ children }) => (

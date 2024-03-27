@@ -166,22 +166,46 @@ function UserFilter(props: IProps) {
   };
 
   const renderValue = () => {
-    if (selected.length > 0) {
-      const fullNames = selected.map((item) => {
-        if (item._id === user._id) {
-          return "Me";
-        }
-        if (item.contactFullName) {
-          return item.contactFullName;
-        } else if (item.firstName) {
-          return `${item.firstName} ${item.surName}`;
-        }
-        return "";
-      });
-      return fullNames.join(", ");
-    } else {
-      return "Select Contacts";
-    }
+    // if (selected.length > 0) {
+    //   const fullNames = selected.map((item) => {
+    //     if (item._id === user._id) {
+    //       return "Me";
+    //     }
+    //     if (item.contactFullName) {
+    //       return item.contactFullName;
+    //     } else if (item.firstName) {
+    //       return `${item.firstName} ${item.surName}`;
+    //     }
+    //     return "";
+    //   });
+    //   return fullNames.join(", ");
+    // } else {
+    //   return "Select Contacts";
+    // }
+    return (
+      <div style={{ display: "flex", marginTop: "4px" }}>
+        {" "}
+        <p style={{ color: "#818181", fontSize: "12px" }}>Users</p>
+        <div
+          style={{
+            backgroundColor: "#818181",
+            color: "white",
+            borderRadius: "50%",
+            height: "16px",
+            width: "16px",
+            textAlign: "center",
+            fontSize: "11px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: "4px",
+            marginTop: "2px",
+          }}
+        >
+          {selected.length}
+        </div>
+      </div>
+    );
   };
 
   return (

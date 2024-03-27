@@ -213,7 +213,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
             overflow: "hidden",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
           }}
-          label="Project"
+          label={localSelectedProjects?.length < 1 && "Projects"}
         />
       )}
       PaperComponent={({ children }) => (
