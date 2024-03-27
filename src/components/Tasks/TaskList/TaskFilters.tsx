@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import { CustomStack } from "components/CustomTags";
 import { getDropdownOptions } from "components/Utills/Globals";
-import UserDropDown from "components/Utills/UserDropdown";
 import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +10,7 @@ import { ChangeValueType, CreateNewTaskFormType, Options } from "../type";
 import ProjectFilter from "./ProjectFilter";
 import TaskMenu from "./TaskMenu";
 import TopicTagsFilter from "./TopicTagsFilter";
+import UserFilter from "./UserFilter";
 interface Props {
   handleTaskRootState: (rootState: string) => void;
   handleClearAll: () => void;
@@ -185,11 +185,11 @@ function TaskFilters(props: Props) {
             justifyContent: "flex-start",
             alignItems: "center",
             width: "95%",
-            overflowX: "auto",
+            height: "max-contnet",
+            // overflowX: "auto",
             overflowY: "hidden",
             marginTop: "14px",
             marginBottom: "14px",
-            // padding: "14px 0",
           }}
         >
           {!showHiddenTasks && (
@@ -199,14 +199,12 @@ function TaskFilters(props: Props) {
             />
           )}
           <ProjectFilter TaskMain={true} options={allProjects} />
-          <UserDropDown
-            isTaskFilter={true}
+          <UserFilter
             name="assignedToState"
             label={"Users"}
             contacts={userAllContacts}
             recentUserContact={recentUserContact}
             handleChangeValues={handleChangeValues}
-            tasktilters={true}
           />
           <TopicTagsFilter TaskMain={true} options={Topics.allTopics} />
         </Box>

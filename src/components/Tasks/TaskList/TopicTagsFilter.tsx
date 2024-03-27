@@ -71,7 +71,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
 
   return (
     <Autocomplete
-      disabled
+      // disabled
       disableClearable={true}
       ref={tagRef}
       open={isShow}
@@ -90,8 +90,6 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
         maxWidth: "110px",
         minWidth: "110px",
         maxHeight: "40px",
-        // maxWidth: "240px",
-        // maxHeight: "40px",
         position: "relative",
         marginLeft: "10px",
         "& .MuiAutocomplete-inputRoot": {
@@ -164,18 +162,17 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
       renderInput={(params) => (
         <TextField
           sx={{
-            // position: "absolute",
+            "& .MuiAutocomplete-input": {
+              display: "none",
+            },
             zIndex: "10",
             minWidth: "110px",
             maxWidth: "110px",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
             borderRadius: "5px",
-            overflow: "hidden",
-            // border: "solid 1px red",
           }}
           {...params}
           label="Tags"
-          //   placeholder="Start typing tags"
         />
       )}
       PaperComponent={({ children }) => (

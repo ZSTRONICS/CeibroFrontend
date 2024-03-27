@@ -72,7 +72,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
 
   return (
     <Autocomplete
-      disabled
+      // disabled
       ref={autocompleteRef}
       open={isOpen}
       onOpen={(e) => {
@@ -89,6 +89,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
         // marginLeft: "10px",
         minWidth: "110px",
         maxWidth: "110px",
+        overflow: "hidden",
         // marginRight: "5px",
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0px solid",
@@ -201,11 +202,15 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
         <TextField
           {...params}
           sx={{
+            "& .MuiAutocomplete-input": {
+              display: "none",
+            },
             // position: "absolute",
             zIndex: "10",
             width: "110px",
             maxWidth: "110px",
             borderRadius: "5px",
+            overflow: "hidden",
             backgroundColor: !TaskMain ? "white" : "#F4F4F4",
           }}
           label="Project"
