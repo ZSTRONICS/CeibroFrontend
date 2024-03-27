@@ -104,7 +104,7 @@ export default function BasicTabs({
             ...(isFileTabs ? filesTabSActivetyle : { display: "none" }),
           },
           "& .MuiTabs-flexContainer": {
-            gap: isFileTabs ? 2 : 0.5,
+            gap: isFileTabs ? 2 : 0.15,
             overflow: "auto",
           },
         }}
