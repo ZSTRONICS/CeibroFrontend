@@ -56,6 +56,7 @@ const ShowmoreComponent = ({ data, count }: Props) => {
                 style={{
                   marginLeft: "5px",
                   border: "none",
+                  textTransform: "unset",
                   backgroundColor: "transparent",
                   cursor: "pointer",
                   color: "#0076C8",
