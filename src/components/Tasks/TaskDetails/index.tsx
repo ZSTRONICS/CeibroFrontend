@@ -50,7 +50,7 @@ function TaskDetails(props: IProps) {
   const [isPending, startTransition] = useTransition();
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
   const dueDateLocal = convertDateFormat(dueDate);
-  const pinnedComments = _.filter(events, (event) => event.isPinned);
+  const pinnedComments: any[] = _.filter(events, (event) => event.isPinned);
   useEffect(() => {
     let getShowValue = showFullView && JSON.parse(showFullView);
     const isTaskFind = getShowValue && taskUID in getShowValue;
