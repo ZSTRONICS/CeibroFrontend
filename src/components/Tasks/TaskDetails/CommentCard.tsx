@@ -1,13 +1,6 @@
 import { Button } from "@mui/base";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
-import {
-  Avatar,
-  Box,
-  CardMedia,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Avatar, Box, CardMedia, Typography } from "@mui/material";
 import assets from "assets";
 import { GenericMenu } from "components/GenericComponents";
 import ImagePhotoViewer from "components/ImgLazyLoad/ImagePhotoViewer";
@@ -45,11 +38,11 @@ const CommentCard = ({
   eventId,
 }: Props) => {
   const [showMore, setShowMore] = useState<boolean>(false);
-  const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down(1100));
-  const commentshowonlarge = useMediaQuery(
-    theme.breakpoints.between(1100, 1620)
-  );
+  // const theme = useTheme();
+  // const isSmall = useMediaQuery(theme.breakpoints.down(1100));
+  // const commentshowonlarge = useMediaQuery(
+  //   theme.breakpoints.between(1100, 1620)
+  // );
 
   const dispatch = useDispatch();
   const boximgref = useRef<HTMLDivElement>(null);
@@ -63,11 +56,6 @@ const CommentCard = ({
 
   const handleClick = () => {
     setShowMore((prev) => !prev);
-    // if (showMore) {
-    //   setShowMore(!true);
-    // } else {
-    //   setShowMore(true);
-    // }
   };
 
   const handleImgClick = (index: any) => {

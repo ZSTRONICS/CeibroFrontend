@@ -66,7 +66,6 @@ function AddedDetails(props: IProps) {
           0,
           commentScrollRef.current.scrollHeight
         );
-        console.log("scrolling to bottom", commentScrollRef.current);
       } else {
         isInitialRender.current = false;
       }
