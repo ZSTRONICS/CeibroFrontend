@@ -113,8 +113,8 @@ const TaskMain = (props: IProps) => {
       filteredData = filteredData.filter((task: ITask) =>
         selectedUsers.some(
           (id: string) =>
-            (task.confirmer && task.confirmer._id == id) ||
-            (task.creator && task.creator._id == id)
+            (task.confirmer && task.confirmer._id === id) ||
+            (task.creator && task.creator._id === id)
         )
       );
     }
@@ -122,11 +122,11 @@ const TaskMain = (props: IProps) => {
       filteredData = filteredData.filter((task: ITask) =>
         selectedTopicTags.some(
           (selectedTopicTag: Topic) =>
-            task.topic && task.topic._id == selectedTopicTag._id
+            task.topic && task.topic._id === selectedTopicTag._id
         )
       );
     }
-    setFilteredTask(filteredData);
+    // setFilteredTask(filteredData);
   }, [selectedProjects.length, selectedTopicTags.length, selectedUsers.length]);
 
   const handleFilterRootTask = (taskRootState: string) => {

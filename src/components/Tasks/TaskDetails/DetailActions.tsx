@@ -106,7 +106,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     "done",
   ]);
   const doneHideBtnVisible: boolean =
-    (isAssignedToMe || isCreator) &&
+    (isAssignedToMe || isCreator || isTaskConfirmer || isTaskViewer) &&
     taskRootState !== "Canceled" &&
     taskRootState !== "Approval";
   const doneHideBtnLabel: string =

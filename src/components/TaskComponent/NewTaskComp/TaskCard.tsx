@@ -77,7 +77,7 @@ const TaskCard = React.memo((props: IProps) => {
   ): JSX.Element => {
     if (isTaskViewer) return iconMappings.Viewer;
     if (taskRootState === "Approval") return iconMappings.Pending;
-    if (taskRootState === "Ongoing") {
+    if (taskRootState === "Ongoing" || taskRootState === "Hidden") {
       if (isCreator || isTaskConfirmer) {
         if (creatorState === "unread") {
           return iconMappings.NewTaskByCreator;
@@ -92,7 +92,7 @@ const TaskCard = React.memo((props: IProps) => {
         }
       }
     }
-    if (taskRootState === "Closed") {
+    if (taskRootState === "Closed" || taskRootState === "Hidden") {
       if (userSubState === "done") {
         return iconMappings.Done;
       } else if (userSubState === "reject-closed") {

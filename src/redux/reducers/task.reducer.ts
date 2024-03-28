@@ -536,6 +536,10 @@ const taskReducer = (
               hiddenState: newTaskData.hiddenState,
               toMeState: newTaskData.toMeState,
             });
+            moveTaskOnTopByIndex(
+              state.allTasksAllEvents.allTasks,
+              findTaskIndex
+            );
             const findEventFromAllTaskEvent =
               state.allTasksAllEvents.allEvents.findIndex(
                 (event: any) => event._id === eventData._id
@@ -543,10 +547,7 @@ const taskReducer = (
             if (findEventFromAllTaskEvent === -1) {
               state.allTasksAllEvents.allEvents.push(eventData);
             }
-            moveTaskOnTopByIndex(
-              state.allTasksAllEvents.allTasks,
-              findTaskIndex
-            );
+
           }
           if (eventData.taskData.creatorState === "canceled") {
             const taskIndex = state.allTaskHidden.canceled.findIndex(

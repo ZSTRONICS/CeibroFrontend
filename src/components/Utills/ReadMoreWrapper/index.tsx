@@ -99,7 +99,7 @@ const ReadMoreWrapper = ({
     if (fileCompRef.current) {
       const fielsContWidth = getWidthWithMarginAndPadding(fileCompRef);
       if (count && count > 0 && fielsContWidth > 164) {
-        setLocalCount(count - Math.floor(fielsContWidth / 165));
+        setLocalCount(count - Math.floor(fielsContWidth / 200));
       }
     }
   };
@@ -132,7 +132,7 @@ const ReadMoreWrapper = ({
           const fielsContWidth = getWidthWithMarginAndPadding(fileCompRef);
           // console.log("fielsContWidth", fielsContWidth);
           if (count && count > 0 && fielsContWidth > 164) {
-            setLocalCount(count - Math.floor(fielsContWidth / 160));
+            setLocalCount(count - Math.floor(fielsContWidth / 200));
           }
         }
         getHeight(fileCompRef, type, isExpanded);
@@ -303,12 +303,12 @@ const ReadMoreWrapper = ({
               )}
               {type === "file" && (
                 <Box
-                  ref={fileCompRef}
                   sx={{
                     maxHeight: `${allowExpandedView ? height : "auto"}`,
                   }}
                 >
                   <FileBox
+                    fileCompRef={fileCompRef}
                     title={title}
                     files={data}
                     handleClearFile={callback}

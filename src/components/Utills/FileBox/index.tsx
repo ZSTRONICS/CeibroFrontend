@@ -29,6 +29,7 @@ interface IProps {
   handleClearFile?: (file: File | any, type: fileType) => void;
   download?: boolean;
   iscomment?: boolean;
+  fileCompRef?: any;
 }
 
 const getFileIconThumbnail = (
@@ -84,6 +85,7 @@ const FileBox: React.FC<IProps> = ({
   handleClearFile,
   iscomment,
   download,
+  fileCompRef,
 }) => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [fileToView, setFileToView] = useState<any | null>(null);
@@ -98,69 +100,69 @@ const FileBox: React.FC<IProps> = ({
 
   const Task_Details = true;
   return (
-    <>
-      <Box
-        sx={{
-          width: "100%",
-          gap: 1.2,
-          display: "flex",
-          alignItems: "center",
-          flexWrap: isnoWrap ? "nowrap" : "wrap",
-          color: "#605c5c",
-          overflow: "auto",
-          height: isnoWrap ? "100%" : "auto",
-          pl: isnoWrap ? 2 : 0,
-        }}
-      >
-        {files && Array.isArray(files) && files.length > 0 ? (
-          files.map((item: IFile | File | ImageWithComment | any) => {
-            const fileSize = filesizes(item.size);
-            let f_name = "";
-            let key = "";
-            const { fileName, _id, name, type, fileType } = item.file
-              ? item.file
-              : item;
-            if (fileName) {
-              f_name = fileName;
-              key = _id;
-            } else if (name) {
-              f_name = name;
-              key = `${name}`;
-            }
-            return (
-              <Box
-                key={key}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: `${item.size ? "255px" : "200px"}`,
-                  gap: "10px",
-                  pl: 0,
-                  marginLeft: iscomment ? "-13px" : null,
+    <Box
+      ref={fileCompRef}
+      sx={{
+        width: "100%",
+        gap: 1.2,
+        display: "flex",
+        alignItems: "center",
+        flexWrap: isnoWrap ? "nowrap" : "wrap",
+        color: "#605c5c",
+        overflow: "auto",
+        height: isnoWrap ? "100%" : "auto",
+        pl: isnoWrap ? 2 : 0,
+      }}
+    >
+      {files && Array.isArray(files) && files.length > 0 ? (
+        files.map((item: IFile | File | ImageWithComment | any) => {
+          const fileSize = filesizes(item.size);
+          let f_name = "";
+          let key = "";
+          const { fileName, _id, name, type, fileType } = item.file
+            ? item.file
+            : item;
+          if (fileName) {
+            f_name = fileName;
+            key = _id;
+          } else if (name) {
+            f_name = name;
+            key = `${name}`;
+          }
+          return (
+            <Box
+              key={key}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: `${item.size ? "255px" : "200px"}`,
+                gap: "10px",
+                pl: 0,
+                marginLeft: iscomment ? "-13px" : null,
 
-                  "&:hover": {
-                    cursor: "pointer",
-                  },
-                }}
-                onClick={() => openPDFNewTab(item)}
-              >
-                {type
-                  ? getFileIconThumbnail(type, 16, 20)
-                  : getFileIconThumbnail(fileType, 16, 20)}
-                <Tooltip title={f_name}>
-                  <Typography
-                    sx={{
-                      width: "max-content",
-                      fontFamily: "Inter",
-                      fontWeight: 400,
-                      color: "#131516",
-                      fontSize: "14px",
-                    }}
-                  >
-                    {trimFileName(Task_Details, f_name)}
-                  </Typography>
-                </Tooltip>
-                {/* {item.size && (
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+              onClick={() => openPDFNewTab(item)}
+            >
+              {type
+                ? getFileIconThumbnail(type, 16, 20)
+                : getFileIconThumbnail(fileType, 16, 20)}
+              <Tooltip title={f_name}>
+                <Typography
+                  sx={{
+                    width: "max-content",
+                    fontFamily: "Inter",
+                    fontWeight: 400,
+                    color: "#131516",
+                    fontSize: "14px",
+                  }}
+                >
+                  {trimFileName(Task_Details, f_name)}
+                </Typography>
+              </Tooltip>
+              {/* {item.size && (
                   <Typography
                     sx={{
                       fontFamily: "Inter",
@@ -173,45 +175,44 @@ const FileBox: React.FC<IProps> = ({
                     {fileSize}
                   </Typography>
                 )} */}
-                {handleClearFile && (
-                  <IconButton
-                    size="small"
-                    aria-label="clear selection"
-                    onClick={() => handleClearFile(item, "doc")}
-                  >
-                    <ClearIconSvgGray height="20" width="20" />
-                  </IconButton>
-                )}
-                {download ? (
-                  <a
-                    onClick={(e) => e.stopPropagation()}
-                    href={item.fileUrl}
-                    download={true}
-                    // style={{ border: "1px solid red" }}
-                  >
-                    <FileDownloadOutlinedIcon sx={{ color: "#1976D2" }} />
-                  </a>
-                ) : (
-                  <></>
-                )}
-              </Box>
-            );
-          })
-        ) : (
-          <Typography
-            sx={{
-              fontFamily: "Inter",
-              fontWeight: 450,
-              fontSize: "13px",
-              opacity: 0.9,
-              marginRight: "16px",
-              marginTop: "4px",
-            }}
-          >
-            No attachment found
-          </Typography>
-        )}
-      </Box>
+              {handleClearFile && (
+                <IconButton
+                  size="small"
+                  aria-label="clear selection"
+                  onClick={() => handleClearFile(item, "doc")}
+                >
+                  <ClearIconSvgGray height="20" width="20" />
+                </IconButton>
+              )}
+              {download ? (
+                <a
+                  onClick={(e) => e.stopPropagation()}
+                  href={item.fileUrl}
+                  download={true}
+                  // style={{ border: "1px solid red" }}
+                >
+                  <FileDownloadOutlinedIcon sx={{ color: "#1976D2" }} />
+                </a>
+              ) : (
+                <></>
+              )}
+            </Box>
+          );
+        })
+      ) : (
+        <Typography
+          sx={{
+            fontFamily: "Inter",
+            fontWeight: 450,
+            fontSize: "13px",
+            opacity: 0.9,
+            marginRight: "16px",
+            marginTop: "4px",
+          }}
+        >
+          No attachment found
+        </Typography>
+      )}
       {isOpen && (
         <ImagePreviewModal
           isPdfFile={true}
@@ -221,7 +222,7 @@ const FileBox: React.FC<IProps> = ({
           fileToView={fileToView}
         />
       )}
-    </>
+    </Box>
   );
 };
 

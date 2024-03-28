@@ -74,6 +74,7 @@ const CommentCard = ({
     return count;
   };
   const localCount = getVisibleChildrenCount();
+
   const handleResize = () => {
     setCount(localCount);
   };
