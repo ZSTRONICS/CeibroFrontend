@@ -230,6 +230,7 @@ const CommentCard = ({
                 width: "100%",
                 overflow: "hidden",
                 height: "72px",
+                marginTop: "10px",
                 border: !isCommentInitiator
                   ? "solid 1px #F4F4F4 "
                   : "solid 1px #CFECFF ",
@@ -319,6 +320,7 @@ const CommentCard = ({
         ) : null}
         {imagesWithComment && (
           <ReadMoreWrapper
+            isCommentcard={true}
             title=""
             count={imagesWithComment.length}
             type="imageWithDesp"

@@ -197,7 +197,7 @@ export default function DetailsHeader(props: IProps) {
           <Tooltip title={value}>
             <Typography
               sx={{
-                fontWeight: 600,
+                fontWeight: 500,
                 fontSize: "12px",
                 color: "#000",
                 maxWidth: `${dimensions.width - 10}px`,
@@ -214,7 +214,7 @@ export default function DetailsHeader(props: IProps) {
             <Typography
               ref={ellipsisContainerRef}
               style={{
-                fontWeight: 600,
+                fontWeight: 500,
                 fontSize: "12px",
                 color: "#000",
                 width: "auto",

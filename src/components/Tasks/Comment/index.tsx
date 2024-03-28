@@ -262,7 +262,6 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
                 paddingBottom: "3px",
                 paddingRight: "5px",
                 width: isMdScreen ? "20%" : "20%",
-                // border: "solid 1px red",
               }}
             >
               {`${description.length}/ 1500`}
@@ -325,7 +324,13 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
           }}
           onClick={handleSelectDocument}
         >
-          <AttachFileOutlinedIcon sx={{ color: "#818181" }} />
+          <AttachFileOutlinedIcon
+            sx={{
+              color: "#818181",
+              transform: "rotate(40deg)",
+              marginLeft: "5px",
+            }}
+          />
         </Box>
       </Box>
 

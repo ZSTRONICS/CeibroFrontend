@@ -389,7 +389,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         borderRadius: "4px",
         fontFamily: "Inter",
         fontSize: "12px",
-        fontWeight: 600,
+        fontWeight: 500,
         padding: "2px 8px",
       }}
     />
@@ -492,7 +492,8 @@ const DetailActions: React.FC<IProps> = (props) => {
             <Typography
               sx={{
                 fontWeight: "600",
-                fontSize: "0.875rem",
+                // fontSize: "0.875rem",
+                fontSize: "14px",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",

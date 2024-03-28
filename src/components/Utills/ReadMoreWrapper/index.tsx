@@ -29,12 +29,14 @@ interface ReadMoreWrapperProps {
   callback?: (file: File | any, type: fileType) => void;
   allowExpandedView?: boolean;
   download?: boolean;
+  isCommentcard?: boolean;
 }
 const ImageBoxWrapper = styled(Box)({
   marginRight: "10px",
 });
 
 const ReadMoreWrapper = ({
+  isCommentcard,
   imgcard,
   title,
   readMore = false,
@@ -286,6 +288,7 @@ const ReadMoreWrapper = ({
                         key={file._id + index}
                       >
                         <ImageBoxWithDesp
+                          isCommentcard={isCommentcard}
                           TaskDetails={true}
                           src={file.fileUrl}
                           comment={file.comment}

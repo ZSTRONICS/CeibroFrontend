@@ -5,13 +5,18 @@ interface IProps {
   handleClick?: () => void;
   type?: string;
   TaskDetails?: boolean;
+  isCommentcard?: boolean;
 }
 export default function ImageBox({
   src,
   handleClick,
   type,
   TaskDetails,
+  isCommentcard,
 }: IProps) {
+  const ImgWidth = isCommentcard ? "70px" : TaskDetails ? "80px" : "150px";
+  const ImgHeight = isCommentcard ? "70px" : TaskDetails ? "80px" : "150px";
+
   return (
     <Box
       onClick={() => handleClick && handleClick()}
@@ -28,8 +33,8 @@ export default function ImageBox({
         className="myDIV"
         loading="lazy"
         style={{
-          width: TaskDetails ? "80px" : "150px",
-          height: TaskDetails ? "80px" : "150px",
+          width: ImgWidth,
+          height: ImgHeight,
           borderRadius: "8px",
           objectFit: TaskDetails ? "cover" : "contain",
         }}

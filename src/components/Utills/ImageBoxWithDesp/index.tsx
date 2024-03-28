@@ -6,6 +6,7 @@ interface IProps {
   comment: string;
   TaskDetails?: boolean;
   handleClick: () => void;
+  isCommentcard?: boolean;
 }
 
 export default function ImageBoxWithDesp({
@@ -13,10 +14,12 @@ export default function ImageBoxWithDesp({
   comment,
   handleClick,
   TaskDetails,
+  isCommentcard,
 }: IProps) {
   return (
     <CustomStack sx={{ alignItems: "flex-start" }}>
       <ImageBox
+        isCommentcard={isCommentcard}
         TaskDetails={TaskDetails}
         src={src}
         handleClick={handleClick}

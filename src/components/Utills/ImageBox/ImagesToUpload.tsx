@@ -111,8 +111,8 @@ function ImagesToUpload(props: ImageUploadProps) {
                     className="myDIV"
                     loading="lazy"
                     style={{
-                      height: "90px",
-                      width: "90px",
+                      height: "70px",
+                      width: "70px",
                       borderRadius: "8px",
                     }}
                     src={URL.createObjectURL(localFile)}
