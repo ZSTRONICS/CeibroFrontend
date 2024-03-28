@@ -343,8 +343,6 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
           icon={<SendIcon />}
           disabled={disableBtn}
           loading={isSubmit}
-          // disabled={true}
-          // loading={true}
           sx={{
             height: "60px",
             borderRadius: "50%",
@@ -353,6 +351,9 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
             justifyContent: "center",
             alignItems: "center",
             transform: "scale(0.8) translateY(8px) ",
+            "&:hover": {
+              backgroundColor: "#0076C8",
+            },
           }}
         />
       </Box>

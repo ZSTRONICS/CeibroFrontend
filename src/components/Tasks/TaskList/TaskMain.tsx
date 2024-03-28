@@ -126,7 +126,7 @@ const TaskMain = (props: IProps) => {
         )
       );
     }
-    // setFilteredTask(filteredData);
+    setFilteredTask(filteredData);
   }, [selectedProjects.length, selectedTopicTags.length, selectedUsers.length]);
 
   const handleFilterRootTask = (taskRootState: string) => {
