@@ -2,7 +2,7 @@ import { IconButton, Menu } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import assets from "assets/assets";
 import { MenuItemTag } from "components/CustomTags";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 interface MenuProps {
   icon?: any;
@@ -35,6 +35,9 @@ const GenericMenu: React.FC<MenuProps> = ({
     setAnchorEl(null);
   };
   const isMenuDisabled = disableMenu || options.length === 0;
+
+  const anchorRef = useRef<HTMLAnchorElement>(null);
+
   return (
     <>
       <IconButton
@@ -88,14 +91,19 @@ const GenericMenu: React.FC<MenuProps> = ({
                 e.stopPropagation();
                 option.callBackHandler();
                 handleMenuClose();
+                anchorRef?.current?.click();
               }}
             >
               {isProjectGroup ? (
                 <a
+                  ref={anchorRef}
                   onClick={(e) => e.stopPropagation()}
                   href={data?.fileUrl}
                   download
-                  style={{ textDecoration: "none", color: "black" }}
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                  }}
                 >
                   {option.menuName}
                 </a>

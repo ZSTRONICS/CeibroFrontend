@@ -1,31 +1,26 @@
-import { Button } from "@mui/base";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
-import {
-  Avatar,
-  Box,
-  CardMedia,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Avatar, Box, CardMedia, Typography } from "@mui/material";
 import assets from "assets";
 import { GenericMenu } from "components/GenericComponents";
 import ImagePhotoViewer from "components/ImgLazyLoad/ImagePhotoViewer";
 import {
   DOC_EXT,
+  FILTER_DATA_BY_EXT,
   MEDIA_EXT,
   momentdeDateFormat,
 } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { PinIcon } from "components/material-ui/icons";
+import { CommentData, IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { taskActions } from "redux/action";
+import ShowmoreComponent from "./Showmore";
 
 interface Props {
-  commentData: any;
-  initiator: any;
+  commentData: CommentData;
+  initiator: UserInfo;
   isPinned: boolean;
   isPinnedView: boolean;
   taskId: string;
@@ -44,13 +39,6 @@ const CommentCard = ({
   taskId,
   eventId,
 }: Props) => {
-  const [showMore, setShowMore] = useState<boolean>(false);
-  const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down(1100));
-  const commentshowonlarge = useMediaQuery(
-    theme.breakpoints.between(1100, 1620)
-  );
-
   const dispatch = useDispatch();
   const boximgref = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState<number>(0);
@@ -61,22 +49,13 @@ const CommentCard = ({
     closeModal();
   };
 
-  const handleClick = () => {
-    setShowMore((prev) => !prev);
-    // if (showMore) {
-    //   setShowMore(!true);
-    // } else {
-    //   setShowMore(true);
-    // }
-  };
-
   const handleImgClick = (index: any) => {
     openModal();
     setCurrentImageIndex(index);
   };
+  const allDocsFiles = FILTER_DATA_BY_EXT(DOC_EXT, commentData.files);
+  const allMediaFiles = FILTER_DATA_BY_EXT(MEDIA_EXT, commentData.files);
 
-  const [doxdata, setdoxData] = useState([]);
-  const [Imgdata, setImgData] = useState([]);
   const getVisibleChildrenCount = () => {
     if (!boximgref.current) return 0;
     let count = 0;
@@ -98,17 +77,17 @@ const CommentCard = ({
   const handleResize = () => {
     setCount(localCount);
   };
+  let Imgdata: IFile[] = [];
+  let imagesWithComment: IFile[] = [];
+  allMediaFiles.forEach((localFile: IFile) => {
+    if (localFile.hasComment && localFile.comment.length > 0) {
+      imagesWithComment.push(localFile);
+    } else {
+      Imgdata.push(localFile);
+    }
+  });
 
   useEffect(() => {
-    const DoxfilteredData = commentData.files.filter((item: any) =>
-      DOC_EXT.includes(item.fileType)
-    );
-    const ImgfilteredData = commentData.files.filter((item: any) =>
-      MEDIA_EXT.includes(item.fileType)
-    );
-    setdoxData(DoxfilteredData);
-    setImgData(ImgfilteredData);
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
@@ -221,70 +200,26 @@ const CommentCard = ({
             />
           </Box>
         </Box>
-        <Box
-          sx={{
-            marginTop: "5px",
-            width: "95%",
-          }}
-        >
+        {commentData?.message && (
           <Box
             sx={{
-              fontSize: "14px",
-              fontWeight: "500",
-              lineHeight: "20px",
-              textAlign: "start",
-              overflowWrap: "break-word",
+              marginTop: "5px",
+              width: "95%",
             }}
           >
-            <pre
-              style={{
-                color: "#131516",
+            <Box
+              sx={{
                 fontSize: "14px",
                 fontWeight: "500",
-                fontFamily: "Inter",
-                wordWrap: "break-word",
-                whiteSpace: "pre-wrap",
-                overflowWrap: "anywhere",
+                lineHeight: "20px",
+                textAlign: "start",
+                overflowWrap: "break-word",
               }}
             >
-              {commentData && commentData?.message.length < 370 ? (
-                commentData.message
-              ) : showMore ? (
-                <>
-                  {`${commentData.message} `}
-                  <Button
-                    onClick={handleClick}
-                    style={{
-                      marginLeft: "5px",
-                      color: "#1976D2",
-                      border: "none",
-                      backgroundColor: "transparent",
-                      cursor: "pointer",
-                    }}
-                  >
-                    View less
-                  </Button>
-                </>
-              ) : (
-                <>
-                  {`${commentData.message.substring(0, 370)} ...`}
-                  <Button
-                    onClick={handleClick}
-                    style={{
-                      marginLeft: "5px",
-                      color: "#1976D2",
-                      border: "none",
-                      backgroundColor: "transparent",
-                      cursor: "pointer",
-                    }}
-                  >
-                    View more
-                  </Button>
-                </>
-              )}
-            </pre>
+              <ShowmoreComponent data={commentData?.message} count={370} />
+            </Box>
           </Box>
-        </Box>
+        )}
         {commentData && commentData?.files && Imgdata?.length >= 1 ? (
           <>
             <Box
@@ -309,7 +244,6 @@ const CommentCard = ({
                     width: "70px",
                     height: "70px",
                     marginLeft: index !== 0 ? "10px" : "",
-                    cursor: "pointer",
                   }}
                 >
                   {Imgdata &&
@@ -356,6 +290,7 @@ const CommentCard = ({
                       border: "1px solid #E2E4E5",
                       width: "100%",
                       position: "absolute",
+                      cursor: "pointer",
                     }}
                     image={items.fileUrl}
                   />
@@ -366,7 +301,7 @@ const CommentCard = ({
         ) : (
           ""
         )}
-        {doxdata.length >= 1 ? (
+        {allDocsFiles.length >= 1 ? (
           <Box
             sx={{
               display: "flex",
@@ -374,14 +309,23 @@ const CommentCard = ({
             }}
           >
             <ReadMoreWrapper
-              count={doxdata?.length}
+              count={allDocsFiles?.length}
               title=""
-              data={doxdata}
+              data={allDocsFiles}
               type="file"
               download={false}
             />
           </Box>
         ) : null}
+        {imagesWithComment && (
+          <ReadMoreWrapper
+            title=""
+            count={imagesWithComment.length}
+            type="imageWithDesp"
+            data={imagesWithComment}
+          />
+        )}
+
         <Box sx={{ width: "100%" }}>
           <Typography
             sx={{

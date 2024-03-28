@@ -1,6 +1,12 @@
 // const windowsMap = new Map();
 
-import { AssignedUserState, ITask, InvitedNumber, TaskRootState, TaskState } from "constants/interfaces";
+import {
+  AssignedUserState,
+  ITask,
+  InvitedNumber,
+  TaskRootState,
+  TaskState,
+} from "constants/interfaces";
 import _ from "lodash";
 import { MutableRefObject } from "react";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
@@ -300,8 +306,6 @@ export const getWidthWithMarginAndPadding = (
   return 0;
 };
 
-
-
 /**
  * Returns a record of task filters based on the provided parameters.
  *
@@ -368,7 +372,7 @@ export const calcUserSubState: Record<string, string> = {
   Pending: TaskState.INREVIEW,
   Closed: TaskState.DONE,
   Canceled: TaskState.CANCELED,
-  RejectClosed: TaskState.REJECT_CLOSED
+  RejectClosed: TaskState.REJECT_CLOSED,
 };
 
 /**
@@ -392,17 +396,31 @@ export function filterTasks(
   toMeState: TaskState | null = null,
   fromMeState: TaskState | null = null,
   isCreator: boolean = false,
-  isAssignedToMe: boolean = false,
+  isAssignedToMe: boolean = false
 ): ITask[] {
   const preFilterTask = (task: ITask) => {
     const isRootStateMatch = task.taskRootState === rootStateTag;
     const isHiddenByMeMatch = isHiddenByMe ? task.isHiddenByMe === true : true;
     const isCreatorMatch = isCreator ? task.isCreator === true : true;
-    const isAssignedToMeMatch = isAssignedToMe ? task.isAssignedToMe === true : true;
-    const isUserSubStateMatch = userSubState ? task.userSubState === userSubState : true;
+    const isAssignedToMeMatch = isAssignedToMe
+      ? task.isAssignedToMe === true
+      : true;
+    const isUserSubStateMatch = userSubState
+      ? task.userSubState === userSubState
+      : true;
     const isToMeStatusMatch = toMeState ? task.toMeState === toMeState : true;
-    const isFromMeStatusMatch = fromMeState ? task.fromMeState === fromMeState : true;
-    return isRootStateMatch && isCreatorMatch && isAssignedToMeMatch && isHiddenByMeMatch && isToMeStatusMatch && isFromMeStatusMatch && isUserSubStateMatch;
+    const isFromMeStatusMatch = fromMeState
+      ? task.fromMeState === fromMeState
+      : true;
+    return (
+      isRootStateMatch &&
+      isCreatorMatch &&
+      isAssignedToMeMatch &&
+      isHiddenByMeMatch &&
+      isToMeStatusMatch &&
+      isFromMeStatusMatch &&
+      isUserSubStateMatch
+    );
   };
 
   const filteredTasks: ITask[] = [];
@@ -412,6 +430,8 @@ export function filterTasks(
     }
   }
 
-  filteredTasks.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  filteredTasks.sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
   return filteredTasks;
 }

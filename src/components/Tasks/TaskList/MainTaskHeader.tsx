@@ -55,6 +55,7 @@ function MainTaskHeader(props: Props) {
                 padding: "5px 8px",
                 textTransform: "unset",
                 color: "#818181",
+                fontSize: "12px",
               }}
               onClick={() => setShowHiddenTasks(true)}
               variant="text"

@@ -167,7 +167,7 @@ const TaskCard = React.memo((props: IProps) => {
           </Span>
           <Typography
             sx={{
-              fontSize: "10px",
+              fontSize: "11px",
               color: "#605C5C",
               marginLeft: "10px",
               overflow: "hidden",
@@ -176,6 +176,7 @@ const TaskCard = React.memo((props: IProps) => {
               width: isXlScreen ? "25%" : "45%",
               display: "inline-block",
               transform: "translateY(4px)",
+              fontWeight: 500,
             }}
           >
             {project?.title}
@@ -217,7 +218,7 @@ const TaskCard = React.memo((props: IProps) => {
             <Box
               sx={{
                 borderRadius: "5px",
-                height: "75px",
+                height: "80px",
                 position: "relative",
                 width: isXlScreen ? "90px" : "90px",
                 display: "flex",
@@ -231,7 +232,7 @@ const TaskCard = React.memo((props: IProps) => {
                 <CardMedia
                   component="img"
                   sx={{
-                    height: "75px",
+                    height: "80px",
                     borderRadius: "5px",
                     width: "100%",
                   }}
@@ -247,7 +248,7 @@ const TaskCard = React.memo((props: IProps) => {
                 <Span
                   sx={{
                     position: "absolute",
-                    top: "68%",
+                    top: "69%",
                     left: "66%",
                     width: "25px",
                     height: "24.5px",
@@ -271,7 +272,7 @@ const TaskCard = React.memo((props: IProps) => {
               minWidth: isXlScreen ? "75%" : "80%",
               width: "100%",
               maxHeight: "100px",
-              height: files.length !== 0 ? "80px" : "max-content",
+              height: files.length !== 0 ? "87px" : "max-content",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
