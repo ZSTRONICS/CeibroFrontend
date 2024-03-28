@@ -380,6 +380,9 @@ button>span.MuiButton-startIcon {
   margin: 0;
 }
 
+div.openseadragon-canvas {
+  height: 93% !important;
+}
 
 .MuiFormControlLabel-label.Mui-disabled {
   color: black !important;

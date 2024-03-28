@@ -270,4 +270,5 @@ const PdfViewer = (props: IProps) => {
     </div>
   );
 };
+
 export default PdfViewer;

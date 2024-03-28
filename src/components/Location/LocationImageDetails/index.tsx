@@ -60,9 +60,9 @@ const LocationImageDetails = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [filterUsers, setFilterUsers] = useState<UserInfo[]>();
   const [filterTags, setFilterTags] = useState<string[]>();
-  const [filteredDrawingImages, setFilteredDrawingImages] = useState<
-    DrawingImageInterface[]
-  >([]);
+  // const [filteredDrawingImages, setFilteredDrawingImages] = useState<
+  //   DrawingImageInterface[]
+  // >([]);
   const [pinImages, setPinImages] = useState<PinImage[]>([]);
   const [selectedPinImage, setSelectedPinImage] = useState<PinImage>();
   const [showMore, setShowMore] = useState(false);

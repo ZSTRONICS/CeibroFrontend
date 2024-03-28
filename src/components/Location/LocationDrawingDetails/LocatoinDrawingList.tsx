@@ -3,7 +3,8 @@ import TaskDetails from "components/Tasks/TaskDetails";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { useTheme } from "@mui/material/styles";
 import { Heading2 } from "components/CustomTags";
-import DocumentReader from "components/pdfviewer";
+// import DocumentReader from "components/pdfviewer";
+import DeepZoomImgViewer from "components/pdfviewer/Components/DocumentViewer/DeepZoomImgViewer";
 import {
   AllTasksAllEvents,
   ITask,
@@ -358,11 +359,12 @@ const LocatoinDrawingList = ({
           }}
         >
           {selectedDrawing && selectedDrawing.fileUrl ? (
-            <DocumentReader
-              setPageDimensions={() => {}}
-              selectedDrawingUrl={selectedDrawing.fileUrl}
-            />
+            <DeepZoomImgViewer />
           ) : (
+            // <DocumentReader
+            //   setPageDimensions={() => {}}
+            //   selectedDrawingUrl={selectedDrawing.fileUrl}
+            // />
             <Heading2
               sx={{
                 fontWeight: 600,

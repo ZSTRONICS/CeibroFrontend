@@ -10,7 +10,12 @@ import RejectAndCloseIcon from "./TaskIcons/RejectAndCloseIcon";
 import ReplyIcon from "./TaskIcons/ReplyIcon";
 import { PinIcon } from "./pin/PinIcon";
 export * from "./ConfigIcons";
-export { AttachmentIcon } from "./attachment/Attachment";
+export {
+  AddIcon,
+  AttachmentIcon,
+  HomeIcon,
+  SubtractIcon,
+} from "./attachment/Attachment";
 export * from "./attachment/FileIconThumnails";
 export { ViewCommentsIco } from "./attachment/ViewCommentsIco";
 export { ChatIcon } from "./chat/Chat";

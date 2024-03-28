@@ -1,0 +1,11 @@
+.zoomButton {
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid rgb(194, 194, 194);
+    border-radius: 8px;
+}
+
+.zoomButton:hover {
+    cursor: pointer;
+}
