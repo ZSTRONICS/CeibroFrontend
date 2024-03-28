@@ -54,8 +54,9 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
         setLocalSelectedProjects(value);
         break;
       case "removeOption":
-      case "clear":
         setLocalSelectedProjects(value);
+        break;
+      case "clear":
         dispatch(taskActions.setSelectedProjects([]));
         break;
     }
