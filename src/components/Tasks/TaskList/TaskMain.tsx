@@ -24,13 +24,11 @@ import {
   getTaskFilters,
   searchInData,
 } from "utills/common";
-import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskNotFound from "../EmptyScreenDescription/TaskNotFound";
 import TaskFilters from "./TaskFilters";
 
 interface RouteParams {
   subtask: TaskFilterType;
-  // filterkey: string;
   taskuid: string;
 }
 interface IProps {
@@ -67,12 +65,12 @@ const TaskMain = (props: IProps) => {
   const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
   // const isTaskRoute = location.pathname.split("/");
   // const [currentTask, setCurrentTask] = useState<number>(-1);
-  const [emptyScreenContent, setEmptyScreenContent] = useState([
-    {
-      heading: "",
-      description: "",
-    },
-  ]);
+  // const [emptyScreenContent, setEmptyScreenContent] = useState([
+  //   {
+  //     heading: "",
+  //     description: "",
+  //   },
+  // ]);
 
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - HEADER_HEIGHT
@@ -86,18 +84,18 @@ const TaskMain = (props: IProps) => {
   );
   useEffect(() => {
     setFilteredTask(allTaskList);
-    clearTaskCardListCache();
     if (!findSelectedTask) {
       setSelectedTask(null);
     }
+    clearTaskCardListCache();
   }, [allTaskList.length]);
 
   useEffect(() => {
-    clearTaskCardListCache();
     if (allTaskList.length > 0) {
       handleSelectedTask(allTaskList[0]);
     }
-  }, [selectedRootTask]);
+    clearTaskCardListCache();
+  }, [subtask, selectedRootTask, selectedTask, allTaskList.length]);
 
   useEffect(() => {
     let filteredData = handleFilterRootTask(selectedTaskRootState);
@@ -196,7 +194,7 @@ const TaskMain = (props: IProps) => {
   // };
 
   const navigateToTask = (taskUID: string) => {
-    history.push(`/tasks/${subtask}/${taskUID}`);
+    history.push(`/tasks/${selectedRootTask}/${taskUID}`);
   };
 
   // useEffect(() => {
@@ -423,14 +421,14 @@ const TaskMain = (props: IProps) => {
     </Box>
   );
 
-  const EmptyScreen = () => (
-    <div style={{ height: windowHeight }}>
-      <EmptyScreenDescription
-        showWaterMark={true}
-        content={emptyScreenContent}
-      />
-    </div>
-  );
+  // const EmptyScreen = () => (
+  //   <div style={{ height: windowHeight }}>
+  //     <EmptyScreenDescription
+  //       showWaterMark={true}
+  //       content={emptyScreenContent}
+  //     />
+  //   </div>
+  // );
 
   const TASK_CARD_GAP_BETWEEN = 10;
 
@@ -452,12 +450,6 @@ const TaskMain = (props: IProps) => {
             }}
             selectedRootTask={selectedRootTask}
             showHiddenTasks={showHiddenTasks}
-            // selectedUsers={selectedUsers}
-            // setSelectedUsers={setSelectedUsers}
-            // selectedTopicTags={selectedTopicTags}
-            // setSelectedTopicTags={setSelectedTopicTags}
-            // selectedProjects={selectedProjects}
-            // setSelectedProjects={setSelectedProjects}
           />
         </Box>
         <Box sx={{ border: "1px solid #E2E4E5" }}></Box>

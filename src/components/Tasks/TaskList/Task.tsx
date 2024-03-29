@@ -265,18 +265,12 @@ function Task() {
 
   useEffect(() => {
     if (selectedTab) {
-      history.push(`/tasks/${selectedTab}`);
+      // history.push(`/tasks/${selectedTab}`);
       setSelectedTask(null);
       setCommentDiv(false);
     }
   }, [selectedTab, subtask]);
 
-  // useEffect(() => {
-  //   if (taskuid) {
-  //     console.log("taskuid", taskuid);
-  //     setCommentTab("Details");
-  //   }
-  // }, [taskuid]);
   useEffect(() => {
     if (windowWidth < 1199) {
       setCommentDiv(false);
