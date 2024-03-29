@@ -1,6 +1,9 @@
+import { Drawing } from "constants/interfaces";
 import { debounce } from "lodash";
 import OpenSeaDragon from "openseadragon";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { docsAction } from "redux/action";
 import ZoomButton from "./ZoomButtons/ZoomButton";
 
 export interface LocalDZISource {
@@ -92,21 +95,44 @@ function parseXMLDziString(dziString: string): XMLDZIObject {
 }
 
 function DeepZoomImgViewer({
-  imageToOpen, // navTo,
+  imageToOpen,
+  selectedDrawing, // navTo,
 }: {
   imageToOpen?: RemoteDZISource;
+  selectedDrawing: Drawing;
   // navTo?: NavCoordinates;
 }) {
   const viewerRef = useRef<OpenSeaDragon.Viewer | undefined>(undefined);
-
+  const dispatch = useDispatch();
   const [image, setImage] = useState<
     RemoteDZISource | LocalDZISource | undefined
   >({
-    dziURL:
-      "https://ceibro-development.s3.eu-north-1.amazonaws.com/drawingdzi/2024-03-26/mg3_1711439874038.dzi",
-    filesURL:
-      "https://ceibro-development.s3.eu-north-1.amazonaws.com/drawingdzi/2024-03-26/mg3_1711439874038/",
+    dziURL: selectedDrawing?.dziFileURL,
+    filesURL: selectedDrawing?.dziTileURL,
   });
+
+  useEffect(() => {
+    if (!selectedDrawing.dziFileURL && !selectedDrawing.dziTileURL) {
+      dispatch(
+        docsAction.getDrawingFileDZIUrls({
+          other: selectedDrawing._id,
+          success: (res: any) => {
+            if (res) {
+              console.log(res);
+              setImage({
+                dziURL: res.data.dziFileURL,
+                filesURL: res.data.dziTileURL,
+              });
+            }
+          },
+        })
+      );
+      // setImage({
+      //   dziURL: selectedDrawing?.dziFileURL,
+      //   filesURL: selectedDrawing?.dziTileURL,
+      // });
+    }
+  }, [selectedDrawing]);
 
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 

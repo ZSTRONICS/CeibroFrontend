@@ -39,6 +39,7 @@ function Task() {
   const [commentDiv, setCommentDiv] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<string>("Ongoing");
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
+  const [localTabIndex, setLocalTabIndex] = useState<number>(0);
   const [showHiddenTasks, setShowHiddenTasks] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [commentTab, setCommentTab] = useState<string>("");
@@ -98,7 +99,11 @@ function Task() {
         >
           <TaskIcon
             isTabs={true}
-            color={selectedTab === "Ongoing" ? "black" : "#0076C8"}
+            color={
+              selectedTab === "Ongoing" && localTabIndex === 0
+                ? "black"
+                : "#0076C8"
+            }
           />
         </Box>
       ),
@@ -125,7 +130,13 @@ function Task() {
           }}
         >
           <assets.CheckOutlinedIcon
-            sx={{ color: `${selectedTab === "Closed" ? "black" : "#0076C8"}` }}
+            sx={{
+              color: `${
+                selectedTab === "Closed" && localTabIndex === 1
+                  ? "black"
+                  : "#0076C8"
+              }`,
+            }}
           />
         </Box>
       ),
@@ -249,6 +260,7 @@ function Task() {
 
   const TabsDataLocal = showHiddenTasks ? ongoingClosedTasks : rootTaskFilter;
   const findTabIndex = TabsDataLocal.findIndex((tab) => tab.label === subtask);
+  const tabIndex = TabsDataLocal.findIndex((tab) => tab.label === selectedTab);
   useEffect(() => {
     if (isRenderEffect.current) {
       isRenderEffect.current = false;
@@ -265,11 +277,12 @@ function Task() {
 
   useEffect(() => {
     if (selectedTab) {
-      // history.push(`/tasks/${selectedTab}`);
+      history.push(`/tasks/${selectedTab}`);
       setSelectedTask(null);
       setCommentDiv(false);
     }
-  }, [selectedTab, subtask]);
+    setLocalTabIndex(tabIndex);
+  }, [selectedTab, subtask, showHiddenTasks]);
 
   useEffect(() => {
     if (windowWidth < 1199) {

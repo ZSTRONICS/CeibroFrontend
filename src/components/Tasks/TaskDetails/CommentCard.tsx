@@ -27,7 +27,7 @@ interface Props {
   eventId: string;
   isCommentInitiator: boolean;
   createdAt: any;
-  isTaskDetail: boolean;
+  isTaskDetail?: boolean;
 }
 
 const CommentCard = ({

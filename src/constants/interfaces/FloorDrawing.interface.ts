@@ -25,6 +25,9 @@ export interface Drawing {
     fileTag: string;
     fileUrl: string;
     uploadStatus: string;
+    s3Key: string;
+    dziFileURL: string;
+    dziTileURL?: string;
     access: string[];
     moduleType: string;
     moduleId: string | null;
