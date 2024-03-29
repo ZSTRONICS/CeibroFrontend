@@ -206,19 +206,13 @@ const CommentCard = ({
             sx={{
               marginTop: "5px",
               width: "95%",
+              fontSize: "14px",
+              fontWeight: "500",
+              textAlign: "start",
+              overflowWrap: "break-word",
             }}
           >
-            <Box
-              sx={{
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "20px",
-                textAlign: "start",
-                overflowWrap: "break-word",
-              }}
-            >
-              <ShowmoreComponent data={commentData?.message} count={370} />
-            </Box>
+            <ShowmoreComponent data={commentData?.message} count={370} />
           </Box>
         )}
         {commentData && commentData?.files && Imgdata?.length >= 1 ? (

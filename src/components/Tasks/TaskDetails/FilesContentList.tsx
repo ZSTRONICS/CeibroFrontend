@@ -1,4 +1,4 @@
-import { Avatar } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -51,7 +51,7 @@ function FilesContentList(props: IFilesContentList) {
               key={index}
               alignItems="flex-start"
               sx={{
-                borderBottom: "1px solid #E2E4E5",
+                borderTop: "1px solid #E2E4E5",
                 "& .MuiListItemSecondaryAction-root": {
                   right: "0",
                 },
@@ -82,16 +82,28 @@ function FilesContentList(props: IFilesContentList) {
                     onClick={() => isImgType && handleFileClick(file, index)}
                     sx={{
                       cursor: isImgType ? "pointer" : "",
-                      width: "40px",
-                      height: "40px",
+                      width: "55px",
+                      height: "54px",
                       border: "1px solid #E2E4E5",
+                      marginRight: "12px",
+                      marginBottom: "7px",
                     }}
                     alt={file.fileName}
                     variant="rounded"
                     srcSet={file.fileUrl}
                   />
                 ) : (
-                  getFileIconThumbnail(file.fileType, 35, 40)
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginRight: "12px",
+                      width: "54px",
+                      marginBottom: "7px",
+                    }}
+                  >
+                    {getFileIconThumbnail(file.fileType, 35, 35)}
+                  </Box>
                 )}
               </ListItemAvatar>
               <ListItemText
@@ -136,6 +148,7 @@ function FilesContentList(props: IFilesContentList) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            fontSize: "12px",
           }}
         >
           No files attached

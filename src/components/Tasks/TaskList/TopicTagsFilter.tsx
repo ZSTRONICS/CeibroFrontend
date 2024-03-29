@@ -129,7 +129,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
           />
           <p
             style={{
-              fontSize: "12px",
+              fontSize: "14px",
               // marginTop: "8px",
               overflowWrap: "break-word",
               width: "160px",

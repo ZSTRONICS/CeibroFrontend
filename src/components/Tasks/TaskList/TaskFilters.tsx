@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import { CustomStack } from "components/CustomTags";
 import { getDropdownOptions } from "components/Utills/Globals";
 import { isEmpty } from "lodash";
@@ -16,12 +16,6 @@ interface Props {
   handleClearAll: () => void;
   showHiddenTasks: boolean;
   selectedRootTask: string;
-  // selectedUsers: string[];
-  // selectedTopicTags: Topic[];
-  // selectedProjects: Project[];
-  // setSelectedUsers: Dispatch<SetStateAction<string[]>>;
-  // setSelectedTopicTags: Dispatch<SetStateAction<Topic[]>>;
-  // setSelectedProjects: Dispatch<SetStateAction<Project[]>>;
 }
 function TaskFilters(props: Props) {
   const dispatch = useDispatch();
@@ -30,15 +24,7 @@ function TaskFilters(props: Props) {
     handleClearAll,
     selectedRootTask,
     showHiddenTasks,
-    // selectedUsers,
-    // setSelectedUsers,
-    // selectedTopicTags,
-    // setSelectedTopicTags,
-    // selectedProjects,
-    // setSelectedProjects,
   } = props;
-  // const [selectedUsers, setSelectedUsers] = useState<UserInfo[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedTaskMenu, setSelectedTaskMenu] = useState<string>("All");
   var initialValues: any = {
     tags: [],
@@ -147,21 +133,8 @@ function TaskFilters(props: Props) {
 
   const handleChangeValues = (values: ChangeValueType, name: keyof any) => {
     if (values === undefined) {
-      // setSelectedUsers([]);
       dispatch(taskActions.setSelectedUsers([]));
-      // setSelectedData((prevSelectedData) => ({
-      //   ...prevSelectedData,
-      //   [name]: initialValues[name],
-      // }));
-      // setSelectedUsers(initialValues[name]);
     } else {
-      // setSelectedData((prevSelectedData) => ({
-      //   ...prevSelectedData,
-      //   [name]: value,
-      // }));
-      // const filteredUsers = userAllContacts.filter((contact: any) =>
-      //   values.some((value) => contact.userId == value.userId)
-      // );
       if (Array.isArray(values) && name !== "invitedNumbers") {
         const userIds = values.map((value: any) => value.userId);
         dispatch(taskActions.setSelectedUsers([...selectedUsers, ...userIds]));
@@ -186,7 +159,6 @@ function TaskFilters(props: Props) {
             alignItems: "center",
             width: "95%",
             height: "max-contnet",
-            // overflowX: "auto",
             overflowY: "hidden",
             marginTop: "14px",
             marginBottom: "14px",
@@ -198,6 +170,16 @@ function TaskFilters(props: Props) {
               selectedMenu={selectedTaskMenu}
             />
           )}
+          <Divider
+            sx={{
+              height: "32px",
+              color: "#E2E4E5",
+              marginRight: "10px",
+              marginTop: "2px",
+            }}
+            orientation="vertical"
+            flexItem
+          />
           <ProjectFilter TaskMain={true} options={allProjects} />
           <UserFilter
             name="assignedToState"

@@ -1,4 +1,4 @@
-import { Badge } from "@mui/material";
+import { Badge, Divider } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -113,9 +113,8 @@ export default function BasicTabs({
           <Tab
             key={index + tab.label}
             sx={{
-              marginLeft: showHiddenTasks ? TabsLeft : "2%",
-              // border: "solid 1px red",
-              width: "max-contnet",
+              marginLeft: isFileTabs ? "0%" : showHiddenTasks ? TabsLeft : "2%",
+              marginRight: isFileTabs ? "10px" : "",
               marginTop: isFileTabs ? "10px" : "0px",
               textTransform: "capitalize",
               fontWeight: 500,
@@ -159,6 +158,9 @@ export default function BasicTabs({
           />
         ))}
       </Tabs>
+      {/* {isFileTabs && ( */}
+      <Divider sx={{ border: "solid 1px white", backgroundColor: "white" }} />
+      {/* )} */}
       {tabsData.map((tab, index) => (
         <div
           key={index}

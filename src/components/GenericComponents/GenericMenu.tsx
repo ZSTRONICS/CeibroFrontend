@@ -90,14 +90,16 @@ const GenericMenu: React.FC<MenuProps> = ({
                 e.preventDefault();
                 e.stopPropagation();
                 option.callBackHandler();
-                handleMenuClose();
                 anchorRef?.current?.click();
+                handleMenuClose();
               }}
             >
               {isProjectGroup ? (
                 <a
                   ref={anchorRef}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    handleMenuClose();
+                  }}
                   href={data?.fileUrl}
                   download
                   style={{

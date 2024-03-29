@@ -322,7 +322,7 @@ const LocatoinDrawingList = ({
             ) : (
               <Heading2
                 sx={{
-                  fontWeight: 600,
+                  fontWeight: 500,
                   textAlign: "center",
                   position: "absolute",
                   top: "50%",

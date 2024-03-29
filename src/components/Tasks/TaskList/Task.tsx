@@ -434,6 +434,8 @@ function Task() {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
+                      fontSize: "12px",
+                      fontWeight: 500,
                     }}
                   >
                     Select any task

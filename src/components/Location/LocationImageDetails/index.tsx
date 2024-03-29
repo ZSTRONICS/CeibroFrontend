@@ -540,7 +540,9 @@ const LocationImageDetails = () => {
                       alignItems: "center",
                     }}
                   >
-                    <Typography variant="h6">No Data Found !</Typography>
+                    <Typography sx={{ fontSize: "14px", fontWeight: "500" }}>
+                      No data found!
+                    </Typography>
                   </Box>
                 ) : (
                   <Box
