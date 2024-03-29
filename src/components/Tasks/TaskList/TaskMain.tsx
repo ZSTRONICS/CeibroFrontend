@@ -84,18 +84,18 @@ const TaskMain = (props: IProps) => {
   );
   useEffect(() => {
     setFilteredTask(allTaskList);
+    clearTaskCardListCache();
     if (!findSelectedTask) {
       setSelectedTask(null);
     }
-    clearTaskCardListCache();
   }, [allTaskList.length]);
 
   useEffect(() => {
+    clearTaskCardListCache();
     if (allTaskList.length > 0) {
       handleSelectedTask(allTaskList[0]);
     }
-    clearTaskCardListCache();
-  }, [subtask, selectedRootTask, selectedTask, allTaskList.length]);
+  }, [selectedRootTask]);
 
   useEffect(() => {
     let filteredData = handleFilterRootTask(selectedTaskRootState);
@@ -194,7 +194,7 @@ const TaskMain = (props: IProps) => {
   // };
 
   const navigateToTask = (taskUID: string) => {
-    history.push(`/tasks/${selectedRootTask}/${taskUID}`);
+    history.push(`/tasks/${subtask}/${taskUID}`);
   };
 
   // useEffect(() => {
