@@ -188,7 +188,6 @@ const CommentCard = ({
                   }}
                 />
               }
-              isProjectGroup={false}
               options={[
                 {
                   menuName: isPinned ? "Unpin comment" : "Pin comment",

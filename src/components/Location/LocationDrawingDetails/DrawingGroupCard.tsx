@@ -153,7 +153,6 @@ function DrawingGroupCard({ group, projectName }: Props) {
             >
               <GenericMenu
                 isTaskSelected={!isSelectedGroup}
-                isProjectGroup={true}
                 options={[
                   {
                     menuName: "Mark as private",

@@ -83,7 +83,7 @@ const GenericMenu: React.FC<MenuProps> = ({
             <MenuItemTag
               key={option.menuName + index}
               sx={{
-                padding: `${isProjectGroup ? "8px" : "0 8px 0 8px"}`,
+                padding: `${isProjectGroup ? "8px" : "4px 8px 6px 8px"}`,
               }}
               disableGutters
               onClick={(e) => {

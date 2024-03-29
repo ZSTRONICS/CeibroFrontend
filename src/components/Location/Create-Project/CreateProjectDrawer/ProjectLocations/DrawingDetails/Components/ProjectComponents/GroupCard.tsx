@@ -223,7 +223,6 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
                   >
                     <GenericMenu
                       isTaskSelected={!isSelectedGroup}
-                      isProjectGroup={true}
                       options={[
                         {
                           menuName: "Mark as private",

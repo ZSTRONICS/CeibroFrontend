@@ -147,32 +147,6 @@ function DeepZoomImgViewer({
     viewer.open(dzi);
   };
 
-  // Only available on Chrome because of FileSystem Access API support.
-  const openLocalImage = async (
-    viewer: OpenSeaDragon.Viewer,
-    { dziHandle, filesHandle }: LocalDZISource
-  ) => {
-    const dziFile: File = await dziHandle.getFile();
-    const dziObject = parseXMLDziString(await dziFile.text());
-
-    const tileSource = {
-      fileHandle: filesHandle,
-      height: dziObject.Image.Size.Height,
-      width: dziObject.Image.Size.Width,
-      tileSize: dziObject.Image.TileSize,
-      tileOverlap: dziObject.Image.Overlap,
-      getTileUrl: function (level: number, x: number, y: number) {
-        return `${level}/${x}_${y}.${dziObject.Image.Format}`;
-      },
-    };
-
-    console.log(
-      `opening local image with dzi spec ${JSON.stringify(tileSource)}`
-    );
-
-    viewer.open(tileSource);
-  };
-
   // setup and teardown
   useEffect(() => {
     // toggle fullscreen button appearance when fullscreen
@@ -280,7 +254,6 @@ function DeepZoomImgViewer({
     if (image && viewer) {
       console.log("opening image.");
       if ("dziURL" in image) openRemoteImage(viewer, image);
-      else openLocalImage(viewer, image);
     } else {
       viewer?.close();
     }

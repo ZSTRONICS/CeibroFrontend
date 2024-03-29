@@ -4,7 +4,7 @@ import TaskDetails from "components/Tasks/TaskDetails";
 import { useTheme } from "@mui/material/styles";
 import { Heading2 } from "components/CustomTags";
 // import DocumentReader from "components/pdfviewer";
-import DZIViewerAnootation from "components/pdfviewer/Components/DocumentViewer/DZIViewerAnootation";
+import DeepZoomImgViewer from "components/pdfviewer/Components/DocumentViewer/DeepZoomImgViewer";
 import {
   AllTasksAllEvents,
   ITask,
@@ -359,9 +359,9 @@ const LocatoinDrawingList = ({
           }}
         >
           {selectedDrawing && selectedDrawing.fileUrl ? (
-            // <DeepZoomImgViewer />
-            <DZIViewerAnootation />
+            <DeepZoomImgViewer />
           ) : (
+            // <DZIViewerAnootation />
             // <DocumentReader
             //   setPageDimensions={() => {}}
             //   selectedDrawingUrl={selectedDrawing.fileUrl}

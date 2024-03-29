@@ -257,7 +257,6 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
               </IconButton>
               <GenericMenu
                 icon={<assets.AddIcon sx={{ color: "#0076C8" }} />}
-                isProjectGroup={true}
                 options={[
                   {
                     menuName: "From local device",

@@ -333,7 +333,6 @@ const DetailActions: React.FC<IProps> = (props) => {
       icon: (
         <GenericMenu
           icon={<RejectAndCloseIcon />}
-          isProjectGroup={true}
           options={[
             {
               menuName: "Reject-reopen",
