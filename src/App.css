@@ -553,3 +553,25 @@ button[disabled] {
     margin: 0;
   }
 }
+
+.my-editor {
+  grid-area: editor;
+  color: #fff;
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  font-size: 0.7rem;
+}
+
+.my-editor label {
+  display: block;
+  margin-bottom: 8px;
+}
+.my-editor input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.my-editor pre {
+  font-size: 0.7rem;
+}

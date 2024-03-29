@@ -1,3 +1,4 @@
+import { DZIAnnotaionManager } from "anootation-plugin";
 import { debounce } from "lodash";
 import OpenSeaDragon from "openseadragon";
 import { useEffect, useRef, useState } from "react";
@@ -44,11 +45,12 @@ const DEFAULT_OSD_SETTINGS: OpenSeaDragon.Options = {
   zoomPerClick: 1.75,
   zoomPerSecond: 4,
   zoomPerScroll: 1.175,
-
+  animationTime: 0.1,
   showNavigator: true,
+  // navigatorId: "osd-navigator",
   navigatorPosition: "TOP_RIGHT",
   navigatorBackground: "#fff",
-  navigatorDisplayRegionColor: "#ff0000",
+  navigatorDisplayRegionColor: "#ff0000", //  "transparent",
   navigatorSizeRatio: 0.15,
 };
 
@@ -91,12 +93,19 @@ function parseXMLDziString(dziString: string): XMLDZIObject {
   };
 }
 
-function DeepZoomImgViewer({
+function DZIViewerAnootation({
   imageToOpen, // navTo,
 }: {
   imageToOpen?: RemoteDZISource;
   // navTo?: NavCoordinates;
 }) {
+  // DZI Annotaiton INITs
+
+  const [annotations, setAnnotations] = useState<any>({});
+  const [selected, setSelected] = useState<any>(null);
+  const [draft, setDraft] = useState({ label: "", color: "" });
+
+  // DZI Viewer Inits
   const viewerRef = useRef<OpenSeaDragon.Viewer | undefined>(undefined);
 
   const [image, setImage] = useState<
@@ -147,32 +156,6 @@ function DeepZoomImgViewer({
     viewer.open(dzi);
   };
 
-  // Only available on Chrome because of FileSystem Access API support.
-  const openLocalImage = async (
-    viewer: OpenSeaDragon.Viewer,
-    { dziHandle, filesHandle }: LocalDZISource
-  ) => {
-    const dziFile: File = await dziHandle.getFile();
-    const dziObject = parseXMLDziString(await dziFile.text());
-
-    const tileSource = {
-      fileHandle: filesHandle,
-      height: dziObject.Image.Size.Height,
-      width: dziObject.Image.Size.Width,
-      tileSize: dziObject.Image.TileSize,
-      tileOverlap: dziObject.Image.Overlap,
-      getTileUrl: function (level: number, x: number, y: number) {
-        return `${level}/${x}_${y}.${dziObject.Image.Format}`;
-      },
-    };
-
-    console.log(
-      `opening local image with dzi spec ${JSON.stringify(tileSource)}`
-    );
-
-    viewer.open(tileSource);
-  };
-
   // setup and teardown
   useEffect(() => {
     // toggle fullscreen button appearance when fullscreen
@@ -187,6 +170,7 @@ function DeepZoomImgViewer({
     };
   }, []);
 
+  // DZI Viewer Initialization Effect
   useEffect(() => {
     // Create the viewer on initial render.
     if (viewerRef.current === undefined) {
@@ -200,9 +184,10 @@ function DeepZoomImgViewer({
       console.log("creating viewer.");
 
       // only one viewer object is used throughout.
-      const viewer = OpenSeaDragon({
+      const viewer: any = OpenSeaDragon({
         id: "osd-viewer",
         homeButton: HOME_BUTTON_ID,
+
         zoomInButton: ZOOM_IN_BUTTON_ID,
         zoomOutButton: ZOOM_OUT_BUTTON_ID,
         fullPageButton: FULLSCREEN_BUTTON_ID,
@@ -262,10 +247,77 @@ function DeepZoomImgViewer({
       viewer.addHandler("zoom", updateHashRoute);
 
       viewerRef.current = viewer;
-    }
 
-    setImage(imageToOpen);
+      console.log("DZI Viewer Init Success ! ");
+      console.log("Init DZI Annotations ");
+
+      const myAnno: any = new DZIAnnotaionManager(viewer, {
+        channelName: "my-anno",
+      })
+        .restore(Object.values(annotations))
+        .activate();
+
+      for (const { id, color } of Object.values<any>(annotations)) {
+        const hostElement = document.getElementById(id);
+        hostElement?.style.setProperty("--COLOR", color);
+      }
+
+      const channel = new BroadcastChannel("my-anno");
+      channel.onmessage = ({ data: message }) => {
+        const { type, data } = message;
+        switch (type) {
+          case "annotation:added": {
+            const item = { ...data, labels: [] };
+            setAnnotations((prevAnnotations: any) => ({
+              ...prevAnnotations,
+              [data.id]: item,
+            }));
+            break;
+          }
+          case "annotation:updated": {
+            const item = { ...annotations[data.id], ...data };
+            setAnnotations((prevAnnotations: any) => ({
+              ...prevAnnotations,
+              [data.id]: item,
+            }));
+            if (selected?.id === data.id) setSelected(item);
+            break;
+          }
+          case "annotation:removed": {
+            const updatedAnnotations = { ...annotations };
+            delete updatedAnnotations[data.id];
+            setAnnotations(updatedAnnotations);
+            break;
+          }
+          case "annotation:selected": {
+            setSelected(annotations[data.id]);
+            setDraft({
+              label: annotations[data.id]?.labels.join(", "),
+              color: annotations[data.id]?.color,
+            });
+            break;
+          }
+          case "annotation:deselected": {
+            setSelected(null);
+            setDraft({ label: "", color: "" });
+            break;
+          }
+          default:
+            break;
+        }
+      };
+      setImage(imageToOpen);
+
+      return () => {
+        // channel.onmessage = null;
+        // channel.close();
+        // myAnno.destroy();
+        // viewer.destroy();
+      };
+    }
   }, []);
+
+  // }, []);
 
   // update image state when prop is updated
   // never actually used in this application, I think?
@@ -280,11 +332,55 @@ function DeepZoomImgViewer({
     if (image && viewer) {
       console.log("opening image.");
       if ("dziURL" in image) openRemoteImage(viewer, image);
-      else openLocalImage(viewer, image);
     } else {
       viewer?.close();
     }
   }, [image]);
+
+  const handleLabelChange = (e: { target: { value: string } }) => {
+    const labels = e.target.value
+      .split(",")
+      .map((label: string) => label.trim())
+      .filter(Boolean);
+    setDraft((prevDraft) => ({ ...prevDraft, label: e.target.value }));
+    if (selected) {
+      setAnnotations((prevAnnotations: { [x: string]: any }) => ({
+        ...prevAnnotations,
+        [selected.id]: { ...prevAnnotations[selected.id], labels },
+      }));
+      setSelected((prevSelected: any) => ({ ...prevSelected, labels }));
+    }
+  };
+
+  const handleColorChange = (e: { target: { value: any } }) => {
+    const color = e.target.value;
+    setDraft((prevDraft) => ({ ...prevDraft, color }));
+    if (selected) {
+      setAnnotations((prevAnnotations: { [x: string]: any }) => ({
+        ...prevAnnotations,
+        [selected.id]: { ...prevAnnotations[selected.id], color },
+      }));
+      setSelected((prevSelected: any) => ({ ...prevSelected, color }));
+      const hostElement = document.getElementById(selected.id);
+      hostElement?.style.setProperty("--COLOR", color);
+    }
+  };
+
+  const handleAddAnnotation = () => {
+    const id = `anno-${Date.now()}`;
+    const newItem = {
+      id,
+      location: [20, 20, 0, 0],
+      labels: [],
+      color: "tomato",
+    };
+    setAnnotations((prevAnnotations: any) => ({
+      ...prevAnnotations,
+      [id]: newItem,
+    }));
+    setSelected(newItem);
+  };
+
   return (
     <div
       id="osd-viewer"
@@ -299,21 +395,36 @@ function DeepZoomImgViewer({
         idZoomOut={ZOOM_OUT_BUTTON_ID}
         homeBtnId={HOME_BUTTON_ID}
       />
-      {/* <SquareButton
-        className={style.homeButton}
-        id={HOME_BUTTON_ID}
-        icon="home"
-      />
-      {!imageToOpen && (
-        <FileMenu setImageCallback={setImage} className={style.menuButton} />
-      )}
-      <SquareButton
-        className={style.fullscreenButton}
-        id={FULLSCREEN_BUTTON_ID}
-        icon={!isFullscreen ? "fullscreen" : "exitFullscreen"}
-      /> */}
+
+      <div className="my-editor">
+        {selected === null ? (
+          <div>Not selected</div>
+        ) : (
+          <div>
+            {/* <label htmlFor="labels">Labels</label>
+            <input
+              type="text"
+              id="labels"
+              placeholder="foo, bar"
+              value={draft.label}
+              onChange={handleLabelChange}
+            />
+            <hr />
+            <div>Color</div> */}
+            {/* <select value={draft.color} onChange={handleColorChange}>
+              <option value="" disabled>
+                Not selected
+              </option>
+              <option value="tomato">tomato</option>
+              <option value="lime">lime</option>
+              <option value="aqua">aqua</option>
+            </select> */}
+          </div>
+        )}
+        <pre>{JSON.stringify(selected, null, 2)}</pre>
+      </div>
     </div>
   );
 }
 
-export default DeepZoomImgViewer;
+export default DZIViewerAnootation;
