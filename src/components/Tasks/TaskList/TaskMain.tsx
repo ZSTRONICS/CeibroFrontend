@@ -430,7 +430,7 @@ const TaskMain = (props: IProps) => {
   //   </div>
   // );
 
-  const TASK_CARD_GAP_BETWEEN = 10;
+  const TASK_CARD_GAP_BETWEEN = 14;
 
   return (
     <>
