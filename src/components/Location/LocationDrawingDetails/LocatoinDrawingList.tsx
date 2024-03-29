@@ -223,7 +223,12 @@ const LocatoinDrawingList = ({
             width: "100%",
           }}
         >
-          <Box sx={{ width: "100%", backgroundColor: "white" }}>
+          <Box
+            sx={{
+              width: "100%",
+              backgroundColor: "white",
+            }}
+          >
             <LocationTaskHead
               Taskbtn={Taskbtn}
               isSmallView={!s1}

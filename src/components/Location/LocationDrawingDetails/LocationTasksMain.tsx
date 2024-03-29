@@ -121,18 +121,20 @@ function LocationTasksMain(props: IProps) {
           ))}
         </Box>
       ) : (
-        <VariableSizeList
-          ref={taskCardListRef}
-          style={{ overflowY: "auto" }}
-          height={windowActualHeight}
-          itemCount={allTasks.length}
-          overscanCount={20}
-          layout="vertical"
-          itemSize={(index) => getTaskCardHeight(allTasks[index]) + 10}
-          width={"100%"}
-        >
-          {LocationTaskRow}
-        </VariableSizeList>
+        <Box sx={{ overflow: "auto", width: "100%" }}>
+          <VariableSizeList
+            ref={taskCardListRef}
+            style={{ overflowY: "auto" }}
+            height={windowActualHeight}
+            itemCount={allTasks.length}
+            overscanCount={20}
+            layout="vertical"
+            itemSize={(index) => getTaskCardHeight(allTasks[index]) + 10}
+            width={"350px"}
+          >
+            {LocationTaskRow}
+          </VariableSizeList>
+        </Box>
       )}
     </>
   );
