@@ -1,4 +1,4 @@
-import { Box, Grid, useMediaQuery } from "@mui/material";
+import { Box, CircularProgress, Grid, useMediaQuery } from "@mui/material";
 import TaskDetails from "components/Tasks/TaskDetails";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { useTheme } from "@mui/material/styles";
@@ -359,27 +359,33 @@ const LocatoinDrawingList = ({
           }}
         >
           {selectedDrawing && selectedDrawing.fileUrl ? (
-            <DeepZoomImgViewer />
+            <DeepZoomImgViewer selectedDrawing={selectedDrawing} />
           ) : (
             // <DZIViewerAnootation />
             // <DocumentReader
             //   setPageDimensions={() => {}}
             //   selectedDrawingUrl={selectedDrawing.fileUrl}
             // />
-            <Heading2
-              sx={{
-                fontWeight: 600,
-                textAlign: "center",
-                position: "absolute",
-                top: "50%",
-                bottom: "0%",
-                left: "0%",
-                right: "0%",
-                margin: "auto",
-              }}
-            >
-              Drawing file not found!
-            </Heading2>
+            <>
+              {" "}
+              <Box sx={{ textAlign: "center" }}>
+                <CircularProgress size={40} />
+              </Box>
+              <Heading2
+                sx={{
+                  fontWeight: 600,
+                  textAlign: "center",
+                  position: "absolute",
+                  top: "50%",
+                  bottom: "0%",
+                  left: "0%",
+                  right: "0%",
+                  margin: "auto",
+                }}
+              >
+                Drawing file not found!
+              </Heading2>
+            </>
           )}
         </Grid>
       </Grid>

@@ -260,7 +260,7 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
                 fontWeight: 500,
                 color: "#757575",
                 paddingBottom: "3px",
-                paddingRight: "5px",
+                paddingRight: "2px",
                 width: isMdScreen ? "20%" : "20%",
               }}
             >

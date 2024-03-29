@@ -32,6 +32,7 @@ import {
   projectProfileInterface,
   rolesTemplate,
 } from "constants/interfaces/project.interface";
+import { findIndex } from "lodash";
 import {
   requestFail,
   requestPending,
@@ -203,11 +204,21 @@ const NavigationReducer = (
         ...state,
       };
     }
+    case PROJECT_CONFIG.DRAWING_FILE_UPDATED: {
+      const drawingToUpdate = state.selectedDrawingFiles.find((drawing) => drawing._id === action.payload._id);
+      if (drawingToUpdate) {
+        Object.assign(drawingToUpdate, {
+          dziFileURL: action.payload.dziFileURL,
+          dziTileURL: action.payload.dziTileURL,
+        });
+      }
+      return {
+        ...state,
+      };
+    }
 
     case PROJECT_CONFIG.GROUP_DRAWING_FILE_UPLOADED:
-      const findGroupIndex = state.allGroups.findIndex(
-        (group: any) => String(group._id) === String(action.payload.groupId)
-      );
+      const findGroupIndex = findIndex(state.allGroups, (group) => String(group._id) === String(action.payload.groupId));
 
       if (findGroupIndex > -1) {
         const drawingIndex = state.allGroups[findGroupIndex].drawings.findIndex(
