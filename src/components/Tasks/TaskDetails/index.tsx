@@ -163,6 +163,7 @@ function TaskDetails(props: IProps) {
             <SubLabelTag>Pinned comments</SubLabelTag>
             {pinnedComments.map((comment, index) => (
               <CommentCard
+                isTaskDetail={true}
                 key={index}
                 isPinnedView={true}
                 commentData={comment.commentData}

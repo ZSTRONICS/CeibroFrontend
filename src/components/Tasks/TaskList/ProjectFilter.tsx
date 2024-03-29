@@ -13,12 +13,13 @@ import { RootState } from "redux/reducers";
 interface ProjectFilterProps {
   TaskMain?: boolean;
   options: Project[];
+  disabled?: boolean;
 }
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
+const ProjectFilter = ({ options, TaskMain, disabled }: ProjectFilterProps) => {
   const autocompleteRef = useRef(null);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
@@ -75,7 +76,7 @@ const ProjectFilter = ({ options, TaskMain }: ProjectFilterProps) => {
 
   return (
     <Autocomplete
-      // disabled
+      disabled={disabled}
       ref={autocompleteRef}
       open={isOpen}
       onOpen={(e) => {

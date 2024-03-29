@@ -260,7 +260,7 @@ const TaskCard = React.memo((props: IProps) => {
                     alignItems: "center",
                   }}
                 >
-                  {`+${files.length - 1}`}
+                  {`+${files.length}`}
                 </Span>
               )}
             </Box>

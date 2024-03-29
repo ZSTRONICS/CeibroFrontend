@@ -170,25 +170,38 @@ function TaskFilters(props: Props) {
               selectedMenu={selectedTaskMenu}
             />
           )}
-          <Divider
-            sx={{
-              height: "32px",
-              color: "#E2E4E5",
-              marginRight: "10px",
-              marginTop: "2px",
-            }}
-            orientation="vertical"
-            flexItem
+          {!showHiddenTasks ? (
+            <Divider
+              sx={{
+                height: "32px",
+                color: "#E2E4E5",
+                marginRight: "10px",
+                marginTop: "2px",
+              }}
+              orientation="vertical"
+              flexItem
+            />
+          ) : (
+            ""
+          )}
+          <ProjectFilter
+            disabled={true}
+            TaskMain={true}
+            options={allProjects}
           />
-          <ProjectFilter TaskMain={true} options={allProjects} />
           <UserFilter
+            disabled={true}
             name="assignedToState"
             label={"Users"}
             contacts={userAllContacts}
             recentUserContact={recentUserContact}
             handleChangeValues={handleChangeValues}
           />
-          <TopicTagsFilter TaskMain={true} options={Topics.allTopics} />
+          <TopicTagsFilter
+            disabled={true}
+            TaskMain={true}
+            options={Topics.allTopics}
+          />
         </Box>
         <Box
           sx={{
@@ -198,7 +211,6 @@ function TaskFilters(props: Props) {
             textTransform: "unset",
             display: "inline",
             minWidth: "60px",
-            marginTop: "10px",
             cursor: "pointer",
             transform: "translateX(5px)",
           }}

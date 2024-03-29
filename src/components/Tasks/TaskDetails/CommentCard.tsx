@@ -27,6 +27,7 @@ interface Props {
   eventId: string;
   isCommentInitiator: boolean;
   createdAt: any;
+  isTaskDetail: boolean;
 }
 
 const CommentCard = ({
@@ -38,6 +39,7 @@ const CommentCard = ({
   createdAt,
   taskId,
   eventId,
+  isTaskDetail,
 }: Props) => {
   const dispatch = useDispatch();
   const boximgref = useRef<HTMLDivElement>(null);
@@ -127,7 +129,7 @@ const CommentCard = ({
           flexDirection: "column",
           marginTop: "10px",
           marginRight: !isPinnedView ? "10px" : "0px",
-          marginLeft: isCommentInitiator ? "40%" : "8px",
+          marginLeft: isCommentInitiator ? "40%" : isTaskDetail ? "0px" : "8px",
         }}
       >
         <Box
@@ -328,6 +330,7 @@ const CommentCard = ({
               float: "right",
               fontSize: "12px",
               color: "#605C5C",
+              marginTop: "7px",
             }}
           >
             {momentdeDateFormat(createdAt)}

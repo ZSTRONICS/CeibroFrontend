@@ -98,6 +98,7 @@ const GenericMenu: React.FC<MenuProps> = ({
                 <a
                   ref={anchorRef}
                   onClick={(e) => {
+                    e.stopPropagation();
                     handleMenuClose();
                   }}
                   href={data?.fileUrl}

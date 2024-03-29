@@ -211,6 +211,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           // marginRight: "10px",
           backgroundColor: "#E85555",
           textTransform: "unset",
+          height: "36px",
           "&:hover": {
             border: "none",
             backgroundColor: "#E85555",
@@ -230,6 +231,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         variant="contained"
         onClick={() => (isHide ? handleHideUnHide(label) : handleDoneClick())}
         sx={{
+          height: "36px",
           ml: 0.7,
           backgroundColor: isHide ? "#F4F4F4" : "#0076C8",
           color: isHide ? "#818181" : "white",
@@ -289,7 +291,12 @@ const DetailActions: React.FC<IProps> = (props) => {
                   )}
                   <LoadingButton
                     onClick={callback}
-                    sx={{ maxWidth: "35px", minWidth: "35px" }}
+                    sx={{
+                      maxWidth: "35px",
+                      minWidth: "35px",
+                      height: "36px",
+                      // border: "solid 1px red",
+                    }}
                   >
                     {icon}
                   </LoadingButton>

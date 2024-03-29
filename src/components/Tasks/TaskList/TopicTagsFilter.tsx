@@ -14,12 +14,17 @@ import { RootState } from "redux/reducers";
 interface TopicTagsFilterProps {
   options: Topic[];
   TaskMain?: boolean;
+  disabled?: boolean;
 }
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
+const TopicTagsFilter = ({
+  options,
+  TaskMain,
+  disabled,
+}: TopicTagsFilterProps) => {
   const tagRef = useRef(null);
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
@@ -73,7 +78,7 @@ const TopicTagsFilter = ({ options, TaskMain }: TopicTagsFilterProps) => {
 
   return (
     <Autocomplete
-      // disabled
+      disabled={disabled}
       disableClearable={true}
       ref={tagRef}
       open={isShow}

@@ -22,6 +22,7 @@ interface IProps {
   label: string;
   contacts: Contact[];
   recentUserContact: Contact[];
+  disabled?: boolean;
   createCallback?: (type: string, label: string) => void;
   handleChangeValues: (
     value: ChangeValueType,
@@ -178,7 +179,6 @@ function UserFilter(props: IProps) {
       <div
         style={{
           display: "flex",
-          marginTop: "4px",
           marginLeft: "12px",
         }}
       >
@@ -211,7 +211,7 @@ function UserFilter(props: IProps) {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
-        // disabled
+        disabled={props.disabled}
         variant="standard"
         sx={{
           "& .MuiSelect-icon": {
