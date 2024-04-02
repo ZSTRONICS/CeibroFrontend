@@ -48,9 +48,13 @@ function FilesContentList(props: IFilesContentList) {
           const isImgType = MEDIA_EXT.includes(file.fileType);
           return (
             <ListItem
+              onClick={() => {
+                isImgType && handleFileClick(file, index);
+              }}
               key={index}
               alignItems="flex-start"
               sx={{
+                cursor: isImgType ? "pointer" : "",
                 borderTop: "1px solid #E2E4E5",
                 "& .MuiListItemSecondaryAction-root": {
                   right: "0",

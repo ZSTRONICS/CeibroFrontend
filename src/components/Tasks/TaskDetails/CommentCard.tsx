@@ -118,7 +118,7 @@ const CommentCard = ({
     <>
       <Box
         sx={{
-          padding: "16px ",
+          padding: "12px ",
           backgroundColor: showBg,
           display: "flex",
           alignItems: "flex-start",
@@ -127,7 +127,7 @@ const CommentCard = ({
           width: "max-contnet",
           borderRadius: "15px",
           flexDirection: "column",
-          marginTop: "10px",
+          marginTop: "11px",
           marginRight: !isPinnedView ? "10px" : "0px",
           marginLeft: isCommentInitiator ? "40%" : isTaskDetail ? "0px" : "8px",
         }}
@@ -330,7 +330,7 @@ const CommentCard = ({
               float: "right",
               fontSize: "12px",
               color: "#605C5C",
-              marginTop: "7px",
+              marginTop: "1px",
             }}
           >
             {momentdeDateFormat(createdAt)}

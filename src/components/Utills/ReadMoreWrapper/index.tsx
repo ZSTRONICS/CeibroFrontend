@@ -160,196 +160,198 @@ const ReadMoreWrapper = ({
   return (
     <>
       <Box key={`key${useId()}` + 1} sx={{ width: "100%" }}>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "14px",
-          }}
-        >
-          <Typography
-            sx={{
-              fontFamily: "Inter",
-              fontWeight: 600,
-              fontSize: "12px",
-              color: "#605c5c",
-              lineHeight: "16px",
-              width: "100%",
-              overflowWrap: "anywhere",
-            }}
-          >
-            {title}
-          </Typography>
+        {title && (
           <Box
             sx={{
               width: "100%",
               display: "flex",
-              justifyContent: "space-between",
-              overflow: "hidden",
+              flexDirection: "column",
             }}
           >
+            <Typography
+              sx={{
+                fontFamily: "Inter",
+                fontWeight: 600,
+                fontSize: "12px",
+                color: "#605c5c",
+                lineHeight: "16px",
+                width: "100%",
+                overflowWrap: "anywhere",
+                mb: 0.75,
+              }}
+            >
+              {title}
+            </Typography>
             <Box
               sx={{
                 width: "100%",
-                px: "0px",
-                maxWidth: "95%",
+                display: "flex",
+                justifyContent: "space-between",
+                overflow: "hidden",
               }}
             >
-              {type === "text" && (
-                <pre
-                  ref={despRef}
-                  style={{
-                    fontWeight: 400,
-                    fontSize: "14px",
-                    fontFamily: "Inter",
-                    color: "#000",
-                    maxHeight: `${height}`,
-                    overflow: "hidden",
-                    wordWrap: "break-word",
-                    whiteSpace: "pre-wrap",
-                    overflowWrap: "anywhere",
-                  }}
-                >
-                  {data ? String(data) : "N/A"}
-                </pre>
-              )}
-              {type === "image" && data && data.length > 0 && (
-                <Box
-                  ref={imageRef}
-                  sx={{
-                    maxHeight: `${height}`,
-                    width: "100%",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "10px",
-                  }}
-                >
-                  {
-                    // imgcard
-                    //   ? (data as IFile[]).map((file: IFile, index: any) => {
-                    //       return (
-                    //         <ImageBoxWrapper key={file._id + index}>
-                    //           <CardMedia
-                    //             component="img"
-                    //             sx={{
-                    //               height: "100px",
-                    //               borderRadius: "5px",
-                    //               width: "100px",
-                    //               marginLeft: index === 0 ? null : "15px",
-                    //             }}
-                    //             image={files[0].fileUrl}
-                    //             image={
-                    //               "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8"
-                    //             }
-                    //           />
-                    //         </ImageBoxWrapper>
-                    //       );
-                    //     })
-                    // :
-                    data &&
-                      (data as IFile[]).map((file: IFile, index: any) => {
-                        return (
-                          <ImageBoxWrapper key={file._id + index}>
-                            <ImageBox
-                              TaskDetails={true}
-                              src={file.fileUrl}
-                              handleClick={() => {
-                                handleClick(data, index);
-                              }}
-                            />
-                          </ImageBoxWrapper>
-                        );
-                      })
-                  }
-                </Box>
-              )}
-              {type === "imageWithDesp" && data && data.length > 0 && (
-                <Box
-                  ref={imageWithCommentRef}
-                  sx={{
-                    maxHeight: `${height}`,
-                    width: "100%",
-                    padding: "10px 0px 16px 0px",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    rowGap: "10px",
-                  }}
-                >
-                  {(data as IFile[]).map((file: IFile, index: any) => {
-                    return (
-                      <ImageBoxWrapper
-                        sx={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "start",
-                          alignItems: "start",
-                        }}
-                        key={file._id + index}
-                      >
-                        <ImageBoxWithDesp
-                          isCommentcard={isCommentcard}
-                          TaskDetails={true}
-                          src={file.fileUrl}
-                          comment={file.comment}
-                          handleClick={() => {
-                            handleClick(data, index);
+              <Box
+                sx={{
+                  width: "100%",
+                  px: "0px",
+                  maxWidth: "95%",
+                }}
+              >
+                {type === "text" && (
+                  <pre
+                    ref={despRef}
+                    style={{
+                      fontWeight: 400,
+                      fontSize: "14px",
+                      fontFamily: "Inter",
+                      color: "#000",
+                      maxHeight: `${height}`,
+                      overflow: "hidden",
+                      wordWrap: "break-word",
+                      whiteSpace: "pre-wrap",
+                      overflowWrap: "anywhere",
+                    }}
+                  >
+                    {data ? String(data) : "N/A"}
+                  </pre>
+                )}
+                {type === "image" && data && data.length > 0 && (
+                  <Box
+                    ref={imageRef}
+                    sx={{
+                      maxHeight: `${height}`,
+                      width: "100%",
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "10px",
+                    }}
+                  >
+                    {
+                      // imgcard
+                      //   ? (data as IFile[]).map((file: IFile, index: any) => {
+                      //       return (
+                      //         <ImageBoxWrapper key={file._id + index}>
+                      //           <CardMedia
+                      //             component="img"
+                      //             sx={{
+                      //               height: "100px",
+                      //               borderRadius: "5px",
+                      //               width: "100px",
+                      //               marginLeft: index === 0 ? null : "15px",
+                      //             }}
+                      //             image={files[0].fileUrl}
+                      //             image={
+                      //               "https://images.unsplash.com/photo-1707343845208-a20c56d2c8ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHx8"
+                      //             }
+                      //           />
+                      //         </ImageBoxWrapper>
+                      //       );
+                      //     })
+                      // :
+                      data &&
+                        (data as IFile[]).map((file: IFile, index: any) => {
+                          return (
+                            <ImageBoxWrapper key={file._id + index}>
+                              <ImageBox
+                                TaskDetails={true}
+                                src={file.fileUrl}
+                                handleClick={() => {
+                                  handleClick(data, index);
+                                }}
+                              />
+                            </ImageBoxWrapper>
+                          );
+                        })
+                    }
+                  </Box>
+                )}
+                {type === "imageWithDesp" && data && data.length > 0 && (
+                  <Box
+                    ref={imageWithCommentRef}
+                    sx={{
+                      maxHeight: `${height}`,
+                      width: "100%",
+                      padding: "10px 0px 16px 0px",
+                      display: "flex",
+                      flexWrap: "wrap",
+                      rowGap: "10px",
+                    }}
+                  >
+                    {(data as IFile[]).map((file: IFile, index: any) => {
+                      return (
+                        <ImageBoxWrapper
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "start",
+                            alignItems: "start",
                           }}
-                        />
-                      </ImageBoxWrapper>
-                    );
-                  })}
-                </Box>
-              )}
-              {type === "file" && (
-                <Box
-                  sx={{
-                    maxHeight: `${allowExpandedView ? height : "auto"}`,
-                  }}
-                >
-                  <FileBox
-                    fileCompRef={fileCompRef}
-                    title={title}
-                    files={data}
-                    handleClearFile={callback}
-                    download={download}
-                  />
-                </Box>
-              )}
-              {children ?? ""}
-            </Box>
-            <Box sx={{ display: "flex" }}>
-              {!isExpanded && isReadMore && localCount && localCount > 0 ? (
-                <Box
-                  sx={{
-                    fontFamily: "Inter",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#0076C8",
-                    paddingRight: "4px",
-                    display: "flex",
-                  }}
-                >
-                  +{localCount}
-                </Box>
-              ) : (
-                <></>
-              )}
-              {isReadMore && allowExpandedView && (
-                <IconButton
-                  onClick={handleMore}
-                  sx={{ height: "24px", width: "40px", cursor: "pointer" }}
-                >
-                  {isExpanded ? (
-                    <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
-                  ) : (
-                    <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
-                  )}
-                </IconButton>
-              )}
+                          key={file._id + index}
+                        >
+                          <ImageBoxWithDesp
+                            isCommentcard={isCommentcard}
+                            TaskDetails={true}
+                            src={file.fileUrl}
+                            comment={file.comment}
+                            handleClick={() => {
+                              handleClick(data, index);
+                            }}
+                          />
+                        </ImageBoxWrapper>
+                      );
+                    })}
+                  </Box>
+                )}
+                {type === "file" && (
+                  <Box
+                    sx={{
+                      maxHeight: `${allowExpandedView ? height : "auto"}`,
+                    }}
+                  >
+                    <FileBox
+                      fileCompRef={fileCompRef}
+                      title={title}
+                      files={data}
+                      handleClearFile={callback}
+                      download={download}
+                    />
+                  </Box>
+                )}
+                {children ?? ""}
+              </Box>
+              <Box sx={{ display: "flex" }}>
+                {!isExpanded && isReadMore && localCount && localCount > 0 ? (
+                  <Box
+                    sx={{
+                      fontFamily: "Inter",
+                      fontSize: "14px",
+                      fontWeight: "400",
+                      color: "#0076C8",
+                      paddingRight: "4px",
+                      display: "flex",
+                    }}
+                  >
+                    +{localCount}
+                  </Box>
+                ) : (
+                  <></>
+                )}
+                {isReadMore && allowExpandedView && (
+                  <IconButton
+                    onClick={handleMore}
+                    sx={{ height: "24px", width: "40px", cursor: "pointer" }}
+                  >
+                    {isExpanded ? (
+                      <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
+                    ) : (
+                      <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
+                    )}
+                  </IconButton>
+                )}
+              </Box>
             </Box>
           </Box>
-        </Box>
+        )}
         {isReadMore && allowExpandedView && (
           <Box
             sx={{
