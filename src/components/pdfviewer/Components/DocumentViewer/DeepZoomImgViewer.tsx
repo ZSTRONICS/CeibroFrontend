@@ -200,6 +200,23 @@ function DeepZoomImgViewer({
         zoomOutButton: ZOOM_OUT_BUTTON_ID,
         fullPageButton: FULLSCREEN_BUTTON_ID,
         ...DEFAULT_OSD_SETTINGS,
+        // overlays: [
+        //   {
+        //     id: "overlay1",
+        //     x: 0.105,
+        //     y: 0.16,
+        //   },
+        //   {
+        //     id: "overlay2",
+        //     x: 0.135,
+        //     y: 0.52,
+        //   },
+        //   {
+        //     id: "overlay3",
+        //     x: 0.158,
+        //     y: 0.05,
+        //   },
+        // ],
       });
 
       // nav to initial coordinates once.
@@ -290,6 +307,15 @@ function DeepZoomImgViewer({
         idZoomOut={ZOOM_OUT_BUTTON_ID}
         homeBtnId={HOME_BUTTON_ID}
       />
+      {/* <div id="overlay1">
+        <p>pin 1</p>
+      </div>
+      <div id="overlay2">
+        <p>pin 2</p>
+      </div>
+      <div id="overlay3">
+        <p>pin 3</p>
+      </div> */}
       {/* <SquareButton
         className={style.homeButton}
         id={HOME_BUTTON_ID}
