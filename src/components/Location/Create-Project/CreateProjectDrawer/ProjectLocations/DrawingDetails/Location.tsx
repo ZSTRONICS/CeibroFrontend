@@ -1,35 +1,45 @@
-import { Box, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 import useWindowSize from "hooks/useWindowSize";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PROJECT_APIS, taskActions } from "redux/action";
+import { PROJECT_APIS, docsAction, taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
-import { HEADER_HEIGHT } from "utills/common";
+import { HEADER_HEIGHT, isValidURL } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { Heading2 } from "components/CustomTags";
+import DeepZoomImgViewer from "components/pdfviewer/Components/DocumentViewer/DeepZoomImgViewer";
+import { Drawing } from "constants/interfaces";
 import { useHistory, useParams } from "react-router-dom";
 import LocationDrawingFiles from "./Components/DrawingComp/LocationDrawingFiles";
 import { ExpandableProjectList } from "./Components/ProjectComponents";
 function Location() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { groupId } = useParams<any>();
+  const { projectId, groupId } = useParams<any>();
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(true);
-  const { allProjects, allGroups, allFloors, isProjectsLoading } = useSelector(
-    (state: RootState) => state.project
-  );
+  const [isFileSelect, setIsFileSelect] = useState(false);
+  const {
+    allProjects,
+    allGroups,
+    allFloors,
+    isProjectsLoading,
+    loadingFilePreview,
+    updatedDrawingPreview,
+    selectedDrawingFiles,
+  } = useSelector((state: RootState) => state.project);
 
   useEffect(() => {
     if (isRenderEffect.current && allProjects.length === 0) {
       isRenderEffect.current = false;
       dispatch(PROJECT_APIS.getAllProjects());
       dispatch(taskActions.getAllTasksAllEvents());
-    } else {
+    } else if (!projectId) {
       allProjects?.length > 0 &&
         history.push(`/location/${allProjects[0]._id}`);
     }
+    setIsFileSelect(false);
   }, [allProjects]);
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   const sideBarStyle = {
@@ -44,6 +54,17 @@ function Location() {
     justifyContent: "center",
     background: "#E5E5E5",
   };
+  const handleFilePreview = (drawing: Drawing) => {
+    if (!isValidURL(drawing?.dziFileURL)) {
+      dispatch(
+        docsAction.getDrawingFileDZIUrls({
+          other: drawing._id,
+        })
+      );
+    }
+    setIsFileSelect(true);
+  };
+
   return (
     <Grid
       container
@@ -82,7 +103,10 @@ function Location() {
         }}
       >
         {groupId ? (
-          <LocationDrawingFiles windowActualHeight={windowActualHeight} />
+          <LocationDrawingFiles
+            windowActualHeight={windowActualHeight}
+            handleFilePreview={handleFilePreview}
+          />
         ) : (
           <Box>
             <Heading2 sx={{ fontWeight: 500 }}>
@@ -105,8 +129,21 @@ function Location() {
             "linear-gradient(0deg, #E5E5E5 0%, #E5E5E5 100%), url(<path-to-image>), lightgray 50% / cover no-repeat",
         }}
       >
-        <Heading2 sx={{ fontWeight: 500 }}>No drawing selected</Heading2>
-        {/* <DocumentReader /> */}
+        {selectedDrawingFiles.length === 0 ? (
+          <Heading2 sx={{ fontWeight: 500 }}>
+            No drawing selected for preview
+          </Heading2>
+        ) : loadingFilePreview ? (
+          <Box sx={{ textAlign: "center" }}>
+            <CircularProgress size={40} />
+          </Box>
+        ) : isFileSelect && isValidURL(updatedDrawingPreview?.dziFileURL) ? (
+          <DeepZoomImgViewer selectedDrawing={updatedDrawingPreview} />
+        ) : (
+          <Heading2 sx={{ fontWeight: 500 }}>
+            Unable to load file preview
+          </Heading2>
+        )}
       </Grid>
     </Grid>
   );

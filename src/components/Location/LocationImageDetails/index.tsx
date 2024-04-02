@@ -196,7 +196,7 @@ const LocationImageDetails = () => {
         drawingId
       );
       history.replace(
-        `/location/project/${projectId}/group/${groupId}/drawing${
+        `/location/${projectId}/group/${groupId}/drawing${
           selectedDrawing?.length > 0 ? "/" + selectedDrawing[0]._id : ""
         }/image`
       );
@@ -225,7 +225,7 @@ const LocationImageDetails = () => {
     switch (type) {
       case "drawing":
         history.push(
-          `/location/project/${projectId}/group/${groupId}/drawing/${event.target.value}/image`
+          `/location/${projectId}/group/${groupId}/drawing/${event.target.value}/image`
         );
         break;
       case "group":
@@ -238,13 +238,13 @@ const LocationImageDetails = () => {
         if (selectedGroup.drawings[0]?._id) {
           setDrawingNotFound(false);
           history.push(
-            `/location/project/${projectId}/group/${
-              event.target.value
-            }/drawing/${selectedGroup.drawings[0]?._id ?? ""}/image`
+            `/location/${projectId}/group/${event.target.value}/drawing/${
+              selectedGroup.drawings[0]?._id ?? ""
+            }/image`
           );
         } else {
           history.push(
-            `/location/project/${projectId}/group/${event.target.value}/drawing/image`
+            `/location/${projectId}/group/${event.target.value}/drawing/image`
           );
         }
         break;
@@ -388,7 +388,7 @@ const LocationImageDetails = () => {
                         onClick={() =>
                           label === "Task" &&
                           history.push(
-                            `/location/project/${projectId}/group/${groupId}/drawing/${drawingId}/task`
+                            `/location/${projectId}/group/${groupId}/drawing/${drawingId}/task`
                           )
                         }
                       />

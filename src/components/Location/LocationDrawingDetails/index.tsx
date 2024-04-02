@@ -75,12 +75,10 @@ function LocationDrawingDetails() {
       );
       if (selectedDrawing && selectedDrawing.length > 0) {
         history.replace(
-          `/location/project/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`
+          `/location/${projectId}/group/${groupId}/drawing/${selectedDrawing._id}/task`
         );
       } else {
-        history.replace(
-          `/location/project/${projectId}/group/${groupId}/drawing/task`
-        );
+        history.replace(`/location/${projectId}/group/${groupId}/drawing/task`);
       }
     }
   }, [projectId, groupId, drawingId]);
@@ -110,7 +108,7 @@ function LocationDrawingDetails() {
     switch (type) {
       case "drawing":
         history.push(
-          `/location/project/${projectId}/group/${groupId}/drawing/${event.target.value}/task`
+          `/location/${projectId}/group/${groupId}/drawing/${event.target.value}/task`
         );
         break;
       case "group":
@@ -122,7 +120,7 @@ function LocationDrawingDetails() {
             event.target.value
           );
         history.push(
-          `/location/project/${projectId}/group/${event.target.value}/drawing${
+          `/location/${projectId}/group/${event.target.value}/drawing${
             selectedGroup.drawings[0]?._id
               ? "/" + selectedGroup.drawings[0]?._id
               : ""

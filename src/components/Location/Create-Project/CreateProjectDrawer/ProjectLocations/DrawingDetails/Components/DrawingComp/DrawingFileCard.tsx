@@ -1,11 +1,15 @@
 import { Box, Tooltip, Typography } from "@mui/material";
 import { CustomStack, Heading2, LabelTag } from "components/CustomTags";
 import { momentLocalDateTime, trimFileName } from "components/Utills/Globals";
+import { PreviewIcon } from "components/material-ui/icons/attachment/Attachment";
 import { Drawing } from "constants/interfaces";
 import { useHistory, useParams } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
+import { isValidURL } from "utills/common";
 interface Props {
   drawing: Drawing;
   taskCount: number;
+  handleFilePreview: (drawing: Drawing) => void;
 }
 
 interface IRouteParams {
@@ -13,16 +17,32 @@ interface IRouteParams {
   groupId: string;
 }
 
-function DrawingFileCard({ drawing, taskCount }: Props) {
+function DrawingFileCard({ drawing, taskCount, handleFilePreview }: Props) {
   const history = useHistory();
   const { projectId, groupId } = useParams<IRouteParams>();
   const { _id, fileName, updatedAt, floor } = drawing;
   const localTimeData = momentLocalDateTime(updatedAt);
-
+  const isValidUrl = isValidURL(drawing.dziFileURL);
+  // const dispatch = useDispatch();
   const handleClick = () => {
-    history.push(
-      `/location/project/${projectId}/group/${groupId}/drawing/${_id}/task`
-    );
+    if (isValidUrl) {
+      history.push(
+        `/location/${projectId}/group/${groupId}/drawing/${_id}/task`
+      );
+    } else {
+      // dispatch(
+      //   docsAction.getDrawingFileDZIUrls({
+      //     other: drawing._id,
+      //   })
+      // );
+      toast.info("Unable to load file", {
+        position: "bottom-right",
+        autoClose: 4000,
+        draggable: true,
+        transition: Bounce,
+        theme: "light",
+      });
+    }
   };
 
   const Task_Details = true;
@@ -31,18 +51,23 @@ function DrawingFileCard({ drawing, taskCount }: Props) {
     <>
       <Box sx={{ padding: "", width: "100%" }} key={_id}>
         <CustomStack
-          onClick={handleClick}
           sx={{
             gap: 1,
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            "&:hover": {
-              cursor: "pointer",
-            },
           }}
         >
-          <Box sx={{ width: "80%", py: 0.5 }}>
+          <Box
+            sx={{
+              width: "80%",
+              py: 0.5,
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            onClick={handleClick}
+          >
             <Box sx={{ display: "flex" }}>
               <Tooltip title={fileName}>
                 <Heading2
@@ -64,20 +89,38 @@ function DrawingFileCard({ drawing, taskCount }: Props) {
           <Box
             sx={{
               width: "20%",
-              borderLeft: "1px solid #818181",
+
               display: "flex",
               justifyContent: "end",
-              alignItems: "center",
+              alignItems: "flex-start",
             }}
           >
-            <LabelTag>
-              <Typography sx={{ display: "inline-block" }}>
+            <Box sx={{ borderRight: "1px solid #818181" }}>
+              <Typography sx={{ display: "inline-block", fontSize: "12px" }}>
                 {floor.floorName}
               </Typography>
-              <Typography sx={{ display: "inline-block", marginLeft: "2px" }}>
+              <Typography
+                sx={{
+                  display: "inline-block",
+                  marginRight: "4px",
+                  fontSize: "12px",
+                }}
+              >
                 Floor
               </Typography>
-            </LabelTag>
+            </Box>
+
+            <Box
+              onClick={() => handleFilePreview(drawing)}
+              sx={{
+                marginLeft: "4px",
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+            >
+              <PreviewIcon />
+            </Box>
           </Box>
         </CustomStack>
       </Box>

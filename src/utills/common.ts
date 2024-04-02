@@ -435,3 +435,19 @@ export function filterTasks(
   );
   return filteredTasks;
 }
+
+
+/**
+ * Checks if a given string is a valid URL.
+ *
+ * @param {string} url - The URL to be validated.
+ * @return {boolean} Returns true if the URL is valid, false otherwise.
+ */
+export function isValidURL(url: string): boolean {
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}

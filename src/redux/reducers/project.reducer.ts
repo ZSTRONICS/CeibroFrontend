@@ -1,4 +1,5 @@
 import {
+  DOCS_CONFIG,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_MEMBERS,
   PROJECT_CONFIG,
@@ -46,10 +47,12 @@ interface ProjectReducerInt {
   allFloors: Floor[];
   isProjectsLoading: boolean;
   allDrawingImages: DrawingImageInterface[];
+  updatedDrawingPreview: Drawing | undefined
   loadingAllDrawingImages: boolean;
   drawerOpen: boolean;
   menue: number;
   isFloorLoading: boolean;
+  loadingFilePreview: boolean;
   projects: Project[];
   projectMembers: [];
   projectWithMembers: any[];
@@ -115,6 +118,8 @@ const projectReducer: ProjectReducerInt = {
   allFloors: [],
   isOpenProjectDocumentModal: false,
   isFloorLoading: false,
+  loadingFilePreview: false,
+  updatedDrawingPreview: undefined,
   isfloorCreating: false,
   getAllProjectRoles: [],
   drawerOpen: false,
@@ -372,6 +377,34 @@ const NavigationReducer = (
         menue: action.payload,
       };
 
+    // get selected Drawing file and update dzi urls
+    case requestPending(DOCS_CONFIG.GET_DRAWING_FILE_DZIURLS): {
+      return {
+        ...state,
+        loadingFilePreview: true,
+      };
+    }
+    case requestSuccess(DOCS_CONFIG.GET_DRAWING_FILE_DZIURLS): {
+      const drawingToUpdate = state.selectedDrawingFiles.find((drawing) => drawing._id === action.payload._id);
+      if (drawingToUpdate) {
+        Object.assign(drawingToUpdate, {
+          dziFileURL: action.payload.dziFileURL,
+          dziTileURL: action.payload.dziTileURL,
+        });
+      }
+      return {
+        ...state,
+        loadingFilePreview: false,
+        updatedDrawingPreview: drawingToUpdate,
+      };
+    }
+
+    case requestFail(DOCS_CONFIG.GET_DRAWING_FILE_DZIURLS): {
+      return {
+        ...state,
+        loadingFilePreview: false,
+      };
+    }
     // get all floors by projectId
     case requestPending(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
       return {
@@ -429,6 +462,7 @@ const NavigationReducer = (
         allProjects: [...state.allProjects],
         allGroups: action.payload.allGroups,
         allFloors: action.payload.allFloors,
+        updatedDrawingPreview: undefined,
       };
     }
     case requestFail(PROJECT_CONFIG.GET_ALL_PROJECTS): {

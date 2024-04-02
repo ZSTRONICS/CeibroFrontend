@@ -5,7 +5,7 @@ import { GenericMenu, InputSearch } from "components/GenericComponents";
 import CustomModal from "components/Modal";
 import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { PROJECT_CONFIG } from "config";
-import { ITask } from "constants/interfaces";
+import { Drawing, ITask } from "constants/interfaces";
 import { useDynamicDimensions, useOpenCloseModal } from "hooks";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
@@ -21,8 +21,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 interface Props {
   windowActualHeight: number;
+  handleFilePreview: (drawing: Drawing) => void;
 }
-function LocationDrawingFiles({ windowActualHeight }: Props) {
+function LocationDrawingFiles({
+  windowActualHeight,
+  handleFilePreview,
+}: Props) {
   const [searchText, setSearchText] = useState("");
   const [selectedGroupDrawings, setSelectedGroupDrawings] = useState([]);
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
@@ -299,6 +303,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
               return (
                 <React.Fragment key={index}>
                   <DrawingFileCard
+                    handleFilePreview={handleFilePreview}
                     drawing={drawing}
                     taskCount={allDrawingTaskList.length}
                   />

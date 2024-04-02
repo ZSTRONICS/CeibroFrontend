@@ -43,10 +43,10 @@ const LocationTaskHead = ({
   }, [headerRef, dimensions.height, isSmallView]);
 
   const handleChange = (event: any, newValue: any) => {
-    if (newValue == 1) {
-    } else if (newValue == 2) {
+    if (newValue === 1) {
+    } else if (newValue === 2) {
       history.push(
-        `/location/project/${projectId}/group/${groupId}/drawing/${drawingId}/image`
+        `/location/${projectId}/group/${groupId}/drawing/${drawingId}/image`
       );
     }
     setValue(newValue);

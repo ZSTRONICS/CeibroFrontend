@@ -97,12 +97,12 @@ const RouterConfig = () => {
               />
               <PrivateRoute
                 exact
-                path="/location/project/:projectId/group/:groupId?/drawing/:drawingId?/task"
+                path="/location/:projectId/group/:groupId?/drawing/:drawingId?/task"
                 component={LocationDrawingDetails}
               />
               <PrivateRoute
                 exact
-                path="/location/project/:projectId/group/:groupId?/drawing/:drawingId?/image"
+                path="/location/:projectId/group/:groupId?/drawing/:drawingId?/image"
                 component={LocationImageDetails}
               />
               <PrivateRoute path="/connections" component={Connections} />

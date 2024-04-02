@@ -4,6 +4,7 @@ import OpenSeaDragon from "openseadragon";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { docsAction } from "redux/action";
+import { isValidURL } from "utills/common";
 import ZoomButton from "./ZoomButtons/ZoomButton";
 
 export interface LocalDZISource {
@@ -112,27 +113,19 @@ function DeepZoomImgViewer({
   });
 
   useEffect(() => {
-    if (!selectedDrawing.dziFileURL && !selectedDrawing.dziTileURL) {
+    if (!isValidURL(selectedDrawing.dziFileURL)) {
       dispatch(
         docsAction.getDrawingFileDZIUrls({
           other: selectedDrawing._id,
-          success: (res: any) => {
-            if (res) {
-              console.log(res);
-              setImage({
-                dziURL: res.data.dziFileURL,
-                filesURL: res.data.dziTileURL,
-              });
-            }
-          },
         })
       );
-      // setImage({
-      //   dziURL: selectedDrawing?.dziFileURL,
-      //   filesURL: selectedDrawing?.dziTileURL,
-      // });
     }
-  }, [selectedDrawing]);
+
+    setImage({
+      dziURL: selectedDrawing.dziFileURL,
+      filesURL: selectedDrawing.dziTileURL,
+    });
+  }, [selectedDrawing.fileUrl]);
 
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
@@ -168,7 +161,7 @@ function DeepZoomImgViewer({
     let dzi = parseXMLDziString(xml);
     dzi.Image.Url = filesURL;
 
-    console.log(`opening remote image with dzi spec ${JSON.stringify(dzi)}`);
+    // console.log(`opening remote image with dzi spec ${JSON.stringify(dzi)}`);
 
     viewer.open(dzi);
   };
@@ -224,7 +217,7 @@ function DeepZoomImgViewer({
           }
         }
 
-        console.log(`initial navto ${JSON.stringify(navTo)}`);
+        // console.log(`initial navto ${JSON.stringify(navTo)}`);
 
         if (navTo?.x !== undefined && navTo?.y !== undefined) {
           console.log(`panning to ${JSON.stringify(navTo)}`);
@@ -240,7 +233,7 @@ function DeepZoomImgViewer({
 
       // updates route with image coordinates
       const updateHashRoute = debounce(() => {
-        console.log("updating coords.");
+        // console.log("updating coords.");
         const center = viewer.viewport.getCenter();
         const zoom = viewer.viewport.getZoom();
 
@@ -275,10 +268,9 @@ function DeepZoomImgViewer({
 
   // open image when state is changed
   useEffect(() => {
-    console.log("running image effect.");
     const viewer = viewerRef.current;
     if (image && viewer) {
-      console.log("opening image.");
+      // console.log("opening image.");
       if ("dziURL" in image) openRemoteImage(viewer, image);
     } else {
       viewer?.close();

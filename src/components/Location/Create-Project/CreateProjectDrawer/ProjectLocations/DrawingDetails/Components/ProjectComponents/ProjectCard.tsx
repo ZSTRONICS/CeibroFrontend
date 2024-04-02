@@ -97,6 +97,12 @@ function ProjectCard({ project, groups, projectFloors }: Props) {
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       history.push(`/location/${panel}`);
+      dispatch({
+        type: PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES,
+        payload: {
+          drawings: [],
+        },
+      });
       setExpanded(newExpanded ? panel : false);
       if (expanded) {
         changebg(panel);
