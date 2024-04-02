@@ -30,17 +30,28 @@ function Location() {
     selectedDrawingFiles,
   } = useSelector((state: RootState) => state.project);
 
+  const sortProjects = (projects: Project[]): Project[] => {
+    return projects.sort((a, b) => {
+      if (a.isFavoriteByMe !== b.isFavoriteByMe) {
+        return a.isFavoriteByMe ? -1 : 1;
+      }
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
+  };
+
+  const sortedProjects = sortProjects(allProjects);
+
   useEffect(() => {
     if (isRenderEffect.current && allProjects.length === 0) {
       isRenderEffect.current = false;
       dispatch(PROJECT_APIS.getAllProjects());
       dispatch(taskActions.getAllTasksAllEvents());
     } else if (!projectId) {
-      allProjects?.length > 0 &&
-        history.push(`/location/${allProjects[0]._id}`);
+      sortedProjects?.length > 0 &&
+        history.push(`/location/${sortedProjects[0]._id}`);
     }
     setIsFileSelect(false);
-  }, [allProjects]);
+  }, [allProjects.length]);
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   const sideBarStyle = {
     borderRadius: "4px",
@@ -55,13 +66,11 @@ function Location() {
     background: "#E5E5E5",
   };
   const handleFilePreview = (drawing: Drawing) => {
-    if (!isValidURL(drawing?.dziFileURL)) {
-      dispatch(
-        docsAction.getDrawingFileDZIUrls({
-          other: drawing._id,
-        })
-      );
-    }
+    dispatch(
+      docsAction.getDrawingFileDZIUrls({
+        other: drawing._id,
+      })
+    );
     setIsFileSelect(true);
   };
 
