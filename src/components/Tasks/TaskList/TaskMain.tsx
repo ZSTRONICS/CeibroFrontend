@@ -95,7 +95,7 @@ const TaskMain = (props: IProps) => {
     if (allTaskList.length > 0) {
       handleSelectedTask(allTaskList[0]);
     }
-  }, [selectedRootTask]);
+  }, [selectedRootTask, loadingAllTasksAllEvents]);
 
   useEffect(() => {
     let filteredData = handleFilterRootTask(selectedTaskRootState);
