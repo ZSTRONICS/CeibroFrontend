@@ -16,7 +16,7 @@ interface IProps {
   contacts: Contact[];
   recentUserContact: Contact[];
   disabled?: boolean;
-  options: Project[] | Topic[];
+  options: Project[] | Topic[] | any[];
 
   createCallback?: (type: string, label: string) => void;
   handleChangeValues: (
