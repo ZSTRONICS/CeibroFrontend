@@ -1,10 +1,11 @@
 import { Drawing } from "constants/interfaces";
 import { debounce } from "lodash";
-import OpenSeaDragon from "openseadragon";
+import { default as OpenSeaDragon } from "openseadragon";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { docsAction } from "redux/action";
 import { isValidURL } from "utills/common";
+import PinVewer from "./PinVewer";
 import ZoomButton from "./ZoomButtons/ZoomButton";
 
 export interface LocalDZISource {
@@ -101,7 +102,6 @@ function DeepZoomImgViewer({
 }: {
   imageToOpen?: RemoteDZISource;
   selectedDrawing: Drawing;
-  // navTo?: NavCoordinates;
 }) {
   const viewerRef = useRef<OpenSeaDragon.Viewer | undefined>(undefined);
   const dispatch = useDispatch();
@@ -111,6 +111,25 @@ function DeepZoomImgViewer({
     dziURL: selectedDrawing?.dziFileURL,
     filesURL: selectedDrawing?.dziTileURL,
   });
+  const [markers, setMarkers] = useState<
+    { id: string; x: number; y: number }[]
+  >([
+    // {
+    //   id: "overlay1712142519839",
+    //   x: 0.5938,
+    //   y: 0.2856,
+    // },
+    // {
+    //   id: "overlay1712142520844",
+    //   x: 0.5769,
+    //   y: 0.3499,
+    // },
+    // {
+    //   id: "overlay1712142521558",
+    //   x: 0.7975,
+    //   y: 0.405,
+    // },
+  ]);
 
   useEffect(() => {
     if (!isValidURL(selectedDrawing.dziFileURL)) {
@@ -189,9 +208,6 @@ function DeepZoomImgViewer({
         jpeg: true,
         jpg: true,
       });
-
-      console.log("creating viewer.");
-
       // only one viewer object is used throughout.
       const viewer = OpenSeaDragon({
         id: "osd-viewer",
@@ -200,25 +216,9 @@ function DeepZoomImgViewer({
         zoomOutButton: ZOOM_OUT_BUTTON_ID,
         fullPageButton: FULLSCREEN_BUTTON_ID,
         ...DEFAULT_OSD_SETTINGS,
-        // overlays: [
-        //   {
-        //     id: "overlay1",
-        //     x: 0.105,
-        //     y: 0.16,
-        //   },
-        //   {
-        //     id: "overlay2",
-        //     x: 0.135,
-        //     y: 0.52,
-        //   },
-        //   {
-        //     id: "overlay3",
-        //     x: 0.158,
-        //     y: 0.05,
-        //   },
-        // ],
+        // gestureSettingsMouse: { clickToZoom: false },
+        overlays: markers,
       });
-
       // nav to initial coordinates once.
       viewer.addOnceHandler("open", () => {
         let navTo: NavCoordinates | undefined = undefined;
@@ -277,6 +277,35 @@ function DeepZoomImgViewer({
     setImage(imageToOpen);
   }, []);
 
+  if (viewerRef && viewerRef.current) {
+    const viewer = viewerRef.current;
+    viewerRef.current.addHandler("canvas-click", function (event: any) {
+      // The canvas-click event gives us a position in web coordinates.
+      const webPoint = event.position;
+
+      // Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
+      const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
+
+      // Convert from viewport coordinates to image coordinates.
+      const imagePoint =
+        viewer.viewport.viewportToImageCoordinates(viewportPoint);
+      // The canvas-click event gives us a position in web coordinates.
+
+      setMarkers([
+        ...markers,
+        {
+          id: "overlay" + Date.now(),
+          x: parseFloat(viewportPoint.x.toFixed(4)),
+          y: parseFloat(viewportPoint.y.toFixed(4)),
+        },
+      ]);
+      // console.log(
+      //   webPoint.toString(),
+      //   viewportPoint.toString(),
+      //   imagePoint.toString()
+      // );
+    });
+  }
   // update image state when prop is updated
   // never actually used in this application, I think?
   useEffect(() => {
@@ -293,6 +322,7 @@ function DeepZoomImgViewer({
       viewer?.close();
     }
   }, [image]);
+
   return (
     <div
       id="osd-viewer"
@@ -307,15 +337,8 @@ function DeepZoomImgViewer({
         idZoomOut={ZOOM_OUT_BUTTON_ID}
         homeBtnId={HOME_BUTTON_ID}
       />
-      {/* <div id="overlay1">
-        <p>pin 1</p>
-      </div>
-      <div id="overlay2">
-        <p>pin 2</p>
-      </div>
-      <div id="overlay3">
-        <p>pin 3</p>
-      </div> */}
+
+      <PinVewer markers={markers} />
       {/* <SquareButton
         className={style.homeButton}
         id={HOME_BUTTON_ID}
