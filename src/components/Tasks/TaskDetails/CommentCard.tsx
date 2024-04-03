@@ -7,6 +7,7 @@ import {
   DOC_EXT,
   FILTER_DATA_BY_EXT,
   MEDIA_EXT,
+  getVisibleChildrenCount,
   momentdeDateFormat,
 } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
@@ -58,24 +59,7 @@ const CommentCard = ({
   const allDocsFiles = FILTER_DATA_BY_EXT(DOC_EXT, commentData.files);
   const allMediaFiles = FILTER_DATA_BY_EXT(MEDIA_EXT, commentData.files);
 
-  const getVisibleChildrenCount = () => {
-    if (!boximgref.current) return 0;
-    let count = 0;
-    const containerRect = boximgref.current.getBoundingClientRect();
-    for (let i = 0; i < boximgref.current.children.length; i++) {
-      const childRect = boximgref.current.children[i].getBoundingClientRect();
-      if (
-        childRect.top >= containerRect.top &&
-        childRect.bottom <= containerRect.bottom
-      ) {
-        count++;
-      } else {
-        break;
-      }
-    }
-    return count;
-  };
-  const localCount = getVisibleChildrenCount();
+  const localCount = getVisibleChildrenCount(boximgref?.current);
 
   const handleResize = () => {
     setCount(localCount);

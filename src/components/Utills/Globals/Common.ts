@@ -7,6 +7,28 @@ declare global {
 }
 global.isSocketConnecting = false;
 
+///////////
+
+export const getVisibleChildrenCount = (Ref: any) => {
+  if (!Ref) return 0;
+  let count = 0;
+  const containerRect = Ref.getBoundingClientRect();
+  for (let i = 0; i < Ref.children.length; i++) {
+    const childRect = Ref.children[i].getBoundingClientRect();
+    if (
+      childRect.top >= containerRect.top &&
+      childRect.bottom <= containerRect.bottom
+    ) {
+      count++;
+    } else {
+      break;
+    }
+  }
+  return count;
+};
+
+/////////
+
 export const getSelectedProjectMembers = (
   projectId: string,
   projectWithMembers: any[]
@@ -827,6 +849,5 @@ export {
   momentdeDateFormatWithDay,
   optionMapping,
   trimFileName,
-  updateLocalStorageObject
+  updateLocalStorageObject,
 };
-

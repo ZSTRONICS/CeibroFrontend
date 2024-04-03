@@ -76,9 +76,11 @@ const TopicTagsFilter = ({
     setIsShow(false);
   };
 
+  console.log(options, "option...");
+
   return (
     <Autocomplete
-      disabled={disabled}
+      // disabled={disabled}
       disableClearable={true}
       ref={tagRef}
       open={isShow}
@@ -108,42 +110,77 @@ const TopicTagsFilter = ({
       multiple
       id="checkboxes-tags"
       options={options}
-      value={localSelectedTags}
+      // value={data?.length > 0 ? data : null}
       size="small"
       disableCloseOnSelect
       onChange={handleChange}
       getOptionLabel={(option: Topic) => option.topic}
-      renderOption={(props, option, { selected }) => (
-        <li
-          style={{
-            minHeight: "30px",
-            maxHeight: "max-content",
-            display: "flex",
-            alignItems: "flex-start",
-            padding: "0px",
-            paddingTop: "5px",
-          }}
-          {...props}
-        >
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8 }}
-            checked={selected}
-            sx={{ marginTop: "-10px", marginLeft: "5px" }}
-          />
-          <p
+      // renderOption={(props, option, { selected }) => (
+      //   <li
+      //     style={{
+      //       minHeight: "30px",
+      //       maxHeight: "max-content",
+      //       display: "flex",
+      //       alignItems: "flex-start",
+      //       padding: "0px",
+      //       paddingTop: "5px",
+      //     }}
+      //     {...props}
+      //   >
+      //     <Checkbox
+      //       icon={icon}
+      //       checkedIcon={checkedIcon}
+      //       style={{ marginRight: 8 }}
+      //       checked={selected}
+      //       sx={{ marginTop: "-10px", marginLeft: "5px" }}
+      //     />
+      //     <p
+      //       style={{
+      //         fontSize: "14px",
+      //         // marginTop: "8px",
+      //         overflowWrap: "break-word",
+      //         width: "160px",
+      //       }}
+      //     >
+      //       {option.topic}
+      //     </p>
+      //   </li>
+      // )}
+      renderOption={(props, option, { selected }) => {
+        const isSelected = localSelectedTags.some(
+          (tag: any) => tag.topic === option.topic
+        );
+        return (
+          <li
             style={{
-              fontSize: "14px",
-              // marginTop: "8px",
-              overflowWrap: "break-word",
-              width: "160px",
+              minHeight: "30px",
+              maxHeight: "max-content",
+              display: "flex",
+              alignItems: "flex-start",
+              padding: "0px",
+              paddingTop: "5px",
             }}
+            {...props}
           >
-            {option.topic}
-          </p>
-        </li>
-      )}
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              style={{ marginRight: 8 }}
+              checked={isSelected}
+              sx={{ marginTop: "-10px", marginLeft: "5px" }}
+            />
+            <p
+              style={{
+                fontSize: "14px",
+                overflowWrap: "break-word",
+                width: "160px",
+              }}
+            >
+              {option.topic}
+            </p>
+          </li>
+        );
+      }}
       style={{ width: 500 }}
       renderTags={() => {
         return TaskMain ? (

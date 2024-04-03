@@ -7,9 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 import { ChangeValueType, CreateNewTaskFormType, Options } from "../type";
-import ProjectFilter from "./ProjectFilter";
 import TaskMenu from "./TaskMenu";
-import TopicTagsFilter from "./TopicTagsFilter";
+import TaskbyFilters from "./TaskbyFilters";
 import UserFilter from "./UserFilter";
 interface Props {
   handleTaskRootState: (rootState: string) => void;
@@ -175,7 +174,6 @@ function TaskFilters(props: Props) {
               sx={{
                 height: "32px",
                 color: "#E2E4E5",
-                marginRight: "10px",
                 marginTop: "2px",
               }}
               orientation="vertical"
@@ -184,9 +182,16 @@ function TaskFilters(props: Props) {
           ) : (
             ""
           )}
-          <ProjectFilter
+
+          <TaskbyFilters
             disabled={true}
-            TaskMain={true}
+            // TaskMain={true}
+            // options={allProjects}
+            name="assignedToState"
+            label={"Projects"}
+            contacts={userAllContacts}
+            recentUserContact={recentUserContact}
+            handleChangeValues={handleChangeValues}
             options={allProjects}
           />
           <UserFilter
@@ -196,11 +201,24 @@ function TaskFilters(props: Props) {
             contacts={userAllContacts}
             recentUserContact={recentUserContact}
             handleChangeValues={handleChangeValues}
+            options={allProjects}
           />
-          <TopicTagsFilter
+          {/* <TopicTagsFilter
             disabled={true}
             TaskMain={true}
             options={Topics.allTopics}
+          /> */}
+          <TaskbyFilters
+            disabled={true}
+            // TaskMain={true}
+            // options={allProjects}
+            options={Topics.allTopics}
+            name="assignedToState"
+            label={"Tags"}
+            contacts={userAllContacts}
+            recentUserContact={recentUserContact}
+            handleChangeValues={handleChangeValues}
+            // options={allProjects}
           />
         </Box>
         <Box

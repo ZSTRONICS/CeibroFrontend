@@ -4,7 +4,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import { MUIInputLabel, RequiredFieldMark } from "components/CustomTags";
-import GroupContactList from "components/Tasks/Forward-Task/GroupContactList";
 import {
   AssignedToStateType,
   ChangeValueType,
@@ -16,6 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { handleGroupSearch } from "utills/common";
+import GroupContactList from "../Forward-Task/GroupContactList";
 
 interface IProps {
   name: keyof CreateNewTaskFormType;
@@ -23,6 +23,7 @@ interface IProps {
   contacts: Contact[];
   recentUserContact: Contact[];
   disabled?: boolean;
+  options?: Project[];
   createCallback?: (type: string, label: string) => void;
   handleChangeValues: (
     value: ChangeValueType,
@@ -31,9 +32,18 @@ interface IProps {
 }
 
 function UserFilter(props: IProps) {
+  console.log(props.contacts, "contacts");
+  console.log(props.recentUserContact, "recentUserContact");
+
   const [isSelfAssign, setIsSelfAssign] = useState(false);
-  const { name, label, contacts, handleChangeValues, recentUserContact } =
-    props;
+  const {
+    name,
+    label,
+    contacts,
+    handleChangeValues,
+    recentUserContact,
+    options,
+  } = props;
   const [filteredRecentUserContact, setFilteredRecentUserContact] =
     React.useState<Contact[]>(recentUserContact);
   const [selected, setSelected] = React.useState<any[]>([]);
@@ -53,9 +63,9 @@ function UserFilter(props: IProps) {
 
   useEffect(() => {
     if (contacts && contacts.length > 0) {
-      const sortedContacts = contacts.sort((a, b) =>
-        a.contactFirstName.localeCompare(b.contactFirstName)
-      );
+      const sortedContacts = contacts.sort((a, b) => {
+        return a.contactFirstName.localeCompare(b.contactFirstName);
+      });
 
       const groupedData: { [key: string]: { label: string; value: string }[] } =
         {};
@@ -159,26 +169,10 @@ function UserFilter(props: IProps) {
   };
 
   const renderValue = () => {
-    // if (selected.length > 0) {
-    //   const fullNames = selected.map((item) => {
-    //     if (item._id === user._id) {
-    //       return "Me";
-    //     }
-    //     if (item.contactFullName) {
-    //       return item.contactFullName;
-    //     } else if (item.firstName) {
-    //       return `${item.firstName} ${item.surName}`;
-    //     }
-    //     return "";
-    //   });
-    //   return fullNames.join(", ");
-    // } else {
-    //   return "Select Contacts";
-    // }
     return (
       <div
         style={{
-          display: "flex",
+          display: open ? "none" : "flex",
           marginLeft: "12px",
         }}
       >
@@ -255,7 +249,7 @@ function UserFilter(props: IProps) {
           }}
           id="controlled-open-select-label"
         >
-          {label}
+          {renderValue()}
         </MUIInputLabel>
         <Select
           labelId="controlled-open-select-label"
@@ -370,22 +364,14 @@ function UserFilter(props: IProps) {
               </Typography>
             )}
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              margin: "0px 8px 0px",
-            }}
-          ></Box>
           <Box sx={{ margin: "0px 16px" }}>
-            {/* <Divider sx={{ marginTop: "8px", marginBottom: "20px" }} /> */}
             <GroupContactList
               filterData={filterData}
               selected={selected}
               recentData={{ "": filteredRecentUserContact }}
               handleSelectedList={handleSelectedList}
             />
+            {/* <FilterProjectCard options={options} /> */}
           </Box>
         </Select>
       </FormControl>

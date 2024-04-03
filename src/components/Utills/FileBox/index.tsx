@@ -98,6 +98,9 @@ const FileBox: React.FC<IProps> = ({
     }
   };
 
+  const fileWidth = iscomment ? 18 : 16;
+  const fileHeight = iscomment ? 20 : 27;
+
   const Task_Details = true;
   return (
     <Box
@@ -137,9 +140,9 @@ const FileBox: React.FC<IProps> = ({
                 alignItems: "center",
                 width: `${item.size ? "255px" : "200px"}`,
                 gap: "10px",
+                // border: "solid 1px red",
                 pl: 0,
                 marginLeft: iscomment ? "-13px" : null,
-
                 "&:hover": {
                   cursor: "pointer",
                 },
@@ -147,8 +150,8 @@ const FileBox: React.FC<IProps> = ({
               onClick={() => openPDFNewTab(item)}
             >
               {type
-                ? getFileIconThumbnail(type, 16, 20)
-                : getFileIconThumbnail(fileType, 16, 20)}
+                ? getFileIconThumbnail(type, fileWidth, fileHeight)
+                : getFileIconThumbnail(fileType, fileWidth, fileHeight)}
               <Tooltip title={f_name}>
                 <Typography
                   sx={{
