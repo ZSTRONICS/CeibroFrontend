@@ -105,6 +105,8 @@ function DeepZoomImgViewer({
 }) {
   const viewerRef = useRef<OpenSeaDragon.Viewer | undefined>(undefined);
   const dispatch = useDispatch();
+  const [panningAllowed, setPanningAllowed] = useState(true);
+  let panningTimeoutRef: any = useRef(null);
   const [image, setImage] = useState<
     RemoteDZISource | LocalDZISource | undefined
   >({
@@ -118,16 +120,6 @@ function DeepZoomImgViewer({
     //   id: "overlay1712142519839",
     //   x: 0.5938,
     //   y: 0.2856,
-    // },
-    // {
-    //   id: "overlay1712142520844",
-    //   x: 0.5769,
-    //   y: 0.3499,
-    // },
-    // {
-    //   id: "overlay1712142521558",
-    //   x: 0.7975,
-    //   y: 0.405,
     // },
   ]);
 
@@ -185,7 +177,6 @@ function DeepZoomImgViewer({
     viewer.open(dzi);
   };
 
-  // setup and teardown
   useEffect(() => {
     // toggle fullscreen button appearance when fullscreen
     let fullscreenListener = () => {
@@ -216,7 +207,7 @@ function DeepZoomImgViewer({
         zoomOutButton: ZOOM_OUT_BUTTON_ID,
         fullPageButton: FULLSCREEN_BUTTON_ID,
         ...DEFAULT_OSD_SETTINGS,
-        // gestureSettingsMouse: { clickToZoom: false },
+        gestureSettingsMouse: { clickToZoom: false },
         overlays: markers,
       });
       // nav to initial coordinates once.
@@ -270,48 +261,100 @@ function DeepZoomImgViewer({
 
       viewer.addHandler("pan", updateHashRoute);
       viewer.addHandler("zoom", updateHashRoute);
-
       viewerRef.current = viewer;
     }
-
     setImage(imageToOpen);
   }, []);
 
-  if (viewerRef && viewerRef.current) {
-    const viewer = viewerRef.current;
-    viewerRef.current.addHandler("canvas-click", function (event: any) {
-      // The canvas-click event gives us a position in web coordinates.
-      const webPoint = event.position;
+  useEffect(() => {
+    if (viewerRef && viewerRef.current && panningAllowed) {
+      const viewer = viewerRef.current;
+      const canvasClickHandler = (event: any) => {
+        const webPoint = event.position;
+        // Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
+        const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
 
-      // Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
-      const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
+        setMarkers([
+          ...markers,
+          {
+            id: "overlay" + Date.now(),
+            x: parseFloat(viewportPoint.x.toFixed(4)),
+            y: parseFloat(viewportPoint.y.toFixed(4)),
+          },
+        ]);
+        viewer.addOverlay({
+          element: createMarkerElement(), // Function to create a marker element
+          location: viewportPoint, // Position of the marker
+          placement: OpenSeaDragon.Placement.CENTER, // Placement of the marker
+        });
+      };
+      viewer.addHandler("canvas-click", canvasClickHandler);
+      // Cleanup event handler on component unmount
+      return () => {
+        viewer.removeHandler("canvas-click", canvasClickHandler);
+      };
+    }
+  }, [viewerRef, panningAllowed]);
 
-      // Convert from viewport coordinates to image coordinates.
-      const imagePoint =
-        viewer.viewport.viewportToImageCoordinates(viewportPoint);
-      // The canvas-click event gives us a position in web coordinates.
+  useEffect(() => {
+    if (viewerRef.current) {
+      const viewer = viewerRef.current;
 
-      setMarkers([
-        ...markers,
-        {
-          id: "overlay" + Date.now(),
-          x: parseFloat(viewportPoint.x.toFixed(4)),
-          y: parseFloat(viewportPoint.y.toFixed(4)),
-        },
-      ]);
-      // console.log(
-      //   webPoint.toString(),
-      //   viewportPoint.toString(),
-      //   imagePoint.toString()
-      // );
-    });
-  }
+      const zoomHandler = function () {
+        const currentMarkers = markers.map((marker) => {
+          const viewportPoint = viewer.viewport.pixelFromPoint(
+            new OpenSeaDragon.Point(marker.x, marker.y),
+            true
+          );
+          return {
+            ...marker,
+            x: viewportPoint.x,
+            y: viewportPoint.y,
+          };
+        });
+        setMarkers(currentMarkers);
+      };
+
+      viewer.addHandler("zoom", zoomHandler);
+
+      return () => {
+        viewer.removeHandler("zoom", zoomHandler);
+      };
+    }
+  }, [viewerRef, markers]);
+
+  useEffect(() => {
+    // Initialize pan event handler when viewerRef is available
+    if (viewerRef.current) {
+      const viewer = viewerRef.current;
+      const panHandler = function () {
+        // Disable panningAllowed when panning starts
+        setPanningAllowed(false);
+
+        // Clear any existing timeout
+        if (panningTimeoutRef.current) {
+          clearTimeout(panningTimeoutRef.current);
+        }
+
+        // Set a timeout to enable panningAllowed after a delay
+        panningTimeoutRef.current = setTimeout(() => {
+          setPanningAllowed(true);
+        }, 300); // Adjust the delay as needed
+      };
+
+      viewer.addHandler("pan", panHandler);
+      // Cleanup event handler on component unmount
+      return () => {
+        viewer.removeHandler("pan", panHandler);
+      };
+    }
+  }, [viewerRef]);
+
   // update image state when prop is updated
   // never actually used in this application, I think?
   useEffect(() => {
     setImage(imageToOpen);
   }, [imageToOpen]);
-
   // open image when state is changed
   useEffect(() => {
     const viewer = viewerRef.current;
@@ -323,6 +366,17 @@ function DeepZoomImgViewer({
     }
   }, [image]);
 
+  const createMarkerElement = () => {
+    const marker = document.createElement("div");
+    marker.className = "marker"; // Add marker CSS class
+    // You can customize marker appearance here
+    marker.style.width = "10px";
+    marker.style.height = "10px";
+    marker.style.backgroundColor = "red";
+    marker.style.borderRadius = "50%";
+    return marker;
+  };
+  // console.log("markers", markers);
   return (
     <div
       id="osd-viewer"
