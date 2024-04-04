@@ -30,13 +30,13 @@ function MainTaskHeader(props: Props) {
           <Button
             disableRipple
             sx={{
-              padding: "5px 8px",
+              padding: "5px 6px",
               ...btnStyle,
             }}
             onClick={() => setShowHiddenTasks(false)}
             variant="contained"
           >
-            Go back
+            All tasks
           </Button>
         </CustomStack>
       ) : (

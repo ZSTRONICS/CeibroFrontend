@@ -54,14 +54,8 @@ function Task() {
   const Topics = useSelector((state: RootState) => state.task.Topics);
   const { allTasks, allEvents }: AllTasksAllEvents = allTasksAllEvents;
 
-  const {
-    containerRef: taskDetailContRef,
-    dimensions: taskDetailContDimension,
-  } = useDynamicDimensions();
-  const {
-    containerRef: detailHeaderRef,
-    dimensions: detailHeaderRefDimension,
-  } = useDynamicDimensions();
+  const { containerRef: taskDetailContRef } = useDynamicDimensions();
+  const { containerRef: detailHeaderRef } = useDynamicDimensions();
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   const HiddenDoneTask = filterTasks(
@@ -261,6 +255,7 @@ function Task() {
   const TabsDataLocal = showHiddenTasks ? ongoingClosedTasks : rootTaskFilter;
   const findTabIndex = TabsDataLocal.findIndex((tab) => tab.label === subtask);
   const tabIndex = TabsDataLocal.findIndex((tab) => tab.label === selectedTab);
+
   useEffect(() => {
     if (isRenderEffect.current) {
       isRenderEffect.current = false;
@@ -277,12 +272,12 @@ function Task() {
 
   useEffect(() => {
     if (selectedTab) {
-      history.push(`/tasks/${selectedTab}`);
-      setSelectedTask(null);
-      setCommentDiv(false);
+      // history.push(`/tasks/${selectedTab}`);
+      // setSelectedTask(null);
+      setCommentDiv(true);
     }
     setLocalTabIndex(tabIndex);
-  }, [selectedTab, subtask, showHiddenTasks]);
+  }, [selectedTab, subtask, taskuid, showHiddenTasks]);
 
   useEffect(() => {
     if (windowWidth < 1199) {
@@ -355,7 +350,7 @@ function Task() {
           },
           width: "100%",
           ...gridStyle,
-          py: 1.5,
+          py: 0.75,
           overflow: "hidden",
         }}
       >

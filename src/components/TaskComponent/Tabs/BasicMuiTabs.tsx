@@ -56,7 +56,10 @@ export default function BasicTabs({
   const findIndex = tabsData.findIndex((tab, i) => i === value);
 
   React.useEffect(() => {
-    if (selectedTabIndex && tabsData) {
+    if (findIndex === -1) {
+      setValue(0);
+      setSelectedTab && setSelectedTab(tabsData[0].label);
+    } else if (selectedTabIndex && tabsData) {
       const tabLabel = tabsData.find((item, i) => i === selectedTabIndex);
       const findIndex = tabsData.findIndex((tab, i) => {
         if (tabLabel) {
@@ -68,10 +71,6 @@ export default function BasicTabs({
         setValue(findIndex);
         setSelectedTab && setSelectedTab(tabLabel.label);
       }
-    }
-    if (findIndex === -1) {
-      setValue(0);
-      setSelectedTab && setSelectedTab(tabsData[0].label);
     }
   }, [selectedTabIndex, tabsData.length]);
 

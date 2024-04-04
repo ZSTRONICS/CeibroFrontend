@@ -88,14 +88,17 @@ const TaskMain = (props: IProps) => {
     if (!findSelectedTask) {
       setSelectedTask(null);
     }
-  }, [allTaskList.length]);
-
-  useEffect(() => {
-    clearTaskCardListCache();
     if (allTaskList.length > 0) {
-      handleSelectedTask(allTaskList[0]);
+      const localTask = allTaskList[0];
+      history.push(`/tasks/${selectedRootTask}/${localTask.taskUID}`);
+      setSelectedTask(localTask);
     }
-  }, [selectedRootTask, loadingAllTasksAllEvents]);
+    if (findSelectedTask) {
+      history.push(`/tasks/${subtask}/${findSelectedTask.taskUID}`);
+      setSelectedTask(findSelectedTask);
+    }
+    resetScrollPosition();
+  }, [allTaskList.length, selectedRootTask, loadingAllTasksAllEvents]);
 
   useEffect(() => {
     let filteredData = handleFilterRootTask(selectedTaskRootState);
@@ -127,6 +130,11 @@ const TaskMain = (props: IProps) => {
     // setFilteredTask(filteredData);
   }, [selectedProjects.length, selectedTopicTags.length, selectedUsers.length]);
 
+  const resetScrollPosition = () => {
+    if (taskCardListRef.current) {
+      taskCardListRef.current.scrollTo(0);
+    }
+  };
   const handleFilterRootTask = (taskRootState: string) => {
     const rootStateLocal = TaskRootSateLocal[selectedRootTask] || "Ongoing";
     const userSubStateLocal = calcUserSubState[rootStateLocal] || "ongoing";
@@ -159,6 +167,9 @@ const TaskMain = (props: IProps) => {
     setSelectedTask(null);
   };
 
+  const navigateToTask = (taskUID: string) => {
+    history.push(`/tasks/${subtask}/${taskUID}`);
+  };
   // const getTaskDataRequired = () => {
   //   const subtaskPropertyMapping: any = {
   //     allTaskToMe: ["new", "ongoing", "done"],
@@ -192,10 +203,6 @@ const TaskMain = (props: IProps) => {
   //     : 0;
   //   return keys[keyIndex];
   // };
-
-  const navigateToTask = (taskUID: string) => {
-    history.push(`/tasks/${subtask}/${taskUID}`);
-  };
 
   // useEffect(() => {
   //   if (loadingAllTasksAllEvents) {
@@ -341,12 +348,6 @@ const TaskMain = (props: IProps) => {
   //     setEmptyScreenContent([...emptyScreenContent]);
   //   }
   // }, [filterkey, subtask]);
-
-  // const resetScrollPosition = () => {
-  //   if (taskCardListRef.current) {
-  //     taskCardListRef.current.scrollTo(0);
-  //   }
-  // };
 
   const handleSelectedTask = (task: ITask) => {
     navigateToTask(task.taskUID);

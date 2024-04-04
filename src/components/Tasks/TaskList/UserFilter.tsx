@@ -32,8 +32,8 @@ interface IProps {
 }
 
 function UserFilter(props: IProps) {
-  console.log(props.contacts, "contacts");
-  console.log(props.recentUserContact, "recentUserContact");
+  // console.log(props.contacts, "contacts");
+  // console.log(props.recentUserContact, "recentUserContact");
 
   const [isSelfAssign, setIsSelfAssign] = useState(false);
   const {
