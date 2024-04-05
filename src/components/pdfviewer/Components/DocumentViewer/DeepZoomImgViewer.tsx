@@ -1,11 +1,10 @@
 import { Drawing } from "constants/interfaces";
 import { debounce } from "lodash";
 import { default as OpenSeaDragon } from "openseadragon";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { docsAction } from "redux/action";
 import { isValidURL } from "utills/common";
-import PinVewer from "./PinVewer";
 import ZoomButton from "./ZoomButtons/ZoomButton";
 
 export interface LocalDZISource {
@@ -56,7 +55,9 @@ const DEFAULT_OSD_SETTINGS: OpenSeaDragon.Options = {
   navigatorDisplayRegionColor: "#ff0000",
   navigatorSizeRatio: 0.15,
 };
-
+interface OverlayRefs {
+  [key: string]: React.RefObject<OpenSeaDragon.Overlay>;
+}
 function getAttrOrDie(el: Element, attrName: string) {
   const res = el.getAttribute(attrName);
   if (res === null) throw new Error(`No such attribute ${attrName}`);
@@ -107,6 +108,7 @@ function DeepZoomImgViewer({
   const dispatch = useDispatch();
   const [panningAllowed, setPanningAllowed] = useState(true);
   let panningTimeoutRef: any = useRef(null);
+  const [overlayRefs, setOverlayRefs] = useState<OverlayRefs>({});
   const [image, setImage] = useState<
     RemoteDZISource | LocalDZISource | undefined
   >({
@@ -115,13 +117,7 @@ function DeepZoomImgViewer({
   });
   const [markers, setMarkers] = useState<
     { id: string; x: number; y: number }[]
-  >([
-    // {
-    //   id: "overlay1712142519839",
-    //   x: 0.5938,
-    //   y: 0.2856,
-    // },
-  ]);
+  >([]);
 
   useEffect(() => {
     if (!isValidURL(selectedDrawing.dziFileURL)) {
@@ -273,21 +269,23 @@ function DeepZoomImgViewer({
         const webPoint = event.position;
         // Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
         const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
-
+        const markerId = "overlay" + Date.now();
         setMarkers([
           ...markers,
           {
-            id: "overlay" + Date.now(),
+            id: markerId,
             x: parseFloat(viewportPoint.x.toFixed(4)),
             y: parseFloat(viewportPoint.y.toFixed(4)),
           },
         ]);
         viewer.addOverlay({
-          element: createMarkerElement(), // Function to create a marker element
-          location: viewportPoint, // Position of the marker
-          placement: OpenSeaDragon.Placement.CENTER, // Placement of the marker
+          element: createMarkerElement(String(Date.now())),
+          location: viewportPoint,
+          placement: OpenSeaDragon.Placement.CENTER,
+          id: markerId,
         });
       };
+
       viewer.addHandler("canvas-click", canvasClickHandler);
       // Cleanup event handler on component unmount
       return () => {
@@ -299,26 +297,50 @@ function DeepZoomImgViewer({
   useEffect(() => {
     if (viewerRef.current) {
       const viewer = viewerRef.current;
-
+      const updateOverlayPositions = () => {
+        const zoom = viewer.viewport.getZoom(true);
+        const bounds = viewer.viewport.getBounds(true);
+        markers.forEach((marker) => {
+          const transformedX = (marker.x - bounds.x) * zoom;
+          const transformedY = (marker.y - bounds.y) * zoom;
+          const element = document.getElementById(marker.id);
+          if (element) {
+            const viewportPoint = viewer.viewport.pixelFromPoint(
+              new OpenSeaDragon.Point(transformedX, transformedY)
+            );
+            viewer.updateOverlay(
+              element,
+              viewportPoint,
+              OpenSeaDragon.Placement.CENTER
+            );
+          }
+        });
+      };
       const zoomHandler = function () {
+        const zoom = viewer.viewport.getZoom(true);
+        const bounds = viewer.viewport.getBounds(true);
+
         const currentMarkers = markers.map((marker) => {
+          const transformedX = (marker.x - bounds.x) * zoom;
+          const transformedY = (marker.y - bounds.y) * zoom;
+
           const viewportPoint = viewer.viewport.pixelFromPoint(
             new OpenSeaDragon.Point(marker.x, marker.y),
             true
           );
           return {
             ...marker,
-            x: viewportPoint.x,
-            y: viewportPoint.y,
+            x: transformedX,
+            y: transformedY,
           };
         });
         setMarkers(currentMarkers);
       };
 
-      viewer.addHandler("zoom", zoomHandler);
+      viewer.addHandler("zoom", updateOverlayPositions);
 
       return () => {
-        viewer.removeHandler("zoom", zoomHandler);
+        viewer.removeHandler("zoom", updateOverlayPositions);
       };
     }
   }, [viewerRef, markers]);
@@ -366,12 +388,12 @@ function DeepZoomImgViewer({
     }
   }, [image]);
 
-  const createMarkerElement = () => {
+  const createMarkerElement = (markerId: string) => {
     const marker = document.createElement("div");
-    marker.className = "marker"; // Add marker CSS class
-    // You can customize marker appearance here
-    marker.style.width = "10px";
-    marker.style.height = "10px";
+    marker.className = "marker";
+    marker.setAttribute("id", markerId);
+    marker.style.width = "20px";
+    marker.style.height = "20px";
     marker.style.backgroundColor = "red";
     marker.style.borderRadius = "50%";
     return marker;
@@ -392,7 +414,7 @@ function DeepZoomImgViewer({
         homeBtnId={HOME_BUTTON_ID}
       />
 
-      <PinVewer markers={markers} />
+      {/* <PinVewer markers={markers} /> */}
       {/* <SquareButton
         className={style.homeButton}
         id={HOME_BUTTON_ID}

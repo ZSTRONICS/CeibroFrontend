@@ -1,3 +1,8 @@
-export type { AnnotationInit } from "./annotation";
-export { AnnotationManager as DZIAnnotaionManager } from "./manager";
+import Annotation from "./annotation";
+import AnnotationManager from "./manager";
 export type { AnnotationEvent } from "./manager";
+export {
+    Annotation,
+    AnnotationManager
+};
+

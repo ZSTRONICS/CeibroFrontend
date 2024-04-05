@@ -1,4 +1,3 @@
-import { DZIAnnotaionManager } from "anootation-plugin";
 import { debounce } from "lodash";
 import OpenSeaDragon from "openseadragon";
 import { useEffect, useRef, useState } from "react";
@@ -251,11 +250,11 @@ function DZIViewerAnootation({
       console.log("DZI Viewer Init Success ! ");
       console.log("Init DZI Annotations ");
 
-      const myAnno: any = new DZIAnnotaionManager(viewer, {
-        channelName: "my-anno",
-      })
-        .restore(Object.values(annotations))
-        .activate();
+      // new DZIAnnotaionManager(viewer, {
+      //   channelName: "my-anno",
+      // })
+      //   .restore(Object.values(annotations))
+      //   .activate();
 
       for (const { id, color } of Object.values<any>(annotations)) {
         const hostElement = document.getElementById(id);
@@ -306,6 +305,7 @@ function DZIViewerAnootation({
             break;
         }
       };
+      console.log("annotations", annotations);
       setImage(imageToOpen);
 
       return () => {
