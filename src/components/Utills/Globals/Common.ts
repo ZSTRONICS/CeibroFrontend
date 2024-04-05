@@ -9,12 +9,12 @@ global.isSocketConnecting = false;
 
 ///////////
 
-export const getVisibleChildrenCount = (Ref: any) => {
-  if (!Ref) return 0;
+export const getVisibleChildrenCount = (contRef: any) => {
+  if (!contRef) return 0;
   let count = 0;
-  const containerRect = Ref.getBoundingClientRect();
-  for (let i = 0; i < Ref.children.length; i++) {
-    const childRect = Ref.children[i].getBoundingClientRect();
+  const containerRect = contRef.getBoundingClientRect();
+  for (let i = 0; i < contRef.children.length; i++) {
+    const childRect = contRef.children[i].getBoundingClientRect();
     if (
       childRect.top >= containerRect.top &&
       childRect.bottom <= containerRect.bottom

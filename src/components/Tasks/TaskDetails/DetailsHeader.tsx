@@ -2,12 +2,15 @@ import { Avatar, Grid, IconButton, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import assets from "assets";
 import { CustomDivider } from "components/CustomTags";
-import { momentdeDateFormat } from "components/Utills/Globals";
+import {
+  getVisibleChildrenCount,
+  momentdeDateFormat,
+} from "components/Utills/Globals";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useDynamicDimensions } from "hooks";
 import { startTransition, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { formatUserName, getWidthWithMarginAndPadding } from "utills/common";
+import { formatUserName } from "utills/common";
 
 interface IProps {
   assignedToState: AssignedUserState[];
@@ -48,22 +51,14 @@ export default function DetailsHeader(props: IProps) {
   const ellipsisContainerRef = useRef<HTMLSpanElement | null>(null);
   const parms = useParams<{ filterkey: string }>();
   const [count, setCount] = useState<number>(0);
+  const [inviteesCount, setInviteesCount] = useState<number>(0);
   const { containerRef, dimensions } = useDynamicDimensions();
   const { containerRef: avatarContRef, dimensions: avatarContDimension } =
     useDynamicDimensions();
   const { containerRef: userAvatarRef, dimensions: userAvatarDimension } =
     useDynamicDimensions();
   const infoBoxRef = useRef<HTMLDivElement>(null);
-
-  const getTextWidth = (text: string, font: string) => {
-    var canvas = document.createElement("canvas");
-    var context = canvas.getContext("2d");
-    if (context) {
-      context.font = font;
-      var width = context.measureText(text).width;
-      return width;
-    }
-  };
+  const inviteesRef = useRef<HTMLDivElement>(null);
 
   const localCreatedDate = momentdeDateFormat(createdDate);
   const data = {
@@ -94,6 +89,12 @@ export default function DetailsHeader(props: IProps) {
     },
     Invitees: {
       label: "Invitees",
+      // value: invitedNumbers.flatMap((obj) => [
+      //   obj,
+      //   { ...obj },
+      //   { ...obj },
+      //   { ...obj },
+      // ]),
       value: invitedNumbers.length > 0 ? invitedNumbers : null,
     },
     Confirmer: {
@@ -143,15 +144,23 @@ export default function DetailsHeader(props: IProps) {
   //   setRowGap(gap);
   //   return gap;
   // };
+  // const handleResize = () => {
+  //   if (avatarContRef.current) {
+  //     const localWidth = getWidthWithMarginAndPadding(avatarContRef);
+  //     if (localWidth > 140) {
+  //       const itemCount = Math.floor(localWidth / 145);
+  //       setCount(itemCount);
+  //     }
+  //   }
+  // };
+
   const handleResize = () => {
-    if (avatarContRef.current) {
-      const localWidth = getWidthWithMarginAndPadding(avatarContRef);
-      if (localWidth > 140) {
-        const itemCount = Math.floor(localWidth / 145);
-        setCount(itemCount);
-      }
-    }
+    const localCount = getVisibleChildrenCount(infoBoxRef?.current);
+    const inviteesRefCount = getVisibleChildrenCount(inviteesRef?.current);
+    setInviteesCount(inviteesRefCount);
+    setCount(localCount);
   };
+
   useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -218,11 +227,11 @@ export default function DetailsHeader(props: IProps) {
                 fontSize: "12px",
                 color: "#000",
                 width: "auto",
-                maxWidth: isExpanded
-                  ? `${userAvatarDimension.width - 10}px`
-                  : "unset",
+                // maxWidth: isExpanded
+                //   ? `${userAvatarDimension.width - 10}px`
+                //   : "unset",
               }}
-              className="ellipsis"
+              // className="ellipsis"
             >
               {value}
             </Typography>
@@ -262,9 +271,11 @@ export default function DetailsHeader(props: IProps) {
   const renderUserWithAvatar = ({
     label,
     users,
+    type,
   }: {
     label: string;
     users: AssignedUserState[] | InvitedNumber[] | UserInfo[] | null;
+    type: string;
   }) => {
     let localCount: number | null = 0;
     const isSentTo = label === "Sent to" || label === "Invitees";
@@ -296,40 +307,86 @@ export default function DetailsHeader(props: IProps) {
               {label}
             </Typography>
             <Box
-              ref={infoBoxRef}
+              ref={
+                type === "sentto" ? infoBoxRef : "invitees" ? inviteesRef : null
+              }
               className="ellipsis"
               sx={{
                 display: "flex",
-                gap: 1.25,
+                gap: 0.5,
                 alignItems: "center",
                 flexWrap: "wrap",
                 height: isExpanded ? "36px" : "auto",
                 overflow: isExpanded ? "hidden" : "unset",
                 marginTop: label === "Invitees" ? "6px" : null,
                 width: "97%",
+                // border: "solid 1px green",
               }}
             >
               {users.map((user, i) => {
                 return (
                   <Box
-                    ref={userAvatarRef}
-                    key={i}
                     sx={{
-                      display: "flex",
-                      gap: 0.6,
-                      alignItems: "center",
-                      flexWrap: "nowrap",
-                      pt: 1,
-                      width: isExpanded ? "135px" : "auto",
+                      position: "relative",
+                      paddingLeft: "0px",
+                      paddingRight: "25px",
+                      // border: "solid 1px red",
                     }}
                   >
-                    {renderAvatar(user)}
-                    {renderValue(formatUserName(user), "")}
+                    <Box
+                      ref={userAvatarRef}
+                      key={i}
+                      sx={{
+                        display: "flex",
+                        gap: 0.6,
+                        alignItems: "center",
+                        flexWrap: "nowrap",
+                        pt: 1,
+                        // width: isExpanded ? "135px" : "auto",
+                      }}
+                    >
+                      {renderAvatar(user)}
+                      {renderValue(formatUserName(user), "")}
+                    </Box>
+                    {i === count - 1 && users.length - count !== 0 && (
+                      <Box
+                        onClick={handleFullView}
+                        sx={{
+                          position: "absolute",
+                          zIndex: 100,
+                          left: "100%",
+                          top: "3px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {isSentTo &&
+                        isExpanded &&
+                        localCount &&
+                        localCount > 0 ? (
+                          <Box
+                            sx={{
+                              fontFamily: "Inter",
+                              fontSize: "14px",
+                              fontWeight: "400",
+                              color: "#0076C8",
+                              pt: "4px",
+                              position: "absolute",
+                              right: label === "Invitees" ? "12%" : "1%",
+                              top: "50%",
+                            }}
+                          >
+                            +{users.length - count}
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
+                      </Box>
+                    )}
                   </Box>
                 );
               })}
             </Box>{" "}
-            {isSentTo && isExpanded && localCount && localCount > 0 ? (
+            {/* {isSentTo && isExpanded && localCount && localCount > 0 ? (
               <Box
                 sx={{
                   fontFamily: "Inter",
@@ -346,7 +403,7 @@ export default function DetailsHeader(props: IProps) {
               </Box>
             ) : (
               <></>
-            )}
+            )} */}
           </Box>
         )}
       </>
@@ -373,8 +430,17 @@ export default function DetailsHeader(props: IProps) {
       <Box>
         <Grid container sx={{ gap: 0.8 }}>
           <Grid container justifyContent={"space-between"}>
-            <Grid item> {renderLabel("Main Information")}</Grid>
-            <Grid item>
+            <Grid
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+              }}
+              item
+            >
+              {" "}
+              {renderLabel("Main Information")}
               <Box
                 sx={{
                   display: "flex",
@@ -444,6 +510,7 @@ export default function DetailsHeader(props: IProps) {
             {renderUserWithAvatar({
               label: data.Createdby.label,
               users: data.Createdby.value,
+              type: "createdby",
             })}
           </Grid>
           {data.Confirmer.value && (
@@ -454,6 +521,7 @@ export default function DetailsHeader(props: IProps) {
               {renderUserWithAvatar({
                 label: data.Confirmer.label,
                 users: data.Confirmer.value,
+                type: "confirmer",
               })}
             </Grid>
           )}
@@ -461,13 +529,15 @@ export default function DetailsHeader(props: IProps) {
             <Grid
               item
               sx={{
-                width: "12%",
-                minWidth: "170px",
+                // width: "12%",
+                // minWidth: "170px",
+                width: "100%",
               }}
             >
               {renderUserWithAvatar({
                 label: data.Invitees.label,
                 users: data.Invitees.value,
+                type: "invitees",
               })}
             </Grid>
           )}
@@ -476,16 +546,19 @@ export default function DetailsHeader(props: IProps) {
         {renderUserWithAvatar({
           label: data.sentTo.label,
           users: data.sentTo.value,
+          type: "sentto",
         })}
         {!isExpanded &&
           renderUserWithAvatar({
             label: data.Viewer.label,
             users: data.Viewer.value,
+            type: "viwer",
           })}
         {!isExpanded &&
           renderUserWithAvatar({
             label: data.Invitees.label,
             users: data.Invitees.value,
+            type: "invitees",
           })}
         <Box sx={{ display: "flex", justifyContent: "end" }}>
           <Typography

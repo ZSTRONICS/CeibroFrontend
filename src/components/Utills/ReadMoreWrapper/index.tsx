@@ -130,7 +130,6 @@ const ReadMoreWrapper = ({
             getComputedStyle(fileCompRef.current).height
           );
           const fielsContWidth = getWidthWithMarginAndPadding(fileCompRef);
-          // console.log("fielsContWidth", fielsContWidth);
           if (count && count > 0 && fielsContWidth > 164) {
             setLocalCount(count - Math.floor(fielsContWidth / 200));
           }
@@ -167,20 +166,39 @@ const ReadMoreWrapper = ({
             flexDirection: "column",
           }}
         >
-          <Typography
+          <Box
             sx={{
-              fontFamily: "Inter",
-              fontWeight: 600,
-              fontSize: "12px",
-              color: "#605c5c",
-              lineHeight: "16px",
-              width: "100%",
-              overflowWrap: "anywhere",
-              mb: isCommentcard && type === "imageWithDesp" ? 0 : 1,
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
-            {title}
-          </Typography>
+            <Typography
+              sx={{
+                fontFamily: "Inter",
+                fontWeight: 600,
+                fontSize: "12px",
+                color: "#605c5c",
+                lineHeight: "16px",
+                width: "100%",
+                overflowWrap: "anywhere",
+                mb: isCommentcard && type === "imageWithDesp" ? 0 : 1,
+              }}
+            >
+              {title}
+            </Typography>
+            {isReadMore && allowExpandedView && (
+              <IconButton
+                onClick={handleMore}
+                sx={{ height: "24px", width: "40px", cursor: "pointer" }}
+              >
+                {isExpanded ? (
+                  <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
+                ) : (
+                  <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
+                )}
+              </IconButton>
+            )}
+          </Box>
           <Box
             sx={{
               width: "100%",
@@ -334,18 +352,6 @@ const ReadMoreWrapper = ({
                 </Box>
               ) : (
                 <></>
-              )}
-              {isReadMore && allowExpandedView && (
-                <IconButton
-                  onClick={handleMore}
-                  sx={{ height: "24px", width: "40px", cursor: "pointer" }}
-                >
-                  {isExpanded ? (
-                    <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
-                  ) : (
-                    <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
-                  )}
-                </IconButton>
               )}
             </Box>
           </Box>
