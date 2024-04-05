@@ -2,11 +2,13 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 
 interface Props {
+  less: string;
+  more: string;
   data: any;
   count: number;
 }
 
-const ShowmoreComponent = ({ data, count }: Props) => {
+const ShowmoreComponent = ({ less, more, data, count }: Props) => {
   const [showMore, setShowMore] = useState(false);
 
   const handleClick = (event: any) => {
@@ -46,7 +48,7 @@ const ShowmoreComponent = ({ data, count }: Props) => {
                   fontWeight: "500",
                 }}
               >
-                View less
+                {less}
               </Button>
             </>
           ) : (
@@ -65,7 +67,7 @@ const ShowmoreComponent = ({ data, count }: Props) => {
                   fontSize: "12px",
                 }}
               >
-                View more
+                {more}
               </Button>
             </>
           )}

@@ -197,7 +197,12 @@ const CommentCard = ({
               overflowWrap: "break-word",
             }}
           >
-            <ShowmoreComponent data={commentData?.message} count={370} />
+            <ShowmoreComponent
+              less={"See less"}
+              more={"See more"}
+              data={commentData?.message}
+              count={370}
+            />
           </Box>
         )}
         {commentData && commentData?.files && Imgdata?.length >= 1 ? (

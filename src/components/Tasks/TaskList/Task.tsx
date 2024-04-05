@@ -403,9 +403,12 @@ function Task() {
           justifyContent={"space-between"}
           sx={{ width: "100%", height: !selectedTask ? "100%" : "auto" }}
         >
+          {/* <Collapse orientation="horizontal" in={true}> */}
           <Grid
             item
             sx={{
+              // transition: "all linear 0.30s",
+              // border: "solid 1px red",
               maxWidth: `${commentDiv ? "49%" : "99.5%"}`,
               width: "100%",
               height: "100%",
@@ -452,9 +455,12 @@ function Task() {
               </>
             )}
           </Grid>
+          {/* </Collapse> */}
+          {/* <Collapse orientation="horizontal" in={true}> */}
           <Grid
             item
             sx={{
+              // transition: "all linear 0.30s",
               maxWidth: `${commentDiv ? "51%" : ".5%"}`,
               width: "100%",
               display: { lg: "block", sm: "none" },
@@ -479,6 +485,7 @@ function Task() {
               <></>
             )}
           </Grid>
+          {/* </Collapse> */}
         </Grid>
       </Grid>
     </Grid>
