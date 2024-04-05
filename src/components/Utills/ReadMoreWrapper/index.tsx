@@ -170,6 +170,7 @@ const ReadMoreWrapper = ({
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              alignItems: "flex-start",
             }}
           >
             <Typography
@@ -189,7 +190,12 @@ const ReadMoreWrapper = ({
             {isReadMore && allowExpandedView && (
               <IconButton
                 onClick={handleMore}
-                sx={{ height: "24px", width: "40px", cursor: "pointer" }}
+                sx={{
+                  height: "24px",
+                  width: "40px",
+                  cursor: "pointer",
+                  marginTop: "-5px",
+                }}
               >
                 {isExpanded ? (
                   <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
