@@ -1,8 +1,10 @@
 interface Props {
   markers: {
-    id: string;
     x: number;
     y: number;
+    taskUID: string;
+    _id: string;
+    taskRootState: string;
   }[];
 }
 function PinVewer(props: Props) {
@@ -10,18 +12,19 @@ function PinVewer(props: Props) {
   return (
     <>
       {markers &&
-        markers.map((overlay, index) => (
+        markers.map((marker, index) => (
           <div
-            id={overlay.id}
+            id={marker._id}
             key={index}
             style={{
               background: "red",
               borderRadius: "50%",
               color: "white",
               padding: "6px",
+              width: "80px",
             }}
           >
-            <p>pin {index}</p>
+            <p>{marker.taskUID}</p>
           </div>
         ))}
     </>

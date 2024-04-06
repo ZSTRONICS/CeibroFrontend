@@ -21,6 +21,9 @@ export default function ZoomButton({
       <button id={idZoomOut} className={"zoomButton"}>
         <SubtractIcon />
       </button>
+      {/* <button id={"addTask"} className={"zoomButton"} style={{ width: "10%" }}>
+        Add Task
+      </button> */}
     </CustomStack>
   );
 }

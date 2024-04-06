@@ -41,19 +41,17 @@ const DetailActions: React.FC<IProps> = (props) => {
     title,
     isCreator,
     isTaskConfirmer,
+    confirmer,
+    viewer,
     isCanceled,
     isAssignedToMe,
     taskRootState,
-    assignedToState,
     isTaskViewer,
     invitedNumbers,
   } = selectedTask;
 
-  // console.log(selectedTask, "selectedTask");
-
   const history = useHistory();
   const dispatch = useDispatch();
-  // console.log("selectedTask", selectedTask);
   const [isloading, setIsLoading] = useState(false);
   const modalsActions = {
     local: useOpenCloseModal(),
@@ -408,7 +406,10 @@ const DetailActions: React.FC<IProps> = (props) => {
       content: (
         <ForwardTask
           invitedNumbers={invitedNumbers}
-          assignedToState={assignedToState}
+          assignedToState={[
+            ...(confirmer ? [confirmer] : []),
+            ...(viewer.length > 0 ? viewer : []),
+          ]}
           taskId={taskId}
           closeModal={closeModalLocal}
           isOpen={false}

@@ -1,10 +1,18 @@
-import { Drawing } from "constants/interfaces";
-import { debounce } from "lodash";
-import { default as OpenSeaDragon } from "openseadragon";
+import { Button } from "@mui/material";
+import { CustomStack } from "components/CustomTags";
+import CustomModal from "components/Modal";
+import { Drawing, PinData } from "constants/interfaces";
+import { useOpenCloseModal } from "hooks";
+import _, { debounce } from "lodash";
+import OpenSeadragon, {
+  CanvasClickEvent,
+  default as OpenSeaDragon,
+} from "openseadragon";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { docsAction } from "redux/action";
-import { isValidURL } from "utills/common";
+import { isValidURL, openFormInNewWindow } from "utills/common";
+import PinVewer from "./PinVewer";
 import ZoomButton from "./ZoomButtons/ZoomButton";
 
 export interface LocalDZISource {
@@ -36,6 +44,7 @@ interface NavCoordinates {
   y?: number;
   level?: number;
 }
+
 const HOME_BUTTON_ID = "homeButton";
 const ZOOM_IN_BUTTON_ID = "zoomInButton";
 const ZOOM_OUT_BUTTON_ID = "zoomOutButton";
@@ -55,9 +64,7 @@ const DEFAULT_OSD_SETTINGS: OpenSeaDragon.Options = {
   navigatorDisplayRegionColor: "#ff0000",
   navigatorSizeRatio: 0.15,
 };
-interface OverlayRefs {
-  [key: string]: React.RefObject<OpenSeaDragon.Overlay>;
-}
+
 function getAttrOrDie(el: Element, attrName: string) {
   const res = el.getAttribute(attrName);
   if (res === null) throw new Error(`No such attribute ${attrName}`);
@@ -99,25 +106,42 @@ function parseXMLDziString(dziString: string): XMLDZIObject {
 
 function DeepZoomImgViewer({
   imageToOpen,
-  selectedDrawing, // navTo,
+  selectedDrawing,
+  allPins,
 }: {
   imageToOpen?: RemoteDZISource;
   selectedDrawing: Drawing;
+  allPins?: PinData[];
 }) {
+  const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const viewerRef = useRef<OpenSeaDragon.Viewer | undefined>(undefined);
   const dispatch = useDispatch();
+  const annotationsRef = React.useRef<Map<string, any>>(new Map());
   const [panningAllowed, setPanningAllowed] = useState(true);
+  const [selectedMarker, setSelectedMarker] = useState<any | null>(null);
   let panningTimeoutRef: any = useRef(null);
-  const [overlayRefs, setOverlayRefs] = useState<OverlayRefs>({});
+
   const [image, setImage] = useState<
     RemoteDZISource | LocalDZISource | undefined
   >({
     dziURL: selectedDrawing?.dziFileURL,
     filesURL: selectedDrawing?.dziTileURL,
   });
-  const [markers, setMarkers] = useState<
-    { id: string; x: number; y: number }[]
-  >([]);
+
+  const transformedPins = _.chain(allPins)
+    .filter((pin) => pin.drawingId === selectedDrawing._id)
+    .map((pin) => {
+      return {
+        x: pin.x_coord,
+        y: pin.y_coord,
+        taskUid: pin.taskData?.taskUID || "",
+        _id: pin._id || "",
+        rootState: pin.taskData?.rootState || "",
+      };
+    })
+    .value();
+  // console.log("transformedPins", transformedPins);
+  const [markers, setMarkers] = useState<any[]>(transformedPins);
 
   useEffect(() => {
     if (!isValidURL(selectedDrawing.dziFileURL)) {
@@ -136,9 +160,7 @@ function DeepZoomImgViewer({
 
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  // set initial viewport
-  let initialNav: NavCoordinates | null = null;
-
+  // console.log("markers", markers);
   // open image by URL
   const openRemoteImage = async (
     viewer: OpenSeaDragon.Viewer,
@@ -196,7 +218,7 @@ function DeepZoomImgViewer({
         jpg: true,
       });
       // only one viewer object is used throughout.
-      const viewer = OpenSeaDragon({
+      const viewer: any = OpenSeaDragon({
         id: "osd-viewer",
         homeButton: HOME_BUTTON_ID,
         zoomInButton: ZOOM_IN_BUTTON_ID,
@@ -255,38 +277,72 @@ function DeepZoomImgViewer({
         }
       }, 500);
 
+      viewerRef.current = viewer;
       viewer.addHandler("pan", updateHashRoute);
       viewer.addHandler("zoom", updateHashRoute);
-      viewerRef.current = viewer;
     }
     setImage(imageToOpen);
   }, []);
 
   useEffect(() => {
-    if (viewerRef && viewerRef.current && panningAllowed) {
+    if (viewerRef.current) {
       const viewer = viewerRef.current;
-      const canvasClickHandler = (event: any) => {
-        const webPoint = event.position;
-        // Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
-        const viewportPoint = viewer.viewport.pointFromPixel(webPoint);
-        const markerId = "overlay" + Date.now();
-        setMarkers([
-          ...markers,
-          {
-            id: markerId,
-            x: parseFloat(viewportPoint.x.toFixed(4)),
-            y: parseFloat(viewportPoint.y.toFixed(4)),
-          },
-        ]);
-        viewer.addOverlay({
+      setMarkers(transformedPins);
+      transformedPins.forEach((marker) => {
+        // let viewportPxToPoint = viewer.viewport.pixelFromPoint(
+        //   new OpenSeadragon.Point(marker.x, marker.y)
+        // );
+        const viewportPoint =
+          viewer.viewport.viewerElementToViewportCoordinates(
+            new OpenSeadragon.Point(marker.x, marker.y)
+          );
+        // console.log("viewportPxToPoint", viewportPxToPoint, viewportPoint);
+        const newMarker = {
+          id: marker._id,
           element: createMarkerElement(String(Date.now())),
           location: viewportPoint,
           placement: OpenSeaDragon.Placement.CENTER,
-          id: markerId,
-        });
-      };
+          checkResize: false,
+        };
+        // return viewer.addOverlay(newMarker);
+      });
+      // viewer.forceRedraw();
+    }
+  }, [transformedPins?.length, viewerRef]);
 
-      viewer.addHandler("canvas-click", canvasClickHandler);
+  const handleClose = () => {
+    if (viewerRef.current) {
+      const viewer = viewerRef.current;
+      viewer.removeOverlay(selectedMarker.element);
+      viewer.forceRedraw();
+      setSelectedMarker(null);
+      closeModal();
+    }
+  };
+
+  useEffect(() => {
+    if (viewerRef && viewerRef.current && panningAllowed) {
+      const canvasClickHandler = (event: CanvasClickEvent) => {
+        if (!event.quick) {
+          return;
+        }
+        const markerId = "overlay" + Date.now();
+        const viewportPoint = viewer.viewport.pointFromPixel(event.position);
+        const newMarker = {
+          id: markerId,
+          element: createMarkerElement(String(Date.now())),
+          location: viewportPoint,
+          placement: OpenSeaDragon.Placement.CENTER,
+          checkResize: false,
+        };
+        openModal();
+        annotationsRef.current.set(markerId, newMarker);
+        setMarkers([...markers, newMarker]);
+        setSelectedMarker(newMarker);
+        // viewer.addOverlay(newMarker);
+      };
+      const viewer = viewerRef.current;
+      // viewer.addHandler("canvas-click", canvasClickHandler);
       // Cleanup event handler on component unmount
       return () => {
         viewer.removeHandler("canvas-click", canvasClickHandler);
@@ -301,8 +357,10 @@ function DeepZoomImgViewer({
         const zoom = viewer.viewport.getZoom(true);
         const bounds = viewer.viewport.getBounds(true);
         markers.forEach((marker) => {
+          const annotation = annotationsRef.current.get(marker.id);
           const transformedX = (marker.x - bounds.x) * zoom;
           const transformedY = (marker.y - bounds.y) * zoom;
+          // console.log(`annotation`, annotation);
           const element = document.getElementById(marker.id);
           if (element) {
             const viewportPoint = viewer.viewport.pixelFromPoint(
@@ -315,26 +373,6 @@ function DeepZoomImgViewer({
             );
           }
         });
-      };
-      const zoomHandler = function () {
-        const zoom = viewer.viewport.getZoom(true);
-        const bounds = viewer.viewport.getBounds(true);
-
-        const currentMarkers = markers.map((marker) => {
-          const transformedX = (marker.x - bounds.x) * zoom;
-          const transformedY = (marker.y - bounds.y) * zoom;
-
-          const viewportPoint = viewer.viewport.pixelFromPoint(
-            new OpenSeaDragon.Point(marker.x, marker.y),
-            true
-          );
-          return {
-            ...marker,
-            x: transformedX,
-            y: transformedY,
-          };
-        });
-        setMarkers(currentMarkers);
       };
 
       viewer.addHandler("zoom", updateOverlayPositions);
@@ -389,15 +427,12 @@ function DeepZoomImgViewer({
   }, [image]);
 
   const createMarkerElement = (markerId: string) => {
-    const marker = document.createElement("div");
-    marker.className = "marker";
-    marker.setAttribute("id", markerId);
-    marker.style.width = "20px";
-    marker.style.height = "20px";
-    marker.style.backgroundColor = "red";
-    marker.style.borderRadius = "50%";
-    return marker;
+    const markerElement = document.createElement("div");
+    markerElement.className = "marker";
+    markerElement.setAttribute("id", markerId);
+    return markerElement;
   };
+
   // console.log("markers", markers);
   return (
     <div
@@ -413,21 +448,40 @@ function DeepZoomImgViewer({
         idZoomOut={ZOOM_OUT_BUTTON_ID}
         homeBtnId={HOME_BUTTON_ID}
       />
-
-      {/* <PinVewer markers={markers} /> */}
-      {/* <SquareButton
-        className={style.homeButton}
-        id={HOME_BUTTON_ID}
-        icon="home"
-      />
-      {!imageToOpen && (
-        <FileMenu setImageCallback={setImage} className={style.menuButton} />
+      <PinVewer markers={markers} />
+      {isOpen && (
+        <CustomModal
+          maxWidth={"sm"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={true}
+          title="Select pin type"
+          isOpen={isOpen}
+          handleClose={handleClose}
+          children={
+            <CustomStack sx={{ gap: 1.2, justifyContent: "center", py: 1.25 }}>
+              <Button
+                sx={{ textTransform: "unset" }}
+                variant="outlined"
+                onClick={() => {
+                  openFormInNewWindow("/create-new-task", "Create New Task");
+                  handleClose();
+                }}
+              >
+                New task
+              </Button>
+              <Button
+                sx={{ textTransform: "unset" }}
+                disabled
+                variant="outlined"
+              >
+                Add image
+              </Button>
+            </CustomStack>
+          }
+        />
       )}
-      <SquareButton
-        className={style.fullscreenButton}
-        id={FULLSCREEN_BUTTON_ID}
-        icon={!isFullscreen ? "fullscreen" : "exitFullscreen"}
-      /> */}
     </div>
   );
 }

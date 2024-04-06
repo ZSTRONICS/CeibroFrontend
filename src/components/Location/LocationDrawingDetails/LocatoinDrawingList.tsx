@@ -364,7 +364,10 @@ const LocatoinDrawingList = ({
           }}
         >
           {selectedDrawing && selectedDrawing.fileUrl ? (
-            <DeepZoomImgViewer selectedDrawing={selectedDrawing} />
+            <DeepZoomImgViewer
+              selectedDrawing={selectedDrawing}
+              allPins={allPins}
+            />
           ) : (
             // <DZIViewerAnootation />
             // <DocumentReader

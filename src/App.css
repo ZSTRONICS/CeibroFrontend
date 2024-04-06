@@ -78,6 +78,18 @@ html {
   justify-content: center;
 } */
 
+.marker {
+  background: #0076C8;
+  width: 24px;
+  height: 24px;
+  border: 2px solid black;
+  border-radius: 50%;
+
+}
+
+.marker:hover {
+  cursor: pointer;
+}
 
 @keyframes fadeIn {
   from {
@@ -568,10 +580,12 @@ button[disabled] {
   display: block;
   margin-bottom: 8px;
 }
+
 .my-editor input {
   width: 100%;
   box-sizing: border-box;
 }
+
 .my-editor pre {
   font-size: 0.7rem;
 }
