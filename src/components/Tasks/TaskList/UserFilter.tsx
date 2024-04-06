@@ -32,9 +32,6 @@ interface IProps {
 }
 
 function UserFilter(props: IProps) {
-  // console.log(props.contacts, "contacts");
-  // console.log(props.recentUserContact, "recentUserContact");
-
   const [isSelfAssign, setIsSelfAssign] = useState(false);
   const {
     name,
@@ -174,9 +171,9 @@ function UserFilter(props: IProps) {
         style={{
           display: open ? "none" : "flex",
           marginLeft: "12px",
+          marginTop: "3px",
         }}
       >
-        {" "}
         <p style={{ color: "#818181", fontSize: "14px", fontWeight: "500" }}>
           Users
         </p>
@@ -217,7 +214,7 @@ function UserFilter(props: IProps) {
           minWidth: "110px",
           backgroundColor: "#F4F4F4",
           "& .MuiInputBase-root": {
-            top: "-12px",
+            top: "-14px",
           },
           "& .MuiInputBase-root:before": {
             borderBottom: "none !important",
@@ -241,15 +238,17 @@ function UserFilter(props: IProps) {
         )}
         <MUIInputLabel
           sx={{
-            top: "-10px",
+            top: "-12px",
             left: "15px",
             fontSize: "14px",
             fontWeight: "400",
             color: "#818181",
+            marginLeft: "-15px",
+            display: open ? "none" : "unset",
           }}
           id="controlled-open-select-label"
         >
-          {renderValue()}
+          {selected.length === 0 ? renderValue() : null}
         </MUIInputLabel>
         <Select
           labelId="controlled-open-select-label"
@@ -308,7 +307,7 @@ function UserFilter(props: IProps) {
                 borderBottomWidth: "1px",
                 borderColor: "#818181",
                 borderStyle: "solid",
-                marginRight: "8px",
+                marginRight: "5px",
               }}
               variant="standard"
               inputProps={{

@@ -1,6 +1,7 @@
 import { Box, Button } from "@mui/material";
 import assets from "assets";
 import { CustomStack, Heading2 } from "components/CustomTags";
+import { useTranslation } from "react-i18next";
 import { openFormInNewWindow } from "utills/common";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
   isTasksLoading: boolean;
 }
 function MainTaskHeader(props: Props) {
+  const { t }: any = useTranslation<any>();
   const { showHiddenTasks, isTasksLoading, setShowHiddenTasks } = props;
   const btnStyle = {
     textTransform: "unset",
@@ -36,7 +38,7 @@ function MainTaskHeader(props: Props) {
             onClick={() => setShowHiddenTasks(false)}
             variant="contained"
           >
-            All tasks
+            {t("task.tasks_heading")}
           </Button>
         </CustomStack>
       ) : (

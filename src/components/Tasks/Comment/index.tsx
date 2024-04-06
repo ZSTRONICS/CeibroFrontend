@@ -173,217 +173,222 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
   const isMdScreen = useMediaQuery(theme.breakpoints.down(1300));
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "space-between",
-        borderTop: "1px solid #818181",
-        paddingTop: "10px",
-      }}
-    >
+    <Box sx={{ width: "100%", borderTop: "1px solid #818181" }}>
       <Box
         sx={{
-          width: isCommentView
-            ? isxLScreen
-              ? "85%"
-              : "90%"
-            : isxLScreen
-            ? "95%"
-            : isMdScreen
-            ? "88%"
-            : "95%",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "end",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          paddingTop: "10px",
+          width: "98%",
+          marginLeft: "1%",
         }}
       >
         <Box
           sx={{
-            width: "100%",
-            backgroundColor: "#E2E4E5",
-            borderRadius: "22px",
+            width: isCommentView
+              ? isxLScreen
+                ? "85%"
+                : "90%"
+              : isxLScreen
+              ? "95%"
+              : isMdScreen
+              ? "88%"
+              : "95%",
             display: "flex",
-            alignItems: "flex-end",
-            paddingBottom: "8px",
-            marginLeft: "4px",
-            minHeight: "50px",
+            flexDirection: "column",
+            alignItems: "end",
           }}
         >
           <Box
             sx={{
-              width: "5%",
-              marginBottom: "3px",
-              marginLeft: isCommentView ? "16px" : isMdScreen ? "7px" : "0px",
+              width: "100%",
+              backgroundColor: "#E2E4E5",
+              borderRadius: "22px",
               display: "flex",
-              justifyContent: isMdScreen ? "flex-end" : "center",
+              alignItems: "flex-end",
+              paddingBottom: "8px",
+              marginLeft: "4px",
+              minHeight: "50px",
             }}
           >
-            <Emoji />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              width: isCommentView
-                ? isMdScreen
-                  ? "80%"
-                  : "85%"
-                : isMdScreen
-                ? "85%"
-                : "90%",
-            }}
-          >
-            <FormControl
-              variant="standard"
+            <Box
               sx={{
-                width: "100%",
-                height: "100%",
-                fontFamily: "Inter",
-                background: "#E2E4E5",
-                padding: "3px 2px 3px 12px",
+                width: "5%",
+                marginBottom: "3px",
+                marginLeft: isCommentView ? "16px" : isMdScreen ? "7px" : "0px",
                 display: "flex",
-                flexDirection: "row",
-                transform: "translateY(5px)",
-                alignItems: "flex-end",
+                justifyContent: isMdScreen ? "flex-end" : "center",
               }}
             >
-              <Input
-                placeholder="Start typing here"
-                name="comment"
-                id="comment"
-                required
-                inputProps={{ maxLength: 1500 }}
-                autoFocus
-                multiline
-                value={description}
+              <Emoji />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                width: isCommentView
+                  ? isMdScreen
+                    ? "80%"
+                    : "85%"
+                  : isMdScreen
+                  ? "85%"
+                  : "90%",
+              }}
+            >
+              <FormControl
+                variant="standard"
                 sx={{
-                  // width: isMdScreen ? "100%" : "100%",
                   width: "100%",
-                  "&:hover:not(.Mui-disabled, .Mui-error):before": {
-                    borderBottom: "none !important",
-                  },
-                  "&::before, &::after": {
-                    borderBottom: "none",
-                  },
+                  height: "100%",
+                  fontFamily: "Inter",
+                  background: "#E2E4E5",
+                  padding: "3px 2px 3px 12px",
+                  display: "flex",
+                  flexDirection: "row",
+                  transform: "translateY(5px)",
+                  alignItems: "flex-end",
                 }}
-                onChange={handleDescriptionChange}
-                maxRows={6}
-              />
-            </FormControl>
-            <Box sx={{ width: "100%", marginLeft: "5px" }}>
-              {selectedImages.length > 0 && (
-                <ImagesToUpload
-                  imgwithcomment={false}
-                  showDivder={false}
-                  showLabel={true}
-                  updateImageWithComment={() => {}}
-                  isComment={true}
-                  selectedImages={selectedImages}
-                  onClearFile={(file: any, type: any) =>
-                    handleClearFile(file, type)
-                  }
+              >
+                <Input
+                  placeholder="Start typing here"
+                  name="comment"
+                  id="comment"
+                  required
+                  inputProps={{ maxLength: 1500 }}
+                  autoFocus
+                  multiline
+                  value={description}
+                  sx={{
+                    // width: isMdScreen ? "100%" : "100%",
+                    width: "100%",
+                    "&:hover:not(.Mui-disabled, .Mui-error):before": {
+                      borderBottom: "none !important",
+                    },
+                    "&::before, &::after": {
+                      borderBottom: "none",
+                    },
+                  }}
+                  onChange={handleDescriptionChange}
+                  maxRows={6}
                 />
-              )}
-              {selectedDocuments.length > 0 && (
-                <>
-                  <Box
-                    sx={{
-                      width: "100%",
-                      overflow: "auto",
-                    }}
-                  >
-                    <Typography
+              </FormControl>
+              <Box sx={{ width: "100%", marginLeft: "5px" }}>
+                {selectedImages.length > 0 && (
+                  <ImagesToUpload
+                    imgwithcomment={false}
+                    showDivder={false}
+                    showLabel={true}
+                    updateImageWithComment={() => {}}
+                    isComment={true}
+                    selectedImages={selectedImages}
+                    onClearFile={(file: any, type: any) =>
+                      handleClearFile(file, type)
+                    }
+                  />
+                )}
+                {selectedDocuments.length > 0 && (
+                  <>
+                    <Box
                       sx={{
-                        fontFamily: "Inter",
-                        fontWeight: 600,
-                        fontSize: "12px",
-                        color: "#605C5C",
-                        pt: 1,
+                        width: "100%",
+                        overflow: "auto",
                       }}
                     >
-                      Files
-                    </Typography>
-                    <FileBox
-                      iscomment={true}
-                      isnoWrap={true}
-                      files={selectedDocuments}
-                      handleClearFile={handleClearFile}
-                    />
-                  </Box>
-                </>
-              )}
+                      <Typography
+                        sx={{
+                          fontFamily: "Inter",
+                          fontWeight: 600,
+                          fontSize: "12px",
+                          color: "#605C5C",
+                          pt: 1,
+                        }}
+                      >
+                        Files
+                      </Typography>
+                      <FileBox
+                        iscomment={true}
+                        isnoWrap={true}
+                        files={selectedDocuments}
+                        handleClearFile={handleClearFile}
+                      />
+                    </Box>
+                  </>
+                )}
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                transform: "translateY(5px)",
+                width: isCommentView
+                  ? isMdScreen
+                    ? "10%"
+                    : "10%"
+                  : isMdScreen
+                  ? "10%"
+                  : "5%",
+              }}
+              onClick={handleSelectDocument}
+            >
+              <AttachFileOutlinedIcon
+                sx={{
+                  color: "#818181",
+                  transform: "rotate(40deg)",
+                  marginLeft: "5px",
+                  cursor: "pointer",
+                }}
+              />
             </Box>
           </Box>
-          <Box
+          <Typography
             sx={{
-              transform: "translateY(5px)",
-              width: isCommentView
-                ? isMdScreen
-                  ? "10%"
-                  : "10%"
-                : isMdScreen
-                ? "10%"
-                : "5%",
+              fontSize: "12px",
+              fontWeight: "400",
+              color: "#757575",
+              marginTop: "2px",
             }}
-            onClick={handleSelectDocument}
-          >
-            <AttachFileOutlinedIcon
-              sx={{
-                color: "#818181",
-                transform: "rotate(40deg)",
-                marginLeft: "5px",
-              }}
-            />
-          </Box>
+          >{`${description.length}/ 1500`}</Typography>
         </Box>
-        <Typography
+        <Box
           sx={{
-            fontSize: "12px",
-            fontWeight: "400",
-            color: "#757575",
-            marginTop: "2px",
-          }}
-        >{`${description.length}/ 1500`}</Typography>
-      </Box>
-      <Box
-        sx={{
-          width: isCommentView
-            ? isxLScreen
-              ? "15%"
+            width: isCommentView
+              ? isxLScreen
+                ? "15%"
+                : isMdScreen
+                ? "15%"
+                : "10%"
+              : isxLScreen
+              ? "7%"
               : isMdScreen
-              ? "15%"
-              : "10%"
-            : isxLScreen
-            ? "7%"
-            : isMdScreen
-            ? "12%"
-            : "5%",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        <CustomButton
-          onClick={handleSubmit}
-          variant="outlined"
-          disableRipple
-          icon={<SendIcon />}
-          disabled={disableBtn}
-          loading={isSubmit}
-          sx={{
-            height: "60px",
-            borderRadius: "50%",
-            backgroundColor: "#0076C8",
+              ? "12%"
+              : "5%",
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            transform: "scale(0.8) translateY(-18px) ",
-            "&:hover": {
-              backgroundColor: "#0076C8",
-            },
+            justifyContent: "flex-end",
           }}
-        />
+        >
+          <CustomButton
+            onClick={handleSubmit}
+            variant="outlined"
+            disableRipple
+            icon={<SendIcon />}
+            disabled={disableBtn}
+            loading={isSubmit}
+            sx={{
+              cursor: "pointer",
+              height: "60px",
+              borderRadius: "50%",
+              backgroundColor: "#0076C8",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              transform: "scale(0.8) translateY(-18px) ",
+              "&:hover": {
+                backgroundColor: "#0076C8",
+              },
+            }}
+          />
+        </Box>
       </Box>
     </Box>
   );

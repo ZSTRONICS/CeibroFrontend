@@ -168,6 +168,7 @@ function TaskbyFilters(props: IProps) {
         sx={{
           "& .MuiSelect-select": {
             marginTop: "-2px",
+            // border: "solid 1px red",
           },
           "& .MuiSelect-icon": {
             left: "72%",
@@ -297,14 +298,26 @@ function TaskbyFilters(props: IProps) {
               <FilterProjectCard
                 handleSelect={handleSelect}
                 selectedOptions={selectedOptions}
-                options={FilterdData}
+                options={
+                  searchQuery.length > 0
+                    ? FilterdData
+                    : FilterdData.length > 0
+                    ? FilterdData
+                    : options
+                }
                 // checkedIcon={}
               />
             ) : label === "Tags" ? (
               <FilterTagsCards
                 handleSelect={handleSelect}
                 selectedOptions={selectedOptions}
-                options={FilterdData}
+                options={
+                  searchQuery.length > 0
+                    ? FilterdData
+                    : FilterdData.length > 0
+                    ? FilterdData
+                    : options
+                }
               />
             ) : null}
           </Box>

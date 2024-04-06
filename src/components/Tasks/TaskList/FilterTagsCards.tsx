@@ -57,7 +57,7 @@ TagsFilterProps) => {
 
   return (
     <>
-      <Box sx={{ maxHeight: "300px", overflow: "auto" }}>{TagsRender}</Box>
+      <Box sx={{ height: "350px", overflow: "auto" }}>{TagsRender}</Box>
     </>
   );
 };

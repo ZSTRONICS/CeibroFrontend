@@ -1,6 +1,7 @@
 const Emoji = () => {
   return (
     <svg
+      // style={{ cursor: "pointer" }}
       width="23"
       height="22"
       viewBox="0 0 23 22"
