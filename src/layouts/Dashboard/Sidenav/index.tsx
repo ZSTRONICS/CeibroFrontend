@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useRouteMatch } from "react-router-dom";
 // @mui
 import { Box, Drawer } from "@mui/material";
 // hooks
-import assets from "assets/assets";
 import Sidebar from "components/Sidebar/Sidebar";
 import useResponsive from "../../../hooks/useResponsive";
 
@@ -13,17 +12,26 @@ const NAV_WIDTH = 72;
 Nav.propTypes = {
   openNav: PropTypes.bool,
   onCloseNav: PropTypes.func,
+  height: PropTypes.string,
 };
 
 interface Props {
   openNav: any;
   onCloseNav: any;
+  height: any;
 }
 
-export default function Nav({ openNav, onCloseNav }: Props) {
+export default function Nav({ openNav, onCloseNav, height }: Props) {
   const { pathname } = useLocation();
-
-  const isDesktop = useResponsive("up", "lg", "");
+  const showSidebar = useRouteMatch([
+    "/projects",
+    "/location",
+    "/location-details",
+    "/connections",
+    "/profile",
+    "/tasks",
+  ]);
+  const isDesktop = useResponsive("up", "md", "");
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -34,59 +42,55 @@ export default function Nav({ openNav, onCloseNav }: Props) {
   const renderContent = (
     <Box
       sx={{
-        height: "100%",
-        // display: "flex",
-        // flexDirection: "column",
-        background: "#F4F4F4",
+        overflow: "hidden",
+        height,
+        background: "rgba(244, 244, 244, 1)",
       }}
     >
-      <Box sx={{ display: "inline-flex", pb: 1.4 }}>
-        <img
-          src={assets.logo}
-          alt="ceibro-logo"
-          style={{ height: "55px", width: "70px" }}
-        />
-      </Box>
       <Sidebar onClose={onCloseNav} />
     </Box>
   );
 
   return (
-    <Box
-      component="nav"
-      sx={{
-        flexShrink: { lg: 0 },
-        width: { lg: NAV_WIDTH },
-      }}
-    >
-      {isDesktop ? (
-        <Drawer
-          open
-          variant="permanent"
-          PaperProps={{
-            sx: {
-              width: NAV_WIDTH,
-              bgcolor: "background.default",
-              borderRightStyle: "dashed",
-            },
+    <>
+      {!showSidebar && (
+        <Box
+          component="nav"
+          sx={{
+            flexShrink: { lg: 0 },
+            width: { lg: NAV_WIDTH },
           }}
         >
-          {renderContent}
-        </Drawer>
-      ) : (
-        <Drawer
-          open={openNav}
-          onClose={onCloseNav}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          PaperProps={{
-            sx: { width: NAV_WIDTH },
-          }}
-        >
-          {renderContent}
-        </Drawer>
+          {isDesktop ? (
+            <Drawer
+              open
+              variant="permanent"
+              PaperProps={{
+                sx: {
+                  width: NAV_WIDTH,
+                  position: "relative",
+                  zIndex: 1,
+                },
+              }}
+            >
+              {renderContent}
+            </Drawer>
+          ) : (
+            <Drawer
+              open={openNav}
+              onClose={onCloseNav}
+              ModalProps={{
+                keepMounted: true,
+              }}
+              PaperProps={{
+                sx: { width: NAV_WIDTH },
+              }}
+            >
+              {renderContent}
+            </Drawer>
+          )}
+        </Box>
       )}
-    </Box>
+    </>
   );
 }

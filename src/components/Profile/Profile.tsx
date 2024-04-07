@@ -12,7 +12,9 @@ import ProfileImagePicker from "./ProfileImagePicker";
 
 const Profile = () => {
   const isTabletOrMobile = useResponsive("down", "md", "");
-  const { user } = useSelector((localState: RootState) => localState.auth);
+  const { user, profilePicUploading } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const ConnectionView = (
     <Grid
@@ -20,7 +22,7 @@ const Profile = () => {
       xs={12}
       md={4}
       sx={{
-        "@media (max-width:960px)": {
+        "@media (max-width:899px)": {
           padding: "10px 20px",
         },
       }}
@@ -30,10 +32,13 @@ const Profile = () => {
   );
 
   return (
-    <Grid container justifyContent="center">
-      <ProfileImagePicker profilePic={user?.profilePic} />
+    <Grid container justifyContent="center" sx={{ padding: "8px" }}>
+      <ProfileImagePicker
+        profilePic={user.profilePic}
+        profilePicUploading={profilePicUploading}
+      />
       {isTabletOrMobile && ConnectionView}
-      <ProfileForm />
+      <ProfileForm user={user} />
       {!isTabletOrMobile && ConnectionView}
     </Grid>
   );

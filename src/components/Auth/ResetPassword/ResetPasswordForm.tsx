@@ -13,10 +13,11 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 import { resetPassword } from "redux/action/auth.action";
+import { LOGIN_ROUTE } from "utills/axios";
 import { resetPasswordSchemaValidation } from "../userSchema/AuthSchema";
 
 const ResetPasswordForm = () => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>();
   const dispatch = useDispatch();
@@ -37,9 +38,10 @@ const ResetPasswordForm = () => {
         setSuccess(res);
         if (res) {
           localStorage.clear();
-          history.push("/login");
+          history.push(LOGIN_ROUTE);
         }
-        toast.success(`${t("auth.password_reset_successfully")}`);
+        // toast.success(`${t("auth.password_reset_successfully")}`);
+        toast.success(`${t("Password Reset Successfully")}`);
         action?.resetForm?.();
       },
       onFailAction: (err: any) => {
@@ -82,8 +84,8 @@ const ResetPasswordForm = () => {
                   password={values.password}
                   typeName="password"
                   name="password"
-                  label="Password *"
-                  placeholder="Password"
+                  label={t("auth.password")}
+                  placeholder={t("auth.password")}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
@@ -98,8 +100,8 @@ const ResetPasswordForm = () => {
                 <CustomMuiTextField
                   password={values.confirmPassword}
                   name="confirmPassword"
-                  label="Confirm password *"
-                  placeholder="Confirm password"
+                  label={t("auth.confirm_password")}
+                  placeholder={t("auth.confirm_password")}
                   typeName="password"
                   inputValue={values.confirmPassword}
                   onChange={handleChange}

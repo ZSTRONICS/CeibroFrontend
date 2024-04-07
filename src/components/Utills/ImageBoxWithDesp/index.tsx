@@ -4,12 +4,27 @@ import StyledTypographyBox from "../StyledTypographyBox";
 interface IProps {
   src: string;
   comment: string;
+  TaskDetails?: boolean;
+  handleClick: () => void;
+  isCommentcard?: boolean;
 }
 
-export default function ImageBoxWithDesp({ src, comment }: IProps) {
+export default function ImageBoxWithDesp({
+  src,
+  comment,
+  handleClick,
+  TaskDetails,
+  isCommentcard,
+}: IProps) {
   return (
-    <CustomStack>
-      <ImageBox src={src} />
+    <CustomStack sx={{ alignItems: "flex-start" }}>
+      <ImageBox
+        isCommentcard={isCommentcard}
+        TaskDetails={TaskDetails}
+        src={src}
+        handleClick={handleClick}
+        type="imageWithDesp"
+      />
       <StyledTypographyBox text={comment} />
     </CustomStack>
   );

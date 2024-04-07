@@ -1,20 +1,19 @@
-import React from "react";
 import { Box, Button, Typography } from "@mui/material";
-import { Formik, Form, Field } from "formik";
-import { useTranslation } from "react-i18next";
-import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import useStyles from "../Register/RegisterStyles";
-import { CBox } from "components/material-ui";
 import MessageAlert from "components/MessageAlert/MessageAlert";
+import { CBox } from "components/material-ui";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import { Form, Formik } from "formik";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import useStyles from "../Register/RegisterStyles";
 
 interface VerificationFormProps {
   onSubmit: (values: { verificationCode: string }, actions: any) => void;
   counter: number;
   handleResend: () => void;
-  showSuccess: boolean
-  showAlert: boolean
-  alertMessage:string
-
+  showSuccess: boolean;
+  showAlert: boolean;
+  alertMessage: string;
 }
 
 const VerificationForm: React.FC<VerificationFormProps> = ({
@@ -23,9 +22,9 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
   handleResend,
   showSuccess,
   showAlert,
-  alertMessage
+  alertMessage,
 }) => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const classes = useStyles();
 
   const initialValues = {
@@ -50,6 +49,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
         <Form style={{ width: "100%" }}>
           <CBox mb={3.1}>
             <CustomMuiTextField
+              inputVariant="outlined"
               name="verificationCode"
               typeName="text-field"
               label="Enter your code"
@@ -64,19 +64,19 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
               </Typography>
             )}
           </CBox>
-          <Box sx={{ marginBottom:{md: "26px",xs:0} }}>
+          <Box sx={{ marginBottom: { md: "26px", xs: 0 } }}>
             {counter > 0 ? (
               <Typography>
-                {t("auth.didnot_receive_code")}{" "}
+                {t("auth.didn_t_receive_code")}{" "}
                 <span style={{ color: "grey" }}>
                   {`${counter} ${t("auth.seconds_left")}`}
                 </span>
               </Typography>
             ) : (
               <Typography>
-                {t("auth.didnot_receive_code")}{" "}
+                {t("auth.didn_t_receive_code")}{" "}
                 <span className={classes.signup} onClick={handleResend}>
-                  {t("auth.send_again")}
+                  {t("auth.send_again_text")}
                 </span>
               </Typography>
             )}
@@ -87,10 +87,10 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
             )} */}
           </Box>
           <MessageAlert
-              message={alertMessage}
-              severity={showSuccess === true ? "success" : "error"}
-              showMessage={showAlert}
-            />
+            message={alertMessage}
+            severity={showSuccess === true ? "success" : "error"}
+            showMessage={showAlert}
+          />
           <div className={classes.actionWrapper}>
             <Button
               sx={{ py: { xs: 0.5, md: 1.5 } }}
@@ -98,9 +98,9 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
               variant="contained"
               color="primary"
               type="submit"
-              disabled={values.verificationCode.length !==6}
+              disabled={values.verificationCode.length !== 6}
             >
-             continue
+              {t("auth.continue_heading")}
             </Button>
           </div>
         </Form>

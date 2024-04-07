@@ -24,11 +24,15 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
     {...props}
   />
 ))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, .05)"
-      : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
+  backgroundColor: "white",
+  // backgroundColor:
+  //   theme.palette.mode === "dark"
+  //     ? "rgba(255, 255, 255, .05)"
+  //     : "rgba(0, 0, 0, .03)",
+  // flexDirection: "row-reverse",
+  "& .MuiAccordionSummary-expandIconWrapper .MuiSvgIcon-root": {
+    color: "#0076C8",
+  },
   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
     transform: "rotate(90deg)",
   },
@@ -39,8 +43,8 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(0.4),
-  paddingLeft: theme.spacing(2.5),
-  background: "#f5f7f8",
+  paddingLeft: theme.spacing(1),
+  background: "white",
   // borderTop: "1px solid rgba(0, 0, 0, .125)",
   // borderBottom:"1px solid rgba(0, 0, 0, .125)",
 }));

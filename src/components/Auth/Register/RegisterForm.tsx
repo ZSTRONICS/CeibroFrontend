@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 //react router dom
 import { useHistory } from "react-router";
@@ -8,7 +8,6 @@ import Alert from "@mui/material/Alert";
 
 // redux
 import { useDispatch } from "react-redux";
-import { registerSetupProfile } from "redux/action/auth.action";
 
 // components
 
@@ -18,19 +17,22 @@ import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Typography } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { Formik } from "formik";
+import { FormikProps, FormikValues, useFormik } from "formik";
+import { authApiAction } from "redux/action";
+import { LOGIN_ROUTE } from "utills/axios";
 import { setValidationSchema } from "../userSchema/RegisterSchema";
 import useStyles from "./RegisterStyles";
 
 const RegisterForm = () => {
   const classes = useStyles();
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const dispatch = useDispatch();
   const history = useHistory();
   const registerSch = setValidationSchema(t);
+  const formikRef = useRef<FormikProps<FormikValues | any>>(null);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const handleSubmit = (values: any, action: any) => {
+  const handleSubmit = (values: any) => {
     const {
       firstName,
       surName,
@@ -41,6 +43,7 @@ const RegisterForm = () => {
       phoneNumber,
       countryCode,
     } = values;
+
     const payload = {
       body: {
         email,
@@ -53,7 +56,6 @@ const RegisterForm = () => {
       },
       success: (res: any) => {
         history.push("/profile-pic");
-        action?.resetForm?.();
       },
       onFailAction: (err: any) => {
         if (err.response.data.code === 400) {
@@ -63,11 +65,12 @@ const RegisterForm = () => {
       },
       other: `${countryCode}${phoneNumber}`,
     };
-    dispatch(registerSetupProfile(payload));
+    dispatch(authApiAction.registerSetupProfile(payload));
     setTimeout(() => {
       setIncorrectAuth(false);
     }, 5000);
   };
+
   const checkValidInputs = (values: {
     email: string;
     firstName: string;
@@ -77,219 +80,214 @@ const RegisterForm = () => {
     const { email, firstName, surName, password } = values;
     return !(
       password &&
-      password.length > 0 &&
+      password.length > 7 &&
       email &&
-      firstName.length > 1 &&
-      surName.length > 1
+      firstName.length > 0 &&
+      surName.length > 0
     );
   };
+
+  const formik: any = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      firstName: "",
+      surName: "",
+      confirmPassword: "",
+      jobTitle: "",
+      companyName: "",
+      phoneNumber: localStorage.getItem("phoneNumber") ?? "",
+      countryCode: localStorage.getItem("dialCode") ?? "",
+    },
+    innerRef: formikRef,
+    validationSchema: registerSch,
+    onSubmit: (values) => {
+      handleSubmit(values);
+    },
+  });
+
   const marginBottom = 2.4;
   return (
     <div className={`form-container  hide-scrollbar`}>
       <div
         className={`${classes.registerNumberForm} ${classes.registerNumberFormProfile}`}
       >
-        <Formik
-          initialValues={{
-            email: "",
-            password: "",
-            firstName: "",
-            surName: "",
-            confirmPassword: "",
-            jobTitle: "",
-            companyName: "",
-            phoneNumber: localStorage.getItem("phoneNumber") ?? "",
-            countryCode: localStorage.getItem("dialCode") ?? "",
-          }}
-          validationSchema={registerSch}
-          onSubmit={handleSubmit}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isValid,
-          }) => (
-            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              {incorrectAuth && <Alert severity="error">{errorMessage}</Alert>}
-              <CBox mb={marginBottom}>
-                <CustomMuiTextField
-                  required={true}
-                  typeName="text-field"
-                  name="firstName"
-                  label="First name *"
-                  placeholder={t("auth.register.first_name")}
-                  inputValue={values.firstName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.firstName && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.firstName && touched.firstName && errors.firstName}
-                  </Typography>
-                )}
-              </CBox>
-              <CBox mb={marginBottom}>
-                <CustomMuiTextField
-                  required={true}
-                  typeName="text-field"
-                  name="surName"
-                  label="Surname *"
-                  placeholder={t("auth.register.sur_name")}
-                  inputValue={values.surName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.surName && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.surName && touched.surName && errors.surName}
-                  </Typography>
-                )}
-              </CBox>
-              <CBox mb={marginBottom}>
-                <CustomMuiTextField
-                  // required={true}
-                  typeName="text-field"
-                  subType="email"
-                  name="email"
-                  label="Email *"
-                  placeholder={t("auth.register.email")}
-                  inputValue={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.email && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.email}
-                  </Typography>
-                )}
-              </CBox>
-              <CBox mb={marginBottom}>
-                <CustomMuiTextField
-                  typeName="text-field"
-                  name="companyName"
-                  label="Company name"
-                  placeholder={t("auth.register.company_name")}
-                  inputValue={values.companyName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required={false}
-                />
-                {errors.companyName && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.companyName &&
-                      touched.companyName &&
-                      errors.companyName}
-                  </Typography>
-                )}
-              </CBox>
-              <CBox mb={marginBottom}>
-                <CustomMuiTextField
-                  typeName="text-field"
-                  name="jobTitle"
-                  label="Job title"
-                  placeholder={t("auth.register.job_title")}
-                  inputValue={values.jobTitle}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.jobTitle && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.jobTitle && touched.jobTitle && errors.jobTitle}
-                  </Typography>
-                )}
-              </CBox>
-              <CBox mb={marginBottom}>
-                <CustomMuiTextField
-                  disabled={true}
-                  typeName="phone-number"
-                  name="phoneNumber"
-                  inputValue={{
-                    phoneNumber: values.phoneNumber,
-                    dialCode: values.countryCode,
-                  }}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </CBox>
-              <Divider sx={{ mb: 1.8 }} />
-              <CBox mb={marginBottom}>
-                <CustomMuiTextField
-                  inputValue={values.password}
-                  password={values.password}
-                  typeName="password"
-                  name="password"
-                  label="Password *"
-                  placeholder="Password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  // required={true}
-                />
-                {errors.password && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.password && touched.password && errors.password}
-                  </Typography>
-                )}
-              </CBox>
-              <CBox mb={marginBottom}>
-                <CustomMuiTextField
-                  password={values.confirmPassword}
-                  name="confirmPassword"
-                  label="Confirm password *"
-                  placeholder="Confirm password"
-                  typeName="password"
-                  inputValue={values.confirmPassword}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.confirmPassword && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.confirmPassword &&
-                      touched.confirmPassword &&
-                      errors.confirmPassword}
-                  </Typography>
-                )}
-              </CBox>
-              <Grid container spacing={1}>
-                <Grid item xs={4}>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      width: "100%",
-                      borderColor: "red",
-                      color: "red",
-                      py: { xs: 0.3, md: 1.3 },
-                      textTransform: "capitalize !important",
-                    }}
-                    onClick={() => history.push("/login")}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
-                <Grid item xs={8}>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      width: "100%",
-                      borderColor: "#000",
-                      color: "#fff",
-                      textTransform: "capitalize !important",
-                      backgroundColor: "#0076C8",
-                      py: { xs: 0.5, md: 1.5 },
-                    }}
-                    type="submit"
-                    disabled={checkValidInputs(values)}
-                  >
-                    Continue
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          )}
-        </Formik>
+        <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
+          {incorrectAuth && <Alert severity="error">{errorMessage}</Alert>}
+          <CBox mb={marginBottom}>
+            <CustomMuiTextField
+              inputVariant="outlined"
+              required={true}
+              typeName="text-field"
+              name="firstName"
+              label={t("auth.first_name_required")}
+              placeholder={t("auth.first_name_required")}
+              inputValue={formik.values.firstName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.firstName && (
+              <Typography className={`error-text ${classes.errorText}`}>
+                {formik.errors.firstName as string}
+              </Typography>
+            )}
+          </CBox>
+          <CBox mb={marginBottom}>
+            <CustomMuiTextField
+              inputVariant="outlined"
+              required={true}
+              typeName="text-field"
+              name="surName"
+              label={t("auth.sur_name_heading")}
+              placeholder={t("auth.sur_name_heading")}
+              inputValue={formik.values.surName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.surName && (
+              <Typography className={`error-text ${classes.errorText}`}>
+                {formik.errors.surName as string}
+              </Typography>
+            )}
+          </CBox>
+          <CBox mb={marginBottom}>
+            <CustomMuiTextField
+              // required={true}
+              inputVariant="outlined"
+              typeName="text-field"
+              subType="email"
+              name="email"
+              label={t("auth.email_required")}
+              placeholder={t("auth.email_required")}
+              inputValue={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.email && (
+              <Typography className={`error-text ${classes.errorText}`}>
+                {formik.errors.email as string}
+              </Typography>
+            )}
+          </CBox>
+          <CBox mb={marginBottom}>
+            <CustomMuiTextField
+              inputVariant="outlined"
+              typeName="text-field"
+              name="companyName"
+              label={t("auth.company_name_optional")}
+              placeholder={t("auth.company_name_optional")}
+              inputValue={formik.values.companyName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              required={false}
+            />
+            {formik.errors.companyName && (
+              <Typography className={`error-text ${classes.errorText}`}>
+                {formik.errors.companyName as string}
+              </Typography>
+            )}
+          </CBox>
+          <CBox mb={marginBottom}>
+            <CustomMuiTextField
+              inputVariant="outlined"
+              typeName="text-field"
+              name="jobTitle"
+              label={t("auth.job_title_optional")}
+              placeholder={t("auth.job_title_optional")}
+              inputValue={formik.values.jobTitle}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.jobTitle && (
+              <Typography className={`error-text ${classes.errorText}`}>
+                {formik.errors.jobTitle as string}
+              </Typography>
+            )}
+          </CBox>
+          <CBox mb={marginBottom}>
+            <CustomMuiTextField
+              disabled={true}
+              typeName="phone-number"
+              name="phoneNumber"
+              inputValue={{
+                phoneNumber: formik.values.phoneNumber,
+                dialCode: formik.values.countryCode,
+              }}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </CBox>
+          <Divider sx={{ mb: 1.8 }} />
+          <CBox mb={marginBottom}>
+            <CustomMuiTextField
+              inputValue={formik.values.password}
+              password={formik.values.password}
+              typeName="password"
+              name="password"
+              label={t("auth.password_required")}
+              placeholder={t("auth.password_required")}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              // required={true}
+            />
+            {formik.errors.password && (
+              <Typography className={`error-text ${classes.errorText}`}>
+                {formik.errors.password as string}
+              </Typography>
+            )}
+          </CBox>
+          <CBox mb={marginBottom}>
+            <CustomMuiTextField
+              password={formik.values.confirmPassword}
+              name="confirmPassword"
+              label={t("auth.confirm_password")}
+              placeholder={t("auth.confirm_password")}
+              typeName="password"
+              inputValue={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.confirmPassword && (
+              <Typography className={`error-text ${classes.errorText}`}>
+                {formik.errors.confirmPassword as string}
+              </Typography>
+            )}
+          </CBox>
+          <Grid container spacing={1}>
+            <Grid item xs={4}>
+              <Button
+                variant="outlined"
+                sx={{
+                  width: "100%",
+                  borderColor: "red",
+                  color: "red",
+                  py: { xs: 0.3, md: 1.3 },
+                  textTransform: "capitalize !important",
+                }}
+                onClick={() => history.push(LOGIN_ROUTE)}
+              >
+                {t("auth.cancel_btn_text")}
+              </Button>
+            </Grid>
+            <Grid item xs={8}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  width: "100%",
+                  borderColor: "#000",
+                  color: "#fff",
+                  textTransform: "capitalize !important",
+                  backgroundColor: "#0075D0",
+                  py: { xs: 0.5, md: 1.5 },
+                }}
+                disabled={checkValidInputs(formik.values)}
+              >
+                {t("auth.continue_heading")}
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
       </div>
     </div>
   );

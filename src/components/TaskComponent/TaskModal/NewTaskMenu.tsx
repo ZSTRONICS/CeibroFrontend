@@ -4,16 +4,16 @@ import React, { useState } from "react";
 import { Grid, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 // components
-import useStyles from "./TaskDrawerStyles";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers/appReducer";
 import { Chip } from "@material-ui/core";
+import CDatePicker from "components/DatePicker/CDatePicker";
 import {
   getSelectedProjectMembers,
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
-import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers/appReducer";
+import useStyles from "./TaskDrawerStyles";
 
 function NewTaskMenu(props: any) {
   const [doOnce, setDoOnce] = useState<boolean>(true);
@@ -85,9 +85,9 @@ function NewTaskMenu(props: any) {
               const currentDate = moment(e).format("DD-MM-YYYY");
               props.setFieldValue("dueDate", currentDate);
             }}
-            // InputProps={{
-            //   inputProps: { min: new Date().toISOString().slice(0, 10) },
-            // }}
+          // InputProps={{
+          //   inputProps: { min: new Date().toISOString().slice(0, 10) },
+          // }}
           />
         </Grid>
         {/* <Grid item>
@@ -217,6 +217,7 @@ function NewTaskMenu(props: any) {
       <Grid item xs={12} md={12} className={classes.inputWrapper}>
         <TextField
           fullWidth
+          sx={{ "& .MuiInputBase-input": { fontFamily: 'Inter', fontSize: "14px", fontWeight: 500 } }}
           id="outlined-multiline-static"
           label="Description"
           placeholder="Enter task description"

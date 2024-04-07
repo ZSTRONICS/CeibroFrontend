@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     form: {
       height: "100vh",
-      overflowY: "scroll",
+      overflowY: "auto",
       paddingBottom: 10,
     },
 
@@ -85,7 +85,7 @@ export const useStyles = makeStyles((theme: Theme) =>
 
     loginButton: {
       fontSize: 14,
-      background: "#0076C8",
+      background: "#0075D0",
       width: "100%",
       textTransform: "capitalize",
     },

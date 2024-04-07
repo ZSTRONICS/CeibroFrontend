@@ -210,7 +210,7 @@ class OutlineControl extends Component {
   }
 
   renderOutline() {
-    const { totalPage = 0 } = this.props;
+    // const { totalPage = 0 } = this.props;
     // const { currentPagingPage } = this.state;
     // const pageStart = currentPagingPage - 1 < 0 ? 0 : currentPagingPage - 1;
     // console.log(pageStart);

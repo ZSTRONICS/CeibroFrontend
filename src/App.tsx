@@ -2,11 +2,11 @@
 import { ToastContainer } from "react-toastify";
 import "./assets/InterFont.css";
 // components
-
 // material
 // import CssBaseline from "@mui/material/CssBaseline";
 
 // styling
+import "react-photo-view/dist/react-photo-view.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import "./components/Topbar/ProfileBtn.css";
@@ -38,7 +38,7 @@ const App = () => {
     <div className="App">
       <ToastContainer position="bottom-left" theme="colored" />
       <ErrorBoundary>
-        {!isOnline ? (
+        {!isOnline && !window.location.pathname.includes("/create-new-task") ? (
           <Grid
             item
             md={6.3}

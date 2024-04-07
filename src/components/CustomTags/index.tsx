@@ -1,5 +1,15 @@
-import { Box, MenuItem, Stack, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {
+  Box,
+  Divider,
+  InputLabel,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { Theme, styled } from "@mui/material/styles";
+interface CustomProps {
+  theme?: Theme;
+}
 export const Heading = styled(Typography)(
   ({ theme }) => `
     font-family: Inter;
@@ -8,10 +18,16 @@ export const Heading = styled(Typography)(
     `
 );
 
+const MUIInputLabel = styled(InputLabel)`
+  font-family: "Inter";
+  font-weight: 500;
+  font-size: 14px;
+  color: #605b5c;
+`;
 const CustomTitle = styled(Typography)`
   font-family: "Inter";
   font-weight: 600 !important;
-  font-size: 24px !important;
+  font-size: 24px;
   padding-bottom: 0px;
   @media (max-width: 768px) {
     font-size: 20px;
@@ -22,13 +38,21 @@ const CustomTitle = styled(Typography)`
 `;
 
 const SubHeading = styled(Typography)(({ theme }) => ({
-  color: "#0076C8",
+  color: "#0075D0",
   fontSize: 16,
   fontWeight: 500,
   lineHeight: "20px",
   [theme.breakpoints.down("md")]: {
     fontSize: 14,
   },
+}));
+
+const Heading2 = styled(Typography)(({ theme }) => ({
+  color: "#131516",
+  fontSize: 14,
+  fontWeight: 700,
+  lineHeight: "20px",
+  [theme.breakpoints.down("md")]: {},
 }));
 
 const DescriptionTag = styled(Typography)(({ theme }) => ({
@@ -99,6 +123,15 @@ const BoldLableTag = styled("span")`
   font-size: 10px;
   color: #605c5c;
 `;
+
+export const RequiredFieldMark = styled("span")`
+  fontweight: 500;
+  fontfamily: "Inter";
+  color: #d9000d;
+  position: absolute;
+  right: 4%;
+  top: 33%;
+`;
 export const CLink = styled("a")`
   font-family: "Inter";
   font-style: normal;
@@ -140,9 +173,14 @@ export const RoleLabelTag = styled(Typography)`
 `;
 export const SubLabelTag = styled(Typography)`
   font-family: "Inter";
-  font-style: normal;
-  font-size: 12px !important;
-  font-weight: 500 !important;
+  font-size: 12px;
+  font-weight: 600 !important;
+  color: #605c5c;
+`;
+const LabelTag = styled("span")`
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 500;
   color: #605c5c;
 `;
 export const ConfirmDescriptionTag = styled(Typography)`
@@ -156,7 +194,7 @@ export const GroupMemberNameTag = styled(Typography)`
   font-family: "Inter";
   font-style: normal;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 550;
   color: #656565;
 `;
 export const EditMemberNameTag = styled(Typography)`
@@ -190,11 +228,11 @@ const ImageStack = styled(Stack)`
   align-items: center;
 `;
 const TaskCardLabel = styled("p")`
-  max-width: 110px;
+  max-width: 120px;
   width: 100%;
-  font-weight: 700;
-  font-size: 10px;
-  color: #605c5c;
+  font-weight: 800;
+  font-size: 11px;
+  color: #605b5c;
   -webkit-line-clamp: 1;
   display: -webkit-box;
 `;
@@ -212,7 +250,14 @@ const BackToLoginTag = styled(Box)(({ theme }) => ({
     marginTop: 20,
   },
 }));
-
+const CustomDivider = styled(Divider)<CustomProps>(({ theme }) => ({
+  borderColor: "#9e9e9e",
+  borderRadius: "4px",
+  opacity: "0.9",
+  margin: "10px 0",
+  background: "#F4F4F4",
+  filter: "blur(2px)",
+}));
 const MenuItemTag = styled(MenuItem)(({ theme }) => ({
   color: "#000000",
   fontFamily: "Inter",
@@ -225,11 +270,16 @@ const MenuItemTag = styled(MenuItem)(({ theme }) => ({
 export {
   BackToLoginTag,
   BoldLableTag,
+  CustomDivider,
   CustomStack,
   CustomTitle,
-  DescriptionTag, ImageStack, MenuItemTag,
+  DescriptionTag,
+  Heading2,
+  ImageStack,
+  LabelTag,
+  MUIInputLabel,
+  MenuItemTag,
   Span,
   SubHeading,
-  TaskCardLabel
+  TaskCardLabel,
 };
-

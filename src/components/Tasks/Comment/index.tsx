@@ -1,40 +1,54 @@
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { Box, IconButton, TextField } from "@mui/material";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
+import { Box, FormControl, Input, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import CustomButton from "components/Utills/CustomButton";
 import FileBox from "components/Utills/FileBox";
-import ImageBox from "components/Utills/ImageBox";
+import {
+  IS_IMAGE,
+  hasOnlySpaces,
+  isValidDocumentType,
+  validTypes,
+} from "components/Utills/Globals";
+import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
+import { SendIcon } from "components/material-ui/icons";
+import Emoji from "components/material-ui/icons/emoji/Emoji";
 import { TASK_CONFIG } from "config";
-import { ChangeEvent, useCallback, useState } from "react";
+import _ from "lodash";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { taskActions } from "redux/action";
 import { removeItem } from "utills/common";
-import Footer from "../Create-Task/Footer";
-import TaskHeader from "../TaskHeader";
 import { fileType } from "../type";
 
 interface CommentProps {
-  title: string;
   showHeader: boolean;
   taskId: string;
-  doneImageRequired: boolean;
-  doneCommentsRequired: boolean;
-  closeModal: () => void;
+  isCommentView?: boolean;
 }
 
-const Comment = ({
-  title,
-  showHeader,
-  taskId,
-  closeModal,
-  doneCommentsRequired,
-  doneImageRequired,
-}: CommentProps) => {
+const Comment = ({ taskId, isCommentView }: CommentProps) => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const dispatch = useDispatch();
   const [doOne, setDoOne] = useState(false);
+
+  useEffect(() => {
+    if (
+      description.length > 0 ||
+      selectedImages.length > 0 ||
+      selectedDocuments.length > 0
+    ) {
+      setDescription("");
+      setSelectedImages([]);
+      setSelectedDocuments([]);
+      setDescription("");
+    }
+  }, [taskId]);
+
   const handleClearFile = (file: File, type: fileType) => {
     if (type === "image") {
       const filterSelectedImages = removeItem(selectedImages, file);
@@ -76,12 +90,11 @@ const Comment = ({
       if (doOne === false) {
         files.forEach((file: any) => {
           formData.append("files", file, file.name);
-          // formData.append("files", file);
           metadataObjects.push(
             JSON.stringify({
               fileName: file.name,
               orignalFileName: file.name,
-              tag: "file",
+              tag: IS_IMAGE(file.name) ? "image" : "file",
             })
           );
         });
@@ -98,13 +111,13 @@ const Comment = ({
     const formdata = new FormData();
     setIsSubmit(true);
     const filesToUpload = [...selectedImages, ...selectedDocuments];
-    formdata.append("message", description);
+    formdata.append("message", description.trim());
     if (filesToUpload.length > 0) {
       handleFileUpload(filesToUpload, formdata);
     }
     const taskEvent = {
       other: {
-        eventName: title === "Task Comment" ? "comment" : "doneTask",
+        eventName: "comment",
         taskId: taskId,
         hasFiles: filesToUpload.length > 0,
       },
@@ -116,8 +129,6 @@ const Comment = ({
             payload: res.data.data,
           });
           setIsSubmit(false);
-          setDescription("");
-          closeModal();
           setSelectedImages([]);
           setSelectedDocuments([]);
           setDescription("");
@@ -125,6 +136,9 @@ const Comment = ({
       },
       onFailAction: () => {
         setIsSubmit(false);
+        setSelectedImages([]);
+        setSelectedDocuments([]);
+        setDescription("");
       },
     };
     dispatch(taskActions.taskEventsWithFiles(taskEvent));
@@ -132,106 +146,267 @@ const Comment = ({
 
   const handleDescriptionChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setDescription(e.target.value);
+      if (hasOnlySpaces(e.target.value)) {
+        setDescription("");
+      } else {
+        setDescription(e.target.value);
+      }
     },
     [setDescription]
   );
 
+  const handleSelectDocument = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple = true;
+    input.accept = validTypes.join(", ");
+    input.onchange = (event) => {
+      const files = (event.target as HTMLInputElement).files;
+      if (files && !_.isEmpty(files)) {
+        let attachments = [];
+        attachments = Array.from(files).filter((file) =>
+          file.type.startsWith("image/")
+        );
+        const validFiles = Array.from(files).filter((file) =>
+          isValidDocumentType(file.type)
+        );
+        if (attachments.length > 0) {
+          handleAttachImageValue(attachments);
+        }
+        if (!_.isEmpty(validFiles)) {
+          handleSelectDocumentValue(validFiles);
+        }
+      }
+    };
+    input.click();
+  };
+  const disableBtn =
+    description.length === 0 &&
+    selectedDocuments.length === 0 &&
+    selectedImages.length === 0;
+
+  const theme = useTheme();
+  const isxLScreen = useMediaQuery(theme.breakpoints.between(1300, 1800));
+  const isMdScreen = useMediaQuery(theme.breakpoints.down(1300));
+
   return (
-    <Box sx={{ width: "100%", padding: "8px" }}>
-      {showHeader !== true && <TaskHeader title={title} />}
-      <Box sx={{ padding: "4px", width: "100%" }}>
-        <TextField
-          name="description"
-          id="description-multiline"
-          label="Description"
-          multiline
-          maxRows={4}
-          variant="standard"
-          sx={{ width: "100%" }}
-          onChange={handleDescriptionChange}
-        />
-      </Box>
+    <Box sx={{ width: "100%", borderTop: "1px solid #818181" }}>
       <Box
         sx={{
           display: "flex",
-          padding: "16px 0",
-          overflow: "auto",
-          "&::-webkit-scrollbar": {
-            height: "0.4rem",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-            borderRadius: "0.2rem",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.1)",
-          },
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          paddingTop: "10px",
+          width: "98%",
+          marginLeft: "1%",
         }}
       >
-        {selectedImages.map((file) => {
-          return (
+        <Box
+          sx={{
+            width: isCommentView
+              ? isxLScreen
+                ? "85%"
+                : "90%"
+              : isxLScreen
+              ? "95%"
+              : isMdScreen
+              ? "88%"
+              : "95%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "end",
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              backgroundColor: "#E2E4E5",
+              borderRadius: "22px",
+              display: "flex",
+              alignItems: "flex-end",
+              paddingBottom: "8px",
+              marginLeft: "4px",
+              minHeight: "50px",
+            }}
+          >
             <Box
               sx={{
-                width: "80px",
-                height: "80px",
+                width: "5%",
+                marginBottom: "3px",
+                marginLeft: isCommentView ? "16px" : isMdScreen ? "7px" : "0px",
                 display: "flex",
-                marginRight: "16px",
+                justifyContent: isMdScreen ? "flex-end" : "center",
               }}
             >
-              <ImageBox src={URL.createObjectURL(file)} />
-              <IconButton
-                aria-label="delete"
-                onClick={() => {
-                  handleClearFile(file, "image");
-                }}
-                sx={{
-                  top: "-6px",
-                  right: "4px",
-                  backgroundColor: "#0076C8",
-                  color: "#fff",
-                  width: "16px",
-                  height: "16px",
-                }}
-                disableRipple
-              >
-                <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
-              </IconButton>
+              <Emoji />
             </Box>
-          );
-        })}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                width: isCommentView
+                  ? isMdScreen
+                    ? "80%"
+                    : "85%"
+                  : isMdScreen
+                  ? "85%"
+                  : "90%",
+              }}
+            >
+              <FormControl
+                variant="standard"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  fontFamily: "Inter",
+                  background: "#E2E4E5",
+                  padding: "3px 2px 3px 12px",
+                  display: "flex",
+                  flexDirection: "row",
+                  transform: "translateY(5px)",
+                  alignItems: "flex-end",
+                }}
+              >
+                <Input
+                  placeholder="Start typing here"
+                  name="comment"
+                  id="comment"
+                  required
+                  inputProps={{ maxLength: 1500 }}
+                  autoFocus
+                  multiline
+                  value={description}
+                  sx={{
+                    // width: isMdScreen ? "100%" : "100%",
+                    width: "100%",
+                    "&:hover:not(.Mui-disabled, .Mui-error):before": {
+                      borderBottom: "none !important",
+                    },
+                    "&::before, &::after": {
+                      borderBottom: "none",
+                    },
+                  }}
+                  onChange={handleDescriptionChange}
+                  maxRows={6}
+                />
+              </FormControl>
+              <Box sx={{ width: "100%", marginLeft: "5px" }}>
+                {selectedImages.length > 0 && (
+                  <ImagesToUpload
+                    imgwithcomment={false}
+                    showDivder={false}
+                    showLabel={true}
+                    updateImageWithComment={() => {}}
+                    isComment={true}
+                    selectedImages={selectedImages}
+                    onClearFile={(file: any, type: any) =>
+                      handleClearFile(file, type)
+                    }
+                  />
+                )}
+                {selectedDocuments.length > 0 && (
+                  <>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        overflow: "auto",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontFamily: "Inter",
+                          fontWeight: 600,
+                          fontSize: "12px",
+                          color: "#605C5C",
+                          pt: 1,
+                        }}
+                      >
+                        Files
+                      </Typography>
+                      <FileBox
+                        iscomment={true}
+                        isnoWrap={true}
+                        files={selectedDocuments}
+                        handleClearFile={handleClearFile}
+                      />
+                    </Box>
+                  </>
+                )}
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                transform: "translateY(5px)",
+                width: isCommentView
+                  ? isMdScreen
+                    ? "10%"
+                    : "10%"
+                  : isMdScreen
+                  ? "10%"
+                  : "5%",
+              }}
+              onClick={handleSelectDocument}
+            >
+              <AttachFileOutlinedIcon
+                sx={{
+                  color: "#818181",
+                  transform: "rotate(40deg)",
+                  marginLeft: "5px",
+                  cursor: "pointer",
+                }}
+              />
+            </Box>
+          </Box>
+          <Typography
+            sx={{
+              fontSize: "12px",
+              fontWeight: "400",
+              color: "#757575",
+              marginTop: "2px",
+            }}
+          >{`${description.length}/ 1500`}</Typography>
+        </Box>
+        <Box
+          sx={{
+            width: isCommentView
+              ? isxLScreen
+                ? "15%"
+                : isMdScreen
+                ? "15%"
+                : "10%"
+              : isxLScreen
+              ? "7%"
+              : isMdScreen
+              ? "12%"
+              : "5%",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <CustomButton
+            onClick={handleSubmit}
+            variant="outlined"
+            disableRipple
+            icon={<SendIcon />}
+            disabled={disableBtn}
+            loading={isSubmit}
+            sx={{
+              cursor: "pointer",
+              height: "60px",
+              borderRadius: "50%",
+              backgroundColor: "#0076C8",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              transform: "scale(0.8) translateY(-18px) ",
+              "&:hover": {
+                backgroundColor: "#0076C8",
+              },
+            }}
+          />
+        </Box>
       </Box>
-
-      <Box
-        sx={{
-          height: "auto",
-          padding: "16px 0",
-        }}
-      >
-        <FileBox
-          title="Files"
-          files={selectedDocuments}
-          handleClearFile={handleClearFile}
-        />
-      </Box>
-      <Footer
-        isSubmitted={isSubmit}
-        disabled={
-          isSubmit ||
-          (title === "Task Done"
-            ? (doneImageRequired && selectedImages.length === 0) ||
-              (doneCommentsRequired && description.length === 0)
-            : selectedImages.length > 0 ||
-              selectedDocuments.length > 0 ||
-              description.length > 0
-            ? false
-            : true)
-        }
-        showHeader={showHeader}
-        handleSubmitForm={handleSubmit}
-        handleAttachImageValue={handleAttachImageValue}
-        handleSelectDocumentValue={handleSelectDocumentValue}
-      />
     </Box>
   );
 };

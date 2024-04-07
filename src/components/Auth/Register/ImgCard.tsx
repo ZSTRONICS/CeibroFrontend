@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
@@ -8,9 +8,10 @@ import {
   Skeleton,
 } from "@mui/material";
 import assets from "assets/assets";
+import React, { useState } from "react";
 
 interface IProps {
-  title: string;
+  title?: string;
   imgSrc: string | ArrayBuffer | null | any;
   cardContent?: React.ReactNode;
   showCancelBtn?: boolean;
@@ -18,6 +19,8 @@ interface IProps {
   showSkeleton?: boolean;
   showPdf?: boolean;
   isBase64String?: boolean;
+  ImageWithComments?: boolean;
+  taskApproveModal?: boolean;
 }
 
 function ImgCard(props: IProps) {
@@ -34,20 +37,51 @@ function ImgCard(props: IProps) {
   const cardMargin = props.cardContent ? "unset" : "10px auto";
 
   return (
-    <Card sx={{ maxWidth: 345, margin: cardMargin }}>
-      <CardHeader
-        avatar={<> </>}
-        action={
-          <>
-            {props.showCancelBtn && (
-              <IconButton aria-label="settings" onClick={props.removeImg}>
-                <assets.CancelIcon />
-              </IconButton>
-            )}
-          </>
-        }
-        title={props.title}
-      />
+    <Card
+      sx={{
+        maxWidth: 345,
+        width: props.ImageWithComments
+          ? props.taskApproveModal
+            ? "110px"
+            : 160
+          : "100%",
+        height: props.ImageWithComments
+          ? props.taskApproveModal
+            ? "100px"
+            : 130
+          : 300,
+        margin: cardMargin,
+      }}
+    >
+      {!props.title || "" ? null : (
+        <CardHeader
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          avatar={<> </>}
+          action={
+            <>
+              {props.showCancelBtn && (
+                <IconButton onClick={props.removeImg}>
+                  <assets.CancelIcon />
+                </IconButton>
+              )}
+            </>
+          }
+          title={
+            <Box
+              className="ellipsis"
+              sx={{
+                maxWidth: "270px",
+              }}
+            >
+              {props.title}
+            </Box>
+          }
+        />
+      )}
       {props.showSkeleton === true && imageLoaded === false && (
         <Skeleton
           variant="rectangular"
@@ -66,8 +100,9 @@ function ImgCard(props: IProps) {
           <p>Unable to preview</p>
         </object>
       )}
-
       <CardMedia
+        // sx={{ height: "100px", width: "100px" }}
+        // taskApproveModal={props.taskApproveModal}
         onLoad={handleImageLoad}
         component="img"
         height="100%"

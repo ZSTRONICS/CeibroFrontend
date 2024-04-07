@@ -23,17 +23,20 @@ export interface SidebarConfigInterface {
   [key: string]: SingleConfig;
 }
 
+// const { t }: any = useTranslation<any>();
+
 const SidebarConfig: SidebarConfigInterface = {
   tasks: {
     key: "tasks",
+    // title: t("task.task_heading"),
     title: "Task",
     icon: TaskIcon,
     getPath: () =>
       window.location.pathname.split("/").pop() === "tasks"
-        ? "tasks/allTaskFromMe"
+        ? "tasks/Ongoing"
         : window.location.pathname.includes("tasks")
         ? window.location.pathname
-        : "tasks/allTaskFromMe",
+        : "tasks/Ongoing",
     active: false,
     childTab: {
       newTask: {
@@ -98,7 +101,7 @@ const SidebarConfig: SidebarConfigInterface = {
     key: "locations",
     title: "Location",
     icon: LocationIcon,
-    getPath: () => "drawingDetail",
+    getPath: () => "location",
     active: false,
     childTab: {},
   },

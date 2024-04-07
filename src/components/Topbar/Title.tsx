@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
-import { useCallback, useEffect } from "react";
+import { useCallback, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 // import CreateChat from "./CreateChat";
@@ -11,11 +11,11 @@ import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import { CButton } from "components/Button";
 import { CustomStack, TopBarTitle } from "components/CustomTags";
+import AddDrawingFloor from "components/Location/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
 import CustomModal from "components/Modal";
-import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
 import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
 import { useOpenCloseModal } from "hooks";
-import projectActions, { getAllProjects } from "redux/action/project.action";
+import projectActions, { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
 import { socket } from "services/socket.services";
 
@@ -30,9 +30,9 @@ const Title = () => {
   );
   const selectedProjectId = socket.getSelectedProjId();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (allProjects.length === 0) {
-      dispatch(getAllProjects());
+      dispatch(PROJECT_APIS.getAllProjects());
     }
   }, []);
 
@@ -190,8 +190,8 @@ const Title = () => {
         isDynamic: true,
       },
       {
-        path: "drawingDetail",
-        title: "Drawing detail",
+        path: "location",
+        title: "Location",
         // isDynamic: true,
         additionalComponent: <BackIcon />,
         additionalComponentPosition: "start",

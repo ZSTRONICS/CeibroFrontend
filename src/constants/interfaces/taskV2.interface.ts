@@ -3,34 +3,37 @@ export interface Root {
 }
 
 export interface AllTasksInterface {
-  ongoing: Task[];
-  done: Task[];
-  unread: Task[];
-  new: Task[];
+  ongoing: ITask[];
+  done: ITask[];
+  unread: ITask[];
+  new: ITask[];
 }
 
 export interface AllTaskHiddenInterface {
-  ongoing: Task[];
-  done: Task[];
-  canceled: Task[];
+  ongoing: ITask[];
+  done: ITask[];
+  canceled: ITask[];
 }
 export interface AllTaskToMeInterface {
-  new: Task[];
-  ongoing: Task[];
-  done: Task[];
+  new: ITask[];
+  ongoing: ITask[];
+  done: ITask[];
 }
 export interface AllTaskFromMeInterface {
-  unread: Task[];
-  ongoing: Task[];
-  done: Task[];
+  unread: ITask[];
+  ongoing: ITask[];
+  done: ITask[];
 }
 
-export interface Task {
+export interface ITask {
   _id: string;
   dueDate: string;
+  title: string;
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
   description: string;
+  confirmer: any;
+  viewer: UserInfo[];
   project: Project;
   topic: Topic;
   creator: UserInfo;
@@ -49,21 +52,79 @@ export interface Task {
   creatorState: string;
   rootState: string;
   isCreator: boolean;
+  isTaskViewer: boolean;
+  isTaskInApproval: boolean;
+  isTaskConfirmer: boolean;
   isHiddenByMe: boolean;
   isSeenByMe: boolean;
   isAssignedToMe: boolean;
+  fromMeState: string;
+  toMeState: string;
+  hiddenState: string;
+  locations: any[];
+  eventsCount: number;
+  hasPinData: boolean;
+  pinData: any;
+  taskRootState: string;
+}
+
+export interface ITaskFilterInterace {
+  fromMe: {
+    unread: boolean;
+    ongoing: boolean;
+    done: boolean;
+  };
+  toMe: {
+    new: boolean;
+    ongoing: boolean;
+    done: boolean;
+  };
+  hidden: {
+    ongoing: boolean;
+    done: boolean;
+    canceled: boolean;
+  };
+  isAllSelected: boolean;
+}
+
+export interface PinData {
+  _id: string;
+  pinUID: number;
+  type: string;
+  page_width: number;
+  page_height: number;
+  x_coord: number;
+  y_coord: number;
+  pinPhotoUrl: string;
+  creator: string;
+  taskData: ITask;
+  tags: string[];
+  drawingId: string;
+  thumbnailId: string | null;
+  thumbnail: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AllTasksAllEvents {
+  allEvents: TaskEvent[];
+  allTasks: ITask[];
+  latestUpdatedAt: string;
+  allPins: PinData[];
 }
 
 export interface AssignedUserState extends UserInfo {
   userId: string;
   phoneNumber: string;
   state: string;
+  profilePic: string;
 }
 
 export interface InvitedNumber {
   phoneNumber: string;
   firstName: string;
   surName: string;
+  profilePic: string;
 }
 
 export interface Topic {
@@ -76,6 +137,7 @@ export interface IFile {
   fileName: string;
   fileTag: string;
   fileUrl: string;
+  fileType: string;
   uploadStatus: string;
   moduleType: string;
   moduleId: string;
@@ -85,22 +147,29 @@ export interface IFile {
 export enum TaskEventType {
   ForwardTask = "forwardTask",
   Comment = "comment",
-  DoneTask = "doneTask",
   CancelTask = "cancelTask",
   InvitedUser = "invitedUser",
-  UnCancelTask = "unCancelTask"
+  UnCancelTask = "unCancelTask",
+  DoneTask = "doneTask",
+  RejectReopen = "reject-reopen",
+  RejectClosed = "reject-closed",
+  Approved = "approved",
+  Reopen = "reopen",
 }
 
 export interface TaskEvent {
+  eventSeenBy: any[];
+  eventNumber: number;
   _id: string;
   taskId: string;
   eventType: string;
   initiator: UserInfo;
   eventData?: EventData[];
   commentData?: CommentData;
-  invitedMembers: InvitedMember[]
+  invitedMembers: InvitedMember[];
   createdAt: string;
   updatedAt: string;
+  isPinned: boolean;
 }
 
 export interface InvitedMember {
@@ -118,4 +187,40 @@ export interface CommentData {
   isFileAttached: boolean;
   message: string;
   files: IFile[];
+}
+
+export interface TaskFile {
+  taskId: string;
+  commentId: string;
+  fileId: string;
+  initiator: UserInfo;
+  createdAt: string;
+  comment: string;
+  fileName: string;
+  fileUrl: string;
+  fileType: string;
+  fileSize: string;
+  fileTag: string;
+  isCommentFile: boolean;
+  isTaskFile: boolean;
+}
+
+export enum TaskRootState {
+  Ongoing = "Ongoing",
+  Approval = "Approval",
+  Closed = "Closed",
+  Canceled = "Canceled",
+  Hidden = "Hidden",
+}
+
+export enum TaskState {
+  NEW = "new",
+  ONGOING = "ongoing",
+  UNREAD = "unread",
+  DONE = "done",
+  CANCELED = "canceled",
+  HIDDEN = "hidden",
+  INREVIEW = "in-review",
+  TOREVIEW = "to-review",
+  REJECT_CLOSED = "reject-closed"
 }

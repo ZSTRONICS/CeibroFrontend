@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router";
+import { useLocation } from "react-router-dom";
 import { RootState } from "redux/reducers";
+import { LOGIN_ROUTE } from "utills/axios";
 
 interface RouteParams {
   [key: string]: string;
@@ -13,12 +15,20 @@ interface PrivateRouteProps extends RouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = (props) => {
   const { fallbackComponent, component: Component, title, ...rest } = props;
+  const location = useLocation();
   const isLoggedIn: any = useSelector(
     (state: RootState) => state.auth.isLoggedIn
   );
 
   if (!isLoggedIn) {
-    return <Redirect to="/login" />;
+    return (
+      <Redirect
+        to={{
+          pathname: LOGIN_ROUTE,
+          state: { redirectTo: location.pathname },
+        }}
+      />
+    );
   }
 
   return (
@@ -26,7 +36,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = (props) => {
       {...rest}
       render={(props) => {
         const { match } = props;
-        const params = match.params as RouteParams;
+        const params = match?.params as RouteParams;
         return <Component {...props} {...params} title={title} />;
       }}
     />

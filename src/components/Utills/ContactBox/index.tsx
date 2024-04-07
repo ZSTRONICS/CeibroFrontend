@@ -21,7 +21,9 @@ export default function ContactBox({
   const handleCheckBox = (checked: boolean) => {
     handleSelectedList(contact, checked);
   };
-
+  const displayText = userCeibroData?.jobTitle
+    ? `${userCeibroData?.companyName || ""} . ${userCeibroData?.jobTitle}`
+    : `${userCeibroData?.companyName || ""}`;
   return (
     <CustomStack
       key={_id + "ContactBox"}
@@ -39,6 +41,12 @@ export default function ContactBox({
       <Checkbox
         checked={selected}
         sx={{
+          "&.MuiCheckbox-root": {
+            color: "black",
+          },
+          "&.Mui-checked": {
+            color: "#0076C8 !important",
+          },
           "&:hover": {
             backgroundColor: "transparent",
           },
@@ -53,7 +61,7 @@ export default function ContactBox({
         <SubHeadingTag sx={{ color: "#000" }}>
           {`${contactFirstName} ${contactSurName}`}
         </SubHeadingTag>
-        <SubLabelTag>{`${userCeibroData?.companyName || "N/A"}`}</SubLabelTag>
+        <SubLabelTag>{`${displayText}`}</SubLabelTag>
       </div>
     </CustomStack>
   );

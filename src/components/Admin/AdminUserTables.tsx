@@ -52,7 +52,7 @@ function AdminUserTables(props: any) {
       renderCell: (params: any) => (
         <div>
           <DocumentNameTag>{params.value}</DocumentNameTag>
-          <ConfirmDescriptionTag sx={{ color: "#0076C8" }}>
+          <ConfirmDescriptionTag sx={{ color: "#0075D0" }}>
             {params.row.email}
           </ConfirmDescriptionTag>
           <ConfirmDescriptionTag sx={{ color: "#000000" }}>
@@ -70,7 +70,7 @@ function AdminUserTables(props: any) {
       renderCell: (params: any) => (
         <div>
           <DocumentNameTag>{params.value}</DocumentNameTag>
-          <ConfirmDescriptionTag sx={{ color: "#0076C8" }}>
+          <ConfirmDescriptionTag sx={{ color: "#0075D0" }}>
             {params.row.workEmail}
           </ConfirmDescriptionTag>
           <ConfirmDescriptionTag sx={{ color: "#000000" }}>

@@ -20,16 +20,15 @@ const CustomButton = ({ label, loading, icon, ...rest }: CustomButtonProps) => {
         textTransform: "capitalize",
         border: "none",
         "& .MuiButton-startIcon": {
-          marginLeft: 0,
-          marginRight: 0,
+          m: 0,
         },
       }}
-      startIcon={icon ? icon : null}
+      startIcon={icon && !loading ? icon : null}
       {...rest}
     >
       {" "}
       {loading ? (
-        <CircularProgress size={20} />
+        <CircularProgress size={20} sx={{ color: "#E2E4E5" }} />
       ) : (
         <Typography
           sx={{

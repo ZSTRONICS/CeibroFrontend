@@ -1,25 +1,23 @@
-import { REGISTER } from "redux-persist";
-import { toast } from "react-toastify";
-import { takeLatest } from "redux-saga/effects";
 import {
-  CREATE_ROOM,
+  AUTH_CONFIG,
   FORGET_PASSWORD,
   GET_PROFILE,
   LOGIN,
   OTP_VERIFY,
   REGISTER_CONFIRMATION,
-  RESET_PASSWORD,
-  UPDATE_PROFILE_PICTURE,
-  VERIFY_EMAIL,
   REGISTER_PROFILE_SETUP,
-  AUTH_CONFIG,
+  RESET_PASSWORD,
   UPDATE_MY_PROFILE,
-  USER_CHANGE_PASSWORD,
+  UPDATE_PROFILE_PICTURE,
   USER_CHANGE_NUMBER,
+  USER_CHANGE_PASSWORD,
   USER_VERIFY_CHANGE_NUMBER,
+  VERIFY_EMAIL
 } from "config";
+import { toast } from "react-toastify";
+import { REGISTER } from "redux-persist";
+import { takeLatest } from "redux-saga/effects";
 import apiCall from "../../utills/apiCall";
-import { ActionInterface } from "../reducers/appReducer";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 const loginRequest = apiCall({
@@ -35,7 +33,7 @@ const verifyEmail = apiCall({
   method: "post",
   path: "/auth/veify-email",
   onFailSaga: (err) => {
-    console.error("it is failed", err);
+    console.error("Failed to verify", err);
   },
 });
 
@@ -44,6 +42,9 @@ const registerRequest = apiCall({
   type: REGISTER,
   method: "post",
   path: "/auth/register",
+  onFailSaga: (err) => {
+    console.error("Failed to register", err);
+  },
   success: (_res: any) => {
     toast.success("Verification code sent on your number");
   },
@@ -55,7 +56,7 @@ const registerConfirmationRequest = apiCall({
   method: "post",
   path: "/auth/otp/verify",
   success: (_res: any) => {
-    toast.success("Verifieid your number");
+    toast.success("Phone number verification successful");
   },
 });
 
@@ -66,24 +67,19 @@ const resendOtp = apiCall({
   path: "auth/otp/resend",
 });
 
+const getAuthApiToken = apiCall({
+  type: AUTH_CONFIG.GET_AUTH_API_TOKEN,
+  useV2Route: true,
+  isUrlEncodedData: true,
+  path: "auth/token",
+  method: "post",
+})
+
 const registerSetupProfile = apiCall({
   useV2Route: true,
   type: REGISTER_PROFILE_SETUP,
   method: "post",
-  path: (payload) => `/users/${payload?.other}/profile`,
-  success: (_res: any) => {
-    toast.success("Successfully setup profile");
-  },
-});
-
-const createChatRoom = apiCall({
-  useV2Route: false,
-  type: CREATE_ROOM,
-  method: "post",
-  path: "/chat/rooms",
-  success: (_res: any, _action: ActionInterface) => {
-    toast.success("Chat room created successfully");
-  },
+  path: (payload) => `/users/${payload.other}/profile`,
 });
 
 const getMyProfile = apiCall({
@@ -112,6 +108,7 @@ const forgetPassword = apiCall({
   useV2Route: true,
   type: FORGET_PASSWORD,
   method: "post",
+  useOtpToken: true,
   path: `/auth/forget-password`,
 });
 
@@ -149,16 +146,15 @@ const resetPassword = apiCall({
   type: RESET_PASSWORD,
   method: "post",
   path: "/auth/reset-password",
-  // reset-password?otp=grgdfvdf
 });
 
 function* projectSaga() {
+  yield takeLatest(AUTH_CONFIG.GET_AUTH_API_TOKEN, getAuthApiToken);
   yield takeLatest(LOGIN, loginRequest);
   yield takeLatest(REGISTER, registerRequest);
   yield takeLatest(REGISTER_CONFIRMATION, registerConfirmationRequest);
   yield takeLatest(AUTH_CONFIG.RESEND_OTP, resendOtp);
   yield takeLatest(REGISTER_PROFILE_SETUP, registerSetupProfile);
-  yield takeLatest(CREATE_ROOM, createChatRoom);
   yield takeLatest(VERIFY_EMAIL, verifyEmail);
   yield takeLatest(GET_PROFILE, getMyProfile);
   yield takeLatest(UPDATE_PROFILE_PICTURE, updateProfilePicture);

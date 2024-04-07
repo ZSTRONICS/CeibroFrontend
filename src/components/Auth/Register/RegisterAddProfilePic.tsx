@@ -1,14 +1,14 @@
-import { CBox } from "components/material-ui";
-import { useState } from "react";
-import AuthLayout from "../AuthLayout/AuthLayout";
 import { Button } from "@mui/material";
-import { useHistory } from "react-router-dom";
-import { t } from "i18next";
-import DragAndDrop from "components/DropFileInput/DropFileInput";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import DragAndDrop from "components/DropFileInput/DropFileInput";
+import { CBox } from "components/material-ui";
 import useResponsive from "hooks/useResponsive";
+import { t } from "i18next";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { UpdateProfilePicture } from "redux/action/auth.action";
+import AuthLayout from "../AuthLayout/AuthLayout";
 
 export default function RegisterAddProfilePic(): JSX.Element {
   const [file, setFile] = useState<string | Blob>("");
@@ -19,8 +19,8 @@ export default function RegisterAddProfilePic(): JSX.Element {
   const uploadImage = async () => {
     try {
       const formData = new FormData();
-      if(file){
-        formData.append('profilePic', file);
+      if (file) {
+        formData.append("profilePic", file);
         const payload = {
           body: formData,
           success: (res: any) => {
@@ -28,24 +28,24 @@ export default function RegisterAddProfilePic(): JSX.Element {
           },
           onFailAction: (err: any) => {
             if (err) {
-              console.error('Failed to upload image');
+              console.error("Failed to upload image");
             }
           },
         };
         dispatch(UpdateProfilePicture(payload));
-      }else{
+      } else {
         history.push("/tasks");
       }
-  
     } catch (error) {
-      console.error('Error occurred while uploading image:', error);
+      console.error("Error occurred while uploading image:", error);
     }
   };
 
   return (
     <AuthLayout
       title={t("auth.add_photo")}
-      subTitle={t("auth.photo_description")}
+      // subTitle={t("auth.photo_description")}
+      subTitle={"Photo Description"}
     >
       {isTabletOrMobile && (
         <div>
@@ -53,7 +53,8 @@ export default function RegisterAddProfilePic(): JSX.Element {
             {t("auth.add_photo")}
           </TopBarTitle>
           <SubLabelTag sx={{ fontSize: 16, pb: 2 }}>
-            {t("auth.photo_description")}
+            {/* {t("auth.photo_description")} */}
+            Photo Description
           </SubLabelTag>
         </div>
       )}
@@ -66,13 +67,19 @@ export default function RegisterAddProfilePic(): JSX.Element {
         />
       </CBox>
       <Button
-        sx={{ maxWidth: "390px", width: "100%", margin: "0 auto", mt: 2,   py:{xs:0.5, md:1.5} }}
+        sx={{
+          maxWidth: "390px",
+          width: "100%",
+          margin: "0 auto",
+          mt: 2,
+          py: { xs: 0.5, md: 1.5 },
+        }}
         variant={file ? "contained" : "outlined"}
         color="primary"
         type="submit"
         onClick={uploadImage}
       >
-        {file ? "Continue" : "Skip"}
+        {file ? t("auth.continue_heading") : t("auth.skip")}
       </Button>
     </AuthLayout>
   );

@@ -9,13 +9,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { changePassword, logoutUser } from "redux/action/auth.action";
+import { LOGIN_ROUTE } from "utills/axios";
 
 interface IProps {
   closeDialog: (text?: string) => void;
 }
 
 const ChangePasswordForm = (props: IProps) => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>();
@@ -33,7 +34,7 @@ const ChangePasswordForm = (props: IProps) => {
         setLoading(false);
         props.closeDialog();
         dispatch(logoutUser());
-        history.push("/login");
+        history.push(LOGIN_ROUTE);
       },
       onFailAction: (err: any) => {
         if (err.response.data.code >= 400) {
@@ -88,7 +89,10 @@ const ChangePasswordForm = (props: IProps) => {
           handleBlur,
           handleSubmit,
         }) => (
-          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ width: "100%", padding: "5px 10px" }}
+          >
             {success && (
               <Alert severity="success">
                 {`${t("auth.password_reset_successfully")}`}
@@ -155,7 +159,7 @@ const ChangePasswordForm = (props: IProps) => {
               variant="contained"
               color="primary"
               type="submit"
-              sx={{ width: "100%", backgroundColor: "#0076C8", padding: 1 }}
+              sx={{ width: "100%", backgroundColor: "#0075D0", padding: 1 }}
               disabled={checkValidInputs(values)}
             >
               {t("auth.confirm")}

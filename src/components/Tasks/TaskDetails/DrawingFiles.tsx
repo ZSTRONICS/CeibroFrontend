@@ -1,26 +1,19 @@
 import { Box } from "@mui/material";
-import FileBox from "components/Utills/FileBox";
+import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
+import { IFile } from "constants/interfaces";
 
 export default function DrawingFiles() {
+  const data: string | IFile[] | File[] | undefined = [];
   return (
-    <Box sx={{ mb: 1 }}>
-      <FileBox
-        title="Location"
-        files={[
-          {
-            fileName: "N/A",
-            _id: "",
-            comment: "",
-            fileTag: "",
-            fileUrl: "",
-            hasComment: false,
-            moduleId: "",
-            moduleType: "",
-            uploadStatus: "",
-          },
-        ]}
-        size={""}
-      />
-    </Box>
+    data.length && (
+      <Box sx={{ mb: 1 }}>
+        <ReadMoreWrapper
+          count={0}
+          title="Location"
+          type="Location"
+          data={data}
+        />
+      </Box>
+    )
   );
 }

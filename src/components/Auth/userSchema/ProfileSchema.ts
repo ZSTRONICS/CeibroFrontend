@@ -23,38 +23,36 @@ export const setValidationSchema = (t: TFunction) => {
             .min(2, `${t("auth.tooShort")}`)
             .max(50, `${t("auth.tooLong")}`)
             .required("")
+            .trim()
             .concat(validateConsecutiveSpaces('firstName')),
         surName: yup
             .string()
+            .trim()
             .min(2, `${t("auth.tooShort")}`)
             .max(50, `${t("auth.tooLong")}`)
             .required("")
             .concat(validateConsecutiveSpaces('surName')),
         email: yup
             .string()
+            .trim()
             .email(`${t("auth.register.invalid_email")}`)
             .required("")
             .concat(validateConsecutiveSpaces('email')),
-        workEmail: yup
+        jobTitle: yup
             .string()
-            .email("Invalid email"),
+            .trim()
+            .min(2, `${t("auth.tooShort")}`)
+            .max(50, `${t("auth.tooLong")}`)
+            .required("")
+            .concat(validateConsecutiveSpaces('surName')),
         companyName: yup
             .string()
-            .min(2, `${t("auth.tooShort")}`)
-            .max(50, `${t("auth.tooLong")}`),
-        companyVat: yup
-            .string()
-            .min(2, `${t("auth.tooShort")}`)
-            .max(50, `${t("auth.tooLong")}`),
-        companyLocation: yup
-            .string()
+            .trim()
             .min(2, `${t("auth.tooShort")}`)
             .max(50, `${t("auth.tooLong")}`),
         phone: yup
             .string()
-            .matches(phoneRegExp, 'Invalid phone number'),
-        companyPhone: yup
-            .string()
+            .trim()
             .matches(phoneRegExp, 'Invalid phone number'),
     });
 

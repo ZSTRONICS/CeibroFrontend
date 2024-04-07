@@ -1,4 +1,5 @@
 import { AutocompleteProps } from "@mui/material";
+import { CountryCode } from "libphonenumber-js";
 
 export interface IPhoneNumber {
   dialCode: string;
@@ -8,7 +9,7 @@ export interface IPhoneNumber {
 export type ICountryData = {
   name: string;
   flag: string;
-  code: string;
+  code: CountryCode | string;
   dial_code: string;
 };
 
@@ -19,7 +20,8 @@ interface Common {
   onChange: (
     e:
       | React.ChangeEvent<HTMLInputElement>
-      | React.SyntheticEvent<Element, Event>,
+      | React.SyntheticEvent<Element, Event>
+      | any,
     value?: ICountryData | undefined
   ) => void;
   onBlur?: {
@@ -49,8 +51,23 @@ export interface ITextFieldProps extends Common {
   required?: boolean;
   label: string;
   placeholder: string;
+  inputVariant: "standard" | "outlined" | "filled";
   inputValue: string;
 }
+export interface ICounterTextFieldProps extends Common {
+  typeName: "counterText-field";
+  subType?: string;
+  required?: boolean;
+  multiline?: boolean;
+  maxRows?: number;
+  label: string;
+  placeholder: string;
+  inputVariant: "standard" | "outlined" | "filled";
+  inputValue: string;
+  maxLength: number;
+  inputProps: any
+}
+
 
 export interface AutocompleteOption {
   label: string;
@@ -61,7 +78,7 @@ export interface GenericAutocompleteProps<T extends AutocompleteOption>
   extends Omit<AutocompleteProps<T, false, false, false>, "renderInput"> {
   options: T[];
   label: string;
-  showSideLabel?:boolean
+  showSideLabel?: boolean
   placeholder: string;
 }
 export interface IAutoCompleteProps extends Common {

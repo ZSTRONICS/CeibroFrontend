@@ -1,24 +1,24 @@
-import * as React from "react";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import {
+  Box,
+  CircularProgress,
   List,
   ListItem,
-  ListItemText,
-  ListItemButton,
   ListItemAvatar,
+  ListItemButton,
+  ListItemText,
   ListSubheader,
-  CircularProgress,
-  Box,
 } from "@mui/material";
-import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers/appReducer";
+import assets from "assets/assets";
+import { FileUploadIcon } from "components/material-ui/icons/attachment/fileUpload";
+import { DOCS_CONFIG } from "config/docs.config";
 import {
   FileInterface,
   FileUploadProgress,
 } from "constants/interfaces/docs.interface";
-import assets from "assets/assets";
-import { DOCS_CONFIG } from "config/docs.config";
-import { FileUploadIcon } from "components/material-ui/icons/attachment/fileUpload";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/reducers/appReducer";
 function UploadingDocsPreview() {
   const [open, setOpen] = React.useState(true);
   const {
@@ -73,7 +73,7 @@ function UploadingDocsPreview() {
             <ListSubheader disableGutters>
               <Box
                 sx={{
-                  bgcolor: "#0076C8",
+                  bgcolor: "#0075D0",
                   pb: open ? 1 : 0,
                 }}
               >
@@ -89,7 +89,7 @@ function UploadingDocsPreview() {
                     // "&:hover, &:focus": { "& svg": { opacity: open ? 1 : 0 } },
                   }}
                 >
-                 
+
                   <ListItemText
                     primary={`Uploading ${filesBeingUploadedCount} file(s)`}
                     primaryTypographyProps={{

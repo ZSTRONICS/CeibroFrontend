@@ -3,26 +3,23 @@ import PropTypes from "prop-types";
 import { AppBar, Box, IconButton, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
-import Notification from "components/Notification/Notification";
 import Topbar from "components/Topbar/Topbar";
 import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { useResponsive } from "hooks";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
-const NAV_WIDTH = 72;
+const HEADER_MOBILE = 48;
 
-const HEADER_MOBILE = 64;
-
-const HEADER_DESKTOP = 70;
+const HEADER_DESKTOP = 51;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
-  boxShadow: "none",
-  borderBottom: "1px solid #E2E4E5",
   color: "unset",
   background: "white",
+  zIndex: 10,
+  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important",
   [theme.breakpoints.up("lg")]: {
-    width: `calc(100% - ${NAV_WIDTH + 1}px)`,
+    width: "100%",
   },
 }));
 
@@ -32,9 +29,10 @@ const StyledToolbar = styled("div")(({ theme }) => ({
   alignItems: "center",
   flexWrap: "nowrap",
   overflowX: "auto",
+  marginBottom: "-2.3px",
   [theme.breakpoints.up("lg")]: {
     minHeight: HEADER_DESKTOP,
-    padding: theme.spacing(0, 4),
+    padding: theme.spacing(0, 2),
   },
 }));
 
@@ -47,12 +45,19 @@ interface Props {
 
 export default function Header({ onOpenNav }: Props) {
   const history = useHistory();
-  const isLargeScreen = useResponsive("up", "lg", "");
+  const showSidebar = useRouteMatch([
+    "/projects",
+    "/location",
+    "/location-details",
+    "/connections",
+    "/profile",
+  ]);
+  const isLargeScreen = useResponsive("up", "md", "");
 
   return (
     <StyledRoot>
       <StyledToolbar>
-        {!isLargeScreen && (
+        {!isLargeScreen && !showSidebar && (
           <IconButton
             onClick={onOpenNav}
             sx={{
@@ -82,13 +87,13 @@ export default function Header({ onOpenNav }: Props) {
             onClick={() => {
               history.push("/connections");
             }}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", display: "flex" }}
           >
             <ConnectionIcon />
           </div>
 
           <UserMenu />
-          <Notification value={""} />
+          {/* <Notification value={""} /> */}
         </Stack>
       </StyledToolbar>
     </StyledRoot>

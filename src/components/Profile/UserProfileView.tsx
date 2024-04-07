@@ -46,7 +46,11 @@ function UserProfileView({ userData }: Props) {
             <Grid item sx={{ marginTop: "5px" }}>
               <SubLabelTag>Name</SubLabelTag>
               <DocumentNameTag
-                sx={{ wordWrap: "break-word", maxWidth: "250px" }}
+                sx={{
+                  wordWrap: "break-word",
+                  wordBreak: "break-all",
+                  maxWidth: "250px",
+                }}
               >
                 {userData?.firstName || "N/A"}
               </DocumentNameTag>
@@ -55,7 +59,11 @@ function UserProfileView({ userData }: Props) {
             <Grid item>
               <SubLabelTag>Surname</SubLabelTag>
               <DocumentNameTag
-                sx={{ wordWrap: "break-word", maxWidth: "250px" }}
+                sx={{
+                  wordWrap: "break-word",
+                  wordBreak: "break-all",
+                  maxWidth: "250px",
+                }}
               >
                 {userData?.surName || "N/A"}
               </DocumentNameTag>
@@ -65,8 +73,9 @@ function UserProfileView({ userData }: Props) {
               <DocumentNameTag
                 sx={{
                   wordWrap: "break-word",
+                  wordBreak: "break-all",
                   maxWidth: "280px",
-                  color: "#0076C8",
+                  color: "#0075D0",
                 }}
               >
                 {userData?.email || "N/A"}
@@ -75,7 +84,11 @@ function UserProfileView({ userData }: Props) {
             <Grid item>
               <SubLabelTag>Contact number</SubLabelTag>
               <DocumentNameTag
-                sx={{ wordWrap: "break-word", maxWidth: "250px" }}
+                sx={{
+                  wordWrap: "break-word",
+                  wordBreak: "break-all",
+                  maxWidth: "250px",
+                }}
               >
                 {userData?.phoneNumber || "N/A"}
               </DocumentNameTag>

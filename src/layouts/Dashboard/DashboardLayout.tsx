@@ -1,29 +1,23 @@
 import { useState } from "react";
 // @mui
+import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Header from "./Header";
 import Nav from "./Sidenav";
 
-const APP_BAR_MOBILE = 64;
-const APP_BAR_DESKTOP = 70;
-export const StyledRoot = styled("div")({
-  display: "flex",
-  minHeight: "100%",
-  overflow: "hidden",
-});
+const isTaskRoute = window.location.pathname.includes("/tasks");
+const HEADER_HEIGHT = 84;
+const MARGIN_BOTTOM = 16;
+const childHeight = `calc(100vh - ${HEADER_HEIGHT}px)`;
+const navHeight = `calc(100vh - ${HEADER_HEIGHT + MARGIN_BOTTOM}px)`;
 
 const Main = styled("div")(({ theme }) => ({
   flexGrow: 1,
-  overflow: "auto",
-  minHeight: "100%",
-  background: "white",
-  paddingTop: APP_BAR_MOBILE,
-  paddingBottom: theme.spacing(0.56),
-  [theme.breakpoints.up("lg")]: {
-    paddingTop: APP_BAR_DESKTOP + 1,
-    // paddingLeft: !isDrawingDetail && theme.spacing(2),
-    // paddingRight: !isDrawingDetail && theme.spacing(2),
-  },
+  overflow: "hidden",
+  background: isTaskRoute ? "#F4F4F4" : "transparent",
+  maxHeight: childHeight,
+  minHeight: childHeight,
+  height: "100%",
 }));
 
 function DashboardLayout(props: any) {
@@ -32,11 +26,38 @@ function DashboardLayout(props: any) {
     setOpen((prev: boolean) => !prev);
   };
   return (
-    <StyledRoot>
-      <Header onOpenNav={handleOpenCloseNav} />
-      <Nav openNav={open} onCloseNav={handleOpenCloseNav} />
-      <Main id="appMainContainer">{props.children}</Main>
-    </StyledRoot>
+    <Grid
+      sx={{
+        background: "#F4F4F4",
+        height: "100vh",
+        width: "100vw",
+        overflow: "hidden",
+      }}
+      container
+    >
+      <Grid item>
+        <Header onOpenNav={handleOpenCloseNav} />
+      </Grid>
+
+      <Grid
+        sx={{
+          position: "relative",
+          overflow: "hidden",
+          height: `calc(100vh - ${HEADER_HEIGHT + MARGIN_BOTTOM}px)`,
+          mt: `${HEADER_HEIGHT}px`,
+          flexWrap: "nowrap",
+        }}
+        item
+        container
+      >
+        <Nav
+          height={navHeight}
+          openNav={open}
+          onCloseNav={handleOpenCloseNav}
+        />
+        <Main id="appMainContainer">{props.children}</Main>
+      </Grid>
+    </Grid>
   );
 }
 

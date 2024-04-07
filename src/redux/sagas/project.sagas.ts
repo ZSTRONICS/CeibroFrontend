@@ -1,32 +1,28 @@
-import { put, takeLatest } from "redux-saga/effects";
 import {
   ADD_REMOVE_FOLDER_USER,
   CREATE_FOLDER,
-  CREATE_GROUP,
   CREATE_MEMBER,
   CREATE_NEW_PROFILE,
   CREATE_PROFILE_WORK,
-  CREATE_PROJECT,
   CREATE_ROLES,
-  DELETE_GROUP,
   DELETE_MEMBER,
   DELETE_PROJECT,
   DELETE_ROLE,
   DELETE_WORK,
   GET_AVAILABLE_PROJECT_MEMBERS,
   GET_FOLDER_FILES,
-  GET_GROUP,
   GET_GROUP_BY_ID,
   GET_GROUP_USERS,
   GET_MEMBER,
   GET_NEW_WORK,
-  GET_PROJECTS, GET_PROJECTS_MEMBERS, GET_PROJECTS_WITH_MEMBERS, GET_PROJECTS_WITH_PAGINATION,
+  GET_PROJECTS_MEMBERS, GET_PROJECTS_WITH_MEMBERS, GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_PROJECT_PROFILE,
-  PROJECT_CONFIG,
   GET_STATUS,
   GET_TIME_PROFILE_BY_ID,
-  GET_WORK_BY_ID, UPDATE_GROUP,
+  GET_WORK_BY_ID,
+  PROJECT_CONFIG,
+  UPDATE_GROUP,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
   UPDATE_PROJECT_PICTURE,
@@ -35,6 +31,7 @@ import {
   UPDATE_WORK,
   UPLOAD_FILE_TO_FOLDER
 } from "config";
+import { put, takeLatest } from "redux-saga/effects";
 import apiCall from "utills/apiCall";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
@@ -45,15 +42,44 @@ function* fetchUser() {
     yield put({ type: "USER_FETCH_FAILED" });
   }
 }
-
-const getProjects = apiCall({
+// PROJECT APIS
+const createProject = apiCall({
   useV2Route: true,
-  type: GET_PROJECTS,
+  isFormData: true,
+  type: PROJECT_CONFIG.CREATE_NEW_PROJECT,
+  method: "post",
+  path: `/project`,
+});
+
+const getAllProjects = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GET_ALL_PROJECTS,
   method: "get",
   path: "/project",
 });
 
-// CREATE FLOOR API
+const projectFavUnFav = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.PROJECT_FAV_UNFAV,
+  method: "post",
+  path: (payload) => `/project/favorite/${payload.other.isProjFav}/${payload.other.projectId}`,
+});
+
+const groupFavUnFav = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GROUP_FAV_UNFAV,
+  method: "post",
+  path: (payload) => `/project/group/favorite/${payload.other.isGroupFav}/${payload.other.groupId}`,
+});
+
+const projectHideUnhide = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.PROJECT_HIDE_UNHIDE,
+  method: "post",
+  path: (payload) => `/project/hidden/${payload.other.isProjHidden}/${payload.other.projectId}`,
+});
+
+// FLOOR APIS
 const createFloor = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.CREATE_FLOOR,
@@ -61,7 +87,6 @@ const createFloor = apiCall({
   path: (payload) => `/project/${payload.other}/floor`, //projectId
 })
 
-// GET FLOORS BY PROJECT_ID
 const getFloorsByProjectId = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID,
@@ -69,13 +94,102 @@ const getFloorsByProjectId = apiCall({
   path: (payload) => `/project/${payload.other.projectId}/floor`, //projectId
 })
 
-// GET GET_DRAWING_BY_ID 
+// DRAWING APIS
+/**
+ * Retrieve a drawing by its ID for a specific project and floor.
+ *
+ * @param {Object} payload - The payload object containing the project, floor, and drawing IDs.
+ * @param {string} projectId - The ID of the project.
+ * @param {string} floorId - The ID of the floor.
+ * @param {string} drawingId - The ID of the drawing.
+ */
 const getDrawingById = apiCall({
   useV2Route: true,
-  type: PROJECT_CONFIG.GET_DRAWING_BY_ID,
+  type: PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID,
   method: 'get',
-  path: (payload) => `/project/${payload.other.projectId}/${payload.other.floorId}/${payload.other.drawingId}}`, //projectId/floorId/drawingId
+  path: (payload) => `/project/${payload.other.projectId}/${payload.other.floorId}/${payload.other.drawingId}`,
+});
+
+// UPLOAD_IMAGE_ON_DRAWING
+const uploadImageOnDrawing = apiCall({
+  useV2Route: true,
+  isFormData: true,
+  method: 'post',
+  type: PROJECT_CONFIG.UPLOAD_IMAGE_ON_DRAWING,
+  path: (payload) => `/docs/imageUplaod/${payload.other.drawingId}`,
+});
+
+const getAllDrawingImagesById = apiCall({
+  useV2Route: true,
+  method: 'get',
+  type: PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID,
+  path: (payload) => `/docs/drawingImages/${payload.other.drawingId}`,
+});
+
+const getRecentDrawings = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GET_RECENT_DRAWINGS,
+  method: 'get',
+  path: "/project/recentDrawings"
 })
+const addNewDrawing = apiCall({
+  useV2Route: true,
+  isFormData: true,
+  type: PROJECT_CONFIG.ADD_NEW_DRAWING,
+  method: 'post',
+  path: "/docs/upload/drawing"
+})
+
+// const addDrawingPinByDrawingId = apiCall({
+//   useV2Route: true,
+//   type: PROJECT_CONFIG.ADD_DRAWING_PIN_BY_DRAWING_ID,
+//   method: 'post',
+//   path: (payload) => `/project/drawingPin/${payload.other.drawingId}`,
+// })
+
+// const getDrawingPinsByDrawingId = apiCall({
+//   useV2Route: true,
+//   type: PROJECT_CONFIG.GET_DRAWING_PINS_BY_DRAWING_ID,
+//   method: 'get',
+//   path: (payload) => `/project/drawingPin/${payload.other.drawingId}`,
+// })
+
+// GROUPS APIS
+const createProjectGroup = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.CREATE_GROUP,
+  method: "post",
+  path: (payload) => `/project/${payload.other.projectId}/group`,
+});
+
+const markGroupPrivateOrPublic = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.MARK_GROUP_PUBLIC_OR_PRIVATE,
+  method: "post",
+  path: (payload) => `/project/group/public/${payload.other.ispublicGroup}/${payload.other.groupId}`,
+});
+
+
+const getGroupsByProjectId = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GET_GROUPS_BY_PROJECT_ID,
+  method: "get",
+  path: (payload) => `/project/${payload.other.projectId}/group`,
+});
+
+const updateGroupById = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.UPDATE_GROUP_BY_ID,
+  method: "patch",
+  path: (payload) => `/project/group/${payload.other.groupId}`
+});
+
+const deleteGroupById = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.DELETE_GROUP_BY_ID,
+  method: "delete",
+  path: (payload) => `/project/group/${payload.other.groupId}`
+});
 
 const getProjectsWithMembers = apiCall({
   useV2Route: false,
@@ -121,33 +235,14 @@ const getProjectMembers = apiCall({
   useV2Route: false,
   type: GET_PROJECTS_MEMBERS,
   method: "get",
-  path: (payload) => {
-    let url = `/project/member/${payload.other.projectId}`;
-    // if (payload.other?.includeMe) {
-    //   url = `${url}?includeMe=true`;
-    // }
-    return url;
-  },
-});
-// const getFilterProjects = apiCall({
-//  useV2Route: false,
-//   type: GET_FILTER_PROJECTS,
-//   method: "get",
-//   path: (payload) => `/project/${payload?.filter}`,
-// });
-
-const createProject = apiCall({
-  useV2Route: true,
-  type: CREATE_PROJECT,
-  method: "post",
-  path: `/project`,
+  path: (payload) => `/project/member/${payload.other.projectId}`
 });
 
 const getProjectDetail = apiCall({
   useV2Route: false,
   type: GET_PROJECT_DETAIL,
   method: "get",
-  path: (payload) => `/project/${payload?.other}`,
+  path: (payload) => `/project/${payload.other}`,
 });
 
 const createRoles = apiCall({
@@ -157,26 +252,14 @@ const createRoles = apiCall({
   path: (paylaod) => `/project/role/${paylaod.other}`,
 });
 
-const createGroup = apiCall({
-  useV2Route: false,
-  type: CREATE_GROUP,
-  method: "post",
-  path: (payload) => `/project/group/${payload?.other}`,
-});
 
-const getGroup = apiCall({
-  useV2Route: false,
-  type: GET_GROUP,
-  method: "get",
-  path: (payload) => `/project/group/${payload?.other}`,
-});
 
 const getAllDocuments = apiCall({
   useV2Route: false,
   type: PROJECT_CONFIG.GET_ALL_DOCUMENTS,
   method: "get",
   // path: (payload) =>
-  //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
+  //   `/project/folder/${payload.other?.selectedProject}?search=${payload.other?.findDoc}`,
   path: (payload) => {
     const selectedProject = payload.other.selectedProject;
     const inputData = payload.other.findDoc;
@@ -193,14 +276,14 @@ const createFolder = apiCall({
   useV2Route: false,
   type: CREATE_FOLDER,
   method: "post",
-  path: (payload) => `/project/folder/${payload?.other}`,
+  path: (payload) => `/project/folder/${payload.other}`,
 });
 
 const createMember = apiCall({
   useV2Route: false,
   type: CREATE_MEMBER,
   method: "post",
-  path: (payload) => `/project/member/${payload?.other}`,
+  path: (payload) => `/project/member/${payload.other}`,
 });
 
 const getMember = apiCall({
@@ -220,7 +303,7 @@ const updateMember = apiCall({
   useV2Route: false,
   type: UPDATE_MEMBER,
   method: "patch",
-  path: (payload) => `/project/member/update/${payload?.other}`,
+  path: (payload) => `/project/member/update/${payload.other}`,
 });
 
 const getFolderFiles = apiCall({
@@ -389,39 +472,32 @@ const updateProjectPic = apiCall({
   path: (payload) => `/project/profile/pic/${payload.other}`,
 });
 
-const deleteGroup = apiCall({
-  useV2Route: false,
-  type: DELETE_GROUP,
-  method: "delete",
-  path: (payload) => `/project/group/${payload?.other}`,
-});
-
 const deleteRole = apiCall({
   useV2Route: false,
   type: DELETE_ROLE,
   method: "delete",
-  path: (payload) => `/project/role/${payload?.other}`,
+  path: (payload) => `/project/role/${payload.other}`,
 });
 
 const getAvailableProjectMembers = apiCall({
   useV2Route: false,
   type: GET_AVAILABLE_PROJECT_MEMBERS,
   method: "get",
-  path: (payload) => `/project/members/available/${payload?.other}`,
+  path: (payload) => `/project/members/available/${payload.other}`,
 });
 
 // const getGroupMembers = apiCall({
 //  useV2Route: false,
 //   type: GET_GROUP_MEMBERS,
 //   method: "get",
-//   path: (payload) => `/project/group/members/${payload?.other}`,
+//   path: (payload) => `/project/group/members/${payload.other}`,
 // });
 
 const getGroupUsers = apiCall({
   useV2Route: false,
   type: GET_GROUP_USERS,
   method: "get",
-  path: (payload) => `/project/group/users/${payload?.other}`,
+  path: (payload) => `/project/group/users/${payload.other}`,
 });
 
 const addRemoveFolderUser = apiCall({
@@ -434,18 +510,35 @@ const addRemoveFolderUser = apiCall({
 
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
-  yield takeLatest(GET_PROJECTS, getProjects);
+  // project
+  yield takeLatest(PROJECT_CONFIG.CREATE_NEW_PROJECT, createProject);
+  yield takeLatest(PROJECT_CONFIG.PROJECT_FAV_UNFAV, projectFavUnFav);
+  yield takeLatest(PROJECT_CONFIG.PROJECT_HIDE_UNHIDE, projectHideUnhide);
+  yield takeLatest(PROJECT_CONFIG.GET_ALL_PROJECTS, getAllProjects);
+  // groups
+  yield takeLatest(PROJECT_CONFIG.GROUP_FAV_UNFAV, groupFavUnFav);
+  yield takeLatest(PROJECT_CONFIG.CREATE_GROUP, createProjectGroup);
+  yield takeLatest(PROJECT_CONFIG.GET_GROUPS_BY_PROJECT_ID, getGroupsByProjectId);
+  yield takeLatest(PROJECT_CONFIG.UPDATE_GROUP_BY_ID, updateGroupById);
+  yield takeLatest(PROJECT_CONFIG.DELETE_GROUP_BY_ID, deleteGroupById);
+  yield takeLatest(PROJECT_CONFIG.MARK_GROUP_PUBLIC_OR_PRIVATE, markGroupPrivateOrPublic);
+  // floors
   yield takeLatest(PROJECT_CONFIG.CREATE_FLOOR, createFloor);
   yield takeLatest(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID, getFloorsByProjectId);
-  yield takeLatest(PROJECT_CONFIG.GET_DRAWING_BY_ID, getDrawingById);
+  // drawings
+  yield takeLatest(PROJECT_CONFIG.ADD_NEW_DRAWING, addNewDrawing);
+  yield takeLatest(PROJECT_CONFIG.UPLOAD_IMAGE_ON_DRAWING, uploadImageOnDrawing);
+  yield takeLatest(PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID, getAllDrawingImagesById);
+  yield takeLatest(PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID, getDrawingById);
+  yield takeLatest(PROJECT_CONFIG.GET_RECENT_DRAWINGS, getRecentDrawings);
+  // yield takeLatest(PROJECT_CONFIG.ADD_DRAWING_PIN_BY_DRAWING_ID, addDrawingPinByDrawingId);
+  // yield takeLatest(PROJECT_CONFIG.GET_DRAWING_PINS_BY_DRAWING_ID, getDrawingPinsByDrawingId);
+
   yield takeLatest(GET_PROJECTS_WITH_MEMBERS, getProjectsWithMembers);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
-  yield takeLatest(CREATE_PROJECT, createProject);
   yield takeLatest(GET_PROJECTS_WITH_PAGINATION, getProjectsWithPagination);
   yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail);
   yield takeLatest(CREATE_ROLES, createRoles);
-  yield takeLatest(CREATE_GROUP, createGroup);
-  yield takeLatest(GET_GROUP, getGroup);
   yield takeLatest(PROJECT_CONFIG.GET_ALL_DOCUMENTS, getAllDocuments);
   yield takeLatest(CREATE_FOLDER, createFolder);
   yield takeLatest(CREATE_MEMBER, createMember);
@@ -477,7 +570,6 @@ function* projectSaga() {
   yield takeLatest(DELETE_WORK, deleteWork);
   // yield takeLatest(GET_PERMISSIONS, getPermissions);
   yield takeLatest(UPDATE_PROJECT_PICTURE, updateProjectPic);
-  yield takeLatest(DELETE_GROUP, deleteGroup);
   yield takeLatest(DELETE_ROLE, deleteRole);
   yield takeLatest(GET_AVAILABLE_PROJECT_MEMBERS, getAvailableProjectMembers);
   // yield takeLatest(GET_GROUP_MEMBERS, getGroupMembers);

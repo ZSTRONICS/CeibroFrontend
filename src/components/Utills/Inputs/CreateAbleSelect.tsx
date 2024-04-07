@@ -7,11 +7,11 @@ import colors from "../../../assets/colors";
 import InputHOC from "./InputHOC";
 import { dataInterface } from "./SelectDropdown";
 
-const options = [
-  { value: "All", label: "All", color: "green" },
-  { value: "Project1", label: "Project 1", color: "yellow" },
-  { value: "Project2", label: "Project 2", color: "brown" },
-];
+// const options = [
+//   { value: "All", label: "All", color: "green" },
+//   { value: "Project1", label: "Project 1", color: "yellow" },
+//   { value: "Project2", label: "Project 2", color: "brown" },
+// ];
 
 interface My {
   title: string;
@@ -134,7 +134,7 @@ const SelectDropdown: FC<My> = (props) => {
     props.handleChange?.(e);
   };
 
-  const formatCreateLabel = (inputValue: string) => `Invite ${inputValue}`;
+  // const formatCreateLabel = (inputValue: string) => `Invite ${inputValue}`;
 
   return (
     <InputHOC title={title}>

@@ -6,7 +6,7 @@ import { Formik, FormikProps, FormikValues } from "formik";
 import { useTranslation } from "react-i18next";
 
 // react router dom
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 // material
 import {
@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 
 // redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "redux/action/auth.action";
 
 //toastify
@@ -31,12 +31,12 @@ import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import userAlertMessage from "hooks/userAlertMessage";
 import { userApiAction } from "redux/action";
+import { RootState } from "redux/reducers";
 import { purgeStoreStates } from "redux/store";
-import { handlePhoneChange } from "utills/formFunctions";
+import { checkValidPhoneNumber, handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 
 interface Props {
-  tokenLoading: boolean;
   showSuccess: boolean;
 }
 
@@ -48,16 +48,19 @@ interface IInputValues {
 
 const LoginForm: React.FC<Props> = (props) => {
   const { showSuccess } = props;
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const signinSchema = SigninSchemaValidation(t);
   const [checked, setChecked] = useState(false);
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<FormikProps<FormikValues | any>>(null);
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
-
+  const countryCodeName = useSelector(
+    (state: RootState) => state.user.countryCodeName
+  );
   const handleSubmit = (
     values: IInputValues,
     { resetForm }: { resetForm: () => void }
@@ -71,13 +74,21 @@ const LoginForm: React.FC<Props> = (props) => {
       setAlertMessage("Password is not allowed to be empty");
       return;
     }
-
+    setShowLoading(true);
     const payload = {
       body: {
         phoneNumber: `${dialCode}${phoneNumber}`,
         password,
       },
-
+      success: (res: any) => {
+        if (res) {
+          setShowLoading(false);
+          const redirectTo =
+            (location.state as any)?.redirectTo || "/tasks/Ongoing";
+          history.push(redirectTo);
+          dispatch(userApiAction.getUserContacts());
+        }
+      },
       onFailAction: (err: any) => {
         setShowLoading(false);
         if (err) {
@@ -91,13 +102,19 @@ const LoginForm: React.FC<Props> = (props) => {
           purgeStoreStates();
         }
       },
-      success: (res: any) => {
-        dispatch(userApiAction.getUserContacts());
-      },
       showErrorToast: false,
     };
-    setShowLoading(true);
-    dispatch(loginRequest(payload));
+
+    const checkPhoneNumber = checkValidPhoneNumber(
+      `${dialCode}${phoneNumber}`,
+      countryCodeName
+    );
+    if (checkPhoneNumber?.isValid) {
+      dispatch(loginRequest(payload));
+    } else {
+      setAlertMessage(checkPhoneNumber.msg);
+      setShowLoading(false);
+    }
   };
 
   const checkValidInputs = (values: any) => {
@@ -139,6 +156,7 @@ const LoginForm: React.FC<Props> = (props) => {
             values,
           }) => (
             <form
+              autoComplete="off"
               onSubmit={handleSubmit}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -196,23 +214,28 @@ const LoginForm: React.FC<Props> = (props) => {
                   }
                   style={{ padding: 0 }}
                   label={
-                    <DocumentNameTag>{t("auth.RememberMe")}</DocumentNameTag>
+                    <DocumentNameTag>{t("auth.remember_me")}</DocumentNameTag>
                   }
                 />
                 <AddStatusTag
                   sx={{
                     marginBottom: 0,
-                    color: "#0076C8",
+                    color: "#0075D0",
                     cursor: "pointer",
                   }}
                   onClick={handlePasswordForget}
                 >
-                  {t("auth.ForgetPassword")}
+                  {t("auth.forgot_password")}
                 </AddStatusTag>
               </div>
               <MessageAlert
                 message={alertMessage}
-                severity={showSuccess === true ? "success" : "error"}
+                severity={
+                  showSuccess === true &&
+                  !alertMessage.split(" ").includes("Invalid")
+                    ? "success"
+                    : "error"
+                }
                 showMessage={showAlert}
               />
 
@@ -231,7 +254,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   variant="contained"
                   sx={{
                     width: "100%",
-                    backgroundColor: "#0076C8",
+                    backgroundColor: "#0075D0",
                     py: { xs: 1, md: 1.5 },
                   }}
                   disabled={checkValidInputs(values) || showLoading}

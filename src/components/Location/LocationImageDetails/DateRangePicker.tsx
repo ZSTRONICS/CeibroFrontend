@@ -1,0 +1,146 @@
+import ClearIcon from "@mui/icons-material/Clear";
+import { Box, TextField } from "@mui/material";
+import { enUS } from "date-fns/locale";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { DateRangePicker } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css";
+
+interface DateProps {
+  ImageDetail: Boolean;
+  ShowPop?: Boolean;
+  selectedRange: SelectedDateType;
+  setSelectedRange: Dispatch<SetStateAction<SelectedDateType>>;
+}
+export interface SelectedDateType {
+  startDate: Date;
+  endDate: Date;
+  key: "selection";
+}
+
+const CustomDateRangePicker = ({
+  ImageDetail,
+  ShowPop,
+  selectedRange,
+  setSelectedRange,
+}: DateProps) => {
+  const today = new Date();
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 7);
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [localSelectedRange, setLocalSelectedRange] = useState<
+    SelectedDateType[]
+  >([
+    {
+      startDate: startDate,
+      endDate: today,
+      key: "selection",
+    },
+  ]);
+
+  useEffect(() => {
+    setLocalSelectedRange([selectedRange]);
+  }, [selectedRange]);
+
+  const handleInputChange = () => {
+    setDatePickerVisible(true);
+  };
+
+  const handleDateSelect = (item: any) => {
+    setLocalSelectedRange([item.selection]);
+  };
+
+  const handleDatePickerClose = () => {
+    setLocalSelectedRange([
+      {
+        startDate: new Date(),
+        endDate: new Date(),
+        key: "selection",
+      },
+    ]);
+    setDatePickerVisible(false);
+  };
+
+  const handleApplyRangePicker = () => {
+    setSelectedRange(localSelectedRange[0]);
+    setDatePickerVisible(false);
+  };
+
+  return (
+    <Box
+      sx={{
+        minWidth: "240px",
+        maxWidth: "240px",
+        // minWidth: "max-content",
+        // border: "solid 1px red",
+        marginLeft: "35px",
+      }}
+    >
+      <TextField
+        sx={{
+          marginLeft: "-35px",
+          width: "245px",
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              border: ShowPop ? "none" : null,
+            },
+          },
+        }}
+        label="Select Date Range"
+        size="small"
+        value={`${localSelectedRange[0].startDate.toDateString()} - ${localSelectedRange[0].endDate.toDateString()}`}
+        onClick={handleInputChange}
+        // readOnly
+        // fullWidth
+      />
+      {datePickerVisible && (
+        <Box className="datepicker">
+          <Box component="span" onClick={handleDatePickerClose}>
+            <ClearIcon
+              sx={{
+                position: "absolute",
+                right: "-10px",
+                top: "-5px",
+                zIndex: "23",
+                background: "#fff",
+                borderRadius: "50%",
+                width: "24px",
+                height: "24px",
+                padding: "2px",
+                border: "1px solid #000",
+                cursor: "pointer",
+                // boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)"
+              }}
+            />
+          </Box>
+          <DateRangePicker
+            onChange={handleDateSelect}
+            // moveRangeOnFirstSelection={true}
+            months={2}
+            locale={enUS}
+            ranges={localSelectedRange}
+            direction="horizontal"
+          />
+          <Box
+            component="span"
+            sx={{
+              position: "absolute",
+              right: "20px",
+              bottom: "20px",
+              fontSize: "14px",
+              lineHeight: "21px",
+              color: "rgb(0, 118, 200)",
+              fontWeight: "500",
+              cursor: "pointer",
+            }}
+            onClick={handleApplyRangePicker}
+          >
+            Apply
+          </Box>
+        </Box>
+      )}
+    </Box>
+  );
+};
+
+export default CustomDateRangePicker;

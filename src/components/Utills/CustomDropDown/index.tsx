@@ -1,9 +1,7 @@
 import { MoreVert } from "@mui/icons-material";
-import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
-  Divider,
-  ListSubheader,
+  Checkbox,
   Menu,
   MenuItem,
   TextField,
@@ -12,14 +10,15 @@ import {
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
-import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import { MUIInputLabel, RequiredFieldMark } from "components/CustomTags";
 import {
   ChangeValueType,
   CreateNewTaskFormType,
   OptionType,
   Options,
 } from "components/Tasks/type";
+import { ClearIconSvgGray } from "components/material-ui/icons";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { taskActions } from "redux/action";
@@ -27,7 +26,7 @@ import { handleGroupSearch } from "utills/common";
 import ConfirmationDialog from "../ConfirmationDialog";
 
 interface IProps {
-  name: keyof CreateNewTaskFormType;
+  name: keyof CreateNewTaskFormType | any;
   label: string;
   options: Options;
   createCallback?: (type: string, label: string) => void;
@@ -35,6 +34,9 @@ interface IProps {
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
   ) => void;
+  handleSelectedMenuList: (option: any) => void;
+  isDropDownOpen?: (isopen: boolean) => void;
+  handleCreateAllFloors?: () => void;
 }
 
 function CustomDropDown(props: IProps) {
@@ -42,14 +44,27 @@ function CustomDropDown(props: IProps) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [deleteItem, setDeleteItem] = React.useState<OptionType | null>(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { label, options, createCallback, handleChangeValues, name } = props;
   const [selected, setSelected] = React.useState<string>("");
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const {
+    label,
+    options,
+    createCallback,
+    handleChangeValues,
+    name,
+    handleSelectedMenuList,
+    isDropDownOpen,
+    handleCreateAllFloors,
+  } = props;
+
   const [allFilterData, setAllFilterData] = React.useState<{
     all: { [key: string]: OptionType[] };
     recent: OptionType[];
   }>({ all: {}, recent: [] });
+
+  const [showAllFloorItems, setShowAllFloorItems] = React.useState(false);
+  const [addFloorLabel, setAddFloorLabel] = React.useState("Add Floor");
   // const [recentfilterData, setRecentFilterData] = React.useState<{
   //   [key: string]: OptionType[];
   // }>({});
@@ -81,36 +96,54 @@ function CustomDropDown(props: IProps) {
       let updatedSelected = options.allOptions.find(
         (item) => item.label === selected
       );
-      handleChangeValues(updatedSelected?.value, name);
+      if (updatedSelected) {
+        handleChangeValues(updatedSelected._id, name);
+        handleSelectedMenuList(updatedSelected);
+      }
     }
     setAllFilterData({ all: allGroupedData, recent: options.recentOptions });
     setSortedOptions(allGroupedData);
-  }, [options]);
+  }, [options.allOptions.length, options.recentOptions.length, selected]);
 
-  // const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-  //   setSelected(event.target.value);
-  //   handleClose();
-  // };
-  const handleMenuClick = (item: OptionType) => {
-    setSelected(item.label);
-    handleChangeValues(item.value, name);
-    handleClose();
+  const handleMenuClick = (e: any, item: OptionType) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!showAllFloorItems && item) {
+      setSelected(item.value);
+      handleChangeValues(item.value, name);
+      handleSelectedMenuList(item);
+      handleClose();
+    } else {
+      if (!item.isPermanenetOption) {
+        // setSelected(item.value);
+        handleChangeValues(item.value, name);
+        handleSelectedMenuList(item);
+      }
+    }
   };
-
   const handleClose = () => {
     setSearchQuery("");
     setOpen(false);
-    setAllFilterData({
-      all: sortedOptions,
-      recent: options.recentOptions,
-    });
+    setShowAllFloorItems(false);
+    setAddFloorLabel("Add Floor");
+    isDropDownOpen && isDropDownOpen(false);
+    // handleSelectedMenuList(null);
+    setTimeout(() => {
+      setAllFilterData({
+        all: sortedOptions,
+        recent: options.recentOptions,
+      });
+    }, 1000);
   };
 
   const handleOpen = () => {
     setOpen(true);
+    isDropDownOpen && isDropDownOpen(true);
   };
   const filteredData: { [key: string]: OptionType[] } = {};
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const searchValue = event.target.value;
     setSearchQuery(searchValue);
     setAllFilterData({
@@ -128,9 +161,9 @@ function CustomDropDown(props: IProps) {
     //   value: searchQuery,
     // };
     // setFilterData((prevData) => [...prevData, newItem]);
-    setSelected(searchQuery);
     createCallback && createCallback(label, searchQuery);
     setAllFilterData({ all: filteredData, recent: options.recentOptions });
+    setSelected(searchQuery);
     handleClose();
   };
 
@@ -140,10 +173,13 @@ function CustomDropDown(props: IProps) {
     handleClose();
   };
 
-  const handleClearClick = () => {
+  const handleClearClick = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
     handleChangeValues(undefined, name);
     setSearchQuery("");
     setSelected("");
+    handleSelectedMenuList(null);
   };
 
   const renderValue = () => {
@@ -157,13 +193,13 @@ function CustomDropDown(props: IProps) {
   };
 
   const handleDeleteItem = (option: OptionType) => {
-    if (label === "Topic") {
+    if (label === "Title") {
       dispatch(
         taskActions.deleteTopic({
-          other: { topicId: option.value },
+          other: { topicId: option._id },
           success: (res: any) => {
             dispatch(taskActions.getAllTopic());
-            if (option.label === selected) {
+            if (option.value === selected) {
               setSelected("");
               setSearchQuery("");
             }
@@ -197,16 +233,21 @@ function CustomDropDown(props: IProps) {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
         variant="standard"
-        sx={{ marginTop: "8px", width: "100%", maxWidth: "100%" }}
+        sx={{ marginTop: "14px", width: "100%", maxWidth: "100%" }}
       >
-        <InputLabel id="controlled-open-select-label">{label}</InputLabel>
+        {label === "Title" && selected.length === 0 && (
+          <RequiredFieldMark>*</RequiredFieldMark>
+        )}
+        <MUIInputLabel id="controlled-open-select-label">{label}</MUIInputLabel>
         <Select
           labelId="controlled-open-select-label"
           id="controlled-open-select"
           sx={{
+            fontFamily: "Inter",
             "& .MuiSelect-icon": {
               right: `${selected ? "40px" : 0}`,
             },
+            svg: { color: "#000000" },
           }}
           variant="standard"
           open={open}
@@ -215,8 +256,8 @@ function CustomDropDown(props: IProps) {
           value={selected}
           renderValue={renderValue}
           MenuProps={{
-            autoFocus: true,
-            disableAutoFocusItem: true,
+            autoFocus: false,
+            disableAutoFocusItem: false,
             anchorOrigin: {
               vertical: "bottom",
               horizontal: "left",
@@ -227,11 +268,10 @@ function CustomDropDown(props: IProps) {
             },
             PaperProps: {
               style: {
-                maxHeight: "calc(100vh - 240px)",
+                // maxHeight: "calc(100vh - 240px)",
               },
             },
           }}
-          // onChange={handleChange}
           endAdornment={
             selected && (
               <IconButton
@@ -239,130 +279,264 @@ function CustomDropDown(props: IProps) {
                 aria-label="clear selection"
                 onClick={handleClearClick}
               >
-                <ClearIcon
-                  sx={{
-                    height: "24px",
-                    color: "#605C5C",
-                    borderRadius: "12px",
-                    borderStyle: "solid",
-                    borderWidth: "1px",
-                    borderColor: "#605C5C",
-                  }}
-                />
+                <ClearIconSvgGray />
               </IconButton>
             )
           }
         >
-          <ListSubheader
-            style={{ display: "flex", alignItems: "center", width: "100%" }}
+          <Box
+            style={{
+              borderBottom: "1.9px solid #A0A0B0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              width: "100%",
+            }}
           >
-            <TextField
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              style={{ flex: 1 }}
-              variant="standard"
-              InputProps={{
-                disableUnderline: true,
-              }}
-            />
-            <>
-              {searchQuery && searchQuery.length > 0 && isMatchFound ? (
-                <Button onClick={handleCancelClick}>Cancel</Button>
-              ) : (
+            {label !== "Floor" ? (
+              <>
+                <TextField
+                  placeholder="Start typing"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleSearchChange(e);
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ flex: 1, marginLeft: "10px", fontFamily: "Inter" }}
+                  sx={{
+                    label: { color: "605b5c" },
+                  }}
+                  variant="standard"
+                  inputProps={{
+                    maxLength: 100,
+                  }}
+                  InputProps={{
+                    disableUnderline: true,
+                  }}
+                  error={searchQuery.length >= 100}
+                  helperText={`${
+                    searchQuery.length >= 100
+                      ? "Title max length is 100 characters"
+                      : ""
+                  }`}
+                />
+                <>
+                  {searchQuery && searchQuery.length > 0 && isMatchFound ? (
+                    <Button
+                      onClick={handleCancelClick}
+                      sx={{ fontFamily: "Inter" }}
+                    >
+                      Cancel
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleCreateClick}
+                      disabled={searchQuery.length === 0}
+                      sx={{ fontFamily: "Inter" }}
+                    >
+                      Save
+                    </Button>
+                  )}
+                </>
+              </>
+            ) : (
+              <>
                 <Button
-                  onClick={handleCreateClick}
-                  disabled={searchQuery.length === 0}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation(); //
+                    setShowAllFloorItems(!showAllFloorItems);
+                    !showAllFloorItems
+                      ? setAddFloorLabel("Done")
+                      : setAddFloorLabel("Add Floor");
+                    addFloorLabel === "Done" &&
+                      handleCreateAllFloors &&
+                      handleCreateAllFloors();
+                  }}
+                  sx={{ fontFamily: "Inter" }}
                 >
-                  Save
+                  {addFloorLabel}
                 </Button>
-              )}
-            </>
-          </ListSubheader>
-          {allFilterData.recent.length > 0 && (
-            <Box sx={{ margin: "10px 16px" }}>
-              <Typography
-                sx={{
-                  fontFamily: "Inter",
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  color: "#818181",
-                  lineHeight: "16px",
-                }}
-              >
-                Recent used topics
-              </Typography>
-              {allFilterData.recent.map((item: OptionType, i: any) => {
-                return (
-                  <Box
-                    key={`recent-${item.value + i}`}
-                    sx={{
-                      margin: "8px 16px",
-                      cursor: "pointer",
-                      fontWeight: 400,
-                    }}
-                    onClick={() => handleMenuClick(item)}
-                  >
-                    {item.label}
-                  </Box>
-                );
-              })}
-              <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
-            </Box>
-          )}
-          <Box sx={{ margin: "8px 16px" }}>
-            {Object.entries(allFilterData.all).map(
-              ([groupLetter, groupOptions], i: any) => [
-                // Wrap the list items in an array
-                <Typography>{groupLetter}</Typography>,
-                // Use map on the array to render the list items
-                ...groupOptions.map((item, i) => (
-                  <Box
-                    key={`all-${item.value + i}`}
-                    sx={{
-                      margin: "8px 16px",
-                      cursor: "pointer",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                    onClick={() => handleMenuClick(item)}
-                  >
-                    <Typography>{item.label}</Typography>
-                    <IconButton
-                      edge="end"
+              </>
+            )}
+          </Box>
+          <Box
+            sx={{
+              height: "420px",
+              overflowY: "auto",
+            }}
+          >
+            {allFilterData.recent.length > 0 && (
+              <Box sx={{ margin: "10px 10px", marginBottom: "0px" }}>
+                <Typography
+                  sx={{
+                    fontFamily: "Inter",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    color: "#818181",
+                    lineHeight: "16px",
+                  }}
+                >
+                  Recent used{" "}
+                  <span
+                    style={{ textTransform: "lowercase" }}
+                  >{`${label}s`}</span>
+                </Typography>
+                {allFilterData.recent.map((item: OptionType, i: any) => {
+                  return (
+                    <Box
+                      key={`recent-${item.value + i}`}
                       sx={{
-                        color: "#0076C8",
-                        "& .MuiSvgIcon-root": {
-                          width: "20px",
-                          height: "20px",
-                        },
+                        borderBottom: "1px solid #E0E0E0",
+                        padding: "10px 0",
+                        cursor: "pointer",
+                        color: "#000000",
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        fontFamily: "Inter",
                       }}
-                      onClick={(e) => handleInfoMenuClick(e, item)}
+                      onClick={(e) => handleMenuClick(e, item)}
                     >
-                      <MoreVert />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={
-                        Boolean(anchorEl) && item.value === deleteItem?.value
-                      }
-                      onClose={handleCloseMenu}
-                    >
-                      <MenuItem
-                        key={i}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleDeleteClick(item);
+                      {item.label}
+                    </Box>
+                  );
+                })}
+              </Box>
+            )}
+            <Box
+              sx={{
+                margin: "8px 10px",
+                fontFamily: "Inter",
+              }}
+            >
+              {Object.entries(allFilterData.all).map(
+                ([groupLetter, groupOptions], i: any) => [
+                  // Wrap the list items in an array<>
+                  <React.Fragment key={groupLetter + i}>
+                    {groupLetter !== "*" && (
+                      <Typography
+                        sx={{
+                          paddingTop: "20px",
+                          color: "#000000",
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          fontFamily: "Inter",
                         }}
                       >
-                        Delete
-                      </MenuItem>
-                    </Menu>
-                  </Box>
-                )),
-              ]
-            )}
+                        {groupLetter}
+                      </Typography>
+                    )}
+                  </React.Fragment>,
+                  // Use map on the array to render the list items
+                  ...groupOptions.map((item, i) => (
+                    <React.Fragment key={item.value + i}>
+                      {(item.isShown === true || showAllFloorItems) && (
+                        <Box
+                          key={`all-${item.value + i}`}
+                          sx={{
+                            borderBottom: "1px solid #E0E0E0",
+                            padding: "8px 0",
+                            cursor: "pointer",
+                            display: "flex",
+                            color: "#000000",
+                            fontFamily: "Inter",
+                            justifyContent: "space-between",
+                          }}
+                          onClick={(e: any) => handleMenuClick(e, item)}
+                        >
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            {label === "Floor" && showAllFloorItems && (
+                              <Checkbox
+                                checked={item.isShown}
+                                disabled={item.isPermanenetOption}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  if (!item.isPermanenetOption) {
+                                    handleChangeValues(item.value, name);
+                                    handleSelectedMenuList(item);
+                                  }
+                                }}
+                              />
+                            )}
+
+                            <Typography
+                              sx={{
+                                color: "#0E0E0E",
+                                fontSize: "14px",
+                                fontWeight: 600,
+                                fontFamily: "Inter",
+                              }}
+                            >
+                              {item.value}
+                            </Typography>
+                          </Box>
+                          {((label === "Floor" && !showAllFloorItems) ||
+                            label === "Title") && (
+                            <IconButton
+                              edge="end"
+                              sx={{
+                                color: "#0075D0",
+                                padding: "0",
+                                mr: 0.5,
+                                "& .MuiSvgIcon-root": {
+                                  height: "25px",
+                                  width: "25px",
+                                },
+                              }}
+                              onClick={(e) => handleInfoMenuClick(e, item)}
+                            >
+                              <MoreVert />
+                            </IconButton>
+                          )}
+                          <Menu
+                            sx={{
+                              padding: 0,
+                            }}
+                            elevation={3}
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "center",
+                            }}
+                            transformOrigin={{
+                              vertical: "top",
+                              horizontal: "right",
+                            }}
+                            anchorEl={anchorEl}
+                            open={
+                              Boolean(anchorEl) &&
+                              item.value === deleteItem?.value
+                            }
+                            onClose={handleCloseMenu}
+                          >
+                            <MenuItem
+                              sx={{
+                                paddingBottom: 0,
+                                paddingTop: 0,
+                                color: "#0E0E0E",
+                                fontSize: "13px",
+                                fontWeight: 600,
+                                fontFamily: "Inter",
+                              }}
+                              key={i}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleDeleteClick(item);
+                              }}
+                            >
+                              Delete
+                            </MenuItem>
+                          </Menu>
+                        </Box>
+                      )}
+                    </React.Fragment>
+                  )),
+                ]
+              )}
+            </Box>
           </Box>
         </Select>
       </FormControl>

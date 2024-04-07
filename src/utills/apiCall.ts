@@ -9,11 +9,14 @@ import { requestFail, requestPending, requestSuccess } from './status'
 interface ApiCall {
   type: string
   method: 'post' | 'get' | 'delete' | 'put' | 'patch'
-  path?: string | ((payload: any, store?: RootState) => string)
+  path: string | ((payload: any, store?: RootState) => string)
   success?: (res: any, action: any) => void
   onFailSaga?: (err: any) => void
   finallySaga?: () => void
   isFormData?: boolean
+  isUrlEncodedData?: boolean
+  useOtpToken?: boolean
+  otpToken?: string | ((payload: any, store?: RootState) => string)
   isBlob?: boolean
   useV2Route: boolean
 }
@@ -21,6 +24,7 @@ interface ApiCall {
 const apiCall = ({
   type,
   method,
+  isUrlEncodedData,
   path,
   success,
   onFailSaga,
@@ -28,6 +32,8 @@ const apiCall = ({
   isFormData,
   isBlob,
   useV2Route,
+  useOtpToken,
+  otpToken,
 }: ApiCall): any =>
   function* (action: any): Generator<any> {
     const {
@@ -38,24 +44,46 @@ const apiCall = ({
       finallyAction,
       showErrorToast = true,
     } = action.payload || {}
-    const idToken = localStorage.getItem('tokens')
-
+    let idToken = localStorage.getItem('tokens')
     let header: any = {}
+    // if (useOtpToken) {
+    //   header['Authorization'] = `Bearer ${body.otpToken}`
+    // }
 
-    if (!isFormData) {
+    if (isUrlEncodedData) {
       header = {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/x-www-form-urlencoded",
       }
 
     } else {
-      header = {
-        'Content-Type': 'multipart/form-data',
+      if (!isFormData) {
+        header = {
+          'Content-Type': 'application/json',
+        }
+
+
+      } else {
+        header = {
+          'Content-Type': 'multipart/form-data',
+        }
       }
     }
     header['Access-Control-Allow-Origin'] = '*'
 
-    if (idToken && idToken !== 'undefined' && idToken !== 'null') {
-      header['Authorization'] = `Bearer ${JSON.parse(idToken)?.access?.token}`
+    const tokenLessRoutes = [
+      "/auth/login",
+      "/auth/veify-email",
+      // "/auth/register",
+      "/auth/otp/verify",
+      `/auth/forget-password`,
+      "/auth/otp/verify-nodel",
+      "/auth/reset-password"
+    ]
+    if (!tokenLessRoutes.includes(`${path}`)) {
+      const token = JSON.parse(idToken || '{}');
+      if (token && token.access && token.access.token) {
+        header['Authorization'] = `Bearer ${token.access.token}`;
+      }
     }
 
     try {
@@ -65,59 +93,53 @@ const apiCall = ({
 
       //@ts-ignore
       const store: RootState = yield select(state => state)
-
-      let options: any = {
-        url: `${typeof path === 'function' ? path(action.payload, store) : path}`,
+      const options: any = {
+        url: typeof path === 'function' ? path(action.payload, store) : path,
         method: method,
         headers: header,
         data: body,
         params,
-      }
+      };
 
       if (isBlob) {
-        options.responseType = 'blob'
+        options.responseType = 'blob';
       }
-      let res: any;
-      if (useV2Route) {
-        res = yield call(AxiosV2.request, options)
-      } else {
-        res = yield call(AxiosV1.request, options)
-      }
-      const oldState = yield select(state => state)
+
+      const axiosInstance = useV2Route ? AxiosV2 : AxiosV1;
+      const res: any = yield call(axiosInstance.request, options);
+
+      const oldState = yield select((state) => state);
       yield put({
         type: requestSuccess(type),
         payload: res.data,
         oldState,
-      })
+      });
 
-      successPayload && successPayload(res)
-      success && success(res, action)
+      successPayload && successPayload(res);
+      success && success(res, action);
     } catch (err: any) {
-      onFailAction && onFailAction(err)
-      onFailSaga && onFailSaga(err)
+      onFailAction && onFailAction(err);
+      onFailSaga && onFailSaga(err);
 
       yield put({
         type: requestFail(type),
         payload: err,
-      })
+      });
 
       if (showErrorToast) {
-        if (
-          err?.response?.status === 401 ||
-          err?.response?.status === 406 ||
-          err?.response?.status === 423
-        ) {
-          yield put(logoutUser())
-          return
+        const status = err?.response?.status;
+        if ([401, 406, 423].includes(status)) {
+          yield put(logoutUser());
+          return;
         }
 
-        const msg = err?.response?.data?.message || err?.message || 'Unknown error'
-
-        toast.error(msg)
+        const msg = err?.response?.data?.message || err?.message || 'Unknown error';
+        toast.error(msg);
       }
     } finally {
-      finallySaga?.()
-      finallyAction?.()
+      finallySaga?.();
+      finallyAction?.();
     }
-  }
+  };
+
 export default apiCall

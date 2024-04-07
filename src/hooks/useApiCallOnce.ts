@@ -12,9 +12,10 @@ const useApiCallOnce = (action: AnyAction, dependency: any[]) => {
     } else {
       dispatch(action);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependency);
 
-// Cleanup effect
+  // Cleanup effect
   useEffect(() => {
     return () => {
       isRenderEffect.current = true;

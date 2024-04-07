@@ -9,11 +9,7 @@ import { ActionInterface } from "./appReducer";
 import {
   CLOSE_VIEW_INVITATIONS,
   DELETE_MY_CONNECTION,
-  DISABLE_REFRESH_CONNECTIONS,
   GET_MY_CONNECTIONS,
-  GET_MY_CONNECTIONS_COUNT,
-  GET_MY_INVITES_COUNT,
-  OPEN_VIEW_INVITATIONS,
   USER_CONFIG,
 } from "config/user.config";
 
@@ -24,6 +20,7 @@ interface UserReducerInt {
   refreshMyconnections: boolean;
   invites: { count: number };
   connections: { count: number };
+  countryCodeName: string
   openInvites: boolean;
   id: string;
   myConnections: any;
@@ -37,12 +34,35 @@ const intialStatue: UserReducerInt = {
   invites: { count: 0 },
   connections: { count: 0 },
   openInvites: false,
+  countryCodeName: "EE",
   myConnections: [],
   id: "",
 };
 
 const UserReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
+    case USER_CONFIG.USER_UPDATED_IN_STORE:
+      const { firstName, surName, email, phoneNumber, profilePic, jobTitle, countryCode, companyName, _id } = action.payload
+      const userIndex = state.userAllContacts.findIndex((cotact: Contact) => cotact.isCeiborUser && cotact.userCeibroData?._id === _id);
+      if (userIndex > -1) {
+        const userContact = state.userAllContacts[userIndex];
+        userContact.phoneNumber = phoneNumber;
+        userContact.countryCode = countryCode;
+        if (userContact.userCeibroData) {
+          userContact.userCeibroData = {
+            ...userContact.userCeibroData,
+            email,
+            firstName,
+            surName,
+            jobTitle,
+            companyName,
+            profilePic
+          };
+        }
+      }
+      return {
+        ...state,
+      };
     case requestPending(USER_CONFIG.GET_USER_CONTACTS): {
       return {
         ...state,
@@ -93,12 +113,6 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
         loadingContacts: false,
       };
     }
-    case requestSuccess(GET_MY_INVITES_COUNT): {
-      return {
-        ...state,
-        invites: action.payload,
-      };
-    }
     case requestSuccess(DELETE_MY_CONNECTION): {
       return {
         ...state,
@@ -113,40 +127,19 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-    case DISABLE_REFRESH_CONNECTIONS: {
+
+    case USER_CONFIG.COUNTRY_CODE_NAME: {
       return {
         ...state,
-        refreshMyconnections: false,
-      };
+        countryCodeName: action.payload
+      }
     }
-
-    case requestSuccess(GET_MY_CONNECTIONS_COUNT): {
-      return {
-        ...state,
-        connections: action.payload,
-      };
-    }
-
-    case OPEN_VIEW_INVITATIONS: {
-      return {
-        ...state,
-        openInvites: true,
-      };
-    }
-
     case CLOSE_VIEW_INVITATIONS: {
       return {
         ...state,
         openInvites: false,
       };
     }
-
-    // case requestSuccess(GET_MY_INVITES_COUNT): {
-    //   return {
-    //     ...state,
-    //     createChatLoading: false,
-    //   };
-    // }
 
     default:
       return state;

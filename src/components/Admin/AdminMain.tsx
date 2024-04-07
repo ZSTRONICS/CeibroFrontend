@@ -24,8 +24,8 @@ function AdminMain() {
   });
 
   const getUsers = (role: string) => {
-    setToDate(null)
-    setFromDate(null)
+    setToDate(null);
+    setFromDate(null);
     const payload = {
       success: (res: any) => {
         setUsers(res.data.result);
@@ -39,8 +39,6 @@ function AdminMain() {
   useEffect(() => {
     getUsers("admin");
   }, []);
-
-
 
   const filterDataOnParams = (params: any) => {
     let filtereLocal: any = [...users];
@@ -91,14 +89,14 @@ function AdminMain() {
         searchWithNameEmail: e.target.value,
       });
     }
-  }
+  };
 
   const handleFromDateChange = (value: any) => {
     setFromDate(value);
     setIsHide(false);
     if (value === null) {
       setIsHide(true);
-      setToDate(null)
+      setToDate(null);
       filterDataOnParams({
         ...filterParams,
         startDate: "",
@@ -142,7 +140,7 @@ function AdminMain() {
             </Tab>
           </TabsList>
 
-          <Grid container alignItems="center" gap={2} pt={1.4} >
+          <Grid container alignItems="center" gap={2} pt={1.4}>
             <Grid item md={3} sm={4} xs={11}>
               <Paper
                 elevation={0}
@@ -166,7 +164,7 @@ function AdminMain() {
                   onChange={(e: any) => handleUsersSearch(e)}
                   sx={{
                     ml: 1,
-                    width: '100%',
+                    width: "100%",
                   }}
                   placeholder="Search by name and email"
                   inputProps={{ "aria-label": "Search by name and email" }}
@@ -191,7 +189,7 @@ function AdminMain() {
               />
             </Grid>
 
-            <Grid item md={3} sm={3.5} xs={11} >
+            <Grid item md={3} sm={3.5} xs={11}>
               <CDatePicker
                 IsdisablePast={false}
                 showLabel={true}

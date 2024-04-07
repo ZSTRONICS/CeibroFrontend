@@ -2,13 +2,16 @@ import { Box, Typography } from "@mui/material";
 
 interface IProps {
   description: string;
+  title:string;
+  titleWidth?:string
+  despFontSize?:string
+  despFontWeight?:string|number
 }
 
-const DespcriptionBox = ({ description }: IProps) => (
+const DespcriptionBox = ({ description,title,titleWidth,despFontSize,despFontWeight }: IProps) => (
   <Box
     sx={{
-      width: "100%",
-      padding: "14px 0px",
+      padding: "8px 0px 8px 0px",
       gap: 1,
     }}
   >
@@ -21,11 +24,11 @@ const DespcriptionBox = ({ description }: IProps) => (
     >
       <Box
         sx={{
-          width: "85px",
-          height: "16px",
-          borderWidth: "0px 1px 0px 0px",
-          borderColor: "#818181",
-          borderStyle: "solid",
+          minWidth: titleWidth??'83px',
+          height: "20px",
+          gap: 1,
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Typography
@@ -37,32 +40,29 @@ const DespcriptionBox = ({ description }: IProps) => (
             color: "#605c5c",
           }}
         >
-          Description
+          {title}
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "100%",
+          // width: "100%",
           px: "11px",
-
-          overflow: "auto",
-          maxWidth: "85%",
+          borderLeft: "1.9px solid #818181",
+          maxWidth: "95%",
           display: "flex",
           alignItems: "center",
         }}
       >
-        <p
+        <Typography
           style={{
-            fontWeight: 500,
-            fontSize: "14px",
+            fontWeight: despFontWeight??500,
+            fontSize: despFontSize??"12px",
             color: "#000",
             wordWrap: "break-word",
-            paddingTop: "5px",
-            height: `${description.length > 100 ? "10vh" : "unset"}`,
           }}
         >
           {description === "" ? "N/A" : description}
-        </p>
+        </Typography>
       </Box>
     </Box>
   </Box>

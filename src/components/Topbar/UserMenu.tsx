@@ -1,15 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 // material
-import {
-  Badge,
-  Box,
-  Button,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Badge, Box, Button, Menu, MenuItem, Stack } from "@mui/material";
 
 // router-dom
 import { useHistory } from "react-router";
@@ -26,23 +18,27 @@ import NameAvatar from "components/Utills/Others/NameAvatar";
 import { LogoutIcon } from "components/material-ui/icons/Logout/LogoutIcon";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
-import storage from "redux-persist/lib/storage";
 import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
 import { socket } from "services/socket.services";
+import { LOGIN_ROUTE } from "utills/axios";
 
 const UserMenu = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isRenderEffect = useRef<any>(false);
+  const userMenuRef = useRef<any>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
+
+  const { firstName, surName, profilePic } = user || {};
+
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   useEffect(() => {
-    if (!isRenderEffect.current) {
+    if (!isRenderEffect.current && userMenuRef.current) {
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
     }
     return () => {
@@ -64,16 +60,17 @@ const UserMenu = () => {
 
   const handleLogout = () => {
     socket.getSocket()?.emit("logout-window");
+    localStorage.removeItem("showFullView");
     setAnchorElUser(null);
     dispatch(logoutUser());
     purgeStoreStates();
-    storage.removeItem("persist:root");
-    history.push("/login");
+    history.push(LOGIN_ROUTE);
   };
-
-  return (
+  return !user ? (
+    <></>
+  ) : (
     <>
-      <Box sx={{ flexGrow: 0 }}>
+      <Box sx={{ flexGrow: 0 }} ref={userMenuRef}>
         <Button
           disableRipple
           onClick={handleOpenUserMenu}
@@ -84,25 +81,26 @@ const UserMenu = () => {
         >
           <CustomStack gap={1.8}>
             <NameAvatar
-              firstname={user?.firstName}
-              surname={user?.surName}
-              url={user?.profilePic}
+              firstname={firstName}
+              surname={surName}
+              url={profilePic}
               variant="rounded"
             />
             <Stack
               justifyContent="flex-end"
               sx={{
                 flexDirection: "column !important",
+                alignItems: "flex-start",
                 "@media (max-width:460px)": {
                   display: "none",
                 },
               }}
             >
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.firstName || ""}
+                {firstName || ""}
               </AddStatusTag>
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.surName || ""}
+                {surName || ""}
               </AddStatusTag>
             </Stack>
             <assets.KeyboardArrowDownIcon />
@@ -130,7 +128,7 @@ const UserMenu = () => {
           >
             <MenuItem
               disableRipple
-              onClick={() => handleUserMenu("/profile")}
+              onClick={() => handleUserMenu(`/profile`)}
               divider
               sx={{
                 "&.MuiMenuItem-root": {
@@ -155,8 +153,7 @@ const UserMenu = () => {
               }}
             >
               <ConnectionIcon />
-              <Typography textAlign="center"> My Connections</Typography>
-
+              My Connections
               <Badge
                 sx={{
                   color: "#F1B740",
@@ -168,22 +165,18 @@ const UserMenu = () => {
                 overlap="circular"
               />
             </MenuItem>
-
             <MenuItem
               disableRipple
               onClick={handleLogout}
               sx={{
+                gap: 2,
                 "&.MuiMenuItem-root": {
                   padding: "10px 20px",
                 },
               }}
             >
-              <Stack direction="row" spacing={2}>
-                <Box display="flex" alignItems="center">
-                  <LogoutIcon />
-                </Box>
-                <Typography textAlign="center">Logout</Typography>
-              </Stack>
+              <LogoutIcon />
+              Logout
             </MenuItem>
           </Menu>
         )}

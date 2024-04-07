@@ -2,10 +2,15 @@ import { FileInterface } from "./docs.interface";
 import { ProjectRolesInterface } from "./ProjectRoleMemberGroup.interface";
 import { UserInterface } from "./user.interface";
 
+export interface ProjectV2Interface {
+  allProjects: Project[];
+  allFloors: Floor[];
+  allGroups: Group[];
+}
 export interface ProjectInterface {
   title: string;
   projectPhoto: string;
-  photoFile:string|File|any;
+  photoFile: string | File | any;
   dueDate: string;
   owner: ProjectOwners[];
   access: string[];
@@ -25,10 +30,10 @@ export interface ProjectInterface {
   creator: ProjectOwners
 
 }
-export interface ProjectOwners{
+export interface ProjectOwners {
   _id: string
-firstName: string
-surName: string
+  firstName: string
+  surName: string
 }
 
 
@@ -38,7 +43,7 @@ export interface projectProfileInterface {
 }
 
 export const projectOverviewTemplate: ProjectInterface = {
-  photoFile:"",
+  photoFile: "",
   title: "",
   extraStatus: [],
   access: [],

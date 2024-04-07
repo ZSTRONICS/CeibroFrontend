@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 import { formatDropdownData } from "components/Utills/Globals";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 import { useDispatch } from "react-redux";
-import { taskActions } from "redux/action";
+import { PROJECT_APIS, taskActions } from "redux/action";
 
 const MockTaskApis = () => {
   const [selectedApi, setSelectedApi] = useState<any>(null);
@@ -18,6 +18,102 @@ const MockTaskApis = () => {
 
   useEffect(() => {
     if (selectedApi !== null) {
+      if (selectedApi.value === "createProject") {
+        const formdata = new FormData();
+        formdata.append("title", "first test project");
+        formdata.append("description", "first test project description");
+        dispatch(
+          PROJECT_APIS.createProject({
+            body: formdata,
+          })
+        );
+      } else if (selectedApi.value === "getAllProject") {
+        dispatch(PROJECT_APIS.getAllProjects());
+      } else if (selectedApi.value === "projectHide") {
+        dispatch(
+          PROJECT_APIS.projectHideUnhide({
+            other: {
+              isProjHidden: true,
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "projectUnhide") {
+        dispatch(
+          PROJECT_APIS.projectHideUnhide({
+            other: {
+              isProjHidden: false,
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "projectFav") {
+        dispatch(
+          PROJECT_APIS.projectFavUnFav({
+            other: {
+              isProjFav: true,
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "projectUnFav") {
+        dispatch(
+          PROJECT_APIS.projectFavUnFav({
+            other: {
+              isProjFav: false,
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "createGroupByProjId") {
+        dispatch(
+          PROJECT_APIS.createProjectGroup({
+            other: {
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+            body: {
+              groupName: "Test Group 2",
+            },
+          })
+        );
+      } else if (selectedApi.value === "getGroupsByProjectId") {
+        dispatch(
+          PROJECT_APIS.getGroupsByProjectId({
+            other: {
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "updateGroupById") {
+        dispatch(
+          PROJECT_APIS.updateGroupById({
+            other: {
+              groupId: "657c6cf2fa6501660b70c176",
+            },
+            body: {
+              groupName: "test group 1",
+            },
+          })
+        );
+      } else if (selectedApi.value === "addNewDrawing") {
+        const formdata = new FormData();
+        formdata.append("projectId", "64f736813bc4a418e498d2c1");
+        formdata.append("floorId", "64f736813bc4a418e498d2c1");
+        formdata.append("groupId", "64f736813bc4a418e498d2c1");
+        // formdata.append("uploaderLocalId", "64f735383bc4a418e498d0ae"); //set any local uuid
+        formdata.append(
+          "metadata",
+          JSON.stringify([
+            { fileName: "ui.png", orignalFileName: "ui.png", tag: "drawing" },
+          ])
+        );
+        formdata.append("files", "/C:/Users/ZST/Downloads/ui.png");
+        dispatch(
+          PROJECT_APIS.addNewDrawing({
+            body: formdata,
+          })
+        );
+      }
       if (selectedApi.value === "createTask") {
         dispatch(
           taskActions.createTask({
@@ -67,16 +163,19 @@ const MockTaskApis = () => {
       if (selectedApi.value === "getAllTopic") {
         dispatch(taskActions.getAllTopic());
       }
-      if (selectedApi.value === "getAllTaskToMe") {
-        dispatch(taskActions.getAllTaskToMe());
+      if (selectedApi.value === "getAllTaskAllEvents") {
+        dispatch(taskActions.getAllTasksAllEvents());
       }
-      if (selectedApi.value === "getAllTaskFromMe") {
-        dispatch(taskActions.getAllTaskFromMe());
+      if (selectedApi.value === "syncTaskEventsByTaskId") {
+        dispatch(
+          taskActions.syncTaskEventsByTaskId({
+            other: { taskId: "652fe8decb9983308b49941e" },
+            body: {
+              eventIds: ["652f9e7d0e89745624ea46cd"],
+            },
+          })
+        );
       }
-      if (selectedApi.value === "getAllTaskHidden") {
-        dispatch(taskActions.getAllTaskHidden());
-      }
-
       if (selectedApi.value === "forwardTask") {
         dispatch(
           taskActions.forwardTask({
@@ -257,14 +356,52 @@ const MockTaskApis = () => {
 };
 
 const mockTaskApis = [
+  { title: "createProject: /project", id: "createProject" },
+  { title: "getAllProject: /project", id: "getAllProject" },
+  {
+    title: "projectHide: /project/hidden/isProjHidden/projectId",
+    id: "projectHide",
+  },
+  {
+    title: "projectUnhide: /project/hidden/isProjHidden/projectId",
+    id: "projectUnhide",
+  },
+
+  {
+    title: "projectFav: /project/favourite/isProjFav/projectId",
+    id: "projectFav",
+  },
+  {
+    title: "projectUnFav: /project/favourite/isProjFav/projectId",
+    id: "projectUnFav",
+  },
+  {
+    title: "createGroupByProjId: /project/projectId/group",
+    id: "createGroupByProjId",
+  },
+  {
+    title: "getGroupsByProjectId: /project/projectId/group",
+    id: "getGroupsByProjectId",
+  },
+  {
+    title: "updateGroupById: /project/group/groupId",
+    id: "updateGroupById",
+  },
+  {
+    title: "addNewDrawing: /docs/upload/drawing",
+    id: "addNewDrawing",
+  },
+
   { title: "createTopic: /task/topic", id: "createTopic" },
   { title: "createTask: /task", id: "createTask" },
   { title: "createTaskWithFiles: /task/files", id: "createTaskWithFiles" },
   { title: "forwardTask: /task/forward/:taskId", id: "forwardTask" },
   { title: "getAllTopic: /task/topic", id: "getAllTopic" },
-  { title: "getAllTaskToMe: /task/to-me", id: "getAllTaskToMe" },
-  { title: "getAllTaskFromMe: /task/from-me", id: "getAllTaskFromMe" },
-  { title: "getAllTaskHidden: /task/hidden", id: "getAllTaskHidden" },
+  { title: "getAllTaskAllEvents: /task/timeStamp", id: "getAllTaskAllEvents" },
+  {
+    title: "syncTaskEventsByTaskId: /task/syncEvents",
+    id: "syncTaskEventsByTaskId",
+  },
   { title: "taskCaneled: //task/cancel/:taskId", id: "taskCaneled" },
   { title: "taskUnCanel: //task/uncancel/:taskId", id: "taskUnCanel" },
   { title: "taskSeen: /task/seen/:taskId", id: "taskSeen" },

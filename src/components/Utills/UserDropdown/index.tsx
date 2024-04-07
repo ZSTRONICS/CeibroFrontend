@@ -1,4 +1,3 @@
-import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
   Checkbox,
@@ -11,15 +10,16 @@ import {
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
-import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
+import { MUIInputLabel, RequiredFieldMark } from "components/CustomTags";
 import GroupContactList from "components/Tasks/Forward-Task/GroupContactList";
 import {
   AssignedToStateType,
   ChangeValueType,
   CreateNewTaskFormType,
 } from "components/Tasks/type";
+import { ClearIconSvgGray } from "components/material-ui/icons";
 import { Contact } from "constants/interfaces";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -30,8 +30,10 @@ import SelectedContactBox from "../SelectedContactBox";
 interface IProps {
   name: keyof CreateNewTaskFormType;
   label: string;
+  isTaskFilter?: boolean;
   contacts: Contact[];
   recentUserContact: Contact[];
+  tasktilters?: boolean;
   createCallback?: (type: string, label: string) => void;
   handleChangeValues: (
     value: ChangeValueType,
@@ -43,11 +45,12 @@ function UserDropDown(props: IProps) {
   const [isSelfAssign, setIsSelfAssign] = useState(false);
   const {
     name,
+    isTaskFilter,
     label,
     contacts,
-    createCallback,
     handleChangeValues,
     recentUserContact,
+    tasktilters,
   } = props;
   const [filteredRecentUserContact, setFilteredRecentUserContact] =
     React.useState<Contact[]>(recentUserContact);
@@ -116,6 +119,7 @@ function UserDropDown(props: IProps) {
     handleChangeValues(invitedNumbers, "invitedNumbers");
     setSearchQuery("");
     setOpen(false);
+    setFilterData(handleGroupSearch("", sortedContacts, "contactFullName"));
   };
 
   const handleOpen = () => {
@@ -136,11 +140,11 @@ function UserDropDown(props: IProps) {
     setSearchQuery(searchValue);
   };
 
-  const handleCancelClick = () => {
-    setSearchQuery("");
-    setSelected([]);
-    handleClose();
-  };
+  // const handleCancelClick = () => {
+  //   setSearchQuery("");
+  //   setSelected([]);
+  //   handleClose();
+  // };
 
   const handleClearClick = () => {
     handleChangeValues(undefined, "assignedToState");
@@ -194,17 +198,63 @@ function UserDropDown(props: IProps) {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
+        // disabled
         variant="standard"
-        sx={{ marginTop: "8px", width: "100%", maxWidth: "100%" }}
+        sx={{
+          marginTop: isTaskFilter ? "0" : "1px",
+          width: "100%",
+          maxWidth: isTaskFilter ? "110px" : "100%",
+          minWidth: isTaskFilter ? "110px" : "100%",
+          backgroundColor: tasktilters ? "#F4F4F4" : null,
+          ...(tasktilters && {
+            "& .MuiInputBase-root": {
+              top: "-12px",
+            },
+            "& .MuiInputBase-root:before": {
+              borderBottom: tasktilters ? "none !important" : "",
+            },
+            "& .MuiInputBase-root:after": {
+              borderBottom: tasktilters ? "none !important" : "",
+            },
+          }),
+          "& .MuiSelect-root:before": {
+            // borderBottom: "none",
+            borderWidth: "5px",
+          },
+          ...(tasktilters && {
+            "&.MuiFormControl-root": {
+              borderRadius: "5px",
+              height: "36px",
+              marginLeft: "10px",
+            },
+          }),
+        }}
       >
-        <InputLabel id="controlled-open-select-label">{label}</InputLabel>
+        {label === "Assign to" && selected.length === 0 && (
+          <RequiredFieldMark>*</RequiredFieldMark>
+        )}
+        <MUIInputLabel
+          sx={{
+            top: tasktilters ? "-10px" : null,
+            left: tasktilters ? "15px" : null,
+          }}
+          id="controlled-open-select-label"
+        >
+          {label}
+        </MUIInputLabel>
         <Select
           labelId="controlled-open-select-label"
           id="controlled-open-select"
           sx={{
-            "& .MuiSelect-icon": {
-              right: `${selected.length > 0 ? "40px" : 0}`,
+            "& .MuiSelect-root:before": {
+              // borderBottom: "none",
             },
+            // border: "solid 1px red",
+            "& .MuiSelect-icon": {
+              right: `${!tasktilters && selected.length > 0 ? "40px" : 0}`,
+            },
+
+            svg: { color: "#000000" },
           }}
           MenuProps={{
             anchorOrigin: {
@@ -229,33 +279,36 @@ function UserDropDown(props: IProps) {
           value={selected}
           renderValue={renderValue}
           endAdornment={
+            !tasktilters &&
             selected.length > 0 && (
               <IconButton
                 size="small"
                 aria-label="clear selection"
                 onClick={handleClearClick}
               >
-                <ClearIcon
-                  sx={{
-                    height: "24px",
-                    color: "#605C5C",
-                    borderRadius: "12px",
-                    borderStyle: "solid",
-                    borderWidth: "1px",
-                    borderColor: "#605C5C",
-                  }}
-                />
+                <ClearIconSvgGray />
               </IconButton>
             )
           }
         >
           <ListSubheader
-            style={{ display: "flex", alignItems: "center", width: "100%" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              gap: "5px",
+            }}
           >
             <TextField
+              type="search"
               placeholder="Start typing name"
               value={searchQuery}
               onChange={handleSearchChange}
+              sx={{
+                "& .MuiSelect-root:before": {
+                  borderBottom: "none",
+                },
+              }}
               style={{
                 flex: 1,
                 borderBottomWidth: "1px",
@@ -264,25 +317,23 @@ function UserDropDown(props: IProps) {
                 marginRight: "8px",
               }}
               variant="standard"
+              inputProps={{
+                maxLength: 50,
+              }}
               InputProps={{
                 disableUnderline: true,
               }}
             />
-            {filterData[searchQuery?.[0]?.toUpperCase() || ""] ? (
-              <CustomButton variant="outlined" onClick={handleCancelClick}>
-                Cancel
-              </CustomButton>
-            ) : (
-              <CustomButton variant="outlined" onClick={handleClose}>
-                Done
-              </CustomButton>
-            )}
+            <CustomButton variant="outlined" onClick={handleClose}>
+              Done
+            </CustomButton>
           </ListSubheader>
           <Box
             sx={{
               minHeight: "66px",
               display: "flex",
               padding: "6px 7px",
+              maxWidth: `${isTaskFilter ? "300px" : "100%"}`,
               overflow: "auto",
               "&::-webkit-scrollbar": {
                 height: "0.4rem",
@@ -315,52 +366,54 @@ function UserDropDown(props: IProps) {
                   alignItems: "end",
                 }}
               >
-                No selected contacts
+                Select {isTaskFilter ? "users" : "task assignee(s)"}
               </Typography>
             )}
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              margin: "0px 8px 0px",
-            }}
-          >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="self-assign"
-                  checked={isSelfAssign}
-                  onChange={handleSelfAssignChange}
-                  size="small"
-                  color="primary"
-                  sx={{
-                    ml: 1,
-                    fontFamily: "Inter",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    color: "#818181",
-                    lineHeight: "16px",
-                  }}
-                />
-              }
-              label={
-                <Typography
-                  sx={{
-                    fontFamily: "Inter",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    color: "#605C5C",
-                    lineHeight: "16px",
-                  }}
-                >
-                  Self assign
-                </Typography>
-              }
-            />
-          </Box>
-          <Box sx={{ margin: "0px 10px" }}>
+          {!isTaskFilter && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                margin: "0px 8px 0px",
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="self-assign"
+                    checked={isSelfAssign}
+                    onChange={handleSelfAssignChange}
+                    size="small"
+                    color="primary"
+                    sx={{
+                      ml: 1,
+                      fontFamily: "Inter",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      color: "#818181",
+                      lineHeight: "16px",
+                    }}
+                  />
+                }
+                label={
+                  <Typography
+                    sx={{
+                      fontFamily: "Inter",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      color: "#605C5C",
+                      lineHeight: "16px",
+                    }}
+                  >
+                    Self assign
+                  </Typography>
+                }
+              />
+            </Box>
+          )}
+          <Box sx={{ margin: "0px 16px" }}>
             <Divider sx={{ marginTop: "8px", marginBottom: "20px" }} />
             <GroupContactList
               filterData={filterData}

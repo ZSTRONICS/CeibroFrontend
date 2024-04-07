@@ -31,15 +31,103 @@
   box-sizing: border-box;
 }
 
+/* .MuiAvatar-root {
+  font-family: 'Inter', sans-serif !important;
+} */
+
 body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500;
   font-size: 1rem;
+  color: black;
+  line-height: 1.5;
+  letter-spacing: 0;
+  font-style: normal;
 }
 
 html {
-  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
 }
+
+/* .hide {
+  display: none;
+}
+
+.myDIV:hover+.hide {
+  display: block;
+  background-color: red;
+} */
+
+/* span.react-simple-image-viewer__close {
+  top: 2%;
+  right: 3%;
+} */
+
+/* div#ReactSimpleImageViewer {
+  z-index: 50;
+} */
+
+/* div.react-simple-image-viewer__modal-content {
+  width: 70vw;
+  height: 85%;
+  max-height: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.marker {
+  background: #0076C8;
+  width: 24px;
+  height: 24px;
+  border: 2px solid black;
+  border-radius: 50%;
+
+}
+
+.marker:hover {
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    background: yellow;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade_in {
+  opacity: 0;
+  animation: fadeIn ease-in 1;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+}
+
+.react-pdf__Document {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+
+/* @media (min-width: 900px) {
+  body * {
+    font-weight: 450;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  body * {
+    font-weight: 500;
+
+  }
+} */
 
 @media (max-width: 768px) {
   body {
@@ -126,6 +214,30 @@ iframe {
 
 .emptyBorder:active {
   border: none;
+}
+
+.split-element {
+  position: relative;
+  height: 10px;
+}
+
+.split-element::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  transform: translateX(3%);
+  width: 47%;
+  border-bottom: 1px solid;
+}
+
+.split-element::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translateX(-3%);
+  width: 44%;
+  border-bottom: 1px solid;
 }
 
 .emptyBorder:focus-visible {
@@ -276,6 +388,13 @@ textarea::-webkit-input-placeholder {
   color: black !important
 }
 
+button>span.MuiButton-startIcon {
+  margin: 0;
+}
+
+div.openseadragon-canvas {
+  height: 93% !important;
+}
 
 .MuiFormControlLabel-label.Mui-disabled {
   color: black !important;
@@ -294,7 +413,7 @@ textarea::-webkit-input-placeholder {
   font-size: 14px !important;
   font-weight: 500 !important;
   font-family: Inter !important;
-  color: #AEADBD !important;
+  color: #0d0d0d !important;
 }
 
 .css-1pndypt-Input input,
@@ -363,7 +482,7 @@ button[disabled] {
   justify-content: space-between;
 }
 
-.textOverflowY {
+.textOverflowRow {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -445,4 +564,28 @@ button[disabled] {
     padding: 0;
     margin: 0;
   }
+}
+
+.my-editor {
+  grid-area: editor;
+  color: #fff;
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  font-size: 0.7rem;
+}
+
+.my-editor label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.my-editor input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.my-editor pre {
+  font-size: 0.7rem;
 }

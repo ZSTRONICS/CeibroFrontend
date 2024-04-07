@@ -9,6 +9,7 @@ import { RootState } from "redux/reducers/appReducer";
 // component
 import NoData from "components/NotFound/NoData";
 import { ConnectionCardSkeleton } from "components/material-ui/skeleton";
+import { Contact } from "constants/interfaces";
 import useResponsive from "hooks/useResponsive";
 import ConnectionCard from "./ConnectionCard";
 
@@ -48,14 +49,13 @@ const Connections = () => {
   }, [headerHeight]);
 
   const ContactRow = ({ index, style }: any) => {
-    const userContact = userAllContacts[index];
+    const userContact: Contact = userAllContacts[index];
     if (!userContact) {
       return <></>;
     }
     const {
       contactFirstName,
       contactSurName,
-      contactFullName,
       isCeiborUser,
       isBlocked,
       userCeibroData,
@@ -69,7 +69,6 @@ const Connections = () => {
         firstName={contactFirstName}
         surName={contactSurName}
         companyName={userCeibroData?.companyName}
-        contactFullName={contactFullName}
         isBlocked={isBlocked}
         isCeiborUser={isCeiborUser}
         profilePic={userCeibroData?.profilePic}
@@ -87,12 +86,23 @@ const Connections = () => {
         <NoData title="No Data Found" />
       ) : (
         <div
-          style={{ position: "relative" }}
+          style={{
+            position: "relative",
+            minWidth: "960",
+            maxWidth: "1440px",
+            margin: "0 auto",
+            padding: "7px",
+            height: "100%",
+            width: "100%",
+          }}
           id="Contactscontainer"
           ref={containerRef}
         >
           <VariableSizeList
             height={windowHeight + 35}
+            style={{
+              paddingBottom: "2rem",
+            }}
             itemCount={userAllContacts.length}
             overscanCount={13}
             itemSize={() => 57}

@@ -2,11 +2,13 @@ import {
   Autocomplete,
   CircularProgress,
   FormControl,
+  Input,
   InputLabel,
   OutlinedInput,
   TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { MUIInputLabel } from "components/CustomTags";
 import React from "react";
 import { DropDownSvg } from "../icons/CustomSvgIcon/dropDown";
 import { AutocompleteOption, GenericAutocompleteProps } from "./types";
@@ -17,6 +19,11 @@ interface IProps {
   type?: string;
   required?: boolean;
   placeholder?: string;
+  inputProps?: any;
+  maxLength?: number;
+  maxRows?: number;
+  multiline?: boolean;
+  inputVariant: "standard" | "outlined" | "filled";
   inputValue: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: {
@@ -34,26 +41,48 @@ export const SimpleTextField = (props: IProps) => {
     required,
     inputValue,
     onChange,
+    inputVariant,
     onBlur,
+    inputProps,
+    maxLength,
+    multiline,
+    maxRows,
   } = props;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
   };
   const id = label.replace(/\s+/g, "-");
   return (
-    <FormControl sx={{ width: "100%" }} variant="outlined" size="small">
-      <InputLabel htmlFor={id}>{label}</InputLabel>
-      <OutlinedInput
-        required={required}
-        id={id}
-        name={name}
-        type={type ? type : "text"}
-        label={label}
-        placeholder={placeholder ?? placeholder}
-        value={inputValue}
-        onChange={handleChange}
-        onBlur={onBlur}
-      />
+    <FormControl sx={{ width: "100%" }} variant={inputVariant} size="small">
+      <MUIInputLabel htmlFor={id}>{label}</MUIInputLabel>
+      {!maxLength ? (
+        <OutlinedInput
+          inputProps={{ inputProps, maxLength: maxLength }}
+          required={required}
+          id={id}
+          name={name}
+          type={type ? type : "text"}
+          label={label}
+          placeholder={placeholder ?? placeholder}
+          value={inputValue}
+          onChange={handleChange}
+          onBlur={onBlur}
+        />
+      ) : (
+        <Input
+          maxRows={maxRows}
+          multiline={multiline}
+          inputProps={{ inputProps, maxLength: maxLength }}
+          required={required}
+          id={id}
+          name={name}
+          type={type ? type : "text"}
+          placeholder={placeholder ?? placeholder}
+          value={inputValue}
+          onChange={handleChange}
+          onBlur={onBlur}
+        />
+      )}
     </FormControl>
   );
 };

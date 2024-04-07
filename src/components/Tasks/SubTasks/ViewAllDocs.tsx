@@ -137,6 +137,7 @@ const DocsContent = (
       </ListItemAvatar>
     );
   };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
@@ -196,7 +197,7 @@ const DocsContent = (
                             sx={{
                               maxWidth: "200px",
                               width: "100%",
-                              color: "#0076C8",
+                              color: "#0075D0",
                             }}
                             className="ellipsis"
                           >

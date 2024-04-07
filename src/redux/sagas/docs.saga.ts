@@ -12,6 +12,16 @@ const getDocsByModuleNameAndId = apiCall({
   }
 })
 
+const getDrawingFileDZIUrls = apiCall({
+  useV2Route: true,
+  type: DOCS_CONFIG.GET_DRAWING_FILE_DZIURLS,
+  method: "get",
+  path: (payload) => {
+    let url = `/docs/dzi/${payload.other}`
+    return url
+  }
+})
+
 const uploadDocsByModuleNameAndId = apiCall({
   useV2Route: true,
   type: DOCS_CONFIG.UPLOAD_DOCS_BY_MODULNAME_AND_ID,
@@ -22,6 +32,7 @@ const uploadDocsByModuleNameAndId = apiCall({
 })
 
 function* docsSaga() {
+  yield takeLatest(DOCS_CONFIG.GET_DRAWING_FILE_DZIURLS, getDrawingFileDZIUrls)
   yield takeLatest(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID, getDocsByModuleNameAndId)
   yield takeLatest(DOCS_CONFIG.UPLOAD_DOCS_BY_MODULNAME_AND_ID, uploadDocsByModuleNameAndId)
 }

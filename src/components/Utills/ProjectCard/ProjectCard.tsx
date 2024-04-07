@@ -2,9 +2,7 @@ import { styled } from "@mui/material/styles";
 // import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@mui/material";
-import assets from "assets/assets";
-import { ProjectInterface } from "constants/interfaces/project.interface";
-import { FC } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
@@ -13,25 +11,21 @@ import Box from "@mui/material/Box";
 import { useHistory } from "react-router-dom";
 import { momentdeDateFormat } from "../Globals/Common";
 interface ProjectCardInterface {
-  project: ProjectInterface;
+  project: Project;
 }
 
-const ProjectCard: FC<ProjectCardInterface> = (props) => {
+const ProjectCard = React.memo<ProjectCardInterface>((props) => {
   const { project } = props;
 
   const {
-    projectPhoto,
-    dueDate,
-    owner,
+    projectPic,
     creator,
-    isDefault,
     // inDraftState,
     title,
     // tasksCount,
     // docsCount,
     // usersCount,
     // chatCount,
-    publishStatus,
     _id,
     createdAt,
   } = project;
@@ -41,17 +35,12 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
   const handleProjectClick = () => {
     dispatch(projectActions.setSelectedProject(_id));
-    dispatch(projectActions.setProjectOverview(project));
+    // dispatch(projectActions.setProjectOverview(project));
     dispatch(projectActions.openDrawer());
     // dispatch(getProjectDetail({ other: _id }));
   };
   const history = useHistory();
   const classes = useStyles();
-  const imgSrc = projectPhoto === "" ? assets.Defaulttask : projectPhoto;
-  const dueDateString: string = String(dueDate)
-    .replaceAll("-", ".")
-    .replace(",", "");
-  // const dueDateString: any = moment(dueDate).format('DD.MM.YYYY')
   const creationDate = momentdeDateFormat(createdAt);
 
   const handleLocation = (e: React.MouseEvent) => {
@@ -69,12 +58,12 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         onClick={handleProjectClick}
       >
         <ImageCard>
-          <Image src={imgSrc} />
-          <Status>
+          <Image src={projectPic} />
+          {/* <Status>
             <Typography className={classes.statusText}>
               {publishStatus}
             </Typography>
-          </Status>
+          </Status> */}
           <Status
             style={{
               fontSize: "14px",
@@ -98,14 +87,14 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             marginTop: "10px",
           }}
         >
-          <Grid item width="80px">
+          {/* <Grid item width="80px">
             <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
               Due date{" "}
             </DueDateTag>
-            <DateStringTag fontSize="12px" fontWeight={500}>
+             <DateStringTag fontSize="12px" fontWeight={500}>
               {dueDate !== undefined ? dueDateString : "N/A"}
             </DateStringTag>
-          </Grid>
+          </Grid> */}
           <Grid item width="90px">
             <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
               Created on
@@ -124,33 +113,6 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             marginTop: "5px",
           }}
         >
-          <Grid
-            item
-            sx={{
-              width: "120px",
-              // // overflow: "hidden",
-              // textOverflow: "ellipsis",
-            }}
-          >
-            <Typography
-              fontSize="10px"
-              fontWeight={500}
-              fontFamily="inter"
-              color="#605C5C"
-            >
-              Owner
-            </Typography>
-            <Box
-              className={classes.metaValue}
-              style={{ display: "flex", fontFamily: "inter", fontWeight: 500 }}
-            >
-              {owner?.[0]?.firstName}
-              {/* {owner?.[0]?.surName} */}
-              {owner?.length > 1 && (
-                <div className={classes.extraOwners}>+{owner.length - 1}</div>
-              )}
-            </Box>
-          </Grid>
           <Grid item width="90px">
             <Typography
               fontSize="10px"
@@ -165,18 +127,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               className={classes.metaValue}
               style={{ display: "flex", fontFamily: "inter", fontWeight: 500 }}
             >
-              {creator
-                ? `${creator?.firstName}`
-                : // ${creator?.surName}
-                isDefault === true
-                ? `${owner?.[0]?.firstName}`
-                : // ${owner?.[0]?.surName}
-                  "N/A"}
-              {/* {owner?.[0]?.surName} */}
-
-              {/* {owner?.length > 1 && (
-                <div className={classes.extraOwners}>+{owner.length - 1}</div>
-              )} */}
+              {`${creator?.firstName} ${creator?.surName}`}
             </Box>
           </Grid>
         </Grid>
@@ -225,7 +176,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
       </ProjectCardContain>
     </>
   );
-};
+});
 
 export default ProjectCard;
 

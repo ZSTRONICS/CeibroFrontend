@@ -1,27 +1,21 @@
 import {
+  Backdrop,
   Box,
   Checkbox,
+  CircularProgress,
+  Divider,
   FormControlLabel,
   FormGroup,
-  IconButton,
-  TextField,
 } from "@mui/material";
 import CustomDatePicker from "components/Utills/CustomDatePicker";
 import CustomDropDown from "components/Utills/CustomDropDown";
 import CustomSwitch from "components/Utills/CustomSwitch";
-import FileBox from "components/Utills/FileBox";
-import ImageBox from "components/Utills/ImageBox";
 import UserDropDown from "components/Utills/UserDropdown";
 import { isEmpty } from "lodash";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  PROJECT_APIS,
-  getAllProjects,
-  taskActions,
-  userApiAction,
-} from "redux/action";
+import { PROJECT_APIS, taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { removeItem } from "utills/common";
 import TaskHeader from "../TaskHeader";
@@ -33,17 +27,22 @@ import {
 } from "../type";
 import Footer from "./Footer";
 
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { IS_IMAGE } from "components/Utills/Globals";
+import { IS_IMAGE, getDropdownOptions } from "components/Utills/Globals";
+import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
+import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 
 var initialValues = {
-  dueDate: "",
-  topic: "",
+  title: "",
+  tags: [],
+  confirmer: "",
   project: "",
-  assignedToState: [],
   creator: "",
+  assignedToState: [],
+  viewer: [],
+  dueDate: "",
   description: "",
   hasPendingFilesToUpload: false,
   doneImageRequired: false,
@@ -57,6 +56,8 @@ function CreateNewTask() {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
+  const [descriptionVal, setDescriptionVal] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [selectedData, setSelectedData] =
     useState<CreateNewTaskFormType>(initialValues);
   const [topicOptions, setTopicOptions] = useState<Options>({
@@ -72,7 +73,6 @@ function CreateNewTask() {
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
-  const Topics = useSelector((state: RootState) => state.task.Topics);
   const allProjects = useSelector(
     (state: RootState) => state.project.allProjects
   );
@@ -80,9 +80,8 @@ function CreateNewTask() {
 
   useEffect(() => {
     if (!isRenderEffect.current) {
-      dispatch(taskActions.getAllTopic());
       if (allProjects.length === 0) {
-        dispatch(getAllProjects());
+        dispatch(PROJECT_APIS.getAllProjects());
       }
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
       recentUserContact.length < 1 &&
@@ -92,61 +91,28 @@ function CreateNewTask() {
       isRenderEffect.current = true;
     };
   }, []);
-  useEffect(() => {
-    if (Topics && !isEmpty(Topics)) {
-      // const topics = [...Topics.allTopics, ...Topics.recentTopics];
-      const getAllTopicOptions = getDropdownOptions(
-        //todo null receive in array from backend
-        Topics.allTopics.filter((item: any) => item != null),
-        "topic",
-        "_id"
-      );
-      const getRecentTopicOptions = getDropdownOptions(
-        //todo null receive in array from backend
-        Topics.recentTopics.filter((item: any) => item != null),
-        "topic",
-        "_id"
-      );
-      setTopicOptions({
-        allOptions: getAllTopicOptions,
-        recentOptions: getRecentTopicOptions,
-      });
-    }
-  }, [Topics, Topics.allTopics]);
 
   useEffect(() => {
     if (allProjects && !isEmpty(allProjects)) {
-      //todo : add allProjects
       const getAllProjectOptions = getDropdownOptions(
-        allProjects,
+        allProjects.filter(Boolean),
+        "title",
         "title",
         "_id"
       );
-      //todo : add recentProjects
       const getRecentProjectOptions = getDropdownOptions(
-        allProjects,
+        allProjects.filter((project: Project) => project.isRecentlyUsedByMe),
+        "title",
         "title",
         "_id"
       );
+
       setProjectOptions({
         allOptions: getAllProjectOptions,
         recentOptions: getRecentProjectOptions,
       });
     }
-  }, [allProjects]);
-
-  const getDropdownOptions = (
-    data: object[],
-    labelName: string,
-    valueName: string
-  ) => {
-    return (
-      data &&
-      data.map((item: any) => {
-        return { label: item[labelName], value: item[valueName] };
-      })
-    );
-  };
+  }, [allProjects.length]);
 
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
@@ -154,10 +120,15 @@ function CreateNewTask() {
     let value = event ? event.target.value : "";
     handleChangeValues(value, "description");
   };
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    let value = event ? event.target.value : "";
+    setTitle(event.target.value);
+    handleChangeValues(value, "title");
+  };
 
   const handleCreateCallback = (type: string, label: string) => {
     switch (type) {
-      case "Topic":
+      case "Title":
         dispatch(
           taskActions.createTopic({
             body: {
@@ -187,11 +158,12 @@ function CreateNewTask() {
           PROJECT_APIS.createProject({
             body: {
               title: label,
+              description: "",
             },
           })
         );
         //todo check websocket events for new window
-        dispatch(getAllProjects());
+        dispatch(PROJECT_APIS.getAllProjects());
     }
   };
 
@@ -245,7 +217,7 @@ function CreateNewTask() {
   const handleDisableSubmit = () => {
     let valid = true;
     valid =
-      selectedData.topic !== "" &&
+      selectedData.title !== "" &&
       (selectedData.assignedToState.length > 0 ||
         (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
         ? false
@@ -255,18 +227,26 @@ function CreateNewTask() {
     }
     return isSubmit || valid;
   };
+  function stringifyFormData(data: any, formData: FormData, key: string) {
+    formData.append(key, JSON.stringify(data));
+  }
+
   const handleCreateTask = () => {
     const formData = new FormData();
     setIsSubmit(true);
     const filesToUpload = [...selectedImages, ...selectedDocuments];
-    formData.append("dueDate", selectedData.dueDate || "");
-    formData.append("topic", selectedData.topic);
+    formData.append("title", selectedData.title);
+    stringifyFormData(selectedData.tags, formData, "tags");
+    formData.append("confirmer", selectedData.confirmer);
     formData.append("project", selectedData.project || "");
     formData.append("creator", user._id);
-    formData.append(
-      "assignedToState",
-      JSON.stringify(JSON.stringify(selectedData.assignedToState))
+    stringifyFormData(
+      selectedData.assignedToState,
+      formData,
+      "assignedToState"
     );
+    formData.append("dueDate", selectedData.dueDate || "");
+    stringifyFormData(selectedData.viewer, formData, "viewer");
     formData.append("description", selectedData.description || "");
     formData.append(
       "doneImageRequired",
@@ -276,10 +256,8 @@ function CreateNewTask() {
       "doneCommentsRequired",
       String(selectedData.doneCommentsRequired)
     );
-    formData.append(
-      "invitedNumbers",
-      JSON.stringify(JSON.stringify(selectedData.invitedNumbers))
-    );
+    stringifyFormData(selectedData.invitedNumbers, formData, "invitedNumbers");
+
     if (selectedImages.length > 0 || selectedDocuments.length > 0) {
       try {
         if (!filesToUpload || filesToUpload.length === 0) {
@@ -303,6 +281,7 @@ function CreateNewTask() {
         console.error("Error occurred while uploading files:", error);
       }
     }
+
     dispatch(
       taskActions.createTask({
         other: {
@@ -323,172 +302,206 @@ function CreateNewTask() {
       })
     );
   };
+
   return (
-    <Box>
-      <TaskHeader title="New task" />
-      <Box sx={{ padding: "16px" }}>
-        <CustomDropDown
-          name="topic"
-          label={"Topic"}
-          options={topicOptions}
-          createCallback={handleCreateCallback}
-          handleChangeValues={handleChangeValues}
-        />
-        <UserDropDown
-          name="assignedToState"
-          label={"Assign to"}
-          contacts={userAllContacts}
-          recentUserContact={recentUserContact}
-          handleChangeValues={handleChangeValues}
-        />
-        <CustomDropDown
-          name="project"
-          label={"Project"}
-          options={projectOptions}
-          createCallback={handleCreateCallback}
-          handleChangeValues={handleChangeValues}
-        />
-        <CustomDatePicker
-          name="dueDate"
-          label="Due Date"
-          handleChangeValues={handleChangeValues}
-        />
-        <Box sx={{ marginTop: "8px", width: "100%" }}>
-          <TextField
-            name="description"
-            id="description-multiline"
-            label="Description"
-            multiline
-            maxRows={2}
-            variant="standard"
-            sx={{ width: "100%" }}
-            onBlur={handleDescriptionChange}
-          />
-        </Box>
-        <CustomSwitch
-          label="Done requirements"
-          toggle={toggle}
-          handleChange={() => {
-            setToggle(!toggle);
-          }}
-        />
-        {toggle && (
-          <>
-            <FormGroup row={true} sx={{ gap: 2 }}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onChange={(e, checked) => {
-                      handleChangeValues(checked, "doneImageRequired");
-                    }}
-                  />
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box>
+          <TaskHeader title="New task" />
+          <Box
+            className="custom-scrollbar"
+            sx={{
+              padding: "20px 16px 20px 16px",
+              mt: 3,
+              height: "calc(100vh - 54px)",
+              overflow: "auto",
+            }}
+          >
+            <Box sx={{ marginTop: "14px", width: "100%" }}>
+              <CustomMuiTextField
+                inputVariant="standard"
+                required={true}
+                typeName="counterText-field"
+                name="title"
+                label="Task Title"
+                placeholder={"Enter Task Title"}
+                inputValue={title}
+                onChange={handleTitleChange}
+                maxLength={50}
+                inputProps={{ style: { background: "white" } }}
+              />
+            </Box>
+            <UserDropDown
+              name="assignedToState"
+              label={"Assign to"}
+              contacts={userAllContacts}
+              recentUserContact={recentUserContact}
+              handleChangeValues={handleChangeValues}
+            />
+            <CustomDropDown
+              name="project"
+              label={"Project"}
+              options={projectOptions}
+              createCallback={handleCreateCallback}
+              handleChangeValues={handleChangeValues}
+              handleSelectedMenuList={(option: any) => {}}
+            />
+            <CustomDatePicker
+              NewTask={true}
+              name="dueDate"
+              label="Due date"
+              handleChangeValues={handleChangeValues}
+            />
+            <Box sx={{ marginTop: "8px", width: "100%" }}>
+              <CustomMuiTextField
+                inputVariant="standard"
+                multiline={true}
+                required={true}
+                typeName="counterText-field"
+                name="description"
+                label="Description"
+                placeholder={"Enter Description"}
+                inputValue={descriptionVal}
+                onChange={(e: any) => setDescriptionVal(e.target.value)}
+                maxLength={1500}
+                onBlur={handleDescriptionChange}
+                inputProps={{ style: { background: "white" } }}
+              />
+            </Box>
+            {selectedImages.length > 0 && (
+              <ImagesToUpload
+                showLabel={true}
+                updateImageWithComment={() => {}}
+                selectedImages={selectedImages}
+                onClearFile={(file: any, type: any) =>
+                  handleClearFile(file, type)
                 }
-                label="Image"
-                name="doneImageRequired"
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Comment"
-                onChange={(e, checked) => {
-                  handleChangeValues(checked, "doneCommentsRequired");
-                }}
-                name="doneCommentsRequired"
-              />
-            </FormGroup>
-            {selectedImages.length === 0 && selectedDocuments.length === 0 && (
-              <EmptyScreenDescription
-                showWaterMark={false}
-                content={[
-                  {
-                    heading: taskConstantEt.done_requirement_quest_et,
-                    description: taskConstantEt.done_requirement_desc_et,
-                  },
-                  {
-                    heading: taskConstantEn.done_requirement_quest_en,
-                    description: taskConstantEn.done_requirement_desc_en,
-                  },
-                ]}
               />
             )}
-          </>
-        )}
-        {selectedImages.length > 0 && (
-          <Box
-            sx={{
-              display: "flex",
-              padding: "16px",
-              overflow: "auto",
-              "&::-webkit-scrollbar": {
-                height: "0.4rem",
-              },
-              "&::-webkit-scrollbar-track": {
-                WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-                borderRadius: "0.2rem",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "rgba(0,0,0,.1)",
-              },
-            }}
-          >
-            {selectedImages.map((file, i) => {
-              return (
-                <Box
-                  key={i}
-                  sx={{
-                    width: "80px",
-                    height: "80px",
-                    display: "flex",
-                    marginRight: "16px",
-                  }}
-                >
-                  <ImageBox src={URL.createObjectURL(file)} />
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => {
-                      handleClearFile(file, "image");
-                    }}
-                    sx={{
-                      top: "-6px",
-                      right: "4px",
-                      backgroundColor: "#0076C8",
-                      color: "#fff",
-                      width: "16px",
-                      height: "16px",
-                    }}
-                    disableRipple
-                  >
-                    <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
-                  </IconButton>
-                </Box>
-              );
-            })}
-          </Box>
-        )}
 
-        {selectedDocuments.length > 0 && (
-          <Box
-            sx={{
-              padding: "4px 8px",
-            }}
-          >
-            <FileBox
-              title="Files"
-              files={selectedDocuments}
-              handleClearFile={handleClearFile}
-            />
+            {selectedDocuments.length > 0 && (
+              <Box>
+                <ReadMoreWrapper
+                  count={selectedDocuments.length}
+                  title="Files"
+                  type="file"
+                  data={selectedDocuments}
+                  callback={handleClearFile}
+                  allowExpandedView={false}
+                />
+                <Divider sx={{ my: 1, borderColor: "#9e9e9e" }} />
+              </Box>
+            )}
+            <Box sx={{ pt: 1, pb: 3 }}>
+              <CustomSwitch
+                label="Done requirements"
+                toggle={toggle}
+                handleChange={() => {
+                  setToggle(!toggle);
+                }}
+              />
+              {toggle && (
+                <>
+                  <FormGroup
+                    row={true}
+                    sx={{
+                      gap: 1,
+                      mt: 1.25,
+                      mb: 1,
+                      p: 1.4,
+                      flexDirection: "column",
+                      backgroundColor: "#F4F4F4",
+                      borderRadius: 1,
+                    }}
+                  >
+                    <FormControlLabel
+                      sx={{ color: "black", width: "max-content" }}
+                      control={
+                        <Checkbox
+                          sx={{
+                            "&.MuiCheckbox-root": {
+                              color: "black",
+                              padding: "6px 10px",
+                            },
+                            "&.Mui-checked": {
+                              color: "#0076C8 !important",
+                            },
+                          }}
+                        />
+                      }
+                      onChange={(e, checked) => {
+                        handleChangeValues(checked, "doneImageRequired");
+                      }}
+                      label="Image"
+                      name="doneImageRequired"
+                    />
+                    <FormControlLabel
+                      sx={{ color: "black", width: "max-content" }}
+                      control={
+                        <Checkbox
+                          sx={{
+                            "&.MuiCheckbox-root": {
+                              color: "black",
+                              padding: "6px 10px",
+                            },
+                            "&.Mui-checked": {
+                              color: "#0076C8 !important",
+                            },
+                          }}
+                        />
+                      }
+                      label="Comment"
+                      onChange={(e, checked) => {
+                        handleChangeValues(checked, "doneCommentsRequired");
+                      }}
+                      name="doneCommentsRequired"
+                    />
+                  </FormGroup>
+                  {toggle && (
+                    <EmptyScreenDescription
+                      showWaterMark={false}
+                      content={[
+                        {
+                          heading: taskConstantEt.done_requirement_quest_et,
+                          description: taskConstantEt.done_requirement_desc_et,
+                        },
+                        {
+                          heading: taskConstantEn.done_requirement_quest_en,
+                          description: taskConstantEn.done_requirement_desc_en,
+                        },
+                      ]}
+                    />
+                  )}
+                </>
+              )}
+            </Box>
           </Box>
-        )}
+        </Box>
+        <Footer
+          handleClose={() => {}}
+          isSubmitted={isSubmit}
+          disabled={handleDisableSubmit()}
+          showHeader={false}
+          handleSubmitForm={handleCreateTask}
+          handleAttachImageValue={handleAttachImageValue}
+          handleGetLocationValue={() => {}}
+          handleSelectDocumentValue={handleSelectDocumentValue}
+        />
       </Box>
-      <Footer
-        isSubmitted={isSubmit}
-        disabled={handleDisableSubmit()}
-        showHeader={false}
-        handleSubmitForm={handleCreateTask}
-        handleAttachImageValue={handleAttachImageValue}
-        handleGetLocationValue={() => {}}
-        handleSelectDocumentValue={handleSelectDocumentValue}
-      />
-    </Box>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isSubmit}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </>
   );
 }
 

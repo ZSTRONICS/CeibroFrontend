@@ -48,6 +48,8 @@ const AvatarStyle = styled(Avatar)`
   background: rgb(222, 226, 230);
   border-radius: 4px;
   color: black;
+  letter-spacing: 2px;
+  font-family: "Inter";
   font-size: 1rem;
   font-weight: 500;
   text-transform: uppercase;

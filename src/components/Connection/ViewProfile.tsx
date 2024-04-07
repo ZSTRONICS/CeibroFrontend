@@ -41,7 +41,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         sx={{
           padding: "4px 10px",
           textTransform: "capitalize",
-          border: "1px solid #0076C8",
+          border: "1px solid #0075D0",
         }}
         onClick={handleToggle}
         variant="outlined"

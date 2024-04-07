@@ -1,6 +1,9 @@
 export interface OptionType {
   label: string;
   value: string;
+  _id?: string;
+  isShown?: boolean;
+  isPermanenetOption?: boolean;
 }
 
 export interface Options {
@@ -14,8 +17,11 @@ export interface AssignedToStateType {
   state: string;
 }
 export interface CreateNewTaskFormType {
+  title: string,
+  tags: string[],
+  confirmer: string,
+  viewer: string[],
   dueDate?: string;
-  topic: string;
   project?: string;
   assignedToState: AssignedToStateType[];
   creator: string;

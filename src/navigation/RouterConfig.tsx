@@ -6,10 +6,11 @@ import {
   AdminMain,
   Connections,
   CreateNewTask,
-  DrawingDetails,
   ForgetConfirmation,
   ForgetPassword,
   ForwardTask,
+  Location,
+  LocationDrawingDetails,
   Login,
   MockTaskApis,
   Profile,
@@ -23,9 +24,11 @@ import {
   Task,
   TermsAndConditions,
 } from "components";
-import NotFound from "components/NotFound";
+import LocationImageDetails from "components/Location/LocationImageDetails";
 import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
+import { LOGIN_ROUTE } from "utills/axios";
+import CommingSoon from "./CommingSoon";
 import PrivateRoute from "./PrivateRoute";
 export const appHistory = createBrowserHistory();
 
@@ -41,11 +44,20 @@ const RouterConfig = () => {
           }
         >
           <Switch>
-            <Redirect exact from="/" to="/login" />
-            <Route path="/login" component={Login} />
-            {/* <Route path="/comming-soon" component={CommingSoon} />
+            <Route path="/comming-soon" component={CommingSoon} />
             <Redirect exact from="/" to="/comming-soon" />
-            <Route path="/private-login" component={Login} /> */}
+
+            {/* <Redirect exact from="/" to={LOGIN_ROUTE} /> */}
+
+            <Route path={LOGIN_ROUTE} component={Login} />
+            <Route
+              path="/playstore"
+              component={() => {
+                window.location.href =
+                  "https://play.google.com/store/apps/details?id=com.zstronics.ceibro";
+                return <></>;
+              }}
+            />
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
             <Route path="/reset-password" component={ResetPassword} />
@@ -53,19 +65,25 @@ const RouterConfig = () => {
             <Route path="/confirmation" component={RegisterConfirmationForm} />
             <Route path="/t&c" component={TermsAndConditions} />
             <Route path="/profile-setup" component={Register} />
+
+            <Redirect exact from="/tasks" to="/tasks/Ongoing" />
+            {/* // */}
             <PrivateRoute
+              exact
               path="/profile-pic"
               component={RegisterAddProfilePic}
             />
+
             <PrivateRoute path="/create-new-task" component={CreateNewTask} />
             <PrivateRoute
+              exact
               path="/forward-task/:taskId"
               component={ForwardTask}
             />
             <DashboardLayout>
-              <PrivateRoute path="/profile" component={Profile} />
               <PrivateRoute
-                path="/tasks/:subtask/:filterkey?/:taskuid?"
+                exact
+                path="/tasks/:subtask/:taskuid?"
                 component={Task}
               />
               <PrivateRoute
@@ -74,19 +92,35 @@ const RouterConfig = () => {
                 component={ProjectLocations}
               />
               <PrivateRoute path="/projects" component={Projects} />
+              <Route
+                exact
+                path="/location/:projectId?/:groupId?"
+                component={Location}
+              />
               <PrivateRoute
                 exact
-                path="/drawingDetail"
-                component={DrawingDetails}
+                path="/location/:projectId/group/:groupId?/drawing/:drawingId?/task"
+                component={LocationDrawingDetails}
+              />
+              <PrivateRoute
+                exact
+                path="/location/:projectId/group/:groupId?/drawing/:drawingId?/image"
+                component={LocationImageDetails}
               />
               <PrivateRoute path="/connections" component={Connections} />
               <PrivateRoute path="/admin" component={AdminMain} />
-              <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
+              <PrivateRoute
+                exact
+                path="/mockTaskApis"
+                component={MockTaskApis}
+              />
+              <PrivateRoute
+                exact
+                path="/profile/:deleteAccount?"
+                component={Profile}
+              />
+              {/* <Route path="/*" component={NotFound} /> */}
             </DashboardLayout>
-            <Route path="*" component={NotFound} />
-
-            {/* <Route path="/comming-soon" component={CommingSoon}></Route>
-            <Redirect from="/" to="/comming-soon" /> */}
           </Switch>
         </Suspense>
       </Router>

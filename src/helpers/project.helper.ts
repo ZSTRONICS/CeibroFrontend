@@ -15,6 +15,39 @@ export function formatDate(date: any) {
   return [year, month, day].join("-");
 }
 
+export function formatDateWithTime (dateString:string) {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  // Check if the date is today
+  if (
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear()
+  ) {
+    return 'Today ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // Check if the date is yesterday
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  if (
+    date.getDate() === yesterday.getDate() &&
+    date.getMonth() === yesterday.getMonth() &&
+    date.getFullYear() === yesterday.getFullYear()
+  ) {
+    return 'Yesterday ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // Otherwise, return the date in the specified format
+  return `${date.getFullYear()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`;
+};
+
 export function mapGroups(groups: any) {
   return groups?.map((list: any) => ({
     label: list.name,

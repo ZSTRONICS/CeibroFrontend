@@ -7,3 +7,10 @@ export type selectedTaskFilterType =
   | "locations"
   | "newTask"
   | "newProject";
+
+export type TaskFilterType =
+  | "ongoing"
+  | "closed"
+  | "approval"
+  | "hidden"
+  | "canceled"

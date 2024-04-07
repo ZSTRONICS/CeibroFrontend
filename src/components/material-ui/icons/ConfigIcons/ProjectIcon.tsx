@@ -1,4 +1,8 @@
+import { useLocation } from "react-router-dom";
+
 function ProjectIcon() {
+  const location = useLocation();
+  const path = location.pathname.split("/")[1];
   return (
     <>
       <svg
@@ -10,7 +14,7 @@ function ProjectIcon() {
       >
         <path
           d="M1 19.3333V2.66667C1 1.74619 1.74619 1 2.66667 1H6L9.33333 4.33333H19.3333C20.2538 4.33333 21 5.07953 21 6V19.3333C21 20.2538 20.2538 21 19.3333 21H2.66667C1.74619 21 1 20.2538 1 19.3333Z"
-          stroke="#131516"
+          stroke={path === "projects" ? "#131516" : "#605C5C"}
         />
       </svg>
     </>

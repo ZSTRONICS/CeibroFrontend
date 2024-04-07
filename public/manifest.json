@@ -3,8 +3,8 @@
   "name": "Ceibro - Construction Project Management",
   "icons": [
     {
-      "src": "icon.png",
-      "type": "image/png",
+      "src": "icon.svg",
+      "type": "image/png+xml+svg",
       "sizes": "20x24"
     }
   ],

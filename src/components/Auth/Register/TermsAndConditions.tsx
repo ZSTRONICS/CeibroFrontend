@@ -10,18 +10,19 @@ import useResponsive from "hooks/useResponsive";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import { LOGIN_ROUTE } from "utills/axios";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
 
 export default function TermsAndConditions() {
   const classes = useStyles();
   const [checked, setChecked] = useState(false);
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const history = useHistory();
   const isTabletOrMobile = useResponsive("down", "md", "");
 
   return (
-    <AuthLayout title={t("auth.terms_conditions")}>
+    <AuthLayout title={t("auth.terms_and_conditions_heading")}>
       {isTabletOrMobile && (
         <div>
           <TopBarTitle sx={{ fontSize: 28, pb: 3 }}>
@@ -74,7 +75,7 @@ export default function TermsAndConditions() {
           style={{ padding: 0 }}
           label={
             <Typography sx={{ fontSize: "14px" }}>
-              Yes, I understand and agree to the Terms & Conditions of Ceibro.
+              {t("auth.terms_and_conditions_agree_statement")}
             </Typography>
           }
         />
@@ -88,9 +89,9 @@ export default function TermsAndConditions() {
             <Button
               variant="outlined"
               sx={{ width: "100%", borderColor: "#000", color: "#000" }}
-              onClick={() => history.push("/login")}
+              onClick={() => history.push(LOGIN_ROUTE)}
             >
-              Cancel
+              {t("auth.cancel_btn_text")}
             </Button>
           </Grid>
           <Grid item xs={9}>
@@ -106,7 +107,7 @@ export default function TermsAndConditions() {
               disabled={!checked}
               onClick={() => history.push("/profile-setup")}
             >
-              Confirm
+              {t("auth.confirm")}
             </Button>
           </Grid>
         </Grid>

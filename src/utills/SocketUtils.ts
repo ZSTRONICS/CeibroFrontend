@@ -1,24 +1,262 @@
-import { DOCS_CONFIG, TASK_CONFIG } from "config";
+import { DOCS_CONFIG, PROJECT_CONFIG, TASK_CONFIG, USER_CONFIG } from "config";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
+import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 import { io } from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
-import { AxiosV2, SERVER_URL, urlV2 } from "./axios";
+import { AxiosV2, LOGIN_ROUTE, SERVER_URL, urlV2 } from "./axios";
 
 export const useSocket = () => {
-    const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
+    const { isLoggedIn, forceCloseWindow, user } = useSelector((store: RootState) => store.auth);
+    const { RECENT_TASK_UPDATED_TIME_STAMP, unSeenTasks } = useSelector((store: RootState) => store.task);
     const [shouldSendHeartbeat, setShouldSendHeartbeat] = useState(true);
+    const [localToken, setLocalToken] = useState<string>("");
     const userId = user && user._id;
     const dispatch = useDispatch();
     const history = useHistory();
+    const updateLocalTaskTabSeen = (newTaskData: any) => {
+        const { toMeState,
+            fromMeState,
+            isCreator,
+            hiddenState,
+            isSeenByMe } = newTaskData
+        return dispatch({
+            type: TASK_CONFIG.TASK_UNSEEN_TABS,
+            payload: {
+                isTomeUnseen: !isSeenByMe && toMeState !== "NA" ? true : unSeenTasks.isTomeUnseen,
+                isFromMeUnseen: !isSeenByMe && isCreator && fromMeState !== "NA" ? true : unSeenTasks.isFromMeUnseen,
+                isHiddenUnseen: !isSeenByMe && hiddenState !== "NA" ? true : unSeenTasks.isHiddenUnseen,
+            }
+        });
+    }
+
+    const showToast = (eventType: string) => {
+        console.log(eventType);
+        let message = '';
+        switch (eventType) {
+            case TASK_CONFIG.TASK_DONE:
+                message = 'Task has been closed';
+                break;
+            case TASK_CONFIG.CANCELED_TASK:
+                message = 'Task has been canceled';
+                break;
+            case TASK_CONFIG.UN_CANCEL_TASK:
+                message = 'Task cancellation has been undone';
+                break;
+            case TASK_CONFIG.TASK_SHOWN:
+                message = 'Task has been shown';
+                break;
+            case TASK_CONFIG.TASK_HIDDEN:
+                message = 'Task has been hidden';
+                break;
+            case TASK_CONFIG.TASK_APPROVED:
+                message = 'Task has been approved';
+                break;
+            case TASK_CONFIG.TASK_REJECTED_CLOSED:
+                message = 'Task has been rejected and closed';
+                break;
+            case TASK_CONFIG.TASK_REJECTED_REOPENED:
+                message = 'Task has been rejected and reopened';
+                break;
+
+            default:
+                break;
+        }
+        if (message === "") {
+            return
+        }
+        toast.info(message, {
+            position: 'bottom-right',
+            autoClose: 4000,
+            draggable: true,
+            transition: Bounce,
+            theme: 'light',
+        });
+    };
+    const handleSocketEvents = (dataRcvd: any) => {
+        const eventType = dataRcvd.eventType;
+        const data = dataRcvd.data;
+        switch (eventType) {
+            // DOCS_CONFIG
+            case DOCS_CONFIG.DRAWING_FILE_UPLOADED:
+                dispatch({
+                    type: PROJECT_CONFIG.GROUP_DRAWING_FILE_UPLOADED,
+                    payload: data
+                });
+                break;
+            // PROJECT_CONFIG
+            case PROJECT_CONFIG.DRAWING_FILE_UPDATED:
+                dispatch({
+                    type: PROJECT_CONFIG.DRAWING_FILE_UPDATED,
+                    payload: data,
+                });
+                break;
+            case PROJECT_CONFIG.PROJECT_CREATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_CREATED,
+                    payload: data,
+                });
+                break;
+            case PROJECT_CONFIG.PROJECT_FLOOR_CREATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_FLOOR_CREATED,
+                    payload: data,
+                });
+                break;
+            case PROJECT_CONFIG.PROJECT_GROUP_REMOVED:
+            case PROJECT_CONFIG.PROJECT_GROUP_DELETED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_GROUP_DELETED,
+                    payload: data
+                })
+                break;
+            case PROJECT_CONFIG.PROJECT_UPDATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_UPDATED,
+                    payload: data
+                });
+                break;
+            case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_GROUP_UPDATED,
+                    payload: data
+                });
+                break;
+            case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_GROUP_CREATED,
+                    payload: data,
+                });
+                break;
+            case PROJECT_CONFIG.IMAGE_UPLOADED_ON_DRAWING:
+                dispatch({
+                    type: PROJECT_CONFIG.IMAGE_UPLOADED_ON_DRAWING,
+                    payload: data,
+                });
+                break;
+            case USER_CONFIG.USER_UPDATED:
+                dispatch({
+                    type: USER_CONFIG.USER_UPDATED_IN_STORE,
+                    payload: data,
+                });
+                break;
+
+            // TASK_CONFIG
+            case TASK_CONFIG.TOPIC_CREATED:
+                dispatch({
+                    type: TASK_CONFIG.PUSH_TOPIC_IN_STORE,
+                    payload: data,
+                });
+                break;
+            case TASK_CONFIG.TASK_FORWARDED_TO_ME:
+                dispatch({
+                    type: TASK_CONFIG.PUSH_FORWARDED_TO_ME_NEW,
+                    payload: data,
+                });
+                dispatch({
+                    type: TASK_CONFIG.TASK_UNSEEN_TABS,
+                    payload: {
+                        isTomeUnseen: data.task.isAssignedToMe && data.task.toMeState === 'new' ? true : unSeenTasks.isTomeUnseen,
+                        isFromMeUnseen: data.task.isCreator && data.task.fromMeState === "ongoing" ? true : unSeenTasks.isFromMeUnseen,
+                        isHiddenUnseen: unSeenTasks.isHiddenUnseen,
+                    }
+                });
+                break;
+            case TASK_CONFIG.TASK_CREATED:
+                if (!data.access.includes(userId)) {
+                    return;
+                }
+                dispatch({
+                    type: TASK_CONFIG.PUSH_NEW_TASK_TO_STORE,
+                    payload: data,
+                });
+                dispatch({
+                    type: TASK_CONFIG.TASK_UNSEEN_TABS,
+                    payload: {
+                        isTomeUnseen: data.isAssignedToMe && data.toMeState === 'new' ? true : unSeenTasks.isTomeUnseen,
+                        isFromMeUnseen: data.isCreator && data.fromMeState === "unread" ? true : unSeenTasks.isFromMeUnseen,
+                        isHiddenUnseen: unSeenTasks.isHiddenUnseen,
+                    }
+                });
+                break;
+            case TASK_CONFIG.NEW_TASK_COMMENT:
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: data,
+                });
+                updateLocalTaskTabSeen(data.oldTaskData)
+                break;
+            case TASK_CONFIG.TASK_SEEN:
+            case TASK_CONFIG.TASK_SHOWN:
+            case TASK_CONFIG.TASK_HIDDEN:
+                showToast(eventType);
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: { ...data, userId, eventType },
+                });
+                break;
+            case TASK_CONFIG.TASK_FORWARDED:
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: { task: data, eventType: "TASK_FORWARDED", userId, taskUpdatedAt: data.updatedAt },
+                });
+                updateLocalTaskTabSeen(data.oldTaskData)
+                break;
+            case TASK_CONFIG.TASK_DONE:
+            case TASK_CONFIG.CANCELED_TASK:
+            case TASK_CONFIG.UN_CANCEL_TASK:
+                showToast(eventType);
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: data,
+                });
+                updateLocalTaskTabSeen(data.newTaskData)
+                break;
+
+            case TASK_CONFIG.TASK_APPROVED:
+            case TASK_CONFIG.TASK_REJECTED_CLOSED:
+            case TASK_CONFIG.TASK_REJECTED_REOPENED:
+                showToast(eventType);
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: data,
+                });
+                break;
+            case TASK_CONFIG.TASK_EVENT_UPDATED:
+                dispatch({
+                    type: TASK_CONFIG.TASK_EVENT_UPDATED,
+                    payload: data,
+                });
+                break;
+
+            case DOCS_CONFIG.COMMENT_WITH_FILES:
+                dispatch({
+                    type: DOCS_CONFIG.COMMENT_FILES_UPLOADED,
+                    payload: data,
+                });
+                break;
+        }
+    }
 
     useEffect(() => {
+        const windowClose = window.getSelection();
+
+        if (windowClose && forceCloseWindow) {
+            window.close();
+        }
+    }, [forceCloseWindow]);
+
+
+    useEffect(() => {
+        let sock: any = null
         if (!isLoggedIn) {
             console.log("not logged in")
+
             global.isSocketConnecting = false;
             if (socket.getSocket() !== null) {
                 console.log("socket found")
@@ -44,8 +282,8 @@ export const useSocket = () => {
             return;
         }
 
-        const myToken = tokens && JSON.parse(tokens)?.access?.token;
-
+        const myToken = tokens && JSON.parse(tokens).access.token;
+        setLocalToken(myToken);
         global.isSocketConnecting = true;
         function generateSecureUUID() {
             return uuidv4();
@@ -54,7 +292,7 @@ export const useSocket = () => {
         function sendHeartbeat() {
             if (sock !== null && sock.connected && shouldSendHeartbeat) {
                 sock.emit("heartbeat");
-                setTimeout(sendHeartbeat, 10000);
+                setTimeout(sendHeartbeat, 5000);
             }
         }
 
@@ -74,11 +312,12 @@ export const useSocket = () => {
             socket.setSocket(null);
         });
 
-        const sock = io(SERVER_URL, {
+        sock = io(SERVER_URL, {
             transports: ["websocket"],
             auth: {
                 token: myToken,
-            }, query: {
+            },
+            query: {
                 secureUUID: String(secureUUID),
                 deviceType: "web",
             }
@@ -88,14 +327,14 @@ export const useSocket = () => {
             if (sock.recovered) {
                 console.log("recovered");
                 socket.setSocket(sock);
-                setTimeout(sendHeartbeat, 10000);
+                setTimeout(sendHeartbeat, 1000);
                 return;
             }
 
             console.log("Connected to server");
             socket.setUserId(userId);
             socket.setSocket(sock);
-            setTimeout(sendHeartbeat, 10000);
+            setTimeout(sendHeartbeat, 1000);
         });
 
         sock.on("disconnect", () => {
@@ -111,116 +350,86 @@ export const useSocket = () => {
             console.log("heartbeatAck");
         });
 
-        sock.on("logout-web", async () => {
-            console.log("logout-web from server");
-            await sock.emit("logout", secureUUID);
-            sock.disconnect();
-            socket.setSocket(null);
-            window.location.reload();
+        sock.on("RE_SYNC_DATA", () => {
+            sock.emit("RE_SYNC_DATA_ACK");
+            dispatch(taskActions.syncAllTasks(
+                {
+                    other: {
+                        syncTime: RECENT_TASK_UPDATED_TIME_STAMP,
+                    },
+                }
+            ));
+            dispatch(userApiAction.getUserContacts());
+            console.log("RE_SYNC_DATA_ACK");
         });
 
-        sock.on("token_invalid", () => {
-            console.log("token_invalid received from server");
-
-            const tokens = localStorage.getItem("tokens") || "{}";
-            const jsonToken = JSON.parse(tokens);
-            if ("refresh" in jsonToken) {
-                AxiosV2.post(`${urlV2}/auth/refresh-tokens`, {
-                    refreshToken: String(jsonToken.refresh.token),
-                })
-                    .then((response: any) => {
-                        if (response.status === 200) {
-                            localStorage.setItem("tokens", JSON.stringify(response.data));
-
-                            const tokens = localStorage.getItem("tokens") || "{}";
-                            const newToken = JSON.parse(tokens)?.access?.token;
-
-                            sock.auth = {
-                                token: newToken,
-                            };
-                            sock.connect();
-                        } else {
-                            alert("Session Expired");
-                            global.isSocketConnecting = false;
-                            history.push("/login");
-                            window.location.reload();
-                        }
-                    })
-                    .catch((err) => {
-                        global.isSocketConnecting = false;
-                        history.push("/login");
-                        alert("Session Expired");
-                        window.location.reload();
-                    });
-            } else {
-                history.push("/login");
+        sock.on("logout-web", async () => {
+            try {
+                console.log("logout-web from server");
+                await sock.emit("logout", secureUUID);
+                sock.disconnect();
+                socket.setSocket(null);
                 window.location.reload();
+            } catch (error) {
+                console.log("socket error: ", error);
+            }
+        });
+
+        sock.on("token_invalid", async () => {
+            console.log("token_invalid received from server");
+            try {
+                const tokens = localStorage.getItem("tokens") || "{}";
+                const jsonToken = JSON.parse(tokens || '{}');
+                if (jsonToken && jsonToken.access.token) {
+                    const response = await AxiosV2.post(`${urlV2}/auth/refresh-tokens`, {
+                        refreshToken: String(jsonToken.refresh.token),
+                    })
+                    if (response) {
+                        localStorage.setItem("tokens", JSON.stringify(response.data));
+                        console.log('jsonToken>>>111', response.data.access);
+                        const newToken = response.data.access.token;
+                        setLocalToken(newToken);
+                        // Reconnect socket with the new token
+                        sock.disconnect();
+                        sock = io(SERVER_URL, {
+                            transports: ['websocket'],
+                            auth: {
+                                token: newToken,
+                            },
+                            query: {
+                                secureUUID: String(secureUUID),
+                                deviceType: 'web',
+                            },
+                        });
+                        setTimeout(function () {
+                            sock.emit("heartbeat");
+                        }, 1000);
+                        console.log('jsonToken>>>222', newToken, sock.auth)
+                    }
+                } else {
+                    alert("Session Expired");
+                    global.isSocketConnecting = false;
+                    window.location.reload();
+                    window.location.href = LOGIN_ROUTE;
+                    // history.push(LOGIN_ROUTE);
+                }
+            } catch (error) {
+                alert("Session Expired");
+                global.isSocketConnecting = false;
+                window.location.reload();
+                history.push(LOGIN_ROUTE);
             }
         });
 
         sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any, ack: any) => {
-            if (ack) {
-                console.log(`sending ack to server`)
-                ack();
-            }
             console.log("eventType--->", dataRcvd);
-            const eventType = dataRcvd.eventType;
-            const data = dataRcvd.data;
+            // if (ack) {
+            //     console.log(`sending ack to server`)
+            //     ack();
+            // }
             sendSocketEventAck(dataRcvd.uuid);
-            switch (eventType) {
-                case TASK_CONFIG.TOPIC_CREATED:
-                    dispatch({
-                        type: TASK_CONFIG.PUSH_TOPIC_IN_STORE,
-                        payload: data,
-                    });
-                    break;
-                case TASK_CONFIG.TASK_CREATED:
-                    if (!data.access.includes(userId)) {
-                        return;
-                    }
-                    dispatch({
-                        type: TASK_CONFIG.PUSH_NEW_TASK_TO_STORE,
-                        payload: data,
-                    });
-                    break;
-                case TASK_CONFIG.TASK_SEEN:
-                case TASK_CONFIG.TASK_SHOWN:
-                case TASK_CONFIG.TASK_HIDDEN:
-                    dispatch({
-                        type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                        payload: { ...data, userId, eventType },
-                    });
-                    break;
-
-                case TASK_CONFIG.TASK_FORWARDED:
-                    if (!data.access.includes(userId)) {
-                        return;
-                    }
-                    dispatch({
-                        type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                        payload: { task: data, eventType: "TASK_FORWARDED", userId },
-                    });
-                    break;
-
-                case TASK_CONFIG.TASK_DONE:
-                case TASK_CONFIG.CANCELED_TASK:
-                case TASK_CONFIG.UN_CANCEL_TASK:
-                case TASK_CONFIG.NEW_TASK_COMMENT:
-                    dispatch({
-                        type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                        payload: data,
-                    });
-                    break;
-
-                case DOCS_CONFIG.COMMENT_WITH_FILES:
-                    dispatch({
-                        type: DOCS_CONFIG.COMMENT_FILES_UPLOADED,
-                        payload: data,
-                    });
-                    break;
-            }
+            handleSocketEvents(dataRcvd);
         });
 
-    }, [isLoggedIn]);
-    // More socket event handling...
+    }, [isLoggedIn, localToken]);
 };

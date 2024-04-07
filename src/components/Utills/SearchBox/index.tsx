@@ -6,7 +6,8 @@ interface IProps {
   placeholder?: string;
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: () => void;
-  disabled?:boolean
+  disabled?: boolean;
+  maxLength?: number;
 }
 
 export default function SearchBox(props: IProps) {
@@ -15,13 +16,13 @@ export default function SearchBox(props: IProps) {
     placeholder = "Searching....",
     handleSearchChange,
     handleSubmit,
-    disabled
+    disabled,
   } = props;
   return (
     <Box
       sx={{
         width: "100%",
-        padding: "4px 16px",
+        padding: "0px 16px",
         display: "flex",
         gap: "12px",
         boxSizing: "border-box",
@@ -30,6 +31,10 @@ export default function SearchBox(props: IProps) {
     >
       <Box sx={{ flexGrow: 1 }}>
         <TextField
+          inputProps={{
+            maxLength: props.maxLength,
+          }}
+          type="search"
           variant="standard"
           placeholder={placeholder}
           onChange={handleSearchChange}
@@ -38,13 +43,13 @@ export default function SearchBox(props: IProps) {
       </Box>
       <Box>
         <Button
-        disabled={disabled}
-          variant="outlined"
+          disabled={disabled}
+          variant="contained"
           sx={{
             textTransform: "capitalize",
-            height: "28px",
-            color: "#818181",
-            borderColor: "#818181",
+            // height: "28px",
+            // color: "#818181",
+            // borderColor: "#818181",
           }}
           onClick={handleSubmit}
         >

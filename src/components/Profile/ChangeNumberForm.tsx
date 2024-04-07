@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { Box, Button, Typography } from "@mui/material";
 
 // redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeNumber } from "redux/action/auth.action";
 
 // component
@@ -20,7 +20,8 @@ import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import userAlertMessage from "hooks/userAlertMessage";
 import { toast } from "react-toastify";
-import { handlePhoneChange } from "utills/formFunctions";
+import { RootState } from "redux/reducers";
+import { checkValidPhoneNumber, handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
 
 interface Props {
@@ -41,7 +42,7 @@ interface CustomErrorMessages {
 
 const ChangeNumberForm: React.FC<Props> = (props) => {
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const signinSchema = SigninSchemaValidation(t);
 
   const dispatch = useDispatch();
@@ -49,7 +50,9 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
   const formikRef = useRef<
     FormikProps<FormikValues> | FormikProps<IInputValues> | undefined | any
   >();
-
+  const countryCodeName = useSelector(
+    (state: RootState) => state.user.countryCodeName
+  );
   const handleSubmit = (values: IInputValues) => {
     setShowLoading(true);
     const { phoneNumber, password, dialCode } = values;
@@ -78,7 +81,16 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       },
       showErrorToast: false,
     };
-    dispatch(changeNumber(payload));
+    const checkPhoneNumber = checkValidPhoneNumber(
+      `${dialCode}${phoneNumber}`,
+      countryCodeName
+    );
+    if (checkPhoneNumber?.isValid) {
+      dispatch(changeNumber(payload));
+    } else {
+      setShowLoading(false);
+      setAlertMessage(checkPhoneNumber.msg);
+    }
   };
 
   const checkValidInputs = (values: any) => {
@@ -116,6 +128,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
             values,
           }) => (
             <form
+              style={{ padding: "7px 14px" }}
               onSubmit={handleSubmit}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -171,7 +184,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ width: "100%", backgroundColor: "#0076C8", padding: 1 }}
+                sx={{ width: "100%", backgroundColor: "#0075D0", padding: 1 }}
                 disabled={checkValidInputs(values) || showLoading}
               >
                 {showLoading ? (

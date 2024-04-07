@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Typography } from "@mui/material";
 
 interface IProps {
@@ -11,6 +10,7 @@ const StyledTypographyBox = ({ text }: IProps) => (
       width: "100%",
       height: "100%",
       marginLeft: "16px",
+      marginTop: "6px",
     }}
   >
     <Typography
@@ -20,6 +20,7 @@ const StyledTypographyBox = ({ text }: IProps) => (
         fontSize: "14px",
         lineHeight: "20px",
         color: "#000",
+        overflowWrap: "anywhere",
       }}
     >
       {text}

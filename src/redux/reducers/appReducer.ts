@@ -3,7 +3,7 @@ import authReducer from "./auth.reducer";
 import DocsReducer from "./docs.reducer";
 import navigationReducer from "./navigation.reducer";
 import projectReducer from "./project.reducer";
-import TaskReducer from "./task.reducer";
+import taskReducer from "./task.reducer";
 import userReducer from "./user.reducer";
 interface Reducers {
   [key: string]: Reducer<any, any>;
@@ -12,12 +12,11 @@ interface Reducers {
 const appReducer = combineReducers<Reducers>({
   navigation: navigationReducer,
   project: projectReducer,
-  task: TaskReducer,
+  task: taskReducer,
   docs: DocsReducer,
   auth: authReducer,
   user: userReducer,
 });
-
 
 export default appReducer;
 

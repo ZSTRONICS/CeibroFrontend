@@ -1,26 +1,28 @@
-import { countUnseenTasks } from "components/Utills/Globals";
+import { countUnseenTasksForTabs } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
-import { Task } from "constants/interfaces";
+import { ITask } from "constants/interfaces";
 import { isEmpty } from "lodash";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 
 interface FilterTabProps {
   subTaskKey: string;
   activeTab: string;
+  userId: string;
   filterKeys: string[];
   handleTabClick: (type: string) => void;
 }
 
 function FilterTabs(props: FilterTabProps) {
-  const { activeTab, filterKeys, subTaskKey, handleTabClick } = props;
-  const { user } = useSelector((store: RootState) => store.auth);
-  const userId = user && String(user._id);
+  const { t }: any = useTranslation<any>();
+
+  const { activeTab, userId, filterKeys, subTaskKey, handleTabClick } = props;
   const task: any = useSelector((state: RootState) => state.task);
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
   const renderTabs = filterKeys.map((key: string) => {
     let label = "";
-    let tasks: Task[] = [];
+    let tasks: ITask[] = [];
     let bgColor = "";
     let isDisabled = false;
 
@@ -38,7 +40,8 @@ function FilterTabs(props: FilterTabProps) {
         isDisabled = isEmpty(allTaskFromMe.unread);
         break;
       case "ongoing":
-        label = "Ongoing";
+        label = "ongoing";
+        // label = t("taskstatus.ongoing_heading");
         tasks =
           subTaskKey === "allTaskFromMe"
             ? allTaskFromMe.ongoing
@@ -68,13 +71,15 @@ function FilterTabs(props: FilterTabProps) {
       default:
         break;
     }
-    const notifyCount = countUnseenTasks(tasks, userId);
+    const notifyCount = countUnseenTasksForTabs(tasks, userId);
     return (
       <StyledChip
         isDisabled={isDisabled}
         key={key}
         label={label}
-        notifyCount={notifyCount}
+        notifyCount={
+          label === "Unread" ? allTaskFromMe.unread.length : notifyCount
+        }
         bgColor={bgColor}
         active={activeTab === key}
         callback={() => handleTabClick(key)}

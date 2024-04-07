@@ -1,15 +1,15 @@
-import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box } from "@mui/material";
-import { countUnseenTasks } from "components/Utills/Globals";
+import { Box, Typography } from "@mui/material";
 import {
   FromMEIcon,
   HiddenIcon,
+  MainLogo,
   ToMeIcon,
   UnseenFromMe,
   UnseenHidden,
   UnseenToMe,
 } from "components/material-ui/icons";
+import { TASK_CONFIG } from "config";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
@@ -30,13 +30,12 @@ function Sidebar(props: any) {
     useState<selectedTaskFilterType>();
   const { user } = useSelector((store: RootState) => store.auth);
   const task: any = useSelector((state: RootState) => state.task);
-  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+  const { RECENT_TASK_UPDATED_TIME_STAMP, unSeenTasks } = task;
   const { selectedTab, sidebarRoutes } = useSelector(
     (store: RootState) => store.navigation
   );
   const configs = sidebarRoutes[selectedTab]?.childTab;
   const splitedPath = location.pathname.split("/");
-
   useEffect(() => {
     const mainTab: selectedTaskFilterType =
       splitedPath[1] as selectedTaskFilterType;
@@ -57,40 +56,53 @@ function Sidebar(props: any) {
       history.push(`/tasks/${config.key}`);
     }
   };
+  useEffect(() => {
+    if (selectedTab === "tasks" && configs && selectedChildTab) {
+      const tabMappings: any = {
+        allTaskToMe: "isTomeUnseen",
+        allTaskFromMe: "isFromMeUnseen",
+        allTaskHidden: "isHiddenUnseen",
+      };
+      const selectedTabKey = tabMappings[selectedChildTab];
+      if (selectedTabKey !== undefined) {
+        const updatedState = {
+          ...unSeenTasks,
+          [selectedTabKey]: false,
+        };
+        dispatch({
+          type: TASK_CONFIG.TASK_UNSEEN_TABS,
+          payload: updatedState,
+        });
+      }
+    }
+  }, [RECENT_TASK_UPDATED_TIME_STAMP, location.pathname]);
 
-  function countUnseenTasksFromLists(taskLists: any, userId: string) {
-    return countUnseenTasks(
-      taskLists.reduce(
-        (accumulated: any, current: any) => [...accumulated, ...current],
-        []
-      ),
-      userId
-    );
-  }
-
-  const countToMe = countUnseenTasksFromLists(
-    [allTaskToMe.new, allTaskToMe.ongoing, allTaskToMe.done],
-    user?._id
-  );
-
-  const countFromMe = countUnseenTasksFromLists(
-    [allTaskFromMe.unread, allTaskFromMe.ongoing, allTaskFromMe.done],
-    user?._id
-  );
-
-  const countHidden = countUnseenTasksFromLists(
-    [allTaskHidden.ongoing, allTaskHidden.done, allTaskHidden.canceled],
-    user?._id
-  );
-
-  if (selectedTab === "tasks" && configs) {
-    configs.allTaskFromMe.icon = countFromMe >= 1 ? UnseenFromMe : FromMEIcon;
-    configs.allTaskToMe.icon = countToMe >= 1 ? UnseenToMe : ToMeIcon;
-    configs.allTaskHidden.icon = countHidden >= 1 ? UnseenHidden : HiddenIcon;
+  if (selectedTab === "tasks" && configs && unSeenTasks) {
+    const { isFromMeUnseen, isTomeUnseen, isHiddenUnseen } = unSeenTasks;
+    const { allTaskFromMe, allTaskToMe, allTaskHidden } = configs;
+    allTaskFromMe.icon = isFromMeUnseen ? UnseenFromMe : FromMEIcon;
+    allTaskToMe.icon = isTomeUnseen ? UnseenToMe : ToMeIcon;
+    allTaskHidden.icon = isHiddenUnseen ? UnseenHidden : HiddenIcon;
   }
 
   return (
     <>
+      <Box
+        sx={{
+          display: "none",
+          width: "72px",
+          maxWidth: "90px",
+          padding: "6px 20px 5px 20px",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "12px",
+          "@media screen and (max-width: 899px)": {
+            display: "flex", // Hide the box when the screen width is 1024px or less
+          },
+        }}
+      >
+        <MainLogo />
+      </Box>
       <div className={classes.menueWrapper}>
         {configs &&
           Object.values(configs).map((config: any) => {
@@ -109,10 +121,12 @@ function Sidebar(props: any) {
                 <Box>
                   <config.icon />
                 </Box>
-                <Typography className={classes.title}>
+                <Typography
+                  sx={{ fontSize: 10, fontWeight: 600, color: colors.primary }}
+                >
                   {config.title}
                 </Typography>
-                <div className={classes.badge}>
+                {/* <div className={classes.badge}>
                   {config?.notification > 0 && (
                     <Badge
                       overlap="circular"
@@ -120,7 +134,7 @@ function Sidebar(props: any) {
                       color="error"
                     ></Badge>
                   )}
-                </div>
+                </div> */}
               </div>
             );
           })}
@@ -135,8 +149,6 @@ const useStyles = makeStyles((theme) => ({
   sidebarWrapper: {
     background: colors.defaultGrey,
     boxShadow: "1px 0 4px -3px #888",
-    // width: 200,
-    // height: "100vh",
     position: "absolute",
     [theme.breakpoints.down("md")]: {
       position: "absolute",
@@ -146,36 +158,26 @@ const useStyles = makeStyles((theme) => ({
 
   menueWrapper: {
     overflowY: "auto",
-    marginTop: "30px",
+    top: "16%",
     position: "absolute",
     width: "100%",
     gap: 20,
   },
   menue: {
-    // display: "flex",
     textAlign: "center",
     padding: "10px 6px",
-    borderBottom: `1px solid white`,
-
     cursor: "pointer",
-    gap: 13,
+    gap: 20,
     margin: "10px 0",
     "&:hover": {
       background: "white",
     },
   },
 
-  title: {
-    flex: 4,
-    fontSize: 10,
-    fontWeight: 500,
-  },
-  badge: {
-    flex: 1,
-  },
   active: {
     background: "white",
-    boxShadow: "0px 2px 2px 0px #3b95d3",
+    boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
     color: colors.primary,
+    borderBottom: "1px solid #0076C8",
   },
 }));

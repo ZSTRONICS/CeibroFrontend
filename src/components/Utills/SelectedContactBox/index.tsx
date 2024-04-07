@@ -81,7 +81,7 @@ export default function SelectedContactBox({
             position: "absolute",
             bottom: "-4px",
             right: "-6px",
-            backgroundColor: "#0076C8",
+            backgroundColor: "#0075D0",
             color: "#fff",
             width: "16px",
             height: "16px",

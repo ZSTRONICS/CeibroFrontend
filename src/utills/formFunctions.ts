@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { ICountryData } from "components/material-ui/customMuiTextField/types";
 import { FormikProps } from "formik";
+import parsePhoneNumber, { CountryCode } from "libphonenumber-js";
 
 export const handlePhoneChange = (
   e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>,
@@ -14,3 +15,13 @@ export const handlePhoneChange = (
     formikRef.current?.setFieldValue(name, value);
   }
 };
+
+
+export const checkValidPhoneNumber = (phoneNumber: string, countryCodeName: CountryCode) => {
+  const parsedPhoneNumber = parsePhoneNumber(phoneNumber, countryCodeName);
+  if (parsedPhoneNumber && parsedPhoneNumber.isValid()) {
+    return { isValid: true, msg: "valid" }
+  } else {
+    return { isValid: false, msg: "Invalid phone number" }
+  }
+}

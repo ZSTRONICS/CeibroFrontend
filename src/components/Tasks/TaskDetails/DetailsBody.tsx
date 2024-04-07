@@ -1,79 +1,110 @@
 import { Box } from "@mui/material";
-import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
-import DespcriptionBox from "components/Utills/DespcriptionBox";
-import ImageBox from "components/Utills/ImageBox";
-import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
-import { IFile, TaskEvent } from "constants/interfaces";
-import { useOpenCloseModal } from "hooks";
-import { useState } from "react";
-import AddedDetails from "./AddedDetails";
-import DrawingFiles from "./DrawingFiles";
+import { CustomDivider } from "components/CustomTags";
+import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
+import { IFile } from "constants/interfaces";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 interface IProps {
-  description: string;
-  events: TaskEvent[];
+  description?: string;
   media: IFile[];
+  handleFiles: any;
 }
 
 export default function DetailsBody(props: IProps) {
-  const { description, events, media } = props;
-  const [fileToView, setFileToView] = useState<any | null>(null);
-  const { closeModal, isOpen, openModal } = useOpenCloseModal();
-  const handleClick = (file: any) => {
-    setFileToView(file);
-    openModal();
-  };
+  const { description, media } = props;
+  const [mediaWithComment, setMediaWithComment] = useState<IFile[]>([]);
+  const [mediaWithoutComment, setMediaWithoutComment] = useState<IFile[]>([]);
+  const [mediaDrawingFiles, setMediaDrawingFiles] = useState<IFile[]>([]);
+  const [heightOffset, setHeightOffset] = useState();
+  const listRef: any = useRef(null);
+  const [isReadMore, setIsReadMore] = useState(false);
+  const parms = useParams<{ filterkey: string }>();
+
+  useEffect(() => {
+    if (parms.filterkey === "unread" || parms.filterkey === "new") {
+      setIsReadMore(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (listRef.current) {
+      const newTop = listRef.current.getBoundingClientRect().top;
+      setHeightOffset(newTop);
+    }
+  }, [listRef]);
+
+  useEffect(() => {
+    if (media && media.length > 0) {
+      const mediaWithComment = media.filter((file) => file.comment.length > 0);
+      const mediaWithoutComment = media.filter(
+        (file) => file.comment.length === 0 && file.fileTag !== "drawing"
+      );
+      const mediaDrawingFiles = media.filter(
+        (file) => file.comment.length === 0 && file.fileTag === "drawing"
+      );
+      setMediaDrawingFiles([...mediaDrawingFiles]);
+      setMediaWithComment([...mediaWithComment]);
+      setMediaWithoutComment([...mediaWithoutComment]);
+    }
+  }, [media]);
   return (
     <>
-      <Box sx={{ paddingLeft: "5px" }}>
-        <DespcriptionBox description={description} />
-        <Box
-          className="custom-scrollbar"
-          sx={{
-            // height: "96px",
-            width: "100%",
-            padding: "10px 0px 16px 0px",
-            marginRight: "16px",
-            overflowX: "auto",
-            display: "flex",
-          }}
-        >
-          {media.length > 0 &&
-            media.map((file: IFile) => {
-              const hasComment = file.comment.length === 0;
-              return (
-                <Box
-                  key={file._id}
-                  sx={{
-                    marginRight: "16px",
-                    "&:hover": { cursor: "pointer" },
-                  }}
-                  onClick={() => handleClick(file)}
-                >
-                  {hasComment ? (
-                    <ImageBox src={file.fileUrl} />
-                  ) : (
-                    <ImageBoxWithDesp
-                      src={file.fileUrl}
-                      comment={file.comment}
-                    />
-                  )}
-                </Box>
-              );
-            })}
-        </Box>
-        <DrawingFiles />
-        {events && <AddedDetails events={events} hasFile={media.length > 0} />}
+      <Box
+        ref={listRef}
+        sx={{
+          paddingLeft: "0px",
+        }}
+      >
+        {description && (
+          <>
+            <ReadMoreWrapper
+              title="Description"
+              readMore={isReadMore}
+              type="text"
+              data={description}
+            />
+            <CustomDivider />
+          </>
+        )}
+        {mediaWithoutComment.length > 0 && (
+          <>
+            <ReadMoreWrapper
+              title="Images"
+              count={mediaWithoutComment.length}
+              readMore={isReadMore}
+              type="image"
+              data={mediaWithoutComment}
+            />
+            <CustomDivider />
+          </>
+        )}
+        {mediaWithComment.length > 0 && (
+          <>
+            <ReadMoreWrapper
+              title="Images with comments"
+              readMore={isReadMore}
+              count={mediaWithComment.length}
+              type="imageWithDesp"
+              data={mediaWithComment}
+            />
+            <CustomDivider />
+          </>
+        )}
+        {mediaDrawingFiles.length > 0 && (
+          <>
+            <ReadMoreWrapper
+              title="Drawings"
+              readMore={isReadMore}
+              count={mediaDrawingFiles.length}
+              type="image"
+              data={mediaDrawingFiles}
+            />
+            <CustomDivider />
+          </>
+        )}
+        {/* todo when drawingfiles functionality enable then show drawing files compoonent */}
       </Box>
-      {isOpen && (
-        <ImagePreviewModal
-          isPdfFile={false}
-          isOpen={isOpen}
-          closeModal={closeModal}
-          title="Image Preview"
-          fileToView={fileToView}
-        />
-      )}
     </>
   );
 }

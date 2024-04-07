@@ -1,9 +1,10 @@
 import React from "react";
-import { PhoneNumberTextField } from "./phoneNumberTextField";
 import { PasswordTextField } from "./paaswordTextField";
+import { PhoneNumberTextField } from "./phoneNumberTextField";
 import { SimpleTextField } from "./simpleTextField";
 import {
   IAutoCompleteProps,
+  ICounterTextFieldProps,
   IPasswordProps,
   IPhoneNumber,
   IPhoneNumberProps,
@@ -14,7 +15,8 @@ type Props =
   | IPhoneNumberProps
   | IPasswordProps
   | ITextFieldProps
-  | IAutoCompleteProps;
+  | IAutoCompleteProps
+  | ICounterTextFieldProps;
 
 export const CustomMuiTextField: React.FC<Props> = (props) => {
   switch (props.typeName) {
@@ -45,6 +47,7 @@ export const CustomMuiTextField: React.FC<Props> = (props) => {
     case "text-field":
       return (
         <SimpleTextField
+          inputVariant={props.inputVariant}
           required={props.required}
           name={props.name}
           label={props.label}
@@ -54,6 +57,37 @@ export const CustomMuiTextField: React.FC<Props> = (props) => {
           inputValue={props.inputValue as string}
           onBlur={props.onBlur}
         />
+      );
+    case "counterText-field":
+      return (
+        <>
+          <SimpleTextField
+            multiline={props.multiline}
+            inputVariant={props.inputVariant}
+            required={props.required}
+            name={props.name}
+            label={props.label}
+            type={props.subType}
+            placeholder={props.placeholder}
+            onChange={props.onChange}
+            inputValue={props.inputValue as string}
+            onBlur={props.onBlur}
+            inputProps={props.inputProps as any}
+            maxLength={props.maxLength}
+            maxRows={props.maxRows}
+          />
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#757575",
+            }}
+          >
+            {`${props.inputValue.length}/${props.maxLength}`}
+          </span>
+        </>
       );
     default: {
       return <> </>;

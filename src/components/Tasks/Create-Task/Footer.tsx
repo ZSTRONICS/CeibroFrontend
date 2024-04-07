@@ -1,28 +1,38 @@
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
-import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import { Box } from "@mui/material";
+import { LoadingButton } from "components/Button";
+import { CustomStack } from "components/CustomTags";
 import CustomButton from "components/Utills/CustomButton";
-import {
-  isValidDocumentType,
-  isValidImageType,
-  validTypes,
-} from "components/Utills/Globals";
+import { isValidDocumentType, validTypes } from "components/Utills/Globals";
 import _ from "lodash";
-import { toast } from "react-toastify";
 
 interface FooterPropsType {
   handleSubmitForm: () => void;
-  handleAttachImageValue?: (file: File[]) => void;
-  handleSelectDocumentValue?: (file: File[]) => void;
+  handleAttachImageValue?: (file: ImageWithComment[] | File[] | any) => void;
+  handleSelectDocumentValue?: (file: File[] | ImageWithComment[] | any) => void;
   handleGetLocationValue?: () => void;
-  showHeader: boolean | undefined;
+  handleClose: () => void;
+  isCommentUi?: boolean;
+  isForwardUi?: boolean;
+  acceptImgOnly?: boolean;
+  FooterPosition?: "fixed" | "reletive" | "absolute" | "sticky";
+  showHeader: boolean;
   disabled: boolean;
   isSubmitted: boolean;
+  isImgWithComment?: boolean;
+  isFilesWithComment?: boolean;
+  isforward?: boolean;
 }
 
 const Footer = (props: FooterPropsType) => {
+  const {
+    FooterPosition,
+    acceptImgOnly,
+    isFilesWithComment,
+    isImgWithComment,
+  } = props;
   const handleGetLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -36,124 +46,202 @@ const Footer = (props: FooterPropsType) => {
   };
 
   const handleSelectDocument = () => {
-    // Code to handle selecting a PDF file from the system
     const input = document.createElement("input");
     input.type = "file";
     input.multiple = true;
-    input.accept = validTypes.join(", ");
+    input.accept = acceptImgOnly ? "image/*" : validTypes.join(", ");
     input.onchange = (event) => {
       const files = (event.target as HTMLInputElement).files;
       if (files && !_.isEmpty(files)) {
-        const validFiles = Array.from(files).filter((file) =>
-          isValidDocumentType(file.type)
-        );
+        let attachments = [];
+        if (isImgWithComment) {
+          attachments = Array.from(files)
+            .filter((file) => file.type.startsWith("image/"))
+            .map((image) => ({
+              file: image,
+              comment: "",
+            }));
+        } else {
+          attachments = Array.from(files).filter((file) =>
+            file.type.startsWith("image/")
+          );
+        }
+        let validFiles: any[] = [];
+        if (isFilesWithComment) {
+          validFiles = Array.from(files)
+            .filter((file) => isValidDocumentType(file.type))
+            .map((file) => ({
+              file: file,
+              comment: "",
+            }));
+        } else {
+          validFiles = Array.from(files).filter((file) =>
+            isValidDocumentType(file.type)
+          );
+        }
+        if (attachments.length > 0) {
+          props.handleAttachImageValue &&
+            props.handleAttachImageValue(attachments);
+        }
         if (!_.isEmpty(validFiles)) {
           props.handleSelectDocumentValue &&
             props.handleSelectDocumentValue(validFiles);
         } else {
-          toast.error("Please select a valid document file");
+          // toast.error("Please select a valid document file");
         }
       }
     };
     input.click();
   };
 
-  const handleAttachImage = () => {
-    // Code to handle attaching an image file
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.multiple = true;
-    input.onchange = (event) => {
-      const files = (event.target as HTMLInputElement).files;
-      if (files && !_.isEmpty(files)) {
-        const validFiles = Array.from(files).filter((file) =>
-          isValidImageType(file.type)
-        );
-        if (!_.isEmpty(validFiles)) {
-          props.handleAttachImageValue &&
-            props.handleAttachImageValue(validFiles);
-        } else {
-          toast.error("Please select a valid image file");
-        }
-      }
-    };
-    input.click();
+  // const handleAttachImage = () => {
+  //   // Code to handle attaching an image file
+  //   const input = document.createElement("input");
+  //   input.type = "file";
+  //   input.accept = "image/*";
+  //   input.multiple = true;
+  //   input.onchange = (event) => {
+  //     const files = (event.target as HTMLInputElement).files;
+  //     if (files && !_.isEmpty(files)) {
+  //       const validFiles = Array.from(files).filter((file) =>
+  //         isValidImageType(file.type)
+  //       );
+  //       if (!_.isEmpty(validFiles)) {
+  //         props.handleAttachImageValue &&
+  //           props.handleAttachImageValue(validFiles);
+  //       } else {
+  //         toast.error("Please select a valid image file");
+  //       }
+  //     }
+  //   };
+  //   input.click();
+  // };
+  const handleClick = () => {
+    props.handleClose();
   };
-  const position: string = props.showHeader ? "block" : "absolute";
+
+  const position: string = props.showHeader
+    ? "absolute"
+    : (FooterPosition && FooterPosition) || "fixed";
   return (
     <Box
       sx={{
         display: "flex",
-        justifyContent: "space-around",
-        zIndex: "50",
+        justifyContent: "space-between",
+        zIndex: "15",
+        alignItems: "center",
         background: "white",
-        boxShadow: `${
-          props.showHeader ? "" : "0px -2px 6px rgba(0, 0, 0, 0.1)"
-        }`,
+        borderTop: "1px solid rgba(0, 0, 0, 0.1)",
+        // boxShadow: `${
+        //   props.showHeader ? "0px -2px 6px rgba(0, 0, 0, 0.1)" : "none"
+        // }`,
         textTransform: "capitalize",
         position: `${position}`,
-        marginTop: `${props.showHeader ? "20px" : "unset"}`,
         paddingBottom: `${props.showHeader ? "0" : "unset"}`,
         bottom: 0,
         left: 0,
         width: "100%",
-        padding: "7px 0",
+        gap: 1,
+        padding: "7px 14px",
         height: "57px",
+        pr: "3%",
       }}
     >
-      {props.handleGetLocationValue && (
-        <CustomButton
-          disabled
-          label={"Location"}
-          icon={<FmdGoodOutlinedIcon />}
-          variant="outlined"
-          onClick={handleGetLocation}
-        />
+      {props.isCommentUi ? (
+        <>
+          {props.isforward ? (
+            <LoadingButton
+              color="error"
+              variant="outlined"
+              onClick={handleClick}
+              sx={{
+                fontSize: "12px",
+                borderRadius: "4px",
+                fontWeight: "700",
+                border: "1px solid #FA0808",
+                padding: "2px 16px",
+                color: "#D9000D",
+                maxWidth: "100px",
+                maxHeight: "30px",
+              }}
+            >
+              Cancel
+            </LoadingButton>
+          ) : (
+            <Box></Box>
+          )}
+        </>
+      ) : (
+        <>
+          {props.handleGetLocationValue && (
+            <CustomButton
+              sx={{ opacity: 0 }}
+              disabled
+              label={"Location"}
+              icon={<FmdGoodOutlinedIcon />}
+              variant="outlined"
+              onClick={handleGetLocation}
+            />
+          )}
+          {/* {props.handleSelectDocumentValue && (
+            <CustomButton
+              sx={{
+                border: "none !important",
+                "&:hover": {
+                  border: "0px solid transparent",
+                },
+              }}
+              label={"Document"}
+              icon={<InsertDriveFileOutlinedIcon />}
+              variant="outlined"
+              disabled={props.isSubmitted || false}
+              onClick={handleSelectDocument}
+            />
+          )} */}
+        </>
       )}
-      {props.handleSelectDocumentValue && (
+      <CustomStack sx={{ gap: 5 }}>
+        {!props.isForwardUi && props.handleSelectDocumentValue && (
+          <CustomButton
+            sx={{
+              border: "none !important",
+              flexDirection: "column",
+              textTransform: "capitalize",
+
+              padding: "2px",
+
+              "&:hover": {
+                border: "0px solid transparent",
+              },
+              span: {
+                marginRight: "0px",
+              },
+            }}
+            label={"Attach"}
+            icon={<AttachFileOutlinedIcon />}
+            variant="outlined"
+            disabled={props.isSubmitted || false}
+            onClick={handleSelectDocument}
+          />
+        )}
         <CustomButton
           sx={{
             border: "none !important",
             "&:hover": {
               border: "0px solid transparent",
             },
-          }}
-          label={"Document"}
-          icon={<InsertDriveFileOutlinedIcon />}
-          variant="outlined"
-          disabled={props.isSubmitted || false}
-          onClick={handleSelectDocument}
-        />
-      )}
-      {props.handleAttachImageValue && (
-        <CustomButton
-          sx={{
-            border: "none !important",
-            "&:hover": {
-              border: "0px solid transparent",
+            "& .MuiButton-startIcon": {
+              marginLeft: 0,
+              marginRight: 0,
             },
           }}
-          label={"Attach"}
-          icon={<AttachFileOutlinedIcon />}
-          variant="outlined"
-          disabled={props.isSubmitted || false}
-          onClick={handleAttachImage}
+          onClick={props.handleSubmitForm}
+          icon={<ArrowForwardOutlinedIcon />}
+          variant="contained"
+          loading={props.isSubmitted}
+          disabled={props.disabled || props.isSubmitted}
         />
-      )}
-      <CustomButton
-        sx={{
-          border: "none !important",
-          "&:hover": {
-            border: "0px solid transparent",
-          },
-        }}
-        onClick={props.handleSubmitForm}
-        icon={<ArrowForwardOutlinedIcon />}
-        variant="contained"
-        loading={props.isSubmitted}
-        disabled={props.disabled || props.isSubmitted}
-      />
+      </CustomStack>
     </Box>
   );
 };

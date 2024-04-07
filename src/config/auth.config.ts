@@ -1,5 +1,6 @@
 export const AUTH_CONFIG = {
   RESEND_OTP: "RESEND_OTP",
+  GET_AUTH_API_TOKEN: "GET_AUTH_API_TOKEN",
 };
 
 export const REGISTER = "REGISTER";

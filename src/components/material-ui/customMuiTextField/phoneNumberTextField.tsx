@@ -1,10 +1,13 @@
 import { Autocomplete, OutlinedInput, TextField } from "@mui/material";
+import { USER_CONFIG } from "config";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import dialCode from "./dialCode.json";
 import { ICountryData, IPhoneNumberProps } from "./types";
 
 export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
   const { name, inputValue, onChange, onBlur, disabled } = props;
+  const dispatch = useDispatch();
   const [country, setCountry] = useState<ICountryData>(
     dialCode.find((item) => item.dial_code === inputValue.dialCode)!
   );
@@ -13,6 +16,10 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
     const regex = /^[0-9\b]{0,11}$/;
     if (e.target.value === "" || regex.test(e.target.value)) {
       onChange(e);
+      dispatch({
+        type: USER_CONFIG.COUNTRY_CODE_NAME,
+        payload: country.code,
+      });
     }
   };
   const handleCountryCodeChange = (
@@ -88,7 +95,7 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
             />
           )}
           sx={{
-            width: "130px",
+            minWidth: "85px",
             borderTopRightRadius: "0 !important",
             "& .MuiInputBase-sizeSmall": {
               borderBottomRightRadius: 0,

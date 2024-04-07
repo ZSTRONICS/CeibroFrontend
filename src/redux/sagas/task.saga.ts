@@ -20,7 +20,27 @@ const syncAllTasks = apiCall({
   useV2Route: true,
   type: TASK_CONFIG.SYNC_ALL_TASKS,
   method: "get",
-  path: "/task/sync/2020-01-05T17:01:40.038Z"
+  path: (payload) => `/task/sync/${payload.other.syncTime}`
+})
+
+const getAllTasksAllEvents = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS,
+  method: "get",
+  path: (payload) => `task/syncTask/2023-10-17T16:13:41.345Z`
+})
+const getAllTaskFiles = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.GET_ALL_TASK_FILES,
+  method: "get",
+  path: (payload) => `docs/taskFiles/${payload.other.taskId}`
+})
+
+const syncTaskEventsByTaskId = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.SYNC_TASK_EVENTS_BY_TASK_ID,
+  method: "post",
+  path: (payload) => `/task/syncEvents/${payload.other.taskId}`
 })
 
 const getAllTopic = apiCall({
@@ -87,28 +107,34 @@ const taskEventsWithFiles = apiCall({
   path: (payload) => `/task/upload/${payload.other.eventName}/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`  // eventName = [comment, doneTask]
 })
 
-// get task assigned to me 
-const getAllTaskToMe = apiCall({
+const taskApprove = apiCall({
   useV2Route: true,
-  type: TASK_CONFIG.GET_ALL_TASK_TO_ME,
-  method: "get",
-  path: "/task/to-me",
+  isFormData: true,
+  type: TASK_CONFIG.TASK_APPROVE,
+  method: "post",
+  path: (payload) => `/task/approval/approve/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`
+})
+const taskRejectReopen = apiCall({
+  useV2Route: true,
+  isFormData: true,
+  type: TASK_CONFIG.TASK_REJECTED_REOPEN,
+  method: "post",
+  path: (payload) => `/task/approval/reject-reopen/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`
 })
 
-// get task created from me 
-const getAllTaskFromMe = apiCall({
+const taskRejectClose = apiCall({
   useV2Route: true,
-  type: TASK_CONFIG.GET_ALL_TASK_FROM_ME,
-  method: "get",
-  path: "/task/from-me",
+  isFormData: true,
+  type: TASK_CONFIG.TASK_REJECTED_CLOSE,
+  method: "post",
+  path: (payload) => `/task/approval/reject-close/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`
 })
-
-// get task created from me 
-const getAllTaskHidden = apiCall({
+const pinUnPinTaskComment = apiCall({
   useV2Route: true,
-  type: TASK_CONFIG.GET_ALL_TASK_HIDDEN,
-  method: "get",
-  path: "/task/hidden",
+  isFormData: false,
+  type: TASK_CONFIG.PIN_UNPIN_TASK_COMMENT,
+  method: "post",
+  path: (payload) => `/task/updatePin/${payload.other.taskId}/${payload.other.eventId}?isPinned=${payload.other.isPinned}`
 })
 
 const uploadDocs = apiCall({
@@ -126,7 +152,16 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.DELETE_TOPIC, deleteTopic)
   // task
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
+
+  yield takeLatest(TASK_CONFIG.TASK_APPROVE, taskApprove)
+  yield takeLatest(TASK_CONFIG.TASK_REJECTED_REOPEN, taskRejectReopen)
+  yield takeLatest(TASK_CONFIG.TASK_REJECTED_CLOSE, taskRejectClose)
+  yield takeLatest(TASK_CONFIG.PIN_UNPIN_TASK_COMMENT, pinUnPinTaskComment)
+
   yield takeLatest(TASK_CONFIG.SYNC_ALL_TASKS, syncAllTasks)
+  yield takeLatest(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS, getAllTasksAllEvents)
+  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_FILES, getAllTaskFiles)
+  yield takeLatest(TASK_CONFIG.SYNC_TASK_EVENTS_BY_TASK_ID, syncTaskEventsByTaskId)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
   yield takeLatest(TASK_CONFIG.FORWARD_TASK, forwardTask)
   yield takeLatest(TASK_CONFIG.TASK_SEEN, taskSeen)
@@ -135,11 +170,6 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.TASK_CANCELED, taskCaneled)
   yield takeLatest(TASK_CONFIG.TASK_UN_CANCEL, taskUnCanel)
   yield takeLatest(TASK_CONFIG.TASK_EVENT_WITH_FILES, taskEventsWithFiles)
-
-  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_TO_ME, getAllTaskToMe)
-  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_FROM_ME, getAllTaskFromMe)
-  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_HIDDEN, getAllTaskHidden)
-
 }
 
 export default taskSaga

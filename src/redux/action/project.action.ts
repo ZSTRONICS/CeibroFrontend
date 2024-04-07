@@ -8,7 +8,7 @@ import {
   ProjectRolesInterface,
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
-import { Drawing } from "constants/interfaces";
+import { Drawing, PinImage } from "constants/interfaces";
 import configs, {
   ADD_REMOVE_FOLDER_USER,
   CLOSE_DOCUMENT_DRAWER,
@@ -19,13 +19,10 @@ import configs, {
   CLOSE_TIME_PROFILE_DRAWER,
   CLOSE_WORK_DRAWER,
   CREATE_FOLDER,
-  CREATE_GROUP,
   CREATE_MEMBER,
   CREATE_NEW_PROFILE,
   CREATE_PROFILE_WORK,
-  CREATE_PROJECT,
   CREATE_ROLES,
-  DELETE_GROUP,
   DELETE_MEMBER,
   DELETE_PROJECT,
   DELETE_ROLE,
@@ -41,7 +38,6 @@ import configs, {
   GET_NEW_WORK,
   GET_PROJECT_DETAIL,
   GET_PROJECT_PROFILE,
-  GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -58,6 +54,7 @@ import configs, {
   PROJECT_CONFIG,
   SELECTED_FILE_TYPE,
   SELECTED_FILE_URL,
+  Set_EXPORT_LIST,
   SET_GROUP,
   SET_PROJECT_OVERVIEW,
   SET_ROLE,
@@ -82,6 +79,12 @@ import configs, {
 import { createAction } from "./action";
 
 const projectActions = {
+  setExportList: (images: PinImage[]) => {
+    return {
+      type: Set_EXPORT_LIST,
+      payload: images,
+    };
+  },
   openDrawer: () => {
     return {
       type: configs.OPEN_DRAWER,
@@ -300,45 +303,56 @@ const projectActions = {
 };
 
 export const PROJECT_APIS = {
-  getProjectRolesById: createAction(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID),
-  getAllProjects: createAction(GET_PROJECTS),
-  getAllDocuments: createAction(PROJECT_CONFIG.GET_ALL_DOCUMENTS),
-  getDrawingById: createAction(PROJECT_CONFIG.GET_DRAWING_BY_ID),
+  // projects
+  createProject: createAction(PROJECT_CONFIG.CREATE_NEW_PROJECT),
+  projectFavUnFav: createAction(PROJECT_CONFIG.PROJECT_FAV_UNFAV),
+  projectHideUnhide: createAction(PROJECT_CONFIG.PROJECT_HIDE_UNHIDE),
+  getAllProjects: createAction(PROJECT_CONFIG.GET_ALL_PROJECTS),
+  // groups
+  groupFavUnFav: createAction(PROJECT_CONFIG.GROUP_FAV_UNFAV),
+  createProjectGroup: createAction(PROJECT_CONFIG.CREATE_GROUP),
+  markGroupPrivateOrPublic: createAction(PROJECT_CONFIG.MARK_GROUP_PUBLIC_OR_PRIVATE),
+  getGroupsByProjectId: createAction(PROJECT_CONFIG.GET_GROUPS_BY_PROJECT_ID),
+  updateGroupById: createAction(PROJECT_CONFIG.UPDATE_GROUP_BY_ID),
+  deleteGroupById: createAction(PROJECT_CONFIG.DELETE_GROUP_BY_ID),
+  // floors
+  createFloor: createAction(PROJECT_CONFIG.CREATE_FLOOR),
   getFloorsByProjectId: createAction(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID),
+  // drawings
+  addNewDrawing: createAction(PROJECT_CONFIG.ADD_NEW_DRAWING),
+  getDrawingById: createAction(PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID),
+  getRecentDrawings: createAction(PROJECT_CONFIG.GET_RECENT_DRAWINGS),
+  uploadImageOnDrawing: createAction(PROJECT_CONFIG.UPLOAD_IMAGE_ON_DRAWING),
+  getAllDrawingImagesById: createAction(PROJECT_CONFIG.GET_ALL_DRAWING_IMAGES_BY_ID),
+
+  getProjectRolesById: createAction(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID),
+  getAllDocuments: createAction(PROJECT_CONFIG.GET_ALL_DOCUMENTS),
   getAvailableProjectUsers: createAction(GET_AVAILABLE_PROJECT_USERS),
   getProjectDetail: createAction(GET_PROJECT_DETAIL),
   getFolderFiles: createAction(GET_FOLDER_FILES),
-
-  createProject: createAction(CREATE_PROJECT),
-  createFloor: createAction(PROJECT_CONFIG.CREATE_FLOOR),
   createFolder: createAction(CREATE_FOLDER),
-
   updateProjectDocumentsAccess: createAction(
     PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS
   ),
   uploadFileToFolder: createAction(UPLOAD_FILE_TO_FOLDER),
   updateProject: createAction(UPDATE_PROJECT),
   updateProjectPicture: createAction(UPDATE_PROJECT_PICTURE),
-
   deleteProject: createAction(DELETE_PROJECT),
 };
 
 export const getProjectsWithPagination = createAction(
   GET_PROJECTS_WITH_PAGINATION
 );
-export const getAllProjects = createAction(GET_PROJECTS);
 
 export const getAllProjectsWithMembers = createAction(
   GET_PROJECTS_WITH_MEMBERS
 );
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
-export const createProject = createAction(CREATE_PROJECT);
-export const getAvailableProjectUsers = createAction(
-  GET_AVAILABLE_PROJECT_USERS
-);
+export const createProject = createAction(PROJECT_CONFIG.CREATE_NEW_PROJECT);
+export const getAvailableProjectUsers = createAction(GET_AVAILABLE_PROJECT_USERS);
 export const getProjectDetail = createAction(GET_PROJECT_DETAIL);
 export const createRole = createAction(CREATE_ROLES);
-export const createGroup = createAction(CREATE_GROUP);
+export const createGroup = createAction(PROJECT_CONFIG.CREATE_GROUP);
 export const getGroup = createAction(GET_GROUP);
 export const getGroupById = createAction(GET_GROUP_BY_ID);
 
@@ -369,7 +383,6 @@ export const updateWork = createAction(UPDATE_WORK);
 export const deleteWork = createAction(DELETE_WORK);
 // export const getPermissions = createAction(GET_PERMISSIONS);
 export const updateProjectPicture = createAction(UPDATE_PROJECT_PICTURE);
-export const deleteGroup = createAction(DELETE_GROUP);
 export const deleteRole = createAction(DELETE_ROLE);
 // export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
 export const getGroupUsers = createAction(GET_GROUP_USERS);

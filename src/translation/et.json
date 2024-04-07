@@ -1,4 +1,8 @@
 {
+  "app_name": "Ceibro",
+  "config": {
+    "done": ""
+  },
   "auth": {
     "login": "Logi sisse",
     "signUp": "Registreeri!",

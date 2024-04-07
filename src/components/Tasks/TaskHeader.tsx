@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import assets from "assets/assets";
+import { MainLogo } from "components/material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -8,10 +8,6 @@ const useStyles = makeStyles((theme) => ({
   },
   backButton: {
     marginRight: "16px",
-  },
-  logo: {
-    width: "72px",
-    height: "54px",
   },
   container: {
     height: "52px",
@@ -35,22 +31,16 @@ const TaskHeader = ({ title }: TaskHeaderProps): JSX.Element => {
     <Box
       sx={{
         display: "flex",
-        position: "static",
+        position: "fixed",
+        width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
         height: "52px",
+        backgroundColor: "white",
+        zIndex: "10",
       }}
     >
       <Box className={classes.container}>
-        {/* <IconButton
-          edge="start"
-          sx={{ color: "#0076C8" }}
-          aria-label="back"
-          className={classes.backButton}
-          onClick={handleBackButtonClick}
-        >
-          <ArrowBackIcon />
-        </IconButton> */}
         <Typography
           variant="h6"
           component="div"
@@ -65,9 +55,7 @@ const TaskHeader = ({ title }: TaskHeaderProps): JSX.Element => {
           {title}
         </Typography>
       </Box>
-      <Box>
-        <img src={assets.logo} alt="Logo" className={classes.logo} />
-      </Box>
+      <MainLogo />
     </Box>
   );
 };

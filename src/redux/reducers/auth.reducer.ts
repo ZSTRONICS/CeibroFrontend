@@ -1,3 +1,4 @@
+import { USER_CONFIG } from "config";
 import {
   UserInterface,
   userTemplate,
@@ -10,7 +11,7 @@ import {
   REGISTER_CONFIRMATION,
   REGISTER_PROFILE_SETUP,
   UPDATE_MY_PROFILE,
-  UPDATE_PROFILE_PICTURE,
+  UPDATE_PROFILE_PICTURE
 } from "../../config/auth.config";
 import {
   requestFail,
@@ -20,7 +21,9 @@ import {
 import { ActionInterface } from "./appReducer";
 
 interface authInterface {
+  profilePicUploading: boolean
   isLoggedIn: boolean;
+  forceCloseWindow: boolean;
   user: UserInterface;
   loginLoading: boolean;
   registerLoading: boolean;
@@ -31,6 +34,8 @@ interface authInterface {
 
 const intialStatue: authInterface = {
   isLoggedIn: false,
+  forceCloseWindow: false,
+  profilePicUploading: false,
   secureUUID: null,
   user: userTemplate,
   loginLoading: false,
@@ -42,27 +47,6 @@ const intialStatue: authInterface = {
 
 const AuthReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
-    // case requestPending(LOGIN): {
-    //   setTimeout(() => {
-    //     state.loginLoading = false
-    //   }, 10000 / 2);
-    //   return {
-    //     ...state,
-    //     loginLoading: true,
-    //   };
-    // }
-    // case requestFail(LOGIN): {
-    //   sessionStorage.clear();
-    //   purgeStoreStates()
-    //   setTimeout(() => {
-    //     state.loginLoading = false
-    //   }, 10000 / 2);
-    //   return {
-    //     ...state,
-    //     loginLoading: false,
-    //   };
-    // }
-
     case 'SET_SECURE_UUID':
       // check if secureUUID is already set
       if (state.secureUUID) {
@@ -76,10 +60,20 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
+      state.forceCloseWindow = false
       return {
         ...state,
         isLoggedIn: true,
         user: action.payload.user,
+        loginLoading: false,
+      };
+    }
+    case requestFail(LOGIN): {
+      localStorage.clear();
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: {},
         loginLoading: false,
       };
     }
@@ -174,16 +168,37 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
         registerLoading: false,
       };
     }
-
-    case requestSuccess(UPDATE_PROFILE_PICTURE): {
-      if (action.payload.profilePic) {
-        state.user.profilePic = action.payload.profilePic;
-      }
+    case requestPending(UPDATE_PROFILE_PICTURE): {
       return {
         ...state,
-        user: { ...state.user },
+        profilePicUploading: true,
       };
     }
+    case requestSuccess(UPDATE_PROFILE_PICTURE): {
+      const { profilePic, firstName, surName, email, phoneNumber, companyName, jobTitle } = action.payload.user
+      const updatedUser = {
+        ...state.user,
+        firstName: firstName,
+        surName: surName,
+        email: email,
+        phoneNumber: phoneNumber,
+        companyName: companyName,
+        jobTitle: jobTitle,
+        profilePic: profilePic
+      };
+      return {
+        ...state,
+        user: updatedUser,
+        profilePicUploading: false,
+      };
+    }
+    case requestFail(UPDATE_PROFILE_PICTURE): {
+      return {
+        ...state,
+        profilePicUploading: false,
+      };
+    }
+
     case LOGOUT: {
       localStorage.removeItem("tokens");
       localStorage.clear();
@@ -192,6 +207,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         isLoggedIn: false,
+        forceCloseWindow: true,
         user: null,
       };
     }
@@ -208,18 +224,27 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
         };
       }
     }
-
+    case USER_CONFIG.USER_UPDATED_IN_STORE:
     case UPDATE_MY_PROFILE: {
-      const res = action.payload.body;
-      let currUser: any = state.user;
-      for (var atrNmae in res) {
-        if (atrNmae in currUser) {
-          currUser[atrNmae] = res[atrNmae];
-        }
+      const { firstName, profilePic, surName, email, phoneNumber, companyName, jobTitle, _id } = action.payload
+      let updatedUser = {
+        ...state.user
+      }
+      if (state.user._id === _id) {
+        updatedUser = {
+          ...state.user,
+          firstName: firstName,
+          surName: surName,
+          email: email,
+          phoneNumber: phoneNumber,
+          companyName: companyName,
+          profilePic: profilePic,
+          jobTitle: jobTitle,
+        };
       }
       return {
         ...state,
-        user: currUser,
+        user: updatedUser,
       };
     }
 

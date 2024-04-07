@@ -1,9 +1,9 @@
-
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import en from './en.json'
-import et from './et.json'
+import i18n from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import { initReactI18next } from "react-i18next";
+import en from "./en.json";
+import et from "./et.json";
+import ru from "./ru.json";
 
 i18n
   // detect user language
@@ -17,18 +17,21 @@ i18n
     debug: true,
     // default language
     // lng: 'en',
-    fallbackLng: 'en',
+    fallbackLng: "en",
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
     resources: {
       en: {
-        translation: en
+        translation: en,
       },
-      et:{
-        translation:et
-      }
-    }
+      et: {
+        translation: et,
+      },
+      ru: {
+        translation: ru,
+      },
+    },
   });
 
 export default i18n;

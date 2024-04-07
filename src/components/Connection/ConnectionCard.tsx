@@ -14,7 +14,6 @@ interface IConnectionsProps {
   isCeiborUser: boolean;
   firstName: string;
   surName: string;
-  contactFullName: string;
   isBlocked: boolean;
   companyName: string | undefined;
   profilePic: string | undefined;
@@ -25,7 +24,6 @@ interface IConnectionsProps {
 const ConnectionCard = ({
   style,
   companyName,
-  contactFullName,
   isCeiborUser,
   isBlocked,
   profilePic,
@@ -48,7 +46,11 @@ const ConnectionCard = ({
   }
 
   return (
-    <div style={style} className="listCard" id={listIndex}>
+    <div
+      style={{ ...style, paddingRight: "6px" }}
+      className="listCard"
+      id={listIndex}
+    >
       <Grid
         container
         justifyContent="space-between"
@@ -63,8 +65,8 @@ const ConnectionCard = ({
                 surname={surName}
               />
               <div>
-                <SubHeadingTag sx={{ color: "#0076C8" }}>
-                  {contactFullName}
+                <SubHeadingTag sx={{ color: "#0075D0" }}>
+                  {`${firstName} ${surName}`}
                 </SubHeadingTag>
                 <SubLabelTag>{`Company: ${
                   companyName ? companyName : "N/A"

@@ -13,7 +13,7 @@ function EmptyScreenDescription(props: IProps) {
     <Box
       sx={{
         width: "100%",
-        height: "100%",
+        height: "80%",
         display: "flex",
         flexDirection: " column",
         justifyContent: "center",
@@ -38,7 +38,9 @@ function EmptyScreenDescription(props: IProps) {
         {content.map((item, index) => (
           <React.Fragment key={index}>
             <SubHeading>{item.heading}</SubHeading>
-            <DescriptionTag>{item.description}</DescriptionTag>
+            <DescriptionTag sx={{ textAlign: "justify" }}>
+              {item.description}
+            </DescriptionTag>
           </React.Fragment>
         ))}
       </CustomStack>
