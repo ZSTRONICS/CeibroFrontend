@@ -48,6 +48,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     taskRootState,
     isTaskViewer,
     invitedNumbers,
+    assignedToState,
   } = selectedTask;
 
   const history = useHistory();
@@ -89,7 +90,6 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
-
   const checkIsStateMatch = (states: string[]) => states.includes(userSubState);
 
   const isOngoingUnread = ["ongoing", "unread"];
@@ -407,6 +407,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         <ForwardTask
           invitedNumbers={invitedNumbers}
           assignedToState={[
+            ...assignedToState,
             ...(confirmer ? [confirmer] : []),
             ...(viewer.length > 0 ? viewer : []),
           ]}

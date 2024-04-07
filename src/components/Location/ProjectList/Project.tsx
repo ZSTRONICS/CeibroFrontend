@@ -156,9 +156,9 @@ const Project = () => {
   });
 
   const windowResized = () => {
-    setTimeout(() => {
-      getHeaderHeight();
-    }, 50);
+    // setTimeout(() => {
+    getHeaderHeight();
+    // }, 50);
   };
 
   const getHeaderHeight = () => {
@@ -175,9 +175,9 @@ const Project = () => {
       }
     } else {
       if (!isTimeOut || !isTimeOut?.hasRef()) {
-        isTimeOut = setTimeout(() => {
-          getHeaderHeight();
-        }, 50);
+        // isTimeOut = setTimeout(() => {
+        //   getHeaderHeight();
+        // }, 50);
       } else {
         isTimeOut.refresh();
       }

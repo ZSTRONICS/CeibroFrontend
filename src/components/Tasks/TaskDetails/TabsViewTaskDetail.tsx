@@ -25,7 +25,7 @@ function TabsViewTaskDetail(props: IProps) {
     handleSelectedDetailTab,
   } = props;
   const showDefault = isSplitView ? "Comments" : "Details";
-  const [selectedTab, setSelectedTab] = useState(showDefault);
+  const [selectedTab, setSelectedTab] = useState("Details");
   const [tabIndex, setTabIndex] = useState(0);
   const { events, files } = selectedTask;
   // const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
@@ -78,27 +78,30 @@ function TabsViewTaskDetail(props: IProps) {
   );
 
   useEffect(() => {
-    if (openCommentTab !== "") {
-      if (findTabIndex === -1) {
-        setTabIndex(0);
-      } else {
-        setTabIndex(findTabIndex);
+    if (findTabIndex > -1) {
+      setTabIndex(findTabIndex);
+      if (openCommentTab === "Comments") {
+        const localTab = allTabsData[findTabIndex].label;
+        handleSelectedDetailTab(localTab);
+        setSelectedTab(localTab);
       }
+    } else {
+      setTabIndex(0);
+      setSelectedTab(allTabsData[0].label);
     }
-  }, [openCommentTab, selectedTab]);
+  }, [selectedTab, openCommentTab]);
 
-  useEffect(() => {
-    if (selectedTab !== "") {
-      handleSelectedDetailTab(selectedTab);
-    }
-  }, [selectedTab]);
-
+  const handleSelectedTab = (selectedTab: string) => {
+    handleSelectedDetailTab(selectedTab);
+    setSelectedTab(selectedTab);
+  };
   return (
     <BasicTabs
       selectedTabIndex={tabIndex}
-      setSelectedTab={setSelectedTab}
+      setSelectedTab={handleSelectedTab}
       tabsBgColor={isSplitView ? "white" : "#F4F4F4"}
       tabsData={allTabsData}
+      isSplitView={isSplitView}
     />
   );
 }

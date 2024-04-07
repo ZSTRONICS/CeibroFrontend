@@ -24,6 +24,7 @@ interface Props {
   initiator: UserInfo;
   isPinned: boolean;
   isPinnedView: boolean;
+  showInitiator?: boolean;
   taskId: string;
   eventId: string;
   isCommentInitiator: boolean;
@@ -41,6 +42,7 @@ const CommentCard = ({
   taskId,
   eventId,
   isTaskDetail,
+  showInitiator,
 }: Props) => {
   const dispatch = useDispatch();
   const boximgref = useRef<HTMLDivElement>(null);
@@ -116,76 +118,78 @@ const CommentCard = ({
           marginLeft: isCommentInitiator ? "40%" : isTaskDetail ? "0px" : "8px",
         }}
       >
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          {initiator && (
+        {!showInitiator && (
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {initiator && (
+              <Box
+                sx={{
+                  width: "max-content",
+                  display: "flex",
+                }}
+              >
+                <Avatar
+                  alt="avater"
+                  src={initiator?.profilePic}
+                  variant="circular"
+                  sx={{
+                    width: "30px",
+                    height: "30px",
+                    border: "1px solid #E2E4E5",
+                  }}
+                />
+
+                <Typography
+                  sx={{
+                    width: "max-content",
+                    marginLeft: "7px",
+                    paddingTop: "5px",
+                    fontWeight: "700",
+                    fontSize: "12px",
+                  }}
+                >
+                  {`${initiator?.firstName} ${initiator?.surName}`}
+                </Typography>
+              </Box>
+            )}
+
             <Box
               sx={{
-                width: "max-content",
+                float: "right",
                 display: "flex",
               }}
             >
-              <Avatar
-                alt="avater"
-                src={initiator?.profilePic}
-                variant="circular"
-                sx={{
-                  width: "30px",
-                  height: "30px",
-                  border: "1px solid #E2E4E5",
-                }}
+              <Box sx={{ transform: "translateX(10px)" }}>
+                {isPinned ? <PinIcon color="#0076C8" /> : <></>}
+              </Box>
+              <GenericMenu
+                icon={
+                  <assets.MoreVertIcon
+                    sx={{
+                      color: "#000000",
+                      transform: "translateX(10px)",
+                    }}
+                  />
+                }
+                options={[
+                  {
+                    menuName: isPinned ? "Unpin comment" : "Pin comment",
+                    callBackHandler: handlePinUnPinTaskComment,
+                  },
+                ]}
+                key={1}
+                paddingTop={0}
+                disableMenu={false}
               />
-
-              <Typography
-                sx={{
-                  width: "max-content",
-                  marginLeft: "7px",
-                  paddingTop: "5px",
-                  fontWeight: "700",
-                  fontSize: "12px",
-                }}
-              >
-                {`${initiator?.firstName} ${initiator?.surName}`}
-              </Typography>
             </Box>
-          )}
-
-          <Box
-            sx={{
-              float: "right",
-              display: "flex",
-            }}
-          >
-            <Box sx={{ transform: "translateX(10px)" }}>
-              {isPinned ? <PinIcon color="#0076C8" /> : <></>}
-            </Box>
-            <GenericMenu
-              icon={
-                <assets.MoreVertIcon
-                  sx={{
-                    color: "#000000",
-                    transform: "translateX(10px)",
-                  }}
-                />
-              }
-              options={[
-                {
-                  menuName: isPinned ? "Unpin comment" : "Pin comment",
-                  callBackHandler: handlePinUnPinTaskComment,
-                },
-              ]}
-              key={1}
-              paddingTop={0}
-              disableMenu={false}
-            />
           </Box>
-        </Box>
+        )}
         {commentData?.message && (
           <Box
             sx={{
@@ -313,23 +317,25 @@ const CommentCard = ({
           />
         )}
 
-        <Box sx={{ width: "100%" }}>
-          <Typography
-            sx={{
-              float: "right",
-              fontSize: "12px",
-              color: "#605C5C",
-              marginTop: "1px",
-            }}
-          >
-            {momentdeDateFormat(createdAt)}
-            {!isPinnedView && (
-              <DoneOutlinedIcon
-                style={{ fontSize: "18px", transform: "translateY(3px)" }}
-              />
-            )}
-          </Typography>
-        </Box>
+        {!showInitiator && (
+          <Box sx={{ width: "100%" }}>
+            <Typography
+              sx={{
+                float: "right",
+                fontSize: "12px",
+                color: "#605C5C",
+                marginTop: "1px",
+              }}
+            >
+              {momentdeDateFormat(createdAt)}
+              {!isPinnedView && (
+                <DoneOutlinedIcon
+                  style={{ fontSize: "18px", transform: "translateY(3px)" }}
+                />
+              )}
+            </Typography>
+          </Box>
+        )}
       </Box>
       {isOpen && Imgdata.length > 0 && (
         <ImagePhotoViewer

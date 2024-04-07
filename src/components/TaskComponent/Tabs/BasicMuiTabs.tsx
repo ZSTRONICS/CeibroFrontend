@@ -20,6 +20,7 @@ interface BasicTabsProps {
   isFileTabs?: boolean;
   selectedTabIndex: number;
   showHiddenTasks?: boolean;
+  isSplitView?: boolean;
   setSelectedTab?: (label: string) => void;
   onChangeTab?: (label: string) => void;
 }
@@ -31,6 +32,7 @@ export default function BasicTabs({
   showHiddenTasks,
   setSelectedTab,
   selectedTabIndex,
+  isSplitView,
 }: BasicTabsProps) {
   const [value, setValue] = React.useState(0);
   // const location = useLocation();
@@ -112,6 +114,7 @@ export default function BasicTabs({
           "& .MuiTabs-flexContainer": {
             gap: isFileTabs ? 0.1 : 0.15,
             overflow: "auto",
+            justifyContent: isSplitView ? "space-around" : "unset",
           },
         }}
       >
@@ -129,6 +132,7 @@ export default function BasicTabs({
               padding: "0px",
               pr: 2,
               pl: 1,
+              width: isSplitView ? "30%" : "auto",
               maxHeight: isFileTabs ? "32px" : null,
               minHeight: isFileTabs ? "32px" : "50px",
               ...(isFileTabs && value === index

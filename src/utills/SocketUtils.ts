@@ -409,14 +409,15 @@ export const useSocket = () => {
                 } else {
                     alert("Session Expired");
                     global.isSocketConnecting = false;
-                    history.push(LOGIN_ROUTE);
                     window.location.reload();
+                    window.location.href = LOGIN_ROUTE;
+                    // history.push(LOGIN_ROUTE);
                 }
             } catch (error) {
                 alert("Session Expired");
                 global.isSocketConnecting = false;
-                history.push(LOGIN_ROUTE);
                 window.location.reload();
+                history.push(LOGIN_ROUTE);
             }
         });
 

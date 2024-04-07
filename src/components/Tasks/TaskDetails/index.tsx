@@ -9,13 +9,13 @@ import {
   convertDateFormat,
 } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
-import { ITask } from "constants/interfaces";
+import { ITask, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import _ from "lodash";
-import { useEffect, useRef, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import CommentCard from "./CommentCard";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
+import MessageBot from "./MessageBot";
 
 interface IProps {
   task: ITask;
@@ -50,7 +50,8 @@ function TaskDetails(props: IProps) {
   const [isPending, startTransition] = useTransition();
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
   const dueDateLocal = convertDateFormat(dueDate);
-  const pinnedComments: any[] = _.filter(events, (event) => event.isPinned);
+  const pinnedComments: any[] = events.filter(Boolean);
+
   useEffect(() => {
     let getShowValue = showFullView && JSON.parse(showFullView);
     const isTaskFind = getShowValue && taskUID in getShowValue;
@@ -160,21 +161,246 @@ function TaskDetails(props: IProps) {
         )}
         {pinnedComments.length > 0 ? (
           <>
-            <SubLabelTag>Pinned comments</SubLabelTag>
-            {pinnedComments.map((comment, index) => (
-              <CommentCard
-                isTaskDetail={true}
-                key={index}
-                isPinnedView={true}
-                commentData={comment.commentData}
-                initiator={comment.initiator}
-                isCommentInitiator={false}
-                isPinned={comment.isPinned}
-                eventId={comment._id}
-                taskId={comment.taskId}
-                createdAt={comment.createdAt}
-              />
-            ))}
+            <SubLabelTag>Pinns and logs</SubLabelTag>
+            {pinnedComments.map((comment, index) => {
+              const {
+                initiator,
+                createdAt,
+                eventType,
+                eventData,
+                commentData,
+                invitedMembers,
+                isPinned,
+                _id,
+                taskId,
+              } = comment;
+              const isCommentInitiator = false;
+              let IsMessageBot = false;
+              switch (eventType) {
+                case TaskEventType.Comment:
+                  return (
+                    <React.Fragment key={index + "comment"}>
+                      {commentData && isPinned && (
+                        <CommentCard
+                          isPinnedView={false}
+                          createdAt={createdAt}
+                          taskId={taskId}
+                          eventId={_id}
+                          initiator={initiator}
+                          commentData={commentData}
+                          isPinned={isPinned}
+                          isCommentInitiator={isCommentInitiator}
+                        />
+                      )}
+                    </React.Fragment>
+                  );
+                case TaskEventType.DoneTask:
+                case TaskEventType.RejectClosed:
+                case TaskEventType.RejectReopen:
+                case TaskEventType.Reopen:
+                case TaskEventType.Approved:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData.files.length === 0;
+                  return (
+                    <React.Fragment key={index + eventType}>
+                      {IsMessageBot ? (
+                        <MessageBot
+                          type={eventType}
+                          initiator={initiator}
+                          eventData={eventData}
+                          isCommentInitiator={isCommentInitiator}
+                        />
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={eventType}
+                            initiator={initiator}
+                            eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              showInitiator={true}
+                              isPinnedView={false}
+                              createdAt={createdAt}
+                              taskId={taskId}
+                              eventId={_id}
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
+                              isCommentInitiator={isCommentInitiator}
+                            />
+                          )}
+                        </>
+                      )}
+                    </React.Fragment>
+                  );
+                case TaskEventType.ForwardTask:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData?.files?.length === 0;
+                  return (
+                    <React.Fragment key={index + eventType}>
+                      {IsMessageBot ? (
+                        <>
+                          <MessageBot
+                            type={"ForwardTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={"ForwardTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              showInitiator={true}
+                              isPinnedView={false}
+                              createdAt={createdAt}
+                              taskId={taskId}
+                              eventId={_id}
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
+                              isCommentInitiator={isCommentInitiator}
+                            />
+                          )}
+                        </>
+                      )}
+                    </React.Fragment>
+                  );
+                case TaskEventType.InvitedUser:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData?.files?.length === 0;
+                  return (
+                    <React.Fragment key={index + "invitedUser"}>
+                      {IsMessageBot ? (
+                        <>
+                          <MessageBot
+                            type={"InvitedUser"}
+                            initiator={initiator}
+                            invitedMembers={invitedMembers}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={"InvitedUser"}
+                            initiator={initiator}
+                            invitedMembers={invitedMembers}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              showInitiator={true}
+                              isPinnedView={false}
+                              createdAt={createdAt}
+                              taskId={taskId}
+                              eventId={_id}
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
+                              isCommentInitiator={isCommentInitiator}
+                            />
+                          )}
+                        </>
+                      )}
+                    </React.Fragment>
+                  );
+                case TaskEventType.CancelTask:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData?.files?.length === 0;
+                  return (
+                    <React.Fragment key={index + "cancelTask"}>
+                      {IsMessageBot ? (
+                        <>
+                          <MessageBot
+                            type={"CancelTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={"CancelTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                          {commentData && (
+                            <Box>
+                              <CommentCard
+                                showInitiator={true}
+                                isPinnedView={false}
+                                createdAt={createdAt}
+                                taskId={taskId}
+                                eventId={_id}
+                                initiator={initiator}
+                                commentData={commentData}
+                                isPinned={isPinned}
+                                isCommentInitiator={isCommentInitiator}
+                              />
+                            </Box>
+                          )}
+                        </>
+                      )}
+                    </React.Fragment>
+                  );
+                case TaskEventType.UnCancelTask:
+                  IsMessageBot =
+                    commentData?.message === "" &&
+                    commentData?.files?.length === 0;
+                  return (
+                    <React.Fragment key={index + "unCancelTask"}>
+                      {IsMessageBot ? (
+                        <>
+                          <MessageBot
+                            type={"UnCancelTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <MessageBot
+                            type={"UnCancelTask"}
+                            initiator={initiator}
+                            eventData={eventData}
+                            isCommentInitiator={isCommentInitiator}
+                          />
+                          {commentData && (
+                            <CommentCard
+                              showInitiator={true}
+                              isPinnedView={false}
+                              createdAt={createdAt}
+                              taskId={taskId}
+                              eventId={_id}
+                              initiator={initiator}
+                              commentData={commentData}
+                              isPinned={isPinned}
+                              isCommentInitiator={isCommentInitiator}
+                            />
+                          )}
+                        </>
+                      )}
+                    </React.Fragment>
+                  );
+              }
+              return <></>;
+            })}
           </>
         ) : (
           <></>

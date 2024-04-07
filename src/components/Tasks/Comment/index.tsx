@@ -15,7 +15,7 @@ import { SendIcon } from "components/material-ui/icons";
 import Emoji from "components/material-ui/icons/emoji/Emoji";
 import { TASK_CONFIG } from "config";
 import _ from "lodash";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { taskActions } from "redux/action";
@@ -35,6 +35,20 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
   const [description, setDescription] = useState<string>("");
   const dispatch = useDispatch();
   const [doOne, setDoOne] = useState(false);
+
+  useEffect(() => {
+    if (
+      description.length > 0 ||
+      selectedImages.length > 0 ||
+      selectedDocuments.length > 0
+    ) {
+      setDescription("");
+      setSelectedImages([]);
+      setSelectedDocuments([]);
+      setDescription("");
+    }
+  }, [taskId]);
+
   const handleClearFile = (file: File, type: fileType) => {
     if (type === "image") {
       const filterSelectedImages = removeItem(selectedImages, file);
@@ -97,7 +111,7 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
     const formdata = new FormData();
     setIsSubmit(true);
     const filesToUpload = [...selectedImages, ...selectedDocuments];
-    formdata.append("message", description);
+    formdata.append("message", description.trim());
     if (filesToUpload.length > 0) {
       handleFileUpload(filesToUpload, formdata);
     }
@@ -122,6 +136,9 @@ const Comment = ({ taskId, isCommentView }: CommentProps) => {
       },
       onFailAction: () => {
         setIsSubmit(false);
+        setSelectedImages([]);
+        setSelectedDocuments([]);
+        setDescription("");
       },
     };
     dispatch(taskActions.taskEventsWithFiles(taskEvent));

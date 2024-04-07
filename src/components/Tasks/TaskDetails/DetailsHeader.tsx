@@ -89,18 +89,6 @@ export default function DetailsHeader(props: IProps) {
     },
     Invitees: {
       label: "Invitees",
-      // value: invitedNumbers.flatMap((obj) => [
-      //   obj,
-      //   { ...obj },
-      //   { ...obj },
-      //   { ...obj },
-      //   { ...obj },
-      //   { ...obj },
-      //   { ...obj },
-      //   { ...obj },
-      //   { ...obj },
-      //   { ...obj },
-      // ]),
       value: invitedNumbers.length > 0 ? invitedNumbers : null,
     },
     Confirmer: {
@@ -544,20 +532,24 @@ export default function DetailsHeader(props: IProps) {
             users: data.Invitees.value,
             type: "invitees",
           })}
-        <Box sx={{ display: "flex", justifyContent: "end" }}>
-          <Typography
-            sx={{
-              cursor: "pointer",
-              fontFamily: "Inter",
-              fontSize: "12px",
-              fontWeight: "400",
-              color: "#0076C8",
-            }}
-            onClick={handleFullView}
-          >
-            {isExpanded ? "View more" : "View less"}
-          </Typography>
-        </Box>
+        {(assignedToState.length > 3 ||
+          invitedNumbers.length > 3 ||
+          viewer.length > 3) && (
+          <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Typography
+              sx={{
+                cursor: "pointer",
+                fontFamily: "Inter",
+                fontSize: "12px",
+                fontWeight: "400",
+                color: "#0076C8",
+              }}
+              onClick={handleFullView}
+            >
+              {isExpanded ? "View more" : "View less"}
+            </Typography>
+          </Box>
+        )}
       </Box>
 
       {/* {isExpanded && (

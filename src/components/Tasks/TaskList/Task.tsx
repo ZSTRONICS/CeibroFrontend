@@ -272,8 +272,6 @@ function Task() {
 
   useEffect(() => {
     if (selectedTab) {
-      // history.push(`/tasks/${selectedTab}`);
-      // setSelectedTask(null);
       setCommentDiv(true);
     }
     setLocalTabIndex(tabIndex);
@@ -283,7 +281,7 @@ function Task() {
     if (windowWidth < 1199) {
       setCommentDiv(false);
     }
-  }, [windowWidth, windowHeight]);
+  }, [windowWidth, windowHeight, taskuid]);
 
   const gridStyle = {
     borderRadius: "4px",
@@ -403,7 +401,6 @@ function Task() {
           justifyContent={"space-between"}
           sx={{ width: "100%", height: !selectedTask ? "100%" : "auto" }}
         >
-          {/* <Collapse orientation="horizontal" in={true}> */}
           <Grid
             item
             sx={{
@@ -455,8 +452,6 @@ function Task() {
               </>
             )}
           </Grid>
-          {/* </Collapse> */}
-          {/* <Collapse orientation="horizontal" in={true}> */}
           <Grid
             item
             sx={{
@@ -485,7 +480,6 @@ function Task() {
               <></>
             )}
           </Grid>
-          {/* </Collapse> */}
         </Grid>
       </Grid>
     </Grid>
