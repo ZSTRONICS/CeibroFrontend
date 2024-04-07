@@ -95,7 +95,6 @@ function LocationTasksMain(props: IProps) {
       <div style={{ ...style, width: "100%" }}>
         {localTask && (
           <LocationTaskCard
-            isTaskFromMe={localTask.isCreator ? "To" : "From"}
             userId={userId}
             key={localTask._id}
             task={localTask}

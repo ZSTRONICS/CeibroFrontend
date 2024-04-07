@@ -52,25 +52,21 @@ const TaskMain = (props: IProps) => {
   // const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   // const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
   // const [selectedTopicTags, setSelectedTopicTags] = useState<Topic[]>([]);
-  const { Topics, selectedUsers, selectedTopicTags, selectedProjects } =
-    useSelector((state: RootState) => state.task);
+  const {
+    RECENT_TASK_UPDATED_TIME_STAMP,
+    selectedUsers,
+    selectedTopicTags,
+    selectedProjects,
+  } = useSelector((state: RootState) => state.task);
   const [selectedTaskRootState, setSelectedTaskRootState] = useState("All");
   const { subtask, taskuid } = useParams<RouteParams>();
-  // const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
   const [filteredTask, setFilteredTask] = useState<ITask[]>(allTaskList);
   const [searchText, setSearchText] = useState<string>("");
-  const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
   // const isTaskRoute = location.pathname.split("/");
   // const [currentTask, setCurrentTask] = useState<number>(-1);
-  // const [emptyScreenContent, setEmptyScreenContent] = useState([
-  //   {
-  //     heading: "",
-  //     description: "",
-  //   },
-  // ]);
 
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - HEADER_HEIGHT
@@ -82,6 +78,7 @@ const TaskMain = (props: IProps) => {
   const findSelectedTask = allTaskList.find(
     (task: ITask) => task.taskUID === taskuid
   );
+
   useEffect(() => {
     setFilteredTask(allTaskList);
     clearTaskCardListCache();
@@ -98,7 +95,12 @@ const TaskMain = (props: IProps) => {
       setSelectedTask(findSelectedTask);
     }
     resetScrollPosition();
-  }, [allTaskList.length, selectedRootTask, loadingAllTasksAllEvents]);
+  }, [
+    allTaskList.length,
+    selectedRootTask,
+    loadingAllTasksAllEvents,
+    RECENT_TASK_UPDATED_TIME_STAMP,
+  ]);
 
   useEffect(() => {
     let filteredData = handleFilterRootTask(selectedTaskRootState);
@@ -395,7 +397,6 @@ const TaskMain = (props: IProps) => {
           <TaskCard
             userId={userId}
             key={localTask._id}
-            isTaskFromMe={isTaskFromMe}
             task={localTask}
             selectedTaskId={selectedTask?._id}
             handleClick={handleSelectedTask}

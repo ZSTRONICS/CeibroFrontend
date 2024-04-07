@@ -38,7 +38,7 @@ function MainTaskHeader(props: Props) {
             onClick={() => setShowHiddenTasks(false)}
             variant="contained"
           >
-            {t("task.tasks_heading")}
+            All Task
           </Button>
         </CustomStack>
       ) : (
@@ -48,7 +48,9 @@ function MainTaskHeader(props: Props) {
             width: "100%",
           }}
         >
-          <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Tasks</Heading2>
+          <Heading2 sx={{ py: 2, marginLeft: "15px" }}>
+            {t("task.tasks_heading")}
+          </Heading2>
           <Box>
             <Button
               disableRipple

@@ -12,7 +12,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { docsAction } from "redux/action";
 import { isValidURL, openFormInNewWindow } from "utills/common";
-import PinVewer from "./PinVewer";
 import ZoomButton from "./ZoomButtons/ZoomButton";
 
 export interface LocalDZISource {
@@ -448,7 +447,7 @@ function DeepZoomImgViewer({
         idZoomOut={ZOOM_OUT_BUTTON_ID}
         homeBtnId={HOME_BUTTON_ID}
       />
-      <PinVewer markers={markers} />
+      {/* <PinVewer markers={markers} /> */}
       {isOpen && (
         <CustomModal
           maxWidth={"sm"}

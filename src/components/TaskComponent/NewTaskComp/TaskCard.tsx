@@ -31,7 +31,6 @@ interface IProps {
   userId: string;
   selectedTaskId: string | undefined;
   handleClick: (task: ITask) => void;
-  isTaskFromMe: string;
   isLocationTask?: boolean;
 }
 

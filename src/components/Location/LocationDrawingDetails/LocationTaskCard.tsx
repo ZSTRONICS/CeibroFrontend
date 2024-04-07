@@ -15,18 +15,11 @@ interface IProps {
   selectedTaskId: string | undefined;
   handleTaskClick: (task: ITask) => void;
   task: ITask;
-  isTaskFromMe: string;
 }
 
 function LocationTaskCard(props: IProps) {
   const dispatch = useDispatch();
-  const {
-    handleTaskClick,
-    task: localTask,
-    userId,
-    selectedTaskId,
-    isTaskFromMe,
-  } = props;
+  const { handleTaskClick, task: localTask, userId, selectedTaskId } = props;
   const currentTaskColor = MUI_TASK_CARD_COLOR_MAP.get(localTask.userSubState);
   const currentTaskStateAndIcon = [
     {
@@ -135,35 +128,14 @@ function LocationTaskCard(props: IProps) {
   };
 
   return (
-    // <Box
-    //   sx={{
-    //     width: "100%",
-    //     // maxWidth: "342px",
-    //     // minWidth: "325px",
-    //     display: "flex",
-    //     alignItems: "center",
-    //     // borderRadius: "8px",
-    //     // boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-    //     // background: `${currentTaskColor}`,
-    //     // border: `1px solid ${currentTaskColor}`,
-    //     marginLeft: "2px",
-    //   }}
-    // >
-    //   {currentTaskStateAndIcon && (
-    //     <Box sx={{ padding: "1px" }}>
-    //       <currentTaskStateAndIcon.icon />
-    //     </Box>
-    //   )}
     <TaskCard
       userId={userId}
       key={localTask._id}
       isLocationTask={true}
-      isTaskFromMe={isTaskFromMe}
       task={localTask}
       selectedTaskId={selectedTaskId}
       handleClick={handleTaskClick}
     />
-    // </Box>
   );
 }
 

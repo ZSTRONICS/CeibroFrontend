@@ -4,8 +4,7 @@ import {
   countUnseenTasks,
   moveTaskOnTopByIndex,
   unSeenTasks,
-  updateTaskOnCancelEvent,
-  updateTaskProperties,
+  updateTaskProperties
 } from "components/Utills/Globals";
 import { TASK_CONFIG } from "config";
 import {
@@ -320,7 +319,7 @@ const taskReducer = (
           if (findTaskIndex > -1) {
             const taskToUpdate =
               state.allTasksAllEvents.allTasks[findTaskIndex];
-            const { taskData, newTaskData } = eventData;
+            const { taskData, newTaskData, taskUpdatedAt } = eventData;
             updateTaskProperties(taskToUpdate, {
               hiddenBy: taskData.hiddenBy,
               seenBy: taskData.seenBy,
@@ -331,6 +330,7 @@ const taskReducer = (
               hiddenState: newTaskData.hiddenState,
               toMeState: newTaskData.toMeState,
               isCanceled: newTaskData.isCanceled,
+              updatedAt: taskUpdatedAt
             });
             const isNewEvent = state.allTasksAllEvents.allEvents.every(
               (event) => event._id !== eventData._id
@@ -343,125 +343,125 @@ const taskReducer = (
               findTaskIndex
             );
           }
-          if (isCreator) {
-            // creator canceled task in unread state
-            if (eventData.oldTaskData.creatorState === "unread") {
-              const taskIndex = state.allTaskFromMe.unread.findIndex(
-                (task: any) => task._id === eventData.taskId
-              );
-              if (taskIndex > -1) {
-                updateTaskOnCancelEvent(
-                  state.allTaskFromMe.unread[taskIndex],
-                  taskIndex,
-                  eventData
-                );
-                state.allTaskHidden.canceled.unshift(
-                  state.allTaskFromMe.unread[taskIndex]
-                );
-                state.allTaskFromMe.unread.splice(taskIndex, 1);
-                // console.log('allTaskFromMe.unread => allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
-              }
-            } else if (isOngoing) {
-              // creator canceled task in ongoing state
-              const taskIndex = state.allTaskFromMe.ongoing.findIndex(
-                (task: any) => task._id === eventData.taskId
-              );
-              if (taskIndex > -1) {
-                updateTaskOnCancelEvent(
-                  state.allTaskFromMe.ongoing[taskIndex],
-                  taskIndex,
-                  eventData
-                );
-                state.allTaskHidden.canceled.unshift(
-                  state.allTaskFromMe.ongoing[taskIndex]
-                );
-                state.allTaskFromMe.ongoing.splice(taskIndex, 1);
-                // console.log('state.allTaskFromMe.ongoing => state.allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
-              }
-            }
-          }
-          if (isAssignedToMe) {
-            // to-me [new]  => hidden [canceled]
-            if (eventData.oldTaskData.userSubState === "new") {
-              const taskIndex = state.allTaskToMe.new.findIndex(
-                (task) => task._id === eventData.taskId
-              );
-              const checkTaskExist = state.allTaskHidden.canceled.findIndex(
-                (task) => task._id === eventData.taskId
-              );
-              if (checkTaskExist === -1) {
-                if (taskIndex > -1) {
-                  updateTaskOnCancelEvent(
-                    state.allTaskToMe.new[taskIndex],
-                    taskIndex,
-                    eventData
-                  );
-                  state.allTaskHidden.canceled.unshift(
-                    state.allTaskToMe.new[taskIndex]
-                  );
-                  state.allTaskToMe.new.splice(taskIndex, 1);
-                  // console.log('allTaskToMe.new => allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
-                }
-              } else if (checkTaskExist > -1) {
-                state.allTaskToMe.new.splice(taskIndex, 1);
-                // console.log('task already moved 1')
-              }
-            } else if (isOngoing) {
-              // hidden [ongoing]  => hidden [canceled]
-              if (isHiddenByMe === true) {
-                const taskIndex = state.allTaskHidden.ongoing.findIndex(
-                  (task) => task._id === eventData.taskId
-                );
-                const checkTaskExist = state.allTaskHidden.canceled.findIndex(
-                  (task) => task._id === eventData.taskId
-                );
-                if (checkTaskExist === -1) {
-                  if (taskIndex > -1) {
-                    updateTaskOnCancelEvent(
-                      state.allTaskHidden.ongoing[taskIndex],
-                      taskIndex,
-                      eventData
-                    );
-                    state.allTaskHidden.canceled.unshift(
-                      state.allTaskHidden.ongoing[taskIndex]
-                    );
-                    state.allTaskHidden.ongoing.splice(taskIndex, 1);
-                    // console.log('state.allTaskHidden.ongoing => state.allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
-                  }
-                } else if (checkTaskExist > -1) {
-                  state.allTaskHidden.ongoing.splice(taskIndex, 1);
-                  // console.log('Task already moved 2',)
-                }
-              } else {
-                // to-me [ongoing]  => hidden [canceled]
-                const taskIndex = state.allTaskToMe.ongoing.findIndex(
-                  (task) => task._id === eventData.taskId
-                );
-                const checkTaskExist = state.allTaskHidden.canceled.findIndex(
-                  (task) => task._id === eventData.taskId
-                );
-                if (checkTaskExist === -1) {
-                  if (taskIndex > -1) {
-                    updateTaskOnCancelEvent(
-                      state.allTaskToMe.ongoing[taskIndex],
-                      taskIndex,
-                      eventData
-                    );
-                    state.allTaskHidden.canceled.unshift(
-                      state.allTaskToMe.ongoing[taskIndex]
-                    );
-                    state.allTaskToMe.ongoing.splice(taskIndex, 1);
-                    console.log(
-                      "state.allTaskToMe.ongoing => state.allTaskHidden.canceled",
-                      state.allTaskHidden.canceled[0]._id
-                    );
-                  }
-                } else if (checkTaskExist > -1) {
-                  state.allTaskToMe.ongoing.splice(taskIndex, 1);
-                }
-              }
-            }
-          }
+          // if (isCreator) {
+          //   // creator canceled task in unread state
+          //   if (eventData.oldTaskData.creatorState === "unread") {
+          //     const taskIndex = state.allTaskFromMe.unread.findIndex(
+          //       (task: any) => task._id === eventData.taskId
+          //     );
+          //     if (taskIndex > -1) {
+          //       updateTaskOnCancelEvent(
+          //         state.allTaskFromMe.unread[taskIndex],
+          //         taskIndex,
+          //         eventData
+          //       );
+          //       state.allTaskHidden.canceled.unshift(
+          //         state.allTaskFromMe.unread[taskIndex]
+          //       );
+          //       state.allTaskFromMe.unread.splice(taskIndex, 1);
+          //       // console.log('allTaskFromMe.unread => allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
+          //     }
+          //   } else if (isOngoing) {
+          //     // creator canceled task in ongoing state
+          //     const taskIndex = state.allTaskFromMe.ongoing.findIndex(
+          //       (task: any) => task._id === eventData.taskId
+          //     );
+          //     if (taskIndex > -1) {
+          //       updateTaskOnCancelEvent(
+          //         state.allTaskFromMe.ongoing[taskIndex],
+          //         taskIndex,
+          //         eventData
+          //       );
+          //       state.allTaskHidden.canceled.unshift(
+          //         state.allTaskFromMe.ongoing[taskIndex]
+          //       );
+          //       state.allTaskFromMe.ongoing.splice(taskIndex, 1);
+          //       // console.log('state.allTaskFromMe.ongoing => state.allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
+          //     }
+          //   }
+          // }
+          // if (isAssignedToMe) {
+          //   // to-me [new]  => hidden [canceled]
+          //   if (eventData.oldTaskData.userSubState === "new") {
+          //     const taskIndex = state.allTaskToMe.new.findIndex(
+          //       (task) => task._id === eventData.taskId
+          //     );
+          //     const checkTaskExist = state.allTaskHidden.canceled.findIndex(
+          //       (task) => task._id === eventData.taskId
+          //     );
+          //     if (checkTaskExist === -1) {
+          //       if (taskIndex > -1) {
+          //         updateTaskOnCancelEvent(
+          //           state.allTaskToMe.new[taskIndex],
+          //           taskIndex,
+          //           eventData
+          //         );
+          //         state.allTaskHidden.canceled.unshift(
+          //           state.allTaskToMe.new[taskIndex]
+          //         );
+          //         state.allTaskToMe.new.splice(taskIndex, 1);
+          //         // console.log('allTaskToMe.new => allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
+          //       }
+          //     } else if (checkTaskExist > -1) {
+          //       state.allTaskToMe.new.splice(taskIndex, 1);
+          //       // console.log('task already moved 1')
+          //     }
+          //   } else if (isOngoing) {
+          //     // hidden [ongoing]  => hidden [canceled]
+          //     if (isHiddenByMe === true) {
+          //       const taskIndex = state.allTaskHidden.ongoing.findIndex(
+          //         (task) => task._id === eventData.taskId
+          //       );
+          //       const checkTaskExist = state.allTaskHidden.canceled.findIndex(
+          //         (task) => task._id === eventData.taskId
+          //       );
+          //       if (checkTaskExist === -1) {
+          //         if (taskIndex > -1) {
+          //           updateTaskOnCancelEvent(
+          //             state.allTaskHidden.ongoing[taskIndex],
+          //             taskIndex,
+          //             eventData
+          //           );
+          //           state.allTaskHidden.canceled.unshift(
+          //             state.allTaskHidden.ongoing[taskIndex]
+          //           );
+          //           state.allTaskHidden.ongoing.splice(taskIndex, 1);
+          //           // console.log('state.allTaskHidden.ongoing => state.allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
+          //         }
+          //       } else if (checkTaskExist > -1) {
+          //         state.allTaskHidden.ongoing.splice(taskIndex, 1);
+          //         // console.log('Task already moved 2',)
+          //       }
+          //     } else {
+          //       // to-me [ongoing]  => hidden [canceled]
+          //       const taskIndex = state.allTaskToMe.ongoing.findIndex(
+          //         (task) => task._id === eventData.taskId
+          //       );
+          //       const checkTaskExist = state.allTaskHidden.canceled.findIndex(
+          //         (task) => task._id === eventData.taskId
+          //       );
+          //       if (checkTaskExist === -1) {
+          //         if (taskIndex > -1) {
+          //           updateTaskOnCancelEvent(
+          //             state.allTaskToMe.ongoing[taskIndex],
+          //             taskIndex,
+          //             eventData
+          //           );
+          //           state.allTaskHidden.canceled.unshift(
+          //             state.allTaskToMe.ongoing[taskIndex]
+          //           );
+          //           state.allTaskToMe.ongoing.splice(taskIndex, 1);
+          //           console.log(
+          //             "state.allTaskToMe.ongoing => state.allTaskHidden.canceled",
+          //             state.allTaskHidden.canceled[0]._id
+          //           );
+          //         }
+          //       } else if (checkTaskExist > -1) {
+          //         state.allTaskToMe.ongoing.splice(taskIndex, 1);
+          //       }
+          //     }
+          //   }
+          // }
           break;
         case "unCancelTask":
           if (findTaskIndex > -1) {
@@ -491,41 +491,41 @@ const taskReducer = (
               state.allTasksAllEvents.allEvents.push(eventData);
             }
           }
-          const taskIndex = state.allTaskHidden.canceled.findIndex(
-            (task) => task._id === eventData.taskId
-          );
-          if (taskIndex > -1) {
-            addEventToTask(
-              state.allTaskHidden.canceled[taskIndex],
-              eventData,
-              taskIndex
-            );
-            state.allTaskHidden.canceled[taskIndex].hiddenBy =
-              eventData.taskData.hiddenBy;
-            state.allTaskHidden.canceled[taskIndex].creatorState = "unread";
-            state.allTaskHidden.canceled[taskIndex].isCanceled = false;
-            const modifiedCreatorTask = {
-              ...state.allTaskHidden.canceled[taskIndex],
-              userSubState: "unread",
-            };
-            if (eventData.oldTaskData.isCreator) {
-              state.allTaskFromMe.unread.unshift(modifiedCreatorTask);
-              // console.log("UN_CANCEL_TASK allTaskFromMe.new", modifiedCreatorTask);
-            }
-            if (isAssignedToMe) {
-              const modifiedTask = state.allTaskHidden.canceled[taskIndex];
-              modifiedTask.userSubState = "new";
-              state.allTaskToMe.new.unshift(modifiedTask);
-              // console.log("UN_CANCEL_TASK allTaskToMe.new", modifiedTask);
-            }
-            state.allTaskHidden.canceled.splice(taskIndex, 1);
-          }
+          // const taskIndex = state.allTaskHidden.canceled.findIndex(
+          //   (task) => task._id === eventData.taskId
+          // );
+          // if (taskIndex > -1) {
+          //   addEventToTask(
+          //     state.allTaskHidden.canceled[taskIndex],
+          //     eventData,
+          //     taskIndex
+          //   );
+          //   state.allTaskHidden.canceled[taskIndex].hiddenBy =
+          //     eventData.taskData.hiddenBy;
+          //   state.allTaskHidden.canceled[taskIndex].creatorState = "unread";
+          //   state.allTaskHidden.canceled[taskIndex].isCanceled = false;
+          //   const modifiedCreatorTask = {
+          //     ...state.allTaskHidden.canceled[taskIndex],
+          //     userSubState: "unread",
+          //   };
+          //   if (eventData.oldTaskData.isCreator) {
+          //     state.allTaskFromMe.unread.unshift(modifiedCreatorTask);
+          //     // console.log("UN_CANCEL_TASK allTaskFromMe.new", modifiedCreatorTask);
+          //   }
+          //   if (isAssignedToMe) {
+          //     const modifiedTask = state.allTaskHidden.canceled[taskIndex];
+          //     modifiedTask.userSubState = "new";
+          //     state.allTaskToMe.new.unshift(modifiedTask);
+          //     // console.log("UN_CANCEL_TASK allTaskToMe.new", modifiedTask);
+          //   }
+          //   state.allTaskHidden.canceled.splice(taskIndex, 1);
+          // }
           break;
         case "comment":
           if (findTaskIndex > -1) {
             const taskToUpdate =
               state.allTasksAllEvents.allTasks[findTaskIndex];
-            const { taskData, newTaskData } = eventData;
+            const { taskData, newTaskData, taskUpdatedAt } = eventData;
             updateTaskProperties(taskToUpdate, {
               hiddenBy: taskData.hiddenBy,
               seenBy: taskData.seenBy,
@@ -535,6 +535,7 @@ const taskReducer = (
               fromMeState: newTaskData.fromMeState,
               hiddenState: newTaskData.hiddenState,
               toMeState: newTaskData.toMeState,
+              updatedAt: taskUpdatedAt
             });
             moveTaskOnTopByIndex(
               state.allTasksAllEvents.allTasks,
@@ -1133,7 +1134,7 @@ const taskReducer = (
           if (findTaskFromAllTask > -1) {
             const taskToUpdate =
               state.allTasksAllEvents.allTasks[findTaskFromAllTask];
-            const { taskData, newTaskData } = forwardedTask;
+            const { taskData, newTaskData, taskUpdatedAt } = forwardedTask;
             updateTaskProperties(taskToUpdate, {
               seenBy: taskData.seenBy,
               hiddenBy: taskData.hiddenBy,
@@ -1145,6 +1146,7 @@ const taskReducer = (
               fromMeState: newTaskData.fromMeState,
               hiddenState: newTaskData.hiddenState,
               toMeState: newTaskData.toMeState,
+              updatedAt: taskUpdatedAt
             });
             moveTaskOnTopByIndex(
               state.allTasksAllEvents.allTasks,
@@ -1300,7 +1302,7 @@ const taskReducer = (
             const taskToUpdate =
               state.allTasksAllEvents.allTasks[findTaskIndex];
             // console.log("reject-reopen", taskToUpdate);
-            const { taskData, newTaskData } = eventData;
+            const { taskData, newTaskData, taskUpdatedAt } = eventData;
             updateTaskProperties(taskToUpdate, {
               hiddenBy: taskData.hiddenBy,
               seenBy: taskData.seenBy,
@@ -1313,6 +1315,7 @@ const taskReducer = (
               isTaskConfirmer: newTaskData.isTaskConfirmer,
               isTaskInApproval: newTaskData.isTaskInApproval,
               isTaskViewer: newTaskData.isTaskViewer,
+              updatedAt: taskUpdatedAt
             });
             const findEventFromAllTaskEvent =
               state.allTasksAllEvents.allEvents.findIndex(
