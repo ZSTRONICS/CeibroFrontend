@@ -115,8 +115,8 @@ export default function RegisterNumberForm() {
   return (
     <Box className={classes.registerNumberFormContainer}>
       <AuthLayout
-        title={t("auth.get_started")}
-        subTitle={t("auth.enter_your_phone_no")}
+        title={t("auth.get_started_heading")}
+        subTitle={t("auth.enter_your_phone_number")}
       >
         {isTabletOrMobile && (
           <div className={classes.registerNumberForm}>
@@ -182,7 +182,7 @@ export default function RegisterNumberForm() {
                     color="primary"
                     type="submit"
                   >
-                    Continue
+                    {t("auth.continue_heading")}
                   </Button>
                 </div>
               </Form>
@@ -193,7 +193,7 @@ export default function RegisterNumberForm() {
         <Box className={classes.dontHave} sx={{ color: "#131516" }}>
           {t("auth.back_to")}{" "}
           <Link to={LOGIN_ROUTE} className={classes.signup}>
-            Login
+            {t("auth.login")}
           </Link>
         </Box>
       </AuthLayout>

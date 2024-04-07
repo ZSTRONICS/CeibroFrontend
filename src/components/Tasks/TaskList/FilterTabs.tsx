@@ -2,6 +2,7 @@ import { countUnseenTasksForTabs } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { ITask } from "constants/interfaces";
 import { isEmpty } from "lodash";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 
@@ -14,6 +15,8 @@ interface FilterTabProps {
 }
 
 function FilterTabs(props: FilterTabProps) {
+  const { t }: any = useTranslation<any>();
+
   const { activeTab, userId, filterKeys, subTaskKey, handleTabClick } = props;
   const task: any = useSelector((state: RootState) => state.task);
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
@@ -37,7 +40,8 @@ function FilterTabs(props: FilterTabProps) {
         isDisabled = isEmpty(allTaskFromMe.unread);
         break;
       case "ongoing":
-        label = "Ongoing";
+        label = "ongoing";
+        // label = t("taskstatus.ongoing_heading");
         tasks =
           subTaskKey === "allTaskFromMe"
             ? allTaskFromMe.ongoing

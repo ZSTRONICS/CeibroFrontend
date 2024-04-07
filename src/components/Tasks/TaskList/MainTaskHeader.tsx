@@ -28,7 +28,9 @@ function MainTaskHeader(props: Props) {
     <>
       {showHiddenTasks ? (
         <CustomStack sx={{ justifyContent: "space-between", width: "100%" }}>
-          <Heading2 sx={{ py: 2, marginLeft: "15px" }}>Hidden Tasks</Heading2>
+          <Heading2 sx={{ py: 2, marginLeft: "15px" }}>
+            {t("config.hidden_tasks")}
+          </Heading2>
           <Button
             disableRipple
             sx={{
@@ -38,7 +40,7 @@ function MainTaskHeader(props: Props) {
             onClick={() => setShowHiddenTasks(false)}
             variant="contained"
           >
-            All Task
+            {t("config.all_tasks")}
           </Button>
         </CustomStack>
       ) : (
@@ -65,7 +67,7 @@ function MainTaskHeader(props: Props) {
               variant="text"
               disabled={isTasksLoading}
             >
-              Show hidden tasks
+              {t("config.show_hidden_tasks")}
             </Button>
             <Button
               disableRipple
@@ -80,7 +82,7 @@ function MainTaskHeader(props: Props) {
               }
             >
               <assets.AddIcon sx={{ color: "white", marginRight: "10px" }} />
-              New
+              {t("config.new_heading")}
             </Button>
           </Box>
         </CustomStack>

@@ -136,8 +136,8 @@ export default function RegisterConfirmationForm() {
   };
   return (
     <AuthLayout
-      title={t("auth.phone_number_confirmation")}
-      subTitle={t("auth.enter_your_phone_no")}
+      title={t("auth.phone_number_confirmation_heading")}
+      subTitle={t("auth.enter_your_phone_number")}
     >
       <div className={classes.registerNumberForm}>
         {isTabletOrMobile && (
@@ -171,8 +171,8 @@ export default function RegisterConfirmationForm() {
                   inputVariant="outlined"
                   name="verificationCode"
                   typeName="text-field"
-                  label="Enter your code"
-                  placeholder="Enter your code"
+                  label={t("auth.enter_your_code")}
+                  placeholder={t("auth.enter_your_code")}
                   inputValue={values.verificationCode}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -186,16 +186,16 @@ export default function RegisterConfirmationForm() {
               <div style={{ marginBottom: "15px" }}>
                 {counter > 0 ? (
                   <Typography>
-                    {t("auth.didnot_receive_code")}{" "}
+                    {t("auth.didn_t_receive_code")}{" "}
                     <span style={{ color: "grey" }}>
                       {`${counter} ${t("auth.seconds_left")}`}
                     </span>
                   </Typography>
                 ) : (
                   <Typography>
-                    {t("auth.didnot_receive_code")}{" "}
+                    {t("auth.didn_t_receive_code")}{" "}
                     <span className={classes.signup} onClick={handleResend}>
-                      {t("auth.send_again")}
+                      {t("auth.send_again_text")}
                     </span>
                   </Typography>
                 )}
@@ -214,7 +214,7 @@ export default function RegisterConfirmationForm() {
                   type="submit"
                   disabled={values.verificationCode.length === 6 ? false : true}
                 >
-                  Continue
+                  {t("auth.continue_heading")}
                 </Button>
               </div>
             </form>
@@ -224,7 +224,7 @@ export default function RegisterConfirmationForm() {
       <Box className={classes.dontHave} sx={{ color: "#131516" }}>
         {t("auth.back_to")}{" "}
         <Link to={LOGIN_ROUTE} className={classes.signup}>
-          Login
+          {t("auth.login")}
         </Link>
       </Box>
     </AuthLayout>

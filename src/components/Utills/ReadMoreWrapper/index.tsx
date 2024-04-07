@@ -328,6 +328,7 @@ const ReadMoreWrapper = ({
               {type === "file" && (
                 <Box
                   sx={{
+                    minHeight: "27px",
                     maxHeight: `${allowExpandedView ? height : "auto"}`,
                   }}
                 >

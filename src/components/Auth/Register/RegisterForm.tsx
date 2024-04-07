@@ -120,8 +120,8 @@ const RegisterForm = () => {
               required={true}
               typeName="text-field"
               name="firstName"
-              label="First name *"
-              placeholder={t("auth.register.first_name")}
+              label={t("auth.first_name_required")}
+              placeholder={t("auth.first_name_required")}
               inputValue={formik.values.firstName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -138,8 +138,8 @@ const RegisterForm = () => {
               required={true}
               typeName="text-field"
               name="surName"
-              label="Surname *"
-              placeholder={t("auth.register.sur_name")}
+              label={t("auth.sur_name_heading")}
+              placeholder={t("auth.sur_name_heading")}
               inputValue={formik.values.surName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -157,8 +157,8 @@ const RegisterForm = () => {
               typeName="text-field"
               subType="email"
               name="email"
-              label="Email *"
-              placeholder={t("auth.register.email")}
+              label={t("auth.email_required")}
+              placeholder={t("auth.email_required")}
               inputValue={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -174,8 +174,8 @@ const RegisterForm = () => {
               inputVariant="outlined"
               typeName="text-field"
               name="companyName"
-              label="Company name"
-              placeholder={t("auth.register.company_name")}
+              label={t("auth.company_name_optional")}
+              placeholder={t("auth.company_name_optional")}
               inputValue={formik.values.companyName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -192,8 +192,8 @@ const RegisterForm = () => {
               inputVariant="outlined"
               typeName="text-field"
               name="jobTitle"
-              label="Job title"
-              placeholder={t("auth.register.job_title")}
+              label={t("auth.job_title_optional")}
+              placeholder={t("auth.job_title_optional")}
               inputValue={formik.values.jobTitle}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -224,8 +224,8 @@ const RegisterForm = () => {
               password={formik.values.password}
               typeName="password"
               name="password"
-              label="Password *"
-              placeholder="Password"
+              label={t("auth.password_required")}
+              placeholder={t("auth.password_required")}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               // required={true}
@@ -240,8 +240,8 @@ const RegisterForm = () => {
             <CustomMuiTextField
               password={formik.values.confirmPassword}
               name="confirmPassword"
-              label="Confirm password *"
-              placeholder="Confirm password"
+              label={t("auth.confirm_password")}
+              placeholder={t("auth.confirm_password")}
               typeName="password"
               inputValue={formik.values.confirmPassword}
               onChange={formik.handleChange}
@@ -266,7 +266,7 @@ const RegisterForm = () => {
                 }}
                 onClick={() => history.push(LOGIN_ROUTE)}
               >
-                Cancel
+                {t("auth.cancel_btn_text")}
               </Button>
             </Grid>
             <Grid item xs={8}>
@@ -283,7 +283,7 @@ const RegisterForm = () => {
                 }}
                 disabled={checkValidInputs(formik.values)}
               >
-                Continue
+                {t("auth.continue_heading")}
               </Button>
             </Grid>
           </Grid>

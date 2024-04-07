@@ -16,6 +16,15 @@
   },
 
   "auth": {
+    "skip": "Skip",
+    "terms_and_conditions_heading": "Terms & Conditions",
+    "seconds_left": "Seconds left",
+    "enter_your_code": "Enter your code",
+    "get_started_heading": "Get started",
+    "send_again_text": "Send again",
+    "back_to": "Back to",
+    "no_worries_we_ll_send_you_reset_instruction": "No worries, we’ll send you reset instruction",
+    "continue_heading": "Continue",
     "do_you_want_to_delete_photo": "Do you want to delete photo?",
     "login": "Login",
     "new_photo": "New photo",
@@ -89,7 +98,7 @@
     "didn_t_receive_code": "Didn't receive code?",
     "by_entering_your_phone_number": "by entering your phone number",
     "terms_and_conditions_agree_statement": "Yes, I understand and agree to the Terms & Conditions of Ceibro.",
-    "profile_setup_heading": "Profile setup",
+    "profile_setup_heading": "Profile setup ",
     "first_name": "First name",
     "first_name_required": "First name",
     "job_title_optional": "Job title (optional)",
@@ -103,6 +112,7 @@
     "old_password": "Old password",
     "add_a_profile_photo_for_more_credibility_and_recognition": "Add a profile photo for more credibility and recognition",
     "enter_your_new_phone_number": "Enter your new phone number",
+    "enter_your_phone_number": "Enter your phone number",
     "phone_confirmation": "Phone confirmation",
     "confirmation_code_sent_to_your_phone": "Confirmation code sent to your phone"
   },
@@ -141,7 +151,8 @@
     "delete_subtask_heading": "Delete Subtask",
     "edit_subtask_heading": "Edit Subtask",
     "update_subtask_heading": "Update Subtask",
-    "my_tasks_heading": "My tasks"
+    "my_tasks_heading": "My tasks",
+    "task_heading": "Task"
   },
 
   "taskstatus": {
@@ -332,7 +343,7 @@
     "default_regex_validation_message": "The field value does not match the required format."
   },
 
-  "config ": {
+  "config": {
     "app_name": "Ceibro",
     "done": "Done",
     "ok": "Ok",
@@ -496,13 +507,6 @@
     "reg_date_heading": "Reg. date",
     "default_status_text": "Default",
     "remember_me_text": "Remember me",
-    "back_to": "Back to",
-    "send_again_text": "Send again",
-    "get_started_heading": "Get started",
-    "continue_heading": "Continue",
-    "no_worries_we_ll_send_you_reset_instruction": "No worries, we’ll send you reset instruction",
-    "terms_and_conditions_heading": "Terms & Conditions",
-    "skip": "Skip",
     "contact_list": "Contact list",
     "contact_list_permission_text": "Do you want to add only a few contacts to your Ceibro contact list?",
     "enter_contact_name": "Search contact",
@@ -594,6 +598,9 @@
     "save": "Save",
     "new_proj": "New",
     "search": "Search",
-    "details": "Details"
+    "details": "Details",
+    "all_tasks": "All Tasks",
+    "hidden_tasks": "Hidden Tasks",
+    "show_hidden_tasks": " Show hidden tasks"
   }
 }

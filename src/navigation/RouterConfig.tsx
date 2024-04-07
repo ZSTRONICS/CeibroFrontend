@@ -67,11 +67,13 @@ const RouterConfig = () => {
             <Route path="/profile-setup" component={Register} />
 
             <Redirect exact from="/tasks" to="/tasks/Ongoing" />
+            {/* // */}
             <PrivateRoute
               exact
               path="/profile-pic"
               component={RegisterAddProfilePic}
             />
+
             <PrivateRoute path="/create-new-task" component={CreateNewTask} />
             <PrivateRoute
               exact

@@ -94,6 +94,12 @@ export default function DetailsHeader(props: IProps) {
       //   { ...obj },
       //   { ...obj },
       //   { ...obj },
+      //   { ...obj },
+      //   { ...obj },
+      //   { ...obj },
+      //   { ...obj },
+      //   { ...obj },
+      //   { ...obj },
       // ]),
       value: invitedNumbers.length > 0 ? invitedNumbers : null,
     },
@@ -165,6 +171,40 @@ export default function DetailsHeader(props: IProps) {
     handleResize();
     window.addEventListener("resize", handleResize);
   }, [isExpanded]);
+
+  const HiddenCounter = (users: any, label: any, count: number) => {
+    return (
+      <>
+        <Box
+          onClick={handleFullView}
+          sx={{
+            position: "absolute",
+            zIndex: 100,
+            left: "100%",
+            top: "3px",
+            cursor: "pointer",
+          }}
+        >
+          {users.length - count > 0 && (
+            <Box
+              sx={{
+                fontFamily: "Inter",
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "#0076C8",
+                pt: "4px",
+                position: "absolute",
+                right: label === "Invitees" ? "12%" : "1%",
+                top: "50%",
+              }}
+            >
+              +{users.length - count}
+            </Box>
+          )}
+        </Box>
+      </>
+    );
+  };
 
   const renderInfoBox = ({ label, value }: InfoBoxProps): JSX.Element => (
     <>
@@ -277,12 +317,6 @@ export default function DetailsHeader(props: IProps) {
     users: AssignedUserState[] | InvitedNumber[] | UserInfo[] | null;
     type: string;
   }) => {
-    let localCount: number | null = 0;
-    const isSentTo = label === "Sent to" || label === "Invitees";
-    localCount =
-      label === "Sent to"
-        ? users && users?.length - count
-        : users && users?.length - 1;
     return (
       <>
         {users && (
@@ -320,7 +354,6 @@ export default function DetailsHeader(props: IProps) {
                 overflow: isExpanded ? "hidden" : "unset",
                 marginTop: label === "Invitees" ? "6px" : null,
                 width: "97%",
-                // border: "solid 1px green",
               }}
             >
               {users.map((user, i) => {
@@ -330,7 +363,6 @@ export default function DetailsHeader(props: IProps) {
                       position: "relative",
                       paddingLeft: "0px",
                       paddingRight: "25px",
-                      // border: "solid 1px red",
                     }}
                   >
                     <Box
@@ -342,68 +374,20 @@ export default function DetailsHeader(props: IProps) {
                         alignItems: "center",
                         flexWrap: "nowrap",
                         pt: 1,
-                        // width: isExpanded ? "135px" : "auto",
                       }}
                     >
                       {renderAvatar(user)}
                       {renderValue(formatUserName(user), "")}
                     </Box>
-                    {i === count - 1 && users.length - count !== 0 && (
-                      <Box
-                        onClick={handleFullView}
-                        sx={{
-                          position: "absolute",
-                          zIndex: 100,
-                          left: "100%",
-                          top: "3px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {isSentTo &&
-                        isExpanded &&
-                        localCount &&
-                        localCount > 0 ? (
-                          <Box
-                            sx={{
-                              fontFamily: "Inter",
-                              fontSize: "14px",
-                              fontWeight: "400",
-                              color: "#0076C8",
-                              pt: "4px",
-                              position: "absolute",
-                              right: label === "Invitees" ? "12%" : "1%",
-                              top: "50%",
-                            }}
-                          >
-                            +{users.length - count}
-                          </Box>
-                        ) : (
-                          <></>
-                        )}
-                      </Box>
-                    )}
+                    {type === "sentto" && i === count - 1
+                      ? HiddenCounter(users, label, count)
+                      : type === "invitees" && i === inviteesCount - 1
+                      ? HiddenCounter(users, label, inviteesCount)
+                      : null}
                   </Box>
                 );
               })}
             </Box>{" "}
-            {/* {isSentTo && isExpanded && localCount && localCount > 0 ? (
-              <Box
-                sx={{
-                  fontFamily: "Inter",
-                  fontSize: "14px",
-                  fontWeight: "400",
-                  color: "#0076C8",
-                  pt: "4px",
-                  position: "absolute",
-                  right: label === "Invitees" ? "12%" : "1%",
-                  top: "50%",
-                }}
-              >
-                +{localCount}
-              </Box>
-            ) : (
-              <></>
-            )} */}
           </Box>
         )}
       </>

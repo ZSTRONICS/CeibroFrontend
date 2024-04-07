@@ -67,16 +67,16 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
           <Box sx={{ marginBottom: { md: "26px", xs: 0 } }}>
             {counter > 0 ? (
               <Typography>
-                {t("auth.didnot_receive_code")}{" "}
+                {t("auth.didn_t_receive_code")}{" "}
                 <span style={{ color: "grey" }}>
                   {`${counter} ${t("auth.seconds_left")}`}
                 </span>
               </Typography>
             ) : (
               <Typography>
-                {t("auth.didnot_receive_code")}{" "}
+                {t("auth.didn_t_receive_code")}{" "}
                 <span className={classes.signup} onClick={handleResend}>
-                  {t("auth.send_again")}
+                  {t("auth.send_again_text")}
                 </span>
               </Typography>
             )}
@@ -100,7 +100,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
               type="submit"
               disabled={values.verificationCode.length !== 6}
             >
-              continue
+              {t("auth.continue_heading")}
             </Button>
           </div>
         </Form>

@@ -15,6 +15,15 @@
     "label_adjust": "Настроить"
   },
   "auth": {
+    "skip": "Пропустить",
+    "terms_and_conditions_heading": "Правила и условия",
+    "seconds_left": "Осталось секунд",
+    "enter_your_code": "Введите ваш код",
+    "get_started_heading": "Начать",
+    "send_again_text": "Отправить еще раз",
+    "back_to": "Назад к",
+    "no_worries_we_ll_send_you_reset_instruction": "Не беспокойтесь, мы вышлем вам инструкцию по восстановлению пароля",
+    "continue_heading": "Продолжить",
     "login": "Вход",
     "enter_your_username_or_email": "Введите ваше имя пользователя или электронную почту",
     "remember_me": "Запомнить меня",
@@ -99,6 +108,7 @@
     "by_entering_your_phone_number": "введите свой номер телефона",
     "old_password": "Старый пароль",
     "enter_your_new_phone_number": "Введите новый номер телефона",
+    "enter_your_phone_number": "Введите ваш номер телефона",
     "phone_confirmation": "Подтверждение телефона",
     "didn_t_receive_code": "Не получили код?",
     "profile_setup_heading": "Настройка профиля",
@@ -142,7 +152,8 @@
     "do_you_want_to_un_hide_the_task": "Вы хотите отменить задачу?",
     "do_you_want_to_cancel_the_task": "Вы хотите отменить задание?",
     "do_you_want_to_un_cancel_the_task": "Вы хотите снять отмену с задания?",
-    "forward_task": "Перенаправить задачу"
+    "forward_task": "Перенаправить задачу",
+    "task_heading": "Задача"
   },
 
   "taskstatus": {
@@ -495,15 +506,9 @@
     "work_phone_heading": "Рабочий телефон",
     "reg_date_heading": "Дата регистрации",
     "default_status_text": "По умолчанию",
-    "no_worries_we_ll_send_you_reset_instruction": "Не беспокойтесь, мы вышлем вам инструкцию по восстановлению пароля",
+
     "remember_me_text": "Запомнить меня",
-    "back_to": "Назад к",
-    "send_again_text": "Отправить еще раз",
-    "get_started_heading": "Начать",
-    "continue_heading": "Продолжить",
-    "terms_and_conditions_heading": "Правила и условия",
     "terms_and_conditions_agree_statement": "Да, я понимаю и принимаю Условия и положения Ceibro.",
-    "skip": "Пропустить",
     "contact_list": "Список контактов",
     "contact_list_permission_text": "Хотите добавить только несколько контактов в список контактов Ceibro?",
     "confirmation_code_sent_to_your_phone": "Код подтверждения отправлен на ваш телефон",
@@ -593,6 +598,9 @@
     "add_members": "Добавить участников",
     "new_proj": "Новый",
     "search": "Поиск",
-    "details": "Подробности"
+    "details": "Подробности",
+    "all_tasks": "Все задачи",
+    "hidden_tasks": "Скрытые задачи",
+    "show_hidden_tasks": "Показать скрытые задачи"
   }
 }

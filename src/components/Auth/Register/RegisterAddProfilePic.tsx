@@ -20,7 +20,7 @@ export default function RegisterAddProfilePic(): JSX.Element {
     try {
       const formData = new FormData();
       if (file) {
-        formData.append('profilePic', file);
+        formData.append("profilePic", file);
         const payload = {
           body: formData,
           success: (res: any) => {
@@ -28,7 +28,7 @@ export default function RegisterAddProfilePic(): JSX.Element {
           },
           onFailAction: (err: any) => {
             if (err) {
-              console.error('Failed to upload image');
+              console.error("Failed to upload image");
             }
           },
         };
@@ -36,16 +36,16 @@ export default function RegisterAddProfilePic(): JSX.Element {
       } else {
         history.push("/tasks");
       }
-
     } catch (error) {
-      console.error('Error occurred while uploading image:', error);
+      console.error("Error occurred while uploading image:", error);
     }
   };
 
   return (
     <AuthLayout
       title={t("auth.add_photo")}
-      subTitle={t("auth.photo_description")}
+      // subTitle={t("auth.photo_description")}
+      subTitle={"Photo Description"}
     >
       {isTabletOrMobile && (
         <div>
@@ -53,7 +53,8 @@ export default function RegisterAddProfilePic(): JSX.Element {
             {t("auth.add_photo")}
           </TopBarTitle>
           <SubLabelTag sx={{ fontSize: 16, pb: 2 }}>
-            {t("auth.photo_description")}
+            {/* {t("auth.photo_description")} */}
+            Photo Description
           </SubLabelTag>
         </div>
       )}
@@ -66,13 +67,19 @@ export default function RegisterAddProfilePic(): JSX.Element {
         />
       </CBox>
       <Button
-        sx={{ maxWidth: "390px", width: "100%", margin: "0 auto", mt: 2, py: { xs: 0.5, md: 1.5 } }}
+        sx={{
+          maxWidth: "390px",
+          width: "100%",
+          margin: "0 auto",
+          mt: 2,
+          py: { xs: 0.5, md: 1.5 },
+        }}
         variant={file ? "contained" : "outlined"}
         color="primary"
         type="submit"
         onClick={uploadImage}
       >
-        {file ? "Continue" : "Skip"}
+        {file ? t("auth.continue_heading") : t("auth.skip")}
       </Button>
     </AuthLayout>
   );

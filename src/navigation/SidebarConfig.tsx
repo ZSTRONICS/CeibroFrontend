@@ -23,9 +23,12 @@ export interface SidebarConfigInterface {
   [key: string]: SingleConfig;
 }
 
+// const { t }: any = useTranslation<any>();
+
 const SidebarConfig: SidebarConfigInterface = {
   tasks: {
     key: "tasks",
+    // title: t("task.task_heading"),
     title: "Task",
     icon: TaskIcon,
     getPath: () =>

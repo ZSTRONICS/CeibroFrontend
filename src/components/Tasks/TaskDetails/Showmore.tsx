@@ -57,7 +57,7 @@ const ShowmoreComponent = ({ less, more, data, count }: Props) => {
               <Button
                 onClick={handleClick}
                 style={{
-                  marginLeft: "5px",
+                  marginLeft: "-6px",
                   border: "none",
                   textTransform: "unset",
                   backgroundColor: "transparent",

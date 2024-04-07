@@ -146,13 +146,13 @@ const ForgetConfirmation: React.FC = () => {
 
   return (
     <AuthLayout
-      title={t("auth.phone_number_confirmation")}
+      title={t("auth.phone_number_confirmation_heading")}
       // subTitle={t("auth.enter_your_phone_no")}
     >
       <div className={classes.registerNumberForm}>
         {isTabletOrMobile && (
           <TopBarTitle sx={{ fontSize: { md: 28, xs: 20 }, pb: 2 }}>
-            {t("auth.phone_number_confirmation")}
+            {t("auth.phone_number_confirmation_heading")}
           </TopBarTitle>
         )}
         <VerificationForm
