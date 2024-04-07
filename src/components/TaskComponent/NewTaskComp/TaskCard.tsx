@@ -297,8 +297,10 @@ const TaskCard = React.memo((props: IProps) => {
                   whiteSpace: "nowrap",
                   width: "95%",
                   fontSize: "13px",
-                  marginTop: "5px",
+                  marginTop: "6px",
                   color: "black",
+                  // border: "solid 1px red",
+                  marginBottom: "1px",
                 }}
               >
                 {title ? title.charAt(0).toUpperCase() + title.slice(1) : "N/A"}
@@ -316,6 +318,7 @@ const TaskCard = React.memo((props: IProps) => {
                   wordWrap: "break-word",
                   wordBreak: "break-all",
                   fontSize: "12px",
+                  marginBottom: "1px",
                 }}
               >
                 {description ? description : ""}

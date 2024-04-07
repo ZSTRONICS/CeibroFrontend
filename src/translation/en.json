@@ -601,6 +601,7 @@
     "details": "Details",
     "all_tasks": "All Tasks",
     "hidden_tasks": "Hidden Tasks",
-    "show_hidden_tasks": " Show hidden tasks"
+    "show_hidden_tasks": " Show hidden tasks",
+    "delete_account": "Delete account"
   }
 }

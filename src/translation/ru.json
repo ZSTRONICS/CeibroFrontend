@@ -601,6 +601,7 @@
     "details": "Подробности",
     "all_tasks": "Все задачи",
     "hidden_tasks": "Скрытые задачи",
-    "show_hidden_tasks": "Показать скрытые задачи"
+    "show_hidden_tasks": "Показать скрытые задачи",
+    "delete_account": "Удалить аккаунт"
   }
 }

@@ -304,7 +304,7 @@ const ProfileForm = ({ user }: Props) => {
                 }}
                 onClick={() => handleModal("change-number")}
               >
-                Change phone number
+                {t("auth.change_phone_number")}
               </Typography>
             </Grid>
 
@@ -326,7 +326,7 @@ const ProfileForm = ({ user }: Props) => {
                   size="medium"
                   onClick={() => handleModal("change-password")}
                 >
-                  Change Password
+                  {t("auth.change_password")}
                 </Button>
               </div>
             </Grid>
@@ -347,7 +347,7 @@ const ProfileForm = ({ user }: Props) => {
                 loading
               }
             >
-              Update
+              {t("auth.update_btn_text")}
               {isDisabled && loading && <CircularProgress size={20} />}
             </Button>
             <Button
@@ -358,7 +358,8 @@ const ProfileForm = ({ user }: Props) => {
               variant="text"
               sx={{ fontWeight: 500, fontSize: "14px", color: "red" }}
             >
-              Delete account
+              {/* Delete account */}
+              {t("config.delete_account")}
             </Button>
           </CustomStack>
         </form>
