@@ -214,7 +214,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   }
                   style={{ padding: 0 }}
                   label={
-                    <DocumentNameTag>{t("auth.RememberMe")}</DocumentNameTag>
+                    <DocumentNameTag>{t("auth.remember_me")}</DocumentNameTag>
                   }
                 />
                 <AddStatusTag
@@ -225,7 +225,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   }}
                   onClick={handlePasswordForget}
                 >
-                  {t("auth.ForgetPassword")}
+                  {t("auth.forgot_password")}
                 </AddStatusTag>
               </div>
               <MessageAlert
